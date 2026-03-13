@@ -1,0 +1,274 @@
+[
+  {
+    "id": "reg_lane_left",
+    "category": "regulatory",
+    "label": "Lane Direction: Left Only",
+    "meaning": "Lane 1 must turn left. Lane 2 is optional (left or straight).",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_lane_left.png"
+  },
+  {
+    "id": "reg_lane_straight",
+    "category": "regulatory",
+    "label": "Lane Direction: Straight",
+    "meaning": "Lane 1 must go straight. Lane 2 is optional (right or straight).",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_lane_straight.png"
+  },
+  {
+    "id": "reg_turn_left_only",
+    "category": "regulatory",
+    "label": "Turn Left Only",
+    "meaning": "Must turn left from this lane. No straight or right turns allowed.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_turn_left_only.png"
+  },
+  {
+    "id": "reg_straight_only",
+    "category": "regulatory",
+    "label": "No Turns \u2014 Straight Only",
+    "meaning": "No turns from this lane. Go straight only.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_straight_only.png"
+  },
+  {
+    "id": "reg_speed_65",
+    "category": "regulatory",
+    "label": "Speed Limit Sign",
+    "meaning": "Maximum speed is 65 mph under ideal conditions on this road.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_speed_65.png"
+  },
+  {
+    "id": "reg_do_not_enter",
+    "category": "regulatory",
+    "label": "Do Not Enter",
+    "meaning": "One-way traffic is coming toward you. Do not drive into it.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_do_not_enter.png"
+  },
+  {
+    "id": "reg_no_passing_zone",
+    "category": "regulatory",
+    "label": "No Passing Zone",
+    "meaning": "Do not pass. Do not cross yellow lines. You cannot see far enough ahead.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_no_passing_zone.png"
+  },
+  {
+    "id": "reg_do_not_pass",
+    "category": "regulatory",
+    "label": "Do Not Pass",
+    "meaning": "Passing is not allowed in this zone.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_do_not_pass.png"
+  },
+  {
+    "id": "reg_center_lane",
+    "category": "regulatory",
+    "label": "Center Lane Only",
+    "meaning": "Enter this lane only for a left turn. You must not pass in this lane.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_center_lane.png"
+  },
+  {
+    "id": "reg_keep_right",
+    "category": "regulatory",
+    "label": "Keep Right",
+    "meaning": "Keep right of an object or center divider.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_keep_right.png"
+  },
+  {
+    "id": "reg_no_right_turn",
+    "category": "regulatory",
+    "label": "No Right Turn",
+    "meaning": "Right turns are prohibited at this intersection.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_no_right_turn.png"
+  },
+  {
+    "id": "reg_no_u_turn",
+    "category": "regulatory",
+    "label": "No U-Turn",
+    "meaning": "U-turns are not permitted. Do not turn around in the street or intersection.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_no_u_turn.png"
+  },
+  {
+    "id": "reg_no_trucks",
+    "category": "regulatory",
+    "label": "No Trucks",
+    "meaning": "Trucks are prohibited from using this road.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_no_trucks.png"
+  },
+  {
+    "id": "reg_no_bicycles",
+    "category": "regulatory",
+    "label": "No Bicycles",
+    "meaning": "Bicycles are not permitted on this roadway.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/reg_no_bicycles.png"
+  },
+  {
+    "id": "warn_signal_ahead",
+    "category": "warning",
+    "label": "Traffic Signal Ahead",
+    "meaning": "Traffic control signal ahead. Be prepared to stop.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_signal_ahead.png"
+  },
+  {
+    "id": "warn_divided_ends",
+    "category": "warning",
+    "label": "Divided Highway Ends",
+    "meaning": "Divided highway ends. Two-way traffic begins \u2014 stay in right lane.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_divided_ends.png"
+  },
+  {
+    "id": "warn_low_clearance",
+    "category": "warning",
+    "label": "Low Clearance",
+    "meaning": "Vehicles or loads higher than the clearance shown cannot pass through the underpass.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_low_clearance.png"
+  },
+  {
+    "id": "warn_curve_right",
+    "category": "warning",
+    "label": "Curve Ahead (Right)",
+    "meaning": "Road makes a gentle curve to the right. Slow down, keep right, don't pass.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_curve_right.png"
+  },
+  {
+    "id": "warn_divided_ahead",
+    "category": "warning",
+    "label": "Divided Highway Ahead",
+    "meaning": "Divided highway ahead with a center median. Keep to the right.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_divided_ahead.png"
+  },
+  {
+    "id": "warn_two_way",
+    "category": "warning",
+    "label": "Two-Way Traffic Ahead",
+    "meaning": "Drive in the right lane. Expect oncoming traffic in the left lane.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_two_way.png"
+  },
+  {
+    "id": "warn_added_lane",
+    "category": "warning",
+    "label": "Added Lane / Watch for Merge",
+    "meaning": "Two roadways merge ahead with a new lane added. Watch for traffic.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_added_lane.png"
+  },
+  {
+    "id": "warn_merge",
+    "category": "warning",
+    "label": "Merge",
+    "meaning": "Other traffic may move into your lane. Be ready to adjust speed and lane position.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_merge.png"
+  },
+  {
+    "id": "warn_right_lane_ends",
+    "category": "warning",
+    "label": "Right Lane Ends",
+    "meaning": "Right lane ends ahead. Prepare to merge left.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_right_lane_ends.png"
+  },
+  {
+    "id": "warn_hill",
+    "category": "warning",
+    "label": "Steep Hill Ahead",
+    "meaning": "Steep grade ahead. Use a lower gear to slow your vehicle. Approach with caution.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_hill.png"
+  },
+  {
+    "id": "warn_deer_crossing",
+    "category": "warning",
+    "label": "Deer Crossing",
+    "meaning": "Deer crossing area ahead. Watch for animals on or near the road.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_deer_crossing.png"
+  },
+  {
+    "id": "warn_stop_ahead",
+    "category": "warning",
+    "label": "Stop Sign Ahead",
+    "meaning": "A stop sign is ahead. Be prepared to stop completely.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_stop_ahead.png"
+  },
+  {
+    "id": "warn_narrow_bridge",
+    "category": "warning",
+    "label": "Narrow Bridge",
+    "meaning": "Narrow two-lane bridge or culvert ahead. Approach with caution.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_narrow_bridge.png"
+  },
+  {
+    "id": "warn_pedestrian",
+    "category": "warning",
+    "label": "Pedestrian Crossing",
+    "meaning": "Pedestrian crossing ahead. Slow down and prepare to stop. You must yield.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_pedestrian.png"
+  },
+  {
+    "id": "warn_school_zone",
+    "category": "warning",
+    "label": "School Zone Sign",
+    "meaning": "School zone. Slow to posted limit when yellow light is flashing. Watch for children.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_school_zone.png"
+  },
+  {
+    "id": "warn_school_crossing",
+    "category": "warning",
+    "label": "School Crossing",
+    "meaning": "School crossing ahead. Watch for children crossing the road.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_school_crossing.png"
+  },
+  {
+    "id": "warn_railroad_crossbuck",
+    "category": "warning",
+    "label": "Railroad Crossbuck",
+    "meaning": "Railroad crossing ahead. Slow down, look both ways, stop if a train is coming.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/warn_railroad_crossbuck.png"
+  },
+  {
+    "id": "const_work_zone",
+    "category": "construction",
+    "label": "Work Zone / Construction Sign",
+    "meaning": "Orange signs mean you are in a work zone. Fines are DOUBLED when workers are present.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/const_work_zone.png"
+  },
+  {
+    "id": "signal_traffic_lights",
+    "category": "signal",
+    "label": "Traffic Light Colors",
+    "meaning": "Green=Go. Yellow=Caution/prepare to stop. Red=Stop completely before crosswalk.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/signal_traffic_lights.png"
+  },
+  {
+    "id": "lane_markings_overview",
+    "category": "marking",
+    "label": "Pavement Lane Markings",
+    "meaning": "Yellow lines = opposing traffic. White lines = same-direction traffic. Dashed = passing permitted. Solid = do not cross.",
+    "chapter": 4,
+    "image_path": "signs_output/signs/lane_markings_overview.png"
+  }
+]

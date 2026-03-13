@@ -1,0 +1,115 @@
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*:Zone.Identifier
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Environment & Secrets ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+
+# ── Frontend (Node / Vite / React) ────────────────────────────────────────────
+frontend/node_modules/
+frontend/.pnpm-store/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/coverage/
+frontend/.eslintcache
+frontend/tsconfig.tsbuildinfo
+frontend/generated/
+
+# pnpm
+.pnpm-store/
+node_modules/
+
+# ── Backend (Python / FastAPI) ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# Testing
+backend/.pytest_cache/
+backend/htmlcov/
+backend/coverage.xml
+backend/.coverage
+backend/.coverage.*
+
+# mypy / type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+# Keep docker-compose.yml but ignore overrides
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ── Database & Migrations ─────────────────────────────────────────────────────
+# Never ignore migrations/versions — they must be committed
+*.sqlite
+*.sqlite3
+*.db
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Uploads & Media ───────────────────────────────────────────────────────────
+backend/uploads/
+backend/media/
+sign-metadata/signs_output/
+
+# ── CI / CD ───────────────────────────────────────────────────────────────────
+# Keep .github/ directory but ignore local act runner cache
+.act/
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.temp
+.cache/
+
+# ── Dummy files ──────────────────────────────────────────────────────────────────────
