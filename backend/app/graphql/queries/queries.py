@@ -3,12 +3,13 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from strawberry.types import Info
+from sqlalchemy.orm import selectinload
 
-from app.models import User, Question, Answer, Chapter, Lesson, UserProgress
+from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
-    StateConfigType,
+    StateConfigType, BookmarkType, FlashcardDeckType
 )
 from app.config import get_state_config, STATE_CONFIGS
 from app.db import cache_get, cache_set, CacheKey, TTL
@@ -96,7 +97,7 @@ class Query:
         if exclude_ids:
             stmt = stmt.where(Question.id.not_in(exclude_ids))
 
-        result = await db.execute(stmt)
+        result = await db.execute(stmt.options(selectinload(Question.answers)))
         all_questions = result.scalars().all()
 
         # Shuffle and cap at requested count
@@ -200,3 +201,44 @@ class Query:
             real_test_count=config.real_test_count,
             chapters=config.chapters,
         )
+    
+    @strawberry.field
+    async def my_bookmarks(self, info: Info) -> list[QuestionType]:
+        """Return all questions the current user has bookmarked."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return []
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(Question)
+            .join(Bookmark, Bookmark.question_id == Question.id)
+            .where(Bookmark.user_id == user.id)
+            .order_by(Bookmark.created_at.desc())
+        )
+        questions = result.scalars().all()
+        return [map_question(q) for q in questions]
+
+    @strawberry.field
+    async def my_decks(self, info: Info) -> list[FlashcardDeckType]:
+        """Return all saved flashcard decks for the current user."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return []
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(FlashcardDeck)
+            .where(FlashcardDeck.user_id == user.id)
+            .order_by(FlashcardDeck.created_at.desc())
+        )
+        decks = result.scalars().all()
+        return [
+            FlashcardDeckType(
+                id=str(d.id),
+                name=d.name,
+                question_ids=d.question_ids or [],
+                is_smart=d.is_smart,
+                created_at=d.created_at,
+                updated_at=d.updated_at,
+            )
+            for d in decks
+        ]
