@@ -8,6 +8,10 @@ import { ChapterPage } from '@/app/learn/ChapterPage'
 import { StudyPage, type StudyConfig } from '@/app/study/StudyPage'
 import { StudySession } from '@/app/study/StudySession'
 import { QuizSession, type QuizConfig } from '@/app/quiz/QuizSession'
+import { PuzzleSession } from '@/app/quiz/PuzzleSession'
+import { FlipperSession } from '@/app/quiz/FlipperSession'
+import { TriviaSession } from '@/app/quiz/TriviaSession'
+import { ChallengePage, type ChallengeConfig } from '@/app/quiz/ChallengePage'
 
 // ── Placeholder ───────────────────────────────────────────────────────────────
 
@@ -43,32 +47,30 @@ function QuizSettingsModal({
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn', label: '♟ Pawn', desc: 'Unlimited hints & skips. 1× XP' },
+    { id: 'pawn',  label: '♟ Pawn',   desc: 'Unlimited hints & skips. 1× XP' },
     { id: 'rogue', label: '♞ Knight', desc: 'Limited hints & skips. 2× XP' },
-    { id: 'king', label: '♔ King', desc: 'No hints or skips. 3× XP' },
+    { id: 'king',  label: '♔ King',   desc: 'No hints or skips. 3× XP' },
   ] as const
 
   const TIMERS = [
     { value: null, label: 'Off' },
-    { value: 15, label: '15s' },
-    { value: 30, label: '30s' },
-    { value: 45, label: '45s' },
-    { value: 60, label: '60s' },
+    { value: 15,   label: '15s' },
+    { value: 30,   label: '30s' },
+    { value: 45,   label: '45s' },
+    { value: 60,   label: '60s' },
   ]
 
   return (
     <>
       <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onCancel} />
-      <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-surface border-t border-border rounded-t-2xl p-5 max-w-lg mx-auto">
-          <div className="w-10 h-1 bg-surface-3 rounded-full mx-auto mb-4" />
-          <h2 className="font-display text-lg font-bold text-text-primary mb-1">
-            Pop Quiz
-          </h2>
+      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div className="bg-surface border border-border rounded-2xl p-5 w-full max-w-sm">
+          <h2 className="font-display text-lg font-bold text-text-primary mb-1">Pop Quiz</h2>
           <p className="text-text-secondary text-sm mb-5">
             Ch. {chapterNumber} — {chapterTitle}
           </p>
 
+          {/* Question count */}
           <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
             Questions
           </p>
@@ -77,10 +79,11 @@ function QuizSettingsModal({
               <button
                 key={n}
                 onClick={() => setQuestionCount(n)}
-                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${questionCount === n
+                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                  questionCount === n
                     ? 'bg-green-500 text-bg'
                     : 'bg-surface-3 text-text-secondary hover:text-text-primary'
-                  }`}
+                }`}
               >
                 {n}
               </button>
@@ -96,10 +99,11 @@ function QuizSettingsModal({
               <button
                 key={id}
                 onClick={() => setDifficulty(id)}
-                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${difficulty === id
-                  ? 'border-green-500 bg-green-500/5'
-                  : 'border-border hover:border-green-700'
-                  }`}
+                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
+                  difficulty === id
+                    ? 'border-green-500 bg-green-500/5'
+                    : 'border-border hover:border-green-700'
+                }`}
               >
                 <p className="text-sm font-medium text-text-primary">{label}</p>
                 <p className="text-xs text-text-secondary">{desc}</p>
@@ -116,10 +120,11 @@ function QuizSettingsModal({
               <button
                 key={label}
                 onClick={() => setTimer(value)}
-                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${timer === value
-                  ? 'bg-green-500 text-bg'
-                  : 'bg-surface-3 text-text-secondary hover:text-text-primary'
-                  }`}
+                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                  timer === value
+                    ? 'bg-green-500 text-bg'
+                    : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                }`}
               >
                 {label}
               </button>
@@ -132,7 +137,7 @@ function QuizSettingsModal({
                 stateCode: 'ok',
                 chapterNumber,
                 chapterTitle,
-                questionCount: questionCount,
+                questionCount,
                 difficulty,
                 timerSeconds: timer,
               })
@@ -153,10 +158,7 @@ export default function App() {
   const [path, setPath] = useState(window.location.pathname)
   const [studyConfig, setStudyConfig] = useState<StudyConfig | null>(null)
   const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null)
-  const [showQuizSettings, setShowQuizSettings] = useState(false)
-  const [quizChapterMeta, setQuizChapterMeta] = useState<{
-    id: string; number: number; title: string
-  } | null>(null)
+  const [challengeConfig, setChallengeConfig] = useState<ChallengeConfig | null>(null)
 
   const { user, theme, isHydrated } = useUserStore()
 
@@ -171,11 +173,9 @@ export default function App() {
   function navigate(to: string) {
     window.history.pushState({}, '', to)
     setPath(to)
-    if (!to.startsWith('/study')) setStudyConfig(null)
-    if (!to.startsWith('/learn')) {
-      setQuizConfig(null)
-      setShowQuizSettings(false)
-    }
+    if (!to.startsWith('/study'))     setStudyConfig(null)
+    if (!to.startsWith('/learn'))     setQuizConfig(null)
+    if (!to.startsWith('/challenge')) setChallengeConfig(null)
   }
 
   if (!isHydrated) {
@@ -195,7 +195,6 @@ export default function App() {
   if (quizMatch) {
     const chapterId = quizMatch[1]
 
-    // Active quiz
     if (quizConfig) {
       return (
         <QuizSession
@@ -208,7 +207,6 @@ export default function App() {
       )
     }
 
-    // Settings modal over the chapter page
     return (
       <div className="bg-bg min-h-dvh">
         <ChapterPage chapterId={chapterId} onNavigate={navigate} />
@@ -229,16 +227,7 @@ export default function App() {
   if (chapterMatch) {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage
-          chapterId={chapterMatch[1]}
-          onNavigate={(to) => {
-            // Intercept quiz navigation to capture chapter meta
-            if (to.endsWith('/quiz')) {
-              setShowQuizSettings(true)
-            }
-            navigate(to)
-          }}
-        />
+        <ChapterPage chapterId={chapterMatch[1]} onNavigate={navigate} />
         <BottomNav activePath="/learn" onNavigate={navigate} />
       </div>
     )
@@ -253,6 +242,24 @@ export default function App() {
     )
   }
 
+  // /challenge — active session
+  if (path === '/challenge' && challengeConfig) {
+    const onExit = () => setChallengeConfig(null)
+
+    if (challengeConfig.type === 'quiz') {
+      return <QuizSession config={challengeConfig} onExit={onExit} />
+    }
+    if (challengeConfig.type === 'puzzle') {
+      return <PuzzleSession config={challengeConfig} onExit={onExit} />
+    }
+    if (challengeConfig.type === 'flipper') {
+      return <FlipperSession config={challengeConfig} onExit={onExit} />
+    }
+    if (challengeConfig.type === 'trivia') {
+      return <TriviaSession config={challengeConfig} onExit={onExit} />
+    }
+  }
+
   // Top-level routes
   const PAGES: Record<string, React.ReactNode> = {
     '/': <HomePage />,
@@ -263,7 +270,9 @@ export default function App() {
         onStart={(config) => setStudyConfig(config)}
       />
     ),
-    '/challenge': <PlaceholderPage title="Challenge" />,
+    '/challenge': (
+      <ChallengePage onStart={(config) => setChallengeConfig(config)} />
+    ),
     '/profile': <PlaceholderPage title="Profile" />,
   }
 

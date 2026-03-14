@@ -28,9 +28,7 @@ const GET_QUESTIONS = gql`
 
 const START_SESSION = gql`
   mutation StartQuizSession($input: StartSessionInput!) {
-    startSession(input: $input) {
-      id
-    }
+    startSession(input: $input) { id }
   }
 `
 
@@ -77,13 +75,6 @@ interface AnswerRecord {
   chapter: number
 }
 
-interface QuizSessionProps {
-  config: QuizConfig
-  onExit: () => void
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 function getHintSkipAllowance(difficulty: string, questionCount: number): number | null {
   if (difficulty === 'pawn') return null
   if (difficulty === 'king') return 0
@@ -92,42 +83,44 @@ function getHintSkipAllowance(difficulty: string, questionCount: number): number
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function QuizSession({ config, onExit }: QuizSessionProps) {
-  const [sessionId, setSessionId] = useState<string | null>(null)
-  const [questionIndex, setQuestionIndex] = useState(0)
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const [revealed, setRevealed] = useState(false)
-  const [showHint, setShowHint] = useState(false)
-  const [hintsUsed, setHintsUsed] = useState(0)
-  const [skipsUsed, setSkipsUsed] = useState(0)
-  const [answers, setAnswers] = useState<AnswerRecord[]>([])
+export function QuizSession({ config, onExit }: { config: QuizConfig; onExit: () => void }) {
+  const [sessionId, setSessionId]       = useState<string | null>(null)
+  const [retryKey, setRetryKey]         = useState(0)
+  const [queue, setQueue]               = useState<Question[]>([])
+  const [skippedOnce, setSkippedOnce]   = useState<Set<string>>(new Set())
+  const [queueIndex, setQueueIndex]     = useState(0)
+  const [selectedIds, setSelectedIds]   = useState<string[]>([])
+  const [revealed, setRevealed]         = useState(false)
+  const [showHint, setShowHint]         = useState(false)
+  const [hintsUsed, setHintsUsed]       = useState(0)
+  const [skipsUsed, setSkipsUsed]       = useState(0)
+  const [answers, setAnswers]           = useState<AnswerRecord[]>([])
   const [answerStates, setAnswerStates] = useState<SegmentState[]>([])
-  const [totalXP, setTotalXP] = useState(0)
-  const [showResults, setShowResults] = useState(false)
+  const [totalXP, setTotalXP]           = useState(0)
+  const [showResults, setShowResults]   = useState(false)
   const [timerResetKey, setTimerResetKey] = useState(0)
 
   const allowance = getHintSkipAllowance(config.difficulty, config.questionCount)
   const hintsLeft = allowance === null ? null : Math.max(0, allowance - hintsUsed)
   const skipsLeft = allowance === null ? null : Math.max(0, allowance - skipsUsed)
+  const chapters  = config.chapterNumber ? [config.chapterNumber] : undefined
 
-  const chapters = config.chapterNumber ? [config.chapterNumber] : undefined
-
-  const { data, loading, error } = useQuery(GET_QUESTIONS, {
-    variables: {
-      stateCode: config.stateCode,
-      count: config.questionCount,
-      chapters,
-    },
+  const { data } = useQuery(GET_QUESTIONS, {
+    variables: { stateCode: config.stateCode, count: config.questionCount, chapters },
   })
 
   const [startSession] = useMutation(START_SESSION)
   const [submitAnswer] = useMutation(SUBMIT_ANSWER)
   const [completeSession] = useMutation(COMPLETE_SESSION)
 
-  // Start session once questions load
+  // Start/restart session whenever data loads or retry is triggered
   useEffect(() => {
-    const questions = data?.questions ?? []
-    if (questions.length === 0 || sessionId) return
+    const questions: Question[] = data?.questions ?? []
+    if (questions.length === 0) return
+
+    setQueue([...questions])
+    setQueueIndex(0)
+    setAnswerStates(new Array(questions.length).fill('unanswered'))
 
     startSession({
       variables: {
@@ -139,13 +132,10 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
           chapters: chapters ?? [],
         },
       },
-    }).then((result) => {
-      setSessionId(result.data?.startSession?.id ?? null)
-    })
-  }, [data])
+    }).then((r) => setSessionId(r.data?.startSession?.id ?? null))
+  }, [data, retryKey])
 
-  const questions: Question[] = data?.questions ?? []
-  const current = questions[questionIndex]
+  const current = queue[queueIndex]
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
@@ -165,24 +155,23 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
     })
 
     const isCorrect = result.data?.submitAnswer?.isCorrect ?? false
-    const xp = result.data?.submitAnswer?.xpEarned ?? 0
+    const xp        = result.data?.submitAnswer?.xpEarned ?? 0
     setTotalXP((x) => x + xp)
 
-    setAnswers((prev) => [
-      ...prev,
-      {
-        questionId: current.id,
-        questionText: current.questionText,
-        isCorrect,
-        skipped: false,
-        hintUsed: showHint,
-        chapter: current.chapter,
-      },
-    ])
+    setAnswers((prev) => [...prev, {
+      questionId:   current.id,
+      questionText: current.questionText,
+      isCorrect,
+      skipped:  false,
+      hintUsed: showHint,
+      chapter:  current.chapter,
+    }])
 
+    // Mark segment state by original position
+    const origIndex = (data?.questions ?? []).findIndex((q: Question) => q.id === current.id)
     setAnswerStates((prev) => {
       const next = [...prev]
-      next[questionIndex] = isCorrect ? 'correct' : 'wrong'
+      next[origIndex] = isCorrect ? 'correct' : 'wrong'
       return next
     })
 
@@ -195,11 +184,12 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
     setShowHint(false)
     setTimerResetKey((k) => k + 1)
 
-    if (questionIndex + 1 >= questions.length) {
+    const nextIndex = queueIndex + 1
+    if (nextIndex >= queue.length) {
       if (sessionId) await completeSession({ variables: { sessionId } })
       setShowResults(true)
     } else {
-      setQuestionIndex((i) => i + 1)
+      setQueueIndex(nextIndex)
     }
   }
 
@@ -210,34 +200,49 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
 
     setSkipsUsed((s) => s + 1)
 
-    setAnswers((prev) => [
-      ...prev,
-      {
-        questionId: current.id,
-        questionText: current.questionText,
-        isCorrect: false,
-        skipped: true,
-        hintUsed: false,
-        chapter: current.chapter,
-      },
-    ])
+    const alreadySkipped = skippedOnce.has(current.id)
 
-    setAnswerStates((prev) => {
-      const next = [...prev]
-      next[questionIndex] = 'skipped'
-      return next
-    })
+    if (alreadySkipped) {
+      // Second skip — mark as skipped permanently
+      setAnswers((prev) => [...prev, {
+        questionId:   current.id,
+        questionText: current.questionText,
+        isCorrect:    false,
+        skipped:      true,
+        hintUsed:     false,
+        chapter:      current.chapter,
+      }])
+      const origIndex = (data?.questions ?? []).findIndex((q: Question) => q.id === current.id)
+      setAnswerStates((prev) => {
+        const next = [...prev]
+        next[origIndex] = 'skipped'
+        return next
+      })
+      // Remove from queue, advance
+      setQueue((prev) => prev.filter((_, i) => i !== queueIndex))
+    } else {
+      // First skip — move to end of queue
+      setSkippedOnce((prev) => new Set([...prev, current.id]))
+      setQueue((prev) => {
+        const next = [...prev]
+        const [removed] = next.splice(queueIndex, 1)
+        next.push(removed)
+        return next
+      })
+    }
 
     setSelectedIds([])
     setShowHint(false)
     setTimerResetKey((k) => k + 1)
 
-    if (questionIndex + 1 >= questions.length) {
-      if (sessionId) await completeSession({ variables: { sessionId } })
-      setShowResults(true)
-    } else {
-      setQuestionIndex((i) => i + 1)
-    }
+    // Check if queue is now exhausted
+    setQueue((prev) => {
+      if (queueIndex >= prev.length) {
+        if (sessionId) completeSession({ variables: { sessionId } })
+        setShowResults(true)
+      }
+      return prev
+    })
   }
 
   function handleHint() {
@@ -248,26 +253,21 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
   }
 
   function handleTimerExpired() {
-    if (!current || !sessionId) return
-
-    setAnswers((prev) => [
-      ...prev,
-      {
-        questionId: current.id,
-        questionText: current.questionText,
-        isCorrect: false,
-        skipped: false,
-        hintUsed: false,
-        chapter: current.chapter,
-      },
-    ])
-
+    if (!current) return
+    setAnswers((prev) => [...prev, {
+      questionId:   current.id,
+      questionText: current.questionText,
+      isCorrect:    false,
+      skipped:      false,
+      hintUsed:     false,
+      chapter:      current.chapter,
+    }])
+    const origIndex = (data?.questions ?? []).findIndex((q: Question) => q.id === current.id)
     setAnswerStates((prev) => {
       const next = [...prev]
-      next[questionIndex] = 'wrong'
+      next[origIndex] = 'wrong'
       return next
     })
-
     setRevealed(true)
   }
 
@@ -283,7 +283,10 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
   }
 
   function handleRetry() {
-    setQuestionIndex(0)
+    setSessionId(null)
+    setQueue([])
+    setSkippedOnce(new Set())
+    setQueueIndex(0)
     setSelectedIds([])
     setRevealed(false)
     setShowHint(false)
@@ -293,13 +296,13 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
     setAnswerStates([])
     setTotalXP(0)
     setShowResults(false)
-    setSessionId(null)
     setTimerResetKey(0)
+    setRetryKey((k) => k + 1)   // triggers useEffect to restart
   }
 
-  // ── Render states ──────────────────────────────────────────────────────────
+  // ── Render ─────────────────────────────────────────────────────────────────
 
-  if (loading) {
+  if (!current && !showResults) {
     return (
       <div className="min-h-dvh bg-bg flex items-center justify-center">
         <p className="text-text-secondary text-sm animate-pulse">Loading questions...</p>
@@ -307,25 +310,13 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
     )
   }
 
-  if (error || questions.length === 0) {
-    return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-6 text-center">
-        <p className="text-text-primary font-medium mb-2">No questions found.</p>
-        <p className="text-text-secondary text-sm mb-6">
-          Try a different chapter or check back later.
-        </p>
-        <button onClick={onExit} className="btn-secondary">Go Back</button>
-      </div>
-    )
-  }
-
   if (showResults) {
     const skipped = answers.filter((a) => a.skipped).length
-    const score = answers.filter((a) => a.isCorrect).length
+    const score   = answers.filter((a) => a.isCorrect).length
     return (
       <QuizResults
         score={score}
-        total={questions.length}
+        total={queue.length || (data?.questions ?? []).length}
         skipped={skipped}
         hintsUsed={hintsUsed}
         xpEarned={totalXP}
@@ -341,13 +332,14 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
   return (
     <div className="min-h-dvh bg-bg flex flex-col">
       <SessionHeader
-        current={questionIndex + 1}
-        total={questions.length}
+        current={queueIndex + 1}
+        total={queue.length}
         timerSeconds={config.timerSeconds}
         hintsLeft={hintsLeft}
         skipsLeft={skipsLeft}
         difficulty={config.difficulty}
         answerStates={answerStates}
+        isRevealed={revealed}
         onHint={handleHint}
         onSkip={handleSkip}
         onExit={onExit}
@@ -364,7 +356,6 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
         />
       </div>
 
-      {/* Bottom action */}
       <div className="px-4 pb-8 max-w-content mx-auto w-full">
         {!revealed ? (
           <button
@@ -379,12 +370,11 @@ export function QuizSession({ config, onExit }: QuizSessionProps) {
             onClick={handleNext}
             className="btn-primary w-full h-12 text-base font-semibold"
           >
-            {questionIndex + 1 >= questions.length ? 'See Results →' : 'Next Question →'}
+            {queueIndex + 1 >= queue.length ? 'See Results →' : 'Next Question →'}
           </button>
         )}
       </div>
 
-      {/* Hint panel overlay */}
       {showHint && (
         <HintPanel
           hint={current.hintText ?? null}
