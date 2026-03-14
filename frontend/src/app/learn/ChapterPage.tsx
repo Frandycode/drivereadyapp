@@ -184,7 +184,9 @@ export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
             Test your knowledge with a quick 5-question pop quiz.
           </p>
           <button
-            onClick={() => onNavigate(`/learn/${chapterId}/quiz`)}
+            onClick={() => {
+              onNavigate(`/learn/${chapterId}/quiz`)
+            }}
             className="btn-gold w-full"
           >
             Take Pop Quiz

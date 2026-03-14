@@ -96,6 +96,7 @@ class Mutation:
         await db.flush()  # get the id without committing
 
         token = create_access_token(str(user.id), user.role)
+        await db.commit()
         return AuthPayloadType(access_token=token, user=map_user(user))
 
     @strawberry.mutation
@@ -134,6 +135,7 @@ class Mutation:
         )
         db.add(session)
         await db.flush()
+        await db.commit()
         return map_session(session)
 
     @strawberry.mutation
@@ -205,6 +207,8 @@ class Mutation:
         if user:
             await _upsert_progress(db, user, question, is_correct)
 
+        await db.commit()
+        
         return AnswerResultType(
             is_correct=is_correct,
             correct_answer_ids=[str(i) for i in correct_ids],
@@ -319,7 +323,8 @@ class Mutation:
             db.add(progress)
 
         await db.flush()
-
+        await db.commit()
+        
         return ChapterProgressType(
             chapter=progress.chapter,
             state_code=progress.state_code,
@@ -329,6 +334,36 @@ class Mutation:
             lessons_completed=progress.lessons_completed,
             lessons_total=progress.lessons_total,
             last_studied_at=progress.last_studied_at,
+        )
+    
+    @strawberry.mutation
+    async def complete_session(
+        self, info: Info, session_id: strawberry.ID
+    ) -> SessionResultType:
+        """Mark a session as complete and return final results."""
+        db: AsyncSession = info.context["db"]
+
+        result = await db.execute(
+            select(Session).where(Session.id == uuid.UUID(str(session_id)))
+        )
+        session = result.scalar_one_or_none()
+        if not session:
+            raise ValueError("Session not found")
+
+        session.completed = True
+        session.completed_at = datetime.now(timezone.utc)
+
+        accuracy = session.score / session.total if session.total > 0 else 0.0
+
+        await db.commit()
+        
+        return SessionResultType(
+            session=map_session(session),
+            xp_earned=session.xp_earned,
+            badges_unlocked=[],
+            level_up=False,
+            new_level=None,
+            accuracy=accuracy,
         )
 
 

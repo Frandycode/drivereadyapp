@@ -7,27 +7,160 @@ import { LearnPage } from '@/app/learn/LearnPage'
 import { ChapterPage } from '@/app/learn/ChapterPage'
 import { StudyPage, type StudyConfig } from '@/app/study/StudyPage'
 import { StudySession } from '@/app/study/StudySession'
+import { QuizSession, type QuizConfig } from '@/app/quiz/QuizSession'
 
-// Placeholder for phases 3+
+// ── Placeholder ───────────────────────────────────────────────────────────────
+
 function PlaceholderPage({ title }: { title: string }) {
   return (
     <div className="min-h-dvh bg-bg flex items-center justify-center pb-20">
       <div className="text-center">
         <h2 className="font-display text-2xl font-bold text-green-500 mb-2">{title}</h2>
-        <p className="text-text-secondary text-sm">Coming in Phase 3+</p>
+        <p className="text-text-secondary text-sm">Coming soon</p>
       </div>
     </div>
   )
 }
 
+// ── Quiz Settings Modal ───────────────────────────────────────────────────────
+
+interface QuizSettingsModalProps {
+  chapterId: string
+  chapterNumber: number
+  chapterTitle: string
+  onStart: (config: QuizConfig) => void
+  onCancel: () => void
+}
+
+function QuizSettingsModal({
+  chapterNumber,
+  chapterTitle,
+  onStart,
+  onCancel,
+}: QuizSettingsModalProps) {
+  const [difficulty, setDifficulty] = useState<'pawn' | 'rogue' | 'king'>('pawn')
+  const [timer, setTimer] = useState<number | null>(null)
+  const [questionCount, setQuestionCount] = useState(5)
+
+  const DIFFICULTIES = [
+    { id: 'pawn', label: '♟ Pawn', desc: 'Unlimited hints & skips. 1× XP' },
+    { id: 'rogue', label: '♞ Knight', desc: 'Limited hints & skips. 2× XP' },
+    { id: 'king', label: '♔ King', desc: 'No hints or skips. 3× XP' },
+  ] as const
+
+  const TIMERS = [
+    { value: null, label: 'Off' },
+    { value: 15, label: '15s' },
+    { value: 30, label: '30s' },
+    { value: 45, label: '45s' },
+    { value: 60, label: '60s' },
+  ]
+
+  return (
+    <>
+      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onCancel} />
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="bg-surface border-t border-border rounded-t-2xl p-5 max-w-lg mx-auto">
+          <div className="w-10 h-1 bg-surface-3 rounded-full mx-auto mb-4" />
+          <h2 className="font-display text-lg font-bold text-text-primary mb-1">
+            Pop Quiz
+          </h2>
+          <p className="text-text-secondary text-sm mb-5">
+            Ch. {chapterNumber} — {chapterTitle}
+          </p>
+
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
+            Questions
+          </p>
+          <div className="flex gap-2 mb-5">
+            {[5, 10].map((n) => (
+              <button
+                key={n}
+                onClick={() => setQuestionCount(n)}
+                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${questionCount === n
+                    ? 'bg-green-500 text-bg'
+                    : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  }`}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+
+          {/* Difficulty */}
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
+            Difficulty
+          </p>
+          <div className="space-y-2 mb-5">
+            {DIFFICULTIES.map(({ id, label, desc }) => (
+              <button
+                key={id}
+                onClick={() => setDifficulty(id)}
+                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${difficulty === id
+                  ? 'border-green-500 bg-green-500/5'
+                  : 'border-border hover:border-green-700'
+                  }`}
+              >
+                <p className="text-sm font-medium text-text-primary">{label}</p>
+                <p className="text-xs text-text-secondary">{desc}</p>
+              </button>
+            ))}
+          </div>
+
+          {/* Timer */}
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
+            Timer per question
+          </p>
+          <div className="flex gap-2 mb-6">
+            {TIMERS.map(({ value, label }) => (
+              <button
+                key={label}
+                onClick={() => setTimer(value)}
+                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${timer === value
+                  ? 'bg-green-500 text-bg'
+                  : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() =>
+              onStart({
+                stateCode: 'ok',
+                chapterNumber,
+                chapterTitle,
+                questionCount: questionCount,
+                difficulty,
+                timerSeconds: timer,
+              })
+            }
+            className="btn-primary w-full h-12 text-base font-semibold"
+          >
+            Start Quiz
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+
 export default function App() {
   const [path, setPath] = useState(window.location.pathname)
   const [studyConfig, setStudyConfig] = useState<StudyConfig | null>(null)
+  const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null)
+  const [showQuizSettings, setShowQuizSettings] = useState(false)
+  const [quizChapterMeta, setQuizChapterMeta] = useState<{
+    id: string; number: number; title: string
+  } | null>(null)
+
   const { user, theme, isHydrated } = useUserStore()
 
-  useEffect(() => {
-    applyTheme(theme)
-  }, [theme])
+  useEffect(() => { applyTheme(theme) }, [theme])
 
   useEffect(() => {
     const handlePop = () => setPath(window.location.pathname)
@@ -39,6 +172,10 @@ export default function App() {
     window.history.pushState({}, '', to)
     setPath(to)
     if (!to.startsWith('/study')) setStudyConfig(null)
+    if (!to.startsWith('/learn')) {
+      setQuizConfig(null)
+      setShowQuizSettings(false)
+    }
   }
 
   if (!isHydrated) {
@@ -53,13 +190,36 @@ export default function App() {
 
   // ── Route matching ─────────────────────────────────────────────────────────
 
-  // /learn/:chapterId/quiz
+  // /learn/:chapterId/quiz — active quiz session
   const quizMatch = path.match(/^\/learn\/([^/]+)\/quiz$/)
   if (quizMatch) {
+    const chapterId = quizMatch[1]
+
+    // Active quiz
+    if (quizConfig) {
+      return (
+        <QuizSession
+          config={quizConfig}
+          onExit={() => {
+            setQuizConfig(null)
+            navigate(`/learn/${chapterId}`)
+          }}
+        />
+      )
+    }
+
+    // Settings modal over the chapter page
     return (
       <div className="bg-bg min-h-dvh">
-        <PlaceholderPage title="Pop Quiz — Coming in Phase 3" />
+        <ChapterPage chapterId={chapterId} onNavigate={navigate} />
         <BottomNav activePath="/learn" onNavigate={navigate} />
+        <QuizSettingsModal
+          chapterId={chapterId}
+          chapterNumber={0}
+          chapterTitle="Pop Quiz"
+          onStart={(cfg) => setQuizConfig(cfg)}
+          onCancel={() => navigate(`/learn/${chapterId}`)}
+        />
       </div>
     )
   }
@@ -69,7 +229,16 @@ export default function App() {
   if (chapterMatch) {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage chapterId={chapterMatch[1]} onNavigate={navigate} />
+        <ChapterPage
+          chapterId={chapterMatch[1]}
+          onNavigate={(to) => {
+            // Intercept quiz navigation to capture chapter meta
+            if (to.endsWith('/quiz')) {
+              setShowQuizSettings(true)
+            }
+            navigate(to)
+          }}
+        />
         <BottomNav activePath="/learn" onNavigate={navigate} />
       </div>
     )
@@ -79,10 +248,7 @@ export default function App() {
   if (path === '/study' && studyConfig) {
     return (
       <div className="bg-bg min-h-dvh">
-        <StudySession
-          config={studyConfig}
-          onExit={() => setStudyConfig(null)}
-        />
+        <StudySession config={studyConfig} onExit={() => setStudyConfig(null)} />
       </div>
     )
   }
@@ -101,11 +267,9 @@ export default function App() {
     '/profile': <PlaceholderPage title="Profile" />,
   }
 
-  const currentPage = PAGES[path] ?? PAGES['/']
-
   return (
     <div className="bg-bg min-h-dvh">
-      {currentPage}
+      {PAGES[path] ?? PAGES['/']}
       <BottomNav activePath={path} onNavigate={navigate} />
     </div>
   )

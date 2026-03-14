@@ -22,16 +22,11 @@ schema = strawberry.Schema(
 
 # ── Context builder ───────────────────────────────────────────────────────────
 async def get_context(request: Request) -> dict:
-    """
-    Build the GraphQL context for every request.
-    Attaches db session and authenticated user (if any).
-    """
     from app.db.connection import AsyncSessionLocal
 
     db = AsyncSessionLocal()
     user = None
 
-    # Try to get authenticated user from Authorization header
     auth_header = request.headers.get("Authorization")
     if auth_header and auth_header.startswith("Bearer "):
         token = auth_header[7:]
@@ -48,13 +43,13 @@ async def get_context(request: Request) -> dict:
                 )
                 user = result.scalar_one_or_none()
         except Exception:
-            pass  # Invalid token — continue as guest
+            pass
 
     return {
         "request": request,
         "db": db,
         "user": user,
-        "state_code": request.headers.get("X-State-Code", settings.state_code),
+        "commit": db.commit,   # ← expose commit so mutations can call it
     }
 
 
