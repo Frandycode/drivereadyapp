@@ -12,6 +12,8 @@ import { PuzzleSession } from '@/app/quiz/PuzzleSession'
 import { FlipperSession } from '@/app/quiz/FlipperSession'
 import { TriviaSession } from '@/app/quiz/TriviaSession'
 import { ChallengePage, type ChallengeConfig } from '@/app/quiz/ChallengePage'
+import { BotSelectScreen, type BotBattleConfig } from '@/app/battle/BotSelectScreen'
+import { BotBattleSession } from '@/app/battle/BotBattleSession'
 
 // ── Placeholder ───────────────────────────────────────────────────────────────
 
@@ -28,29 +30,28 @@ function PlaceholderPage({ title }: { title: string }) {
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
-interface QuizSettingsModalProps {
+function QuizSettingsModal({
+  chapterId,
+  chapterNumber,
+  chapterTitle,
+  onStart,
+  onCancel,
+}: {
   chapterId: string
   chapterNumber: number
   chapterTitle: string
   onStart: (config: QuizConfig) => void
   onCancel: () => void
-}
-
-function QuizSettingsModal({
-  chapterNumber,
-  chapterTitle,
-  onStart,
-  onCancel,
-}: QuizSettingsModalProps) {
+}) {
   const [difficulty, setDifficulty] = useState<'pawn' | 'rogue' | 'king'>('pawn')
-  const [timer, setTimer] = useState<number | null>(null)
+  const [timer, setTimer]           = useState<number | null>(null)
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn',  label: '♟ Pawn',   desc: 'Unlimited hints & skips. 1× XP' },
-    { id: 'rogue', label: '♞ Knight', desc: 'Limited hints & skips. 2× XP' },
-    { id: 'king',  label: '♔ King',   desc: 'No hints or skips. 3× XP' },
-  ] as const
+    { id: 'pawn'  as const, label: '♟ Pawn',   desc: 'Unlimited hints & skips. 1× XP' },
+    { id: 'rogue' as const, label: '♞ Knight', desc: 'Limited hints & skips. 2× XP' },
+    { id: 'king'  as const, label: '♔ King',   desc: 'No hints or skips. 3× XP' },
+  ]
 
   const TIMERS = [
     { value: null, label: 'Off' },
@@ -70,19 +71,14 @@ function QuizSettingsModal({
             Ch. {chapterNumber} — {chapterTitle}
           </p>
 
-          {/* Question count */}
-          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
-            Questions
-          </p>
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Questions</p>
           <div className="flex gap-2 mb-5">
             {[5, 10].map((n) => (
               <button
                 key={n}
                 onClick={() => setQuestionCount(n)}
                 className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
-                  questionCount === n
-                    ? 'bg-green-500 text-bg'
-                    : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  questionCount === n ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {n}
@@ -90,19 +86,14 @@ function QuizSettingsModal({
             ))}
           </div>
 
-          {/* Difficulty */}
-          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
-            Difficulty
-          </p>
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Difficulty</p>
           <div className="space-y-2 mb-5">
             {DIFFICULTIES.map(({ id, label, desc }) => (
               <button
                 key={id}
                 onClick={() => setDifficulty(id)}
                 className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
-                  difficulty === id
-                    ? 'border-green-500 bg-green-500/5'
-                    : 'border-border hover:border-green-700'
+                  difficulty === id ? 'border-green-500 bg-green-500/5' : 'border-border hover:border-green-700'
                 }`}
               >
                 <p className="text-sm font-medium text-text-primary">{label}</p>
@@ -111,19 +102,14 @@ function QuizSettingsModal({
             ))}
           </div>
 
-          {/* Timer */}
-          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">
-            Timer per question
-          </p>
+          <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Timer per question</p>
           <div className="flex gap-2 mb-6">
             {TIMERS.map(({ value, label }) => (
               <button
                 key={label}
                 onClick={() => setTimer(value)}
                 className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
-                  timer === value
-                    ? 'bg-green-500 text-bg'
-                    : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  timer === value ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {label}
@@ -132,16 +118,7 @@ function QuizSettingsModal({
           </div>
 
           <button
-            onClick={() =>
-              onStart({
-                stateCode: 'ok',
-                chapterNumber,
-                chapterTitle,
-                questionCount,
-                difficulty,
-                timerSeconds: timer,
-              })
-            }
+            onClick={() => onStart({ stateCode: 'ok', chapterNumber, chapterTitle, questionCount, difficulty, timerSeconds: timer })}
             className="btn-primary w-full h-12 text-base font-semibold"
           >
             Start Quiz
@@ -154,12 +131,23 @@ function QuizSettingsModal({
 
 // ── App ───────────────────────────────────────────────────────────────────────
 
-export default function App() {
-  const [path, setPath] = useState(window.location.pathname)
-  const [studyConfig, setStudyConfig] = useState<StudyConfig | null>(null)
-  const [quizConfig, setQuizConfig] = useState<QuizConfig | null>(null)
-  const [challengeConfig, setChallengeConfig] = useState<ChallengeConfig | null>(null)
+type AppScreen =
+  | { screen: 'home' }
+  | { screen: 'learn' }
+  | { screen: 'chapter'; id: string }
+  | { screen: 'quiz'; chapterId: string; config: QuizConfig }
+  | { screen: 'quiz-settings'; chapterId: string }
+  | { screen: 'study' }
+  | { screen: 'study-session'; config: StudyConfig }
+  | { screen: 'challenge' }
+  | { screen: 'challenge-session'; config: ChallengeConfig }
+  | { screen: 'bot-select' }
+  | { screen: 'bot-battle'; config: BotBattleConfig }
+  | { screen: 'profile' }
 
+export default function App() {
+  const [path, setPath]       = useState(window.location.pathname)
+  const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
   const { user, theme, isHydrated } = useUserStore()
 
   useEffect(() => { applyTheme(theme) }, [theme])
@@ -173,9 +161,18 @@ export default function App() {
   function navigate(to: string) {
     window.history.pushState({}, '', to)
     setPath(to)
-    if (!to.startsWith('/study'))     setStudyConfig(null)
-    if (!to.startsWith('/learn'))     setQuizConfig(null)
-    if (!to.startsWith('/challenge')) setChallengeConfig(null)
+    // Map path to screen
+    if (to === '/')          setAppScreen({ screen: 'home' })
+    if (to === '/learn')     setAppScreen({ screen: 'learn' })
+    if (to === '/study')     setAppScreen({ screen: 'study' })
+    if (to === '/challenge') setAppScreen({ screen: 'challenge' })
+    if (to === '/profile')   setAppScreen({ screen: 'profile' })
+
+    const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
+    if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1] })
+
+    const quizMatch = to.match(/^\/learn\/([^/]+)\/quiz$/)
+    if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1] })
   }
 
   if (!isHydrated) {
@@ -188,98 +185,120 @@ export default function App() {
 
   if (!user) return <AuthPage />
 
-  // ── Route matching ─────────────────────────────────────────────────────────
+  const activeNavPath =
+    appScreen.screen === 'home'               ? '/' :
+    appScreen.screen.startsWith('learn') ||
+    appScreen.screen === 'chapter' ||
+    appScreen.screen.startsWith('quiz')       ? '/learn' :
+    appScreen.screen.startsWith('study')      ? '/study' :
+    appScreen.screen.startsWith('challenge') ||
+    appScreen.screen.startsWith('bot')        ? '/challenge' : '/'
 
-  // /learn/:chapterId/quiz — active quiz session
-  const quizMatch = path.match(/^\/learn\/([^/]+)\/quiz$/)
-  if (quizMatch) {
-    const chapterId = quizMatch[1]
+  // ── Screen routing ─────────────────────────────────────────────────────────
 
-    if (quizConfig) {
-      return (
-        <QuizSession
-          config={quizConfig}
-          onExit={() => {
-            setQuizConfig(null)
-            navigate(`/learn/${chapterId}`)
-          }}
-        />
-      )
-    }
+  // Active quiz session (pop quiz)
+  if (appScreen.screen === 'quiz') {
+    return (
+      <QuizSession
+        config={appScreen.config}
+        onExit={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId })}
+      />
+    )
+  }
 
+  // Quiz settings modal
+  if (appScreen.screen === 'quiz-settings') {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage chapterId={chapterId} onNavigate={navigate} />
+        <ChapterPage chapterId={appScreen.chapterId} onNavigate={navigate} />
         <BottomNav activePath="/learn" onNavigate={navigate} />
         <QuizSettingsModal
-          chapterId={chapterId}
+          chapterId={appScreen.chapterId}
           chapterNumber={0}
           chapterTitle="Pop Quiz"
-          onStart={(cfg) => setQuizConfig(cfg)}
-          onCancel={() => navigate(`/learn/${chapterId}`)}
+          onStart={(cfg) => setAppScreen({ screen: 'quiz', chapterId: appScreen.chapterId, config: cfg })}
+          onCancel={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId })}
         />
       </div>
     )
   }
 
-  // /learn/:chapterId
-  const chapterMatch = path.match(/^\/learn\/([^/]+)$/)
-  if (chapterMatch) {
+  // Chapter page
+  if (appScreen.screen === 'chapter') {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage chapterId={chapterMatch[1]} onNavigate={navigate} />
+        <ChapterPage chapterId={appScreen.id} onNavigate={navigate} />
         <BottomNav activePath="/learn" onNavigate={navigate} />
       </div>
     )
   }
 
-  // /study — active session
-  if (path === '/study' && studyConfig) {
+  // Study session
+  if (appScreen.screen === 'study-session') {
     return (
-      <div className="bg-bg min-h-dvh">
-        <StudySession config={studyConfig} onExit={() => setStudyConfig(null)} />
-      </div>
+      <StudySession
+        config={appScreen.config}
+        onExit={() => setAppScreen({ screen: 'study' })}
+      />
     )
   }
 
-  // /challenge — active session
-  if (path === '/challenge' && challengeConfig) {
-    const onExit = () => setChallengeConfig(null)
-
-    if (challengeConfig.type === 'quiz') {
-      return <QuizSession config={challengeConfig} onExit={onExit} />
-    }
-    if (challengeConfig.type === 'puzzle') {
-      return <PuzzleSession config={challengeConfig} onExit={onExit} />
-    }
-    if (challengeConfig.type === 'flipper') {
-      return <FlipperSession config={challengeConfig} onExit={onExit} />
-    }
-    if (challengeConfig.type === 'trivia') {
-      return <TriviaSession config={challengeConfig} onExit={onExit} />
-    }
+  // Challenge session
+  if (appScreen.screen === 'challenge-session') {
+    const cfg = appScreen.config
+    const onExit = () => setAppScreen({ screen: 'challenge' })
+    if (cfg.type === 'quiz')    return <QuizSession    config={cfg} onExit={onExit} />
+    if (cfg.type === 'puzzle')  return <PuzzleSession  config={cfg} onExit={onExit} />
+    if (cfg.type === 'flipper') return <FlipperSession config={cfg} onExit={onExit} />
+    if (cfg.type === 'trivia')  return <TriviaSession  config={cfg} onExit={onExit} />
   }
 
-  // Top-level routes
+  // Bot select screen
+  if (appScreen.screen === 'bot-select') {
+    return (
+      <BotSelectScreen
+        onStart={(cfg) => setAppScreen({ screen: 'bot-battle', config: cfg })}
+        onBack={() => setAppScreen({ screen: 'challenge' })}
+      />
+    )
+  }
+
+  // Bot battle session
+  if (appScreen.screen === 'bot-battle') {
+    return (
+      <BotBattleSession
+        config={appScreen.config}
+        onExit={() => setAppScreen({ screen: 'challenge' })}
+      />
+    )
+  }
+
+  // Top-level pages
   const PAGES: Record<string, React.ReactNode> = {
-    '/': <HomePage />,
-    '/learn': <LearnPage onNavigate={navigate} />,
-    '/study': (
+    home: <HomePage />,
+    learn: <LearnPage onNavigate={navigate} />,
+    study: (
       <StudyPage
         onNavigate={navigate}
-        onStart={(config) => setStudyConfig(config)}
+        onStart={(config) => setAppScreen({ screen: 'study-session', config })}
       />
     ),
-    '/challenge': (
-      <ChallengePage onStart={(config) => setChallengeConfig(config)} />
+    challenge: (
+      <ChallengePage
+        onStart={(config) => setAppScreen({ screen: 'challenge-session', config })}
+        onBotBattle={() => setAppScreen({ screen: 'bot-select' })}
+      />
     ),
-    '/profile': <PlaceholderPage title="Profile" />,
+    profile: <PlaceholderPage title="Profile" />,
   }
+
+  const pageKey = appScreen.screen as string
+  const currentPage = PAGES[pageKey] ?? PAGES['home']
 
   return (
     <div className="bg-bg min-h-dvh">
-      {PAGES[path] ?? PAGES['/']}
-      <BottomNav activePath={path} onNavigate={navigate} />
+      {currentPage}
+      <BottomNav activePath={activeNavPath} onNavigate={navigate} />
     </div>
   )
 }
