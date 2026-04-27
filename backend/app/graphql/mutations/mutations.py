@@ -1,22 +1,35 @@
 import strawberry
 import uuid
+import json
+import random
+import string
 from datetime import datetime, timezone
+from typing import Optional
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload
 from strawberry.types import Info
 
-from app.models import User, Session, Lesson, Chapter, SessionAnswer, Question, Answer, UserProgress, Bookmark, FlashcardDeck
+from app.models import (
+    User, Session, SessionAnswer, Question, Answer,
+    UserProgress, Bookmark, FlashcardDeck, Battle,
+)
+from app.models.question import Chapter, Lesson
 from app.auth.jwt import create_access_token
 from app.graphql.types.all_types import (
     AuthPayloadType, UserType, SessionType, SessionResultType,
-    AnswerResultType, BookmarkType, FlashcardDeckType,
+    AnswerResultType, BookmarkType, FlashcardDeckType, BattleType,
+    ChapterProgressType,
     RegisterInput, LoginInput, StartSessionInput, SubmitAnswerInput,
-    CreateDeckInput, LessonType, ChapterProgressType, ChapterType
+    CreateDeckInput,
 )
+from app.db.redis import get_redis, TTL
 
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
+
+# ── Mappers ───────────────────────────────────────────────────────────────────
 
 def map_user(u: User) -> UserType:
     return UserType(
@@ -50,6 +63,22 @@ def map_session(s: Session) -> SessionType:
     )
 
 
+def map_battle(b: Battle) -> BattleType:
+    return BattleType(
+        id=str(b.id),
+        type=b.type,
+        bot_type=b.bot_type,
+        player_score=b.player_score,
+        opponent_score=b.opponent_score,
+        winner=b.winner,
+        state=b.state,
+        question_ids=b.question_ids or [],
+        room_code=b.room_code,
+        timer_seconds=b.timer_seconds,
+        created_at=b.created_at,
+    )
+
+
 # XP constants
 XP_PER_CORRECT = 5
 XP_DIFFICULTY_MULTIPLIER = {"pawn": 1, "rogue": 2, "king": 3}
@@ -63,6 +92,8 @@ def calculate_level(xp: int) -> int:
     return 1
 
 
+# ── Mutation class ────────────────────────────────────────────────────────────
+
 @strawberry.type
 class Mutation:
 
@@ -73,15 +104,13 @@ class Mutation:
         """Register a new user account."""
         db: AsyncSession = info.context["db"]
 
-        # Check email not taken
         existing = await db.execute(
             select(User).where(User.email == input.email.lower())
         )
         if existing.scalar_one_or_none():
             raise ValueError("Email already registered")
 
-        # Hash password
-        hashed = pwd_context.hash(input.password)
+        pwd_context.hash(input.password)
 
         user = User(
             email=input.email.lower(),
@@ -89,14 +118,11 @@ class Mutation:
             state_code=input.state_code,
             role="learner",
         )
-        # NOTE: In production, password hash is stored in Supabase Auth.
-        # For Phase 0 local dev, we store it on user model.
-        # TODO: replace with Supabase Auth once SUPABASE_URL is configured.
         db.add(user)
-        await db.flush()  # get the id without committing
+        await db.flush()
+        await db.commit()
 
         token = create_access_token(str(user.id), user.role)
-        await db.commit()
         return AuthPayloadType(access_token=token, user=map_user(user))
 
     @strawberry.mutation
@@ -110,7 +136,6 @@ class Mutation:
             select(User).where(User.email == input.email.lower())
         )
         user = result.scalar_one_or_none()
-
         if not user:
             raise ValueError("Invalid email or password")
 
@@ -126,7 +151,7 @@ class Mutation:
         user: User | None = info.context.get("user")
 
         session = Session(
-            user_id=user.id if user else uuid.uuid4(),  # guest sessions allowed
+            user_id=user.id if user else uuid.uuid4(),
             state_code=input.state_code,
             mode=input.mode,
             difficulty=input.difficulty,
@@ -145,34 +170,27 @@ class Mutation:
         """Submit an answer for a question in an active session."""
         db: AsyncSession = info.context["db"]
 
-        # Load question with answers
         q_result = await db.execute(
-            select(Question).where(Question.id == uuid.UUID(str(input.question_id)))
+            select(Question)
+            .where(Question.id == uuid.UUID(str(input.question_id)))
+            .options(selectinload(Question.answers))
         )
         question = q_result.scalar_one_or_none()
         if not question:
             raise ValueError("Question not found")
 
-        # Load answers for this question
-        a_result = await db.execute(
-            select(Answer).where(Answer.question_id == question.id)
+        answers      = question.answers
+        correct_ids  = {str(a.id) for a in answers if a.is_correct}
+        selected_ids = {str(i) for i in input.selected_answer_ids}
+        is_correct   = correct_ids == selected_ids
+
+        session_result = await db.execute(
+            select(Session).where(Session.id == uuid.UUID(str(input.session_id)))
         )
-        answers = a_result.scalars().all()
+        session    = session_result.scalar_one_or_none()
+        multiplier = XP_DIFFICULTY_MULTIPLIER.get(session.difficulty if session else "pawn", 1)
+        xp         = XP_PER_CORRECT * multiplier if is_correct else 0
 
-        correct_ids = {str(a.id) for a in answers if a.is_correct}
-        selected_ids = set(str(i) for i in input.selected_answer_ids)
-        is_correct = correct_ids == selected_ids
-
-        # Calculate XP
-        multiplier = XP_DIFFICULTY_MULTIPLIER.get(
-            (await db.execute(
-                select(Session).where(Session.id == uuid.UUID(str(input.session_id)))
-            )).scalar_one().difficulty,
-            1
-        )
-        xp = XP_PER_CORRECT * multiplier if is_correct else 0
-
-        # Record the answer
         session_answer = SessionAnswer(
             session_id=uuid.UUID(str(input.session_id)),
             question_id=question.id,
@@ -185,30 +203,22 @@ class Mutation:
         )
         db.add(session_answer)
 
-        # Update session score
-        session_result = await db.execute(
-            select(Session).where(Session.id == uuid.UUID(str(input.session_id)))
-        )
-        session = session_result.scalar_one_or_none()
         if session:
             session.total += 1
             if is_correct:
                 session.score += 1
                 session.xp_earned += xp
 
-        # Update user XP if authenticated
         user: User | None = info.context.get("user")
         if user and xp > 0:
             user.xp_total += xp
-            old_level = user.level
             user.level = calculate_level(user.xp_total)
 
-        # Update chapter progress
         if user:
             await _upsert_progress(db, user, question, is_correct)
 
         await db.commit()
-        
+
         return AnswerResultType(
             is_correct=is_correct,
             correct_answer_ids=[str(i) for i in correct_ids],
@@ -230,6 +240,7 @@ class Mutation:
         )
         db.add(bookmark)
         await db.flush()
+        await db.commit()
 
         return BookmarkType(
             id=str(bookmark.id),
@@ -255,6 +266,7 @@ class Mutation:
         )
         db.add(deck)
         await db.flush()
+        await db.commit()
 
         return FlashcardDeckType(
             id=str(deck.id),
@@ -264,20 +276,14 @@ class Mutation:
             created_at=deck.created_at,
             updated_at=deck.updated_at,
         )
-        
+
     @strawberry.mutation
     async def complete_lesson(
         self, info: Info, lesson_id: strawberry.ID
     ) -> ChapterProgressType:
-        """Mark a lesson complete and update chapter progress."""
-        import uuid
-        from datetime import datetime, timezone
-        from sqlalchemy import func, select
+        """Mark a lesson as complete and upsert chapter progress."""
         db: AsyncSession = info.context["db"]
         user: User | None = info.context.get("user")
-
-        if not user:
-            raise ValueError("Authentication required")
 
         lesson_result = await db.execute(
             select(Lesson).where(Lesson.id == uuid.UUID(str(lesson_id)))
@@ -290,52 +296,59 @@ class Mutation:
             select(Chapter).where(Chapter.id == lesson.chapter_id)
         )
         chapter = chapter_result.scalar_one_or_none()
+        if not chapter:
+            raise ValueError("Chapter not found")
 
-        total_result = await db.execute(
+        count_result = await db.execute(
             select(func.count()).where(Lesson.chapter_id == chapter.id)
         )
-        total_lessons = total_result.scalar() or 0
+        lessons_total = count_result.scalar() or 0
 
-        progress_result = await db.execute(
-            select(UserProgress).where(
-                UserProgress.user_id == user.id,
-                UserProgress.chapter == chapter.number,
-                UserProgress.state_code == chapter.state_code,
+        if user:
+            progress_result = await db.execute(
+                select(UserProgress).where(
+                    UserProgress.user_id == user.id,
+                    UserProgress.chapter == chapter.number,
+                    UserProgress.state_code == chapter.state_code,
+                )
             )
-        )
-        progress = progress_result.scalar_one_or_none()
+            progress = progress_result.scalar_one_or_none()
+            if progress:
+                progress.lessons_completed = min(progress.lessons_completed + 1, lessons_total)
+                progress.lessons_total = lessons_total
+            else:
+                progress = UserProgress(
+                    user_id=user.id,
+                    chapter=chapter.number,
+                    state_code=chapter.state_code,
+                    lessons_completed=1,
+                    lessons_total=lessons_total,
+                )
+                db.add(progress)
+            await db.commit()
 
-        if progress:
-            progress.lessons_completed = min(progress.lessons_completed + 1, total_lessons)
-            progress.lessons_total = total_lessons
-            progress.last_studied_at = datetime.now(timezone.utc)
-        else:
-            progress = UserProgress(
-                user_id=user.id,
+            return ChapterProgressType(
                 chapter=chapter.number,
                 state_code=chapter.state_code,
-                questions_seen=0,
-                questions_correct=0,
-                lessons_completed=1,
-                lessons_total=total_lessons,
-                last_studied_at=datetime.now(timezone.utc),
+                questions_seen=progress.questions_seen,
+                questions_correct=progress.questions_correct,
+                accuracy=progress.accuracy,
+                lessons_completed=progress.lessons_completed,
+                lessons_total=lessons_total,
+                last_studied_at=progress.last_studied_at,
             )
-            db.add(progress)
 
-        await db.flush()
-        await db.commit()
-        
         return ChapterProgressType(
-            chapter=progress.chapter,
-            state_code=progress.state_code,
-            questions_seen=progress.questions_seen,
-            questions_correct=progress.questions_correct,
-            accuracy=progress.accuracy,
-            lessons_completed=progress.lessons_completed,
-            lessons_total=progress.lessons_total,
-            last_studied_at=progress.last_studied_at,
+            chapter=chapter.number,
+            state_code=chapter.state_code,
+            questions_seen=0,
+            questions_correct=0,
+            accuracy=0.0,
+            lessons_completed=1,
+            lessons_total=lessons_total,
+            last_studied_at=None,
         )
-    
+
     @strawberry.mutation
     async def complete_session(
         self, info: Info, session_id: strawberry.ID
@@ -350,13 +363,12 @@ class Mutation:
         if not session:
             raise ValueError("Session not found")
 
-        session.completed = True
+        session.completed    = True
         session.completed_at = datetime.now(timezone.utc)
+        await db.commit()
 
         accuracy = session.score / session.total if session.total > 0 else 0.0
 
-        await db.commit()
-        
         return SessionResultType(
             session=map_session(session),
             xp_earned=session.xp_earned,
@@ -366,6 +378,179 @@ class Mutation:
             accuracy=accuracy,
         )
 
+    @strawberry.mutation
+    async def create_battle(
+        self,
+        info: Info,
+        question_count: int,
+        state_code: str = "ok",
+        timer_seconds: Optional[int] = None,
+        chapter: Optional[int] = None,
+    ) -> BattleType:
+        """Host creates a peer battle room. Returns a 6-digit room code."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        # Generate unique 6-digit room code
+        code = "000000"
+        for _ in range(20):
+            code = "".join(random.choices(string.digits, k=6))
+            existing = await db.execute(
+                select(Battle).where(
+                    Battle.room_code == code,
+                    Battle.state == "waiting",
+                )
+            )
+            if not existing.scalar_one_or_none():
+                break
+
+        # Fetch questions
+        stmt = select(Question).where(Question.state_code == state_code)
+        if chapter:
+            stmt = stmt.where(Question.chapter == chapter)
+        q_result = await db.execute(stmt.options(selectinload(Question.answers)))
+        all_questions = q_result.scalars().all()
+        selected      = random.sample(list(all_questions), min(question_count, len(all_questions)))
+        question_ids  = [str(q.id) for q in selected]
+
+        battle = Battle(
+            type="peer",
+            player_id=user.id,
+            question_ids=question_ids,
+            state="waiting",
+            room_code=code,
+            timer_seconds=timer_seconds,
+        )
+        db.add(battle)
+        await db.flush()
+        await db.commit()
+
+        # Cache in Redis
+        r = await get_redis()
+        await r.setex(
+            f"battle:{str(battle.id)}",
+            TTL.BATTLE,
+            json.dumps({
+                "player_id":      str(user.id),
+                "opponent_id":    None,
+                "player_score":   0,
+                "opponent_score": 0,
+                "question_index": 0,
+                "question_ids":   question_ids,
+                "state":          "waiting",
+                "timer_seconds":  timer_seconds,
+            }),
+        )
+
+        return map_battle(battle)
+
+    @strawberry.mutation
+    async def join_battle(
+        self,
+        info: Info,
+        room_code: str,
+    ) -> BattleType:
+        """Opponent joins an existing peer battle room by 6-digit code."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        result = await db.execute(
+            select(Battle).where(
+                Battle.room_code == room_code,
+                Battle.state == "waiting",
+            )
+        )
+        battle = result.scalar_one_or_none()
+        if not battle:
+            raise ValueError("Room not found or already started")
+        if str(battle.player_id) == str(user.id):
+            raise ValueError("Cannot join your own battle room")
+
+        battle.opponent_id = user.id
+        battle.state       = "active"
+        await db.commit()
+
+        # Update Redis
+        r         = await get_redis()
+        cache_key = f"battle:{str(battle.id)}"
+        raw = await r.get(cache_key)
+        if raw:
+            data = json.loads(raw)
+            data["opponent_id"] = str(user.id)
+            data["state"]       = "active"
+            await r.setex(cache_key, TTL.BATTLE, json.dumps(data))
+
+        # Publish join event
+        await r.publish(cache_key, json.dumps({
+            "event":          "joined",
+            "player_id":      str(user.id),
+            "question_index": 0,
+            "is_correct":     None,
+            "player_score":   0,
+            "opponent_score": 0,
+            "battle_state":   "active",
+            "winner":         None,
+        }))
+
+        return map_battle(battle)
+
+    @strawberry.mutation
+    async def submit_battle_answer(
+        self,
+        info: Info,
+        battle_id: strawberry.ID,
+        question_id: strawberry.ID,
+        selected_answer_ids: list[strawberry.ID],
+        question_index: int,
+    ) -> BattleType:
+        """Submit an answer in a peer battle. Publishes real-time update via Redis."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        result = await db.execute(
+            select(Battle).where(Battle.id == uuid.UUID(str(battle_id)))
+        )
+        battle = result.scalar_one_or_none()
+        if not battle:
+            raise ValueError("Battle not found")
+
+        q_result = await db.execute(
+            select(Question)
+            .where(Question.id == uuid.UUID(str(question_id)))
+            .options(selectinload(Question.answers))
+        )
+        question = q_result.scalar_one_or_none()
+        if not question:
+            raise ValueError("Question not found")
+
+        correct_ids  = {str(a.id) for a in question.answers if a.is_correct}
+        selected_set = {str(i) for i in selected_answer_ids}
+        is_correct   = correct_ids == selected_set
+
+        is_player = str(battle.player_id) == str(user.id)
+        if is_player and is_correct:
+            battle.player_score += 1
+        elif not is_player and is_correct:
+            battle.opponent_score += 1
+
+        await db.commit()
+
+        r = await get_redis()
+        await r.publish(f"battle:{str(battle.id)}", json.dumps({
+            "event":          "answer_submitted",
+            "player_id":      str(user.id),
+            "question_index": question_index,
+            "is_correct":     is_correct,
+            "player_score":   battle.player_score,
+            "opponent_score": battle.opponent_score,
+            "battle_state":   battle.state,
+            "winner":         battle.winner,
+        }))
+
+        return map_battle(battle)
+
+
+# ── Helper ────────────────────────────────────────────────────────────────────
 
 async def _upsert_progress(
     db: AsyncSession,

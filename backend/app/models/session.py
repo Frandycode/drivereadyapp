@@ -160,14 +160,16 @@ class Battle(Base, UUIDMixin, TimestampMixin):
     opponent_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL")
     )
-    bot_type: Mapped[str | None] = mapped_column(String(10))  # rusty | dash | apex
+    bot_type: Mapped[str | None] = mapped_column(String(10))       # rusty | dash | apex
     question_ids: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=False, default=list)
     player_score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     opponent_score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    winner: Mapped[str | None] = mapped_column(String(10))  # player | opponent | tie
+    winner: Mapped[str | None] = mapped_column(String(10))         # player | opponent | tie
     state: Mapped[str] = mapped_column(
         String(10), nullable=False, default="waiting"
     )  # waiting | active | complete
+    room_code: Mapped[str | None] = mapped_column(String(6), unique=True, index=True)
+    timer_seconds: Mapped[int | None] = mapped_column(Integer)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     player: Mapped["User"] = relationship(foreign_keys=[player_id])

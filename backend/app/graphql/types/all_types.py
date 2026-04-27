@@ -168,12 +168,14 @@ class BattleType:
     winner: Optional[str]
     state: str
     question_ids: list[str]
+    room_code: Optional[str]
+    timer_seconds: Optional[int]
     created_at: datetime
 
 
 @strawberry.type
 class BattleUpdateType:
-    event: str           # answer_submitted | question_advance | battle_end
+    event: str
     player_id: str
     question_id: Optional[str]
     is_correct: Optional[bool]

@@ -8,23 +8,28 @@ from strawberry.fastapi import GraphQLRouter
 from app.config import settings
 from app.db import get_redis, close_redis
 from app.db.connection import engine
-from app.auth.dependencies import get_optional_user
 from app.graphql.queries.queries import Query
 from app.graphql.mutations.mutations import Mutation
+from app.graphql.subscriptions.subscriptions import Subscription
 
 
 # ── GraphQL schema ────────────────────────────────────────────────────────────
 schema = strawberry.Schema(
     query=Query,
     mutation=Mutation,
+    subscription=Subscription,
 )
 
 
-# ── Context builder ───────────────────────────────────────────────────────────
+# ── Context builder (HTTP) ────────────────────────────────────────────────────
 async def get_context(request: Request) -> dict:
+    """
+    Build the GraphQL context for every HTTP request.
+    Attaches db session and authenticated user (if any).
+    """
     from app.db.connection import AsyncSessionLocal
 
-    db = AsyncSessionLocal()
+    db   = AsyncSessionLocal()
     user = None
 
     auth_header = request.headers.get("Authorization")
@@ -46,23 +51,22 @@ async def get_context(request: Request) -> dict:
             pass
 
     return {
-        "request": request,
-        "db": db,
-        "user": user,
-        "commit": db.commit,   # ← expose commit so mutations can call it
+        "request":    request,
+        "db":         db,
+        "user":       user,
+        "state_code": request.headers.get("X-State-Code", settings.state_code),
+        "commit":     db.commit,
     }
 
 
 # ── Lifespan (startup / shutdown) ─────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
     print(f"🚀 DriveReady API starting — state={settings.state_code} env={settings.environment}")
     redis = await get_redis()
     await redis.ping()
     print("✓ Redis connected")
     yield
-    # Shutdown
     await close_redis()
     await engine.dispose()
     print("👋 DriveReady API shut down")
@@ -79,15 +83,15 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS — allow frontend origins
+    # CORS
     origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",      
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",       
-    "https://driveready-ok.com",
-    "https://www.driveready-ok.com",
-]
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://driveready-ok.com",
+        "https://www.driveready-ok.com",
+    ]
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
@@ -96,11 +100,11 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # GraphQL endpoint
+    # GraphQL endpoint — handles both HTTP and WebSocket
     graphql_app = GraphQLRouter(
         schema,
         context_getter=get_context,
-        graphiql=settings.debug,  # interactive playground in dev only
+        graphiql=settings.debug,
     )
     app.include_router(graphql_app, prefix="/graphql")
 
@@ -108,9 +112,9 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def health():
         return {
-            "status": "ok",
-            "version": "0.1.0",
-            "state": settings.state_code,
+            "status":      "ok",
+            "version":     "0.1.0",
+            "state":       settings.state_code,
             "environment": settings.environment,
         }
 
