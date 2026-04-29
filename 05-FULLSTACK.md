@@ -439,3 +439,13 @@ driveready/
 | 6 | Weeks 13–15 | Engagement: streaks, XP, achievements, parent dashboard |
 | 7 | Weeks 15–18 | Mobile: React Native + Expo + App Store submission |
 | 8 | Week 18+ | Multi-state: Texas or second state launch |
+
+---
+
+## Author
+
+**Frandy Slueue** — Software Engineering · DevOps Security · IT Ops
+📍 Tulsa, OK & Dallas, TX (Central Time)
+🌐 [frandycode.dev](https://frandycode.dev) · 💼 [github.com/frandycode](https://github.com/frandycode) · ✉️ frandyslueue@gmail.com
+
+*Project: DriveReady — AI-Powered Multi-State Driver Education Platform*

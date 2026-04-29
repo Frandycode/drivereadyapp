@@ -544,3 +544,13 @@ secondary_color     "#F59E0B"
 3. Set up `driveready-[state].com` domain
 4. Point to same API with new `state_code`
 5. Deploy — no code changes required
+
+---
+
+## Author
+
+**Frandy Slueue** — Software Engineering · DevOps Security · IT Ops
+📍 Tulsa, OK & Dallas, TX (Central Time)
+🌐 [frandycode.dev](https://frandycode.dev) · 💼 [github.com/frandycode](https://github.com/frandycode) · ✉️ frandyslueue@gmail.com
+
+*Project: DriveReady — AI-Powered Multi-State Driver Education Platform*

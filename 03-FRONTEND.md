@@ -591,3 +591,13 @@ VITE_POSTHOG_KEY=xxx
 - [ ] Performance audit (Lighthouse > 90)
 - [ ] Accessibility audit (WCAG 2.1 AA)
 - [ ] React Native / Expo migration begins
+
+---
+
+## Author
+
+**Frandy Slueue** — Software Engineering · DevOps Security · IT Ops
+📍 Tulsa, OK & Dallas, TX (Central Time)
+🌐 [frandycode.dev](https://frandycode.dev) · 💼 [github.com/frandycode](https://github.com/frandycode) · ✉️ frandyslueue@gmail.com
+
+*Project: DriveReady — AI-Powered Multi-State Driver Education Platform*

@@ -562,3 +562,13 @@ xl:   1280px+    — desktop
 ```
 
 Mobile-first: all components designed at sm, enhanced at md and lg.
+
+---
+
+## Author
+
+**Frandy Slueue** — Software Engineering · DevOps Security · IT Ops
+📍 Tulsa, OK & Dallas, TX (Central Time)
+🌐 [frandycode.dev](https://frandycode.dev) · 💼 [github.com/frandycode](https://github.com/frandycode) · ✉️ frandyslueue@gmail.com
+
+*Project: DriveReady — AI-Powered Multi-State Driver Education Platform*
