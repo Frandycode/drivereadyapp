@@ -172,6 +172,8 @@ class AnswerResultType:
 class BattleType:
     id: strawberry.ID
     type: str
+    player_id: strawberry.ID
+    opponent_id: Optional[strawberry.ID]
     bot_type: Optional[str]
     player_score: int
     opponent_score: int
@@ -181,16 +183,6 @@ class BattleType:
     room_code: Optional[str]
     timer_seconds: Optional[int]
     created_at: datetime
-
-
-@strawberry.type
-class BattleUpdateType:
-    event: str
-    player_id: str
-    question_id: Optional[str]
-    is_correct: Optional[bool]
-    player_score: int
-    opponent_score: int
 
 
 @strawberry.type

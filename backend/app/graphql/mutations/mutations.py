@@ -104,6 +104,8 @@ def map_battle(b: Battle) -> BattleType:
     return BattleType(
         id=str(b.id),
         type=b.type,
+        player_id=str(b.player_id),
+        opponent_id=str(b.opponent_id) if b.opponent_id else None,
         bot_type=b.bot_type,
         player_score=b.player_score,
         opponent_score=b.opponent_score,

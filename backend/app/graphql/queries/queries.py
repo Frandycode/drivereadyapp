@@ -15,11 +15,11 @@ from sqlalchemy import select
 from strawberry.types import Info
 from sqlalchemy.orm import selectinload
 
-from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck
+from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, Battle
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
-    StateConfigType, BookmarkType, FlashcardDeckType
+    StateConfigType, BookmarkType, FlashcardDeckType, BattleType
 )
 from app.config import get_state_config, STATE_CONFIGS
 from app.db import cache_get, cache_set, CacheKey, TTL
@@ -227,6 +227,48 @@ class Query:
         )
         questions = result.scalars().all()
         return [map_question(q) for q in questions]
+
+    @strawberry.field
+    async def battle(
+        self, info: Info, battle_id: strawberry.ID
+    ) -> Optional[BattleType]:
+        """Fetch a single battle by ID — used by PeerBattleSession to load state."""
+        import uuid as _uuid
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(Battle).where(Battle.id == _uuid.UUID(str(battle_id)))
+        )
+        b = result.scalar_one_or_none()
+        if not b:
+            return None
+        from app.graphql.mutations.mutations import map_battle
+        return map_battle(b)
+
+    @strawberry.field
+    async def battle_questions(
+        self, info: Info, battle_id: strawberry.ID
+    ) -> list[QuestionType]:
+        """
+        Return the questions for a peer battle in their original shuffled order.
+        Both players receive identical question sets in the same sequence.
+        """
+        import uuid as _uuid
+        db: AsyncSession = info.context["db"]
+        b_result = await db.execute(
+            select(Battle).where(Battle.id == _uuid.UUID(str(battle_id)))
+        )
+        battle = b_result.scalar_one_or_none()
+        if not battle or not battle.question_ids:
+            return []
+
+        q_result = await db.execute(
+            select(Question)
+            .where(Question.id.in_([_uuid.UUID(qid) for qid in battle.question_ids]))
+            .options(selectinload(Question.answers))
+        )
+        by_id = {str(q.id): q for q in q_result.scalars().all()}
+        # Preserve the original battle order
+        return [map_question(by_id[qid]) for qid in battle.question_ids if qid in by_id]
 
     @strawberry.field
     async def my_decks(self, info: Info) -> list[FlashcardDeckType]:
