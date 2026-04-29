@@ -33,7 +33,8 @@ class Settings(BaseSettings):
     jwt_expire_minutes: int = 10080  # 7 days
 
     # AI
-    anthropic_api_key: str = ""
+    anthropic_api_key: str = ""   # reserved for future upgrade
+    deepseek_api_key: str = ""
 
     # App
     state_code: str = "ok"
