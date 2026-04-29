@@ -510,7 +510,9 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
           {/* Opponent status */}
           {!opponentOnScreen && (
-            <WifiOff size={14} className="text-yellow-400" title="Opponent left screen" />
+            <span title="Opponent left screen">
+              <WifiOff size={14} className="text-yellow-400" />
+            </span>
           )}
         </div>
 

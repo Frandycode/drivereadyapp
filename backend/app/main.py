@@ -31,19 +31,33 @@ schema = strawberry.Schema(
 )
 
 
-# ── Context builder (HTTP) ────────────────────────────────────────────────────
-async def get_context(request: Request) -> dict:
+# ── Context builder (HTTP + WebSocket) ───────────────────────────────────────
+async def get_context(request=None, ws=None) -> dict:
     """
-    Build the GraphQL context for every HTTP request.
-    Attaches db session and authenticated user (if any).
+    Build the GraphQL context for HTTP requests and WebSocket subscriptions.
+
+    Strawberry calls this with request=<Request> for HTTP mutations/queries
+    and with ws=<WebSocket> for subscriptions. No type annotations on the
+    parameters — FastAPI would try to Pydantic-validate Union[Request,
+    WebSocket] and reject it. Both objects expose .headers so auth token
+    extraction works identically for both paths.
     """
     import uuid
     from app.db.connection import AsyncSessionLocal
 
+    # Resolve the actual connection object regardless of which arg was used
+    connection = request or ws
+
     db   = AsyncSessionLocal()
     user = None
 
-    auth_header = request.headers.get("Authorization")
+    auth_header = None
+    if connection is not None:
+        try:
+            auth_header = connection.headers.get("Authorization")
+        except Exception:
+            pass
+
     if auth_header and auth_header.startswith("Bearer "):
         token = auth_header[7:]
         try:
@@ -61,11 +75,18 @@ async def get_context(request: Request) -> dict:
         except Exception:
             pass
 
+    state_code = settings.state_code
+    if connection is not None:
+        try:
+            state_code = connection.headers.get("X-State-Code", settings.state_code)
+        except Exception:
+            pass
+
     return {
-        "request":    request,
+        "request":    connection,
         "db":         db,
         "user":       user,
-        "state_code": request.headers.get("X-State-Code", settings.state_code),
+        "state_code": state_code,
         "commit":     db.commit,
     }
 
