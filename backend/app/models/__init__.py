@@ -21,6 +21,7 @@ from .session import (  # noqa: F401
     FlashcardDeck,
     Battle,
 )
+from .stats import PlayerBehaviorLog, PlayerStats  # noqa: F401
 
 __all__ = [
     "Base",
@@ -29,4 +30,5 @@ __all__ = [
     "Session", "SessionAnswer", "UserProgress",
     "Bookmark", "Achievement", "UserAchievement",
     "FlashcardDeck", "Battle",
+    "PlayerBehaviorLog", "PlayerStats",
 ]
