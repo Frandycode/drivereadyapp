@@ -37,6 +37,7 @@ async def get_context(request: Request) -> dict:
     Build the GraphQL context for every HTTP request.
     Attaches db session and authenticated user (if any).
     """
+    import uuid
     from app.db.connection import AsyncSessionLocal
 
     db   = AsyncSessionLocal()
@@ -54,7 +55,7 @@ async def get_context(request: Request) -> dict:
             user_id = payload.get("sub")
             if user_id:
                 result = await db.execute(
-                    select(User).where(User.id == user_id)
+                    select(User).where(User.id == uuid.UUID(user_id))
                 )
                 user = result.scalar_one_or_none()
         except Exception:
