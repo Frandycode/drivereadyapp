@@ -26,6 +26,8 @@ import { TriviaSession } from '@/app/quiz/TriviaSession'
 import { ChallengePage, type ChallengeConfig } from '@/app/quiz/ChallengePage'
 import { BotSelectScreen, type BotBattleConfig } from '@/app/battle/BotSelectScreen'
 import { BotBattleSession } from '@/app/battle/BotBattleSession'
+import { PeerBattleLobby, type PeerBattleSetup } from '@/app/battle/PeerBattleLobby'
+import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
 
 // ── Placeholder ───────────────────────────────────────────────────────────────
 
@@ -155,6 +157,8 @@ type AppScreen =
   | { screen: 'challenge-session'; config: ChallengeConfig }
   | { screen: 'bot-select' }
   | { screen: 'bot-battle'; config: BotBattleConfig }
+  | { screen: 'peer-battle-lobby' }
+  | { screen: 'peer-battle'; setup: PeerBattleSetup }
   | { screen: 'profile' }
 
 export default function App() {
@@ -204,7 +208,8 @@ export default function App() {
     appScreen.screen.startsWith('quiz')       ? '/learn' :
     appScreen.screen.startsWith('study')      ? '/study' :
     appScreen.screen.startsWith('challenge') ||
-    appScreen.screen.startsWith('bot')        ? '/challenge' : '/'
+    appScreen.screen.startsWith('bot') ||
+    appScreen.screen.startsWith('peer')       ? '/challenge' : '/'
 
   // ── Screen routing ─────────────────────────────────────────────────────────
 
@@ -285,6 +290,26 @@ export default function App() {
     )
   }
 
+  // Peer battle lobby
+  if (appScreen.screen === 'peer-battle-lobby') {
+    return (
+      <PeerBattleLobby
+        onStart={(setup) => setAppScreen({ screen: 'peer-battle', setup })}
+        onBack={() => setAppScreen({ screen: 'challenge' })}
+      />
+    )
+  }
+
+  // Peer battle session
+  if (appScreen.screen === 'peer-battle') {
+    return (
+      <PeerBattleSession
+        setup={appScreen.setup}
+        onExit={() => setAppScreen({ screen: 'challenge' })}
+      />
+    )
+  }
+
   // Top-level pages
   const PAGES: Record<string, React.ReactNode> = {
     home: <HomePage />,
@@ -299,6 +324,7 @@ export default function App() {
       <ChallengePage
         onStart={(config) => setAppScreen({ screen: 'challenge-session', config })}
         onBotBattle={() => setAppScreen({ screen: 'bot-select' })}
+        onPeerBattle={() => setAppScreen({ screen: 'peer-battle-lobby' })}
       />
     ),
     profile: <PlaceholderPage title="Profile" />,

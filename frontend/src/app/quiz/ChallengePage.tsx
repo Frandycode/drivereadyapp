@@ -13,7 +13,7 @@
 import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, ChevronRight, Bot } from 'lucide-react'
+import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, ChevronRight, Bot, Swords } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import type { QuizConfig } from '../quiz/QuizSession'
 import type { PuzzleConfig } from '../quiz/PuzzleSession'
@@ -27,7 +27,7 @@ const GET_CHAPTERS = gql`
   }
 `
 
-export type ChallengeMode = 'quiz' | 'puzzle' | 'flipper' | 'trivia' | 'bot'
+export type ChallengeMode = 'quiz' | 'puzzle' | 'flipper' | 'trivia' | 'bot' | 'peer'
 
 export type ChallengeConfig =
   | ({ type: 'quiz' }    & QuizConfig)
@@ -39,6 +39,7 @@ export type ChallengeConfig =
 interface ChallengePageProps {
   onStart: (config: ChallengeConfig) => void
   onBotBattle: () => void
+  onPeerBattle: () => void
 }
 
 const MODES: { id: ChallengeMode; label: string; description: string; Icon: React.ElementType }[] = [
@@ -46,7 +47,8 @@ const MODES: { id: ChallengeMode; label: string; description: string; Icon: Reac
   { id: 'puzzle',  label: 'Puzzle',     description: 'Drag and drop answer chips into the drop zone.',      Icon: Puzzle },
   { id: 'flipper', label: 'Flipper',    description: 'Place your answer on the card, then flip to reveal.', Icon: Layers },
   { id: 'trivia',  label: 'Trivia',     description: 'See the answer — pick the matching question.',        Icon: RotateCcw },
-  { id: 'bot',     label: 'Bot Battle', description: 'Challenge Rusty, Dash, or Apex in a live battle.',    Icon: Bot },
+  { id: 'bot',     label: 'Bot Battle',  description: 'Challenge Rusty, Dash, or Apex in a live battle.',    Icon: Bot },
+  { id: 'peer',    label: 'Peer Battle', description: 'Battle a real opponent live — host or join a room.',  Icon: Swords },
 ]
 
 // Color-coded difficulty levels
@@ -89,7 +91,7 @@ const TIMERS = [
   { value: 60,   label: '60s' },
 ]
 
-export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
+export function ChallengePage({ onStart, onBotBattle, onPeerBattle }: ChallengePageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const [mode, setMode]                         = useState<ChallengeMode>('quiz')
@@ -103,7 +105,8 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
   const selectedChapter = chapters.find((c: { id: string }) => c.id === selectedChapterId)
 
   function handleStart() {
-    if (mode === 'bot') { onBotBattle(); return }
+    if (mode === 'bot')  { onBotBattle();  return }
+    if (mode === 'peer') { onPeerBattle(); return }
     const base = {
       stateCode,
       chapterNumber: selectedChapter?.number,
@@ -154,7 +157,7 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
         </section>
 
         {/* Chapter filter */}
-        {mode !== 'bot' && (
+        {mode !== 'bot' && mode !== 'peer' && (
           <section>
             <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
               Chapter (optional)
@@ -177,7 +180,7 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
         )}
 
         {/* Difficulty — color coded */}
-        {mode !== 'bot' && (
+        {mode !== 'bot' && mode !== 'peer' && (
           <section>
             <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
               Difficulty
@@ -217,7 +220,7 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
         )}
 
         {/* Settings */}
-        {mode !== 'bot' && (
+        {mode !== 'bot' && mode !== 'peer' && (
           <section>
             <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Settings</h2>
             <div className="card space-y-4">
@@ -269,6 +272,18 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
           </div>
         )}
 
+        {/* Peer Battle info */}
+        {mode === 'peer' && (
+          <div className="card border-border bg-surface-2 text-xs text-text-secondary space-y-1">
+            <p className="font-medium text-text-primary mb-1">Peer Battle rules</p>
+            <p>• Host a room or join with a 6-digit code</p>
+            <p>• Both players answer the same questions independently</p>
+            <p>• Up to 2 draw requests per player per battle</p>
+            <p>• Leaving the screen counts as a strike (max 2)</p>
+            <p>• 3rd screen leave = immediate auto-defeat</p>
+          </div>
+        )}
+
         {/* Start */}
         <button
           onClick={handleStart}
@@ -280,9 +295,9 @@ export function ChallengePage({ onStart, onBotBattle }: ChallengePageProps) {
               : 'btn-primary'
           }`}
         >
-          {mode === 'bot'
-            ? 'Choose Your Opponent →'
-            : `Start ${MODES.find((m) => m.id === mode)?.label}`}
+          {mode === 'bot'  ? 'Choose Your Opponent →'
+          : mode === 'peer' ? 'Enter Battle Lobby →'
+          : `Start ${MODES.find((m) => m.id === mode)?.label}`}
         </button>
 
         <div className="h-2" />
