@@ -101,7 +101,7 @@ def map_session(s: Session) -> SessionType:
     )
 
 
-def map_battle(b: Battle) -> BattleType:
+def map_battle(b: Battle, chapter_ids: list[int] | None = None) -> BattleType:
     return BattleType(
         id=str(b.id),
         type=b.type,
@@ -115,6 +115,7 @@ def map_battle(b: Battle) -> BattleType:
         question_ids=b.question_ids or [],
         room_code=b.room_code,
         timer_seconds=b.timer_seconds,
+        chapter_ids=chapter_ids or [],
         created_at=b.created_at,
     )
 
@@ -479,7 +480,7 @@ class Mutation:
         question_count: int,
         state_code: str = "ok",
         timer_seconds: Optional[int] = None,
-        chapter: Optional[int] = None,
+        chapter_ids: Optional[list[int]] = None,
     ) -> BattleType:
         """Host creates a peer battle room. Returns a 6-digit room code."""
         db:   AsyncSession = info.context["db"]
@@ -495,8 +496,8 @@ class Mutation:
                 break
 
         stmt = select(Question).where(Question.state_code == state_code)
-        if chapter:
-            stmt = stmt.where(Question.chapter == chapter)
+        if chapter_ids:
+            stmt = stmt.where(Question.chapter.in_(chapter_ids))
         q_result      = await db.execute(stmt.options(selectinload(Question.answers)))
         all_questions = q_result.scalars().all()
         selected      = random.sample(list(all_questions), min(question_count, len(all_questions)))
@@ -542,10 +543,11 @@ class Mutation:
                 # Heartbeat tracking
                 "player_heartbeat":       None,
                 "opponent_heartbeat":     None,
+                "chapter_ids":            chapter_ids or [],
             }),
         )
 
-        return map_battle(battle)
+        return map_battle(battle, chapter_ids=chapter_ids or [])
 
     @strawberry.mutation
     async def join_battle(self, info: Info, room_code: str) -> BattleType:
@@ -567,12 +569,13 @@ class Mutation:
         await db.commit()
 
         cache = await _get_cache(str(battle.id))
+        chapter_ids: list[int] = cache.get("chapter_ids", [])
         cache["opponent_id"] = str(user.id)
         cache["state"]       = "active"
         await _save_cache(str(battle.id), cache)
 
         await _publish(str(battle.id), _base_payload(battle, user, "joined"))
-        return map_battle(battle)
+        return map_battle(battle, chapter_ids=chapter_ids)
 
     # ── Battle — gameplay ─────────────────────────────────────────────────────
 

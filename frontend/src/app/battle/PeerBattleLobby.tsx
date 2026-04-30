@@ -11,27 +11,37 @@
  */
 
 import { useState, useEffect } from 'react'
-import { useMutation, useSubscription, gql } from '@apollo/client'
-import { X, Copy, Check, Loader2, Swords, Share2 } from 'lucide-react'
+import { useMutation, useSubscription, useQuery, gql } from '@apollo/client'
+import { X, Copy, Check, Loader2, Swords, Share2, BookOpen } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
 
 // ── GQL ───────────────────────────────────────────────────────────────────────
+
+const GET_CHAPTERS = gql`
+  query LobbyGetChapters($stateCode: String!) {
+    chapters(stateCode: $stateCode) {
+      id
+      number
+      title
+    }
+  }
+`
 
 const CREATE_BATTLE = gql`
   mutation PeerCreateBattle(
     $questionCount: Int!
     $stateCode: String!
     $timerSeconds: Int
-    $chapter: Int
+    $chapterIds: [Int!]
   ) {
     createBattle(
       questionCount: $questionCount
       stateCode: $stateCode
       timerSeconds: $timerSeconds
-      chapter: $chapter
+      chapterIds: $chapterIds
     ) {
-      id roomCode timerSeconds state playerId
+      id roomCode timerSeconds state playerId chapterIds
     }
   }
 `
@@ -39,7 +49,7 @@ const CREATE_BATTLE = gql`
 const JOIN_BATTLE = gql`
   mutation PeerJoinBattle($roomCode: String!) {
     joinBattle(roomCode: $roomCode) {
-      id timerSeconds state playerId
+      id timerSeconds state playerId chapterIds
     }
   }
 `
@@ -60,6 +70,7 @@ export interface PeerBattleSetup {
   timerSeconds: number | null
   playerCount: number
   iAmPlayer: boolean   // true = I created (host), false = I joined
+  chapterIds: number[] // empty = all chapters
 }
 
 interface PeerBattleLobbyProps {
@@ -72,32 +83,57 @@ interface PeerBattleLobbyProps {
 const QUESTION_COUNTS = [5, 10, 15, 20]
 const PLAYER_COUNTS   = [2, 3, 4, 5]
 const TIMERS = [
-  { value: 15,   label: '15s' },
-  { value: 30,   label: '30s' },
-  { value: 45,   label: '45s' },
-  { value: 60,   label: '60s' },
+  { value: 15, label: '15s' },
+  { value: 30, label: '30s' },
+  { value: 45, label: '45s' },
+  { value: 60, label: '60s' },
 ]
+
+// ── Typing dots (UPDATE-06) ───────────────────────────────────────────────────
+
+function TypingDots() {
+  return (
+    <span className="flex gap-0.5 items-end h-4 ml-1">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-green-500 animate-bounce"
+          style={{ animationDelay: `${i * 150}ms`, animationDuration: '600ms' }}
+        />
+      ))}
+    </span>
+  )
+}
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
-  const [tab, setTab]             = useState<'host' | 'join'>('host')
-  const [questionCount, setQCount] = useState(10)
-  const [playerCount, setPlayerCount] = useState(2)
-  const [timerSec, setTimerSec]   = useState<number | null>(15)
+  const [tab, setTab]                         = useState<'host' | 'join'>('host')
+  const [questionCount, setQCount]            = useState(10)
+  const [playerCount, setPlayerCount]         = useState(2)
+  const [timerSec, setTimerSec]               = useState<number>(15)
+  const [selectedChapters, setSelectedChapters] = useState<number[]>([])
 
   // Host state
   const [hostedBattle, setHostedBattle] = useState<{
-    id: string; roomCode: string; timerSeconds: number | null
+    id: string
+    roomCode: string
+    timerSeconds: number | null
+    chapterIds: number[]
   } | null>(null)
-  const [copied, setCopied]     = useState(false)
-  const [sharedLink, setSharedLink] = useState(false)
+  const [copied, setCopied]                   = useState(false)
+  const [sharedLink, setSharedLink]           = useState(false)
+  const [opponentJoining, setOpponentJoining] = useState(false)
 
   // Join state
-  const [joinCode, setJoinCode]   = useState('')
+  const [joinCode, setJoinCode] = useState('')
   const [joinError, setJoinError] = useState('')
+
+  const { data: chaptersData } = useQuery(GET_CHAPTERS, { variables: { stateCode } })
+  const chapters: { id: string; number: number; title: string }[] =
+    chaptersData?.chapters ?? []
 
   const [createBattle, { loading: creating }] = useMutation(CREATE_BATTLE)
   const [joinBattle,   { loading: joining  }] = useMutation(JOIN_BATTLE)
@@ -110,8 +146,17 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
   })
 
   useEffect(() => {
-    if (subData?.battleUpdated?.event === 'joined' && hostedBattle) {
-      onStart({ battleId: hostedBattle.id, timerSeconds: hostedBattle.timerSeconds, playerCount, iAmPlayer: true })
+    if (subData?.battleUpdated?.event === 'joined' && hostedBattle && !opponentJoining) {
+      setOpponentJoining(true)
+      setTimeout(() => {
+        onStart({
+          battleId: hostedBattle.id,
+          timerSeconds: hostedBattle.timerSeconds,
+          playerCount,
+          iAmPlayer: true,
+          chapterIds: hostedBattle.chapterIds,
+        })
+      }, 1800)
     }
   }, [subData])
 
@@ -120,14 +165,24 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
   async function handleCreate() {
     try {
       const { data } = await createBattle({
-        variables: { questionCount, stateCode, timerSeconds: timerSec },
+        variables: {
+          questionCount,
+          stateCode,
+          timerSeconds: timerSec,
+          chapterIds: selectedChapters.length > 0 ? selectedChapters : undefined,
+        },
       })
       const b = data?.createBattle
       if (b) {
-        setHostedBattle({ id: b.id, roomCode: b.roomCode, timerSeconds: b.timerSeconds })
+        setHostedBattle({
+          id: b.id,
+          roomCode: b.roomCode,
+          timerSeconds: b.timerSeconds,
+          chapterIds: b.chapterIds ?? [],
+        })
       }
     } catch {
-      // errors surface in Apollo's error state; no-op here
+      // errors surface in Apollo's error state
     }
   }
 
@@ -138,7 +193,15 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
     try {
       const { data } = await joinBattle({ variables: { roomCode: code } })
       const b = data?.joinBattle
-      if (b) onStart({ battleId: b.id, timerSeconds: b.timerSeconds, playerCount: 2, iAmPlayer: false })
+      if (b) {
+        onStart({
+          battleId: b.id,
+          timerSeconds: b.timerSeconds,
+          playerCount: 2,
+          iAmPlayer: false,
+          chapterIds: b.chapterIds ?? [],
+        })
+      }
     } catch (e: unknown) {
       const msg = (e as { message?: string })?.message ?? 'Room not found or already started.'
       setJoinError(msg.replace('["', '').replace('"]', ''))
@@ -164,6 +227,12 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
         setTimeout(() => setSharedLink(false), 2000)
       })
     }
+  }
+
+  function toggleChapter(num: number) {
+    setSelectedChapters((prev) =>
+      prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num]
+    )
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -192,7 +261,12 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
           {(['host', 'join'] as const).map((t) => (
             <button
               key={t}
-              onClick={() => { setTab(t); setHostedBattle(null); setJoinError('') }}
+              onClick={() => {
+                setTab(t)
+                setHostedBattle(null)
+                setJoinError('')
+                setOpponentJoining(false)
+              }}
               className={`flex-1 py-2.5 text-sm font-medium transition-all ${
                 tab === t
                   ? 'bg-green-500 text-bg'
@@ -207,6 +281,50 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
         {/* ── HOST TAB ────────────────────────────────────────────────────── */}
         {tab === 'host' && !hostedBattle && (
           <div className="space-y-5">
+
+            {/* Chapter selection */}
+            {chapters.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen size={12} className="text-text-secondary" />
+                  <p className="text-xs font-medium text-text-secondary uppercase tracking-wider">Chapters</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setSelectedChapters([])}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                      selectedChapters.length === 0
+                        ? 'bg-green-500 border-green-500 text-bg'
+                        : 'bg-surface-2 border-border text-text-secondary hover:border-green-700'
+                    }`}
+                  >
+                    All
+                  </button>
+                  {chapters.map((ch) => (
+                    <button
+                      key={ch.id}
+                      onClick={() => toggleChapter(ch.number)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                        selectedChapters.includes(ch.number)
+                          ? 'bg-green-500/15 border-green-500 text-green-400'
+                          : 'bg-surface-2 border-border text-text-secondary hover:border-green-700'
+                      }`}
+                    >
+                      Ch. {ch.number}
+                    </button>
+                  ))}
+                </div>
+                {selectedChapters.length > 0 && (
+                  <p className="text-xs text-text-secondary mt-1.5">
+                    {selectedChapters.length === 1
+                      ? `Ch. ${selectedChapters[0]} selected`
+                      : `${selectedChapters.length} chapters selected`
+                    }
+                  </p>
+                )}
+              </section>
+            )}
+
             {/* Player count */}
             <section>
               <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Players</p>
@@ -294,7 +412,7 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
           </div>
         )}
 
-        {/* ── WAITING FOR OPPONENT (after room created) ────────────────────── */}
+        {/* ── WAITING FOR OPPONENT ─────────────────────────────────────────── */}
         {tab === 'host' && hostedBattle && (
           <div className="space-y-6 text-center">
             <div>
@@ -303,33 +421,55 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 <span className="font-mono text-4xl font-bold tracking-[0.25em] text-green-500">
                   {hostedBattle.roomCode}
                 </span>
-                <button onClick={copyCode} className="text-text-secondary hover:text-text-primary transition-colors" title="Copy code">
+                <button
+                  onClick={copyCode}
+                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  title="Copy code"
+                >
                   {copied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
                 </button>
-                <button onClick={shareInviteLink} className="text-text-secondary hover:text-green-500 transition-colors" title="Share invite link">
+                <button
+                  onClick={shareInviteLink}
+                  className="text-text-secondary hover:text-green-500 transition-colors"
+                  title="Share invite link"
+                >
                   {sharedLink ? <Check size={20} className="text-green-500" /> : <Share2 size={20} />}
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-text-secondary">
-              <Loader2 size={16} className="animate-spin text-green-500" />
-              <span className="text-sm">Waiting for opponent to join...</span>
-            </div>
+            {opponentJoining ? (
+              <div className="flex items-center justify-center gap-1 text-green-500">
+                <span className="text-sm font-medium">Opponent joining</span>
+                <TypingDots />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2 text-text-secondary">
+                <Loader2 size={16} className="animate-spin text-green-500" />
+                <span className="text-sm">Waiting for opponent to join...</span>
+              </div>
+            )}
 
             <div className="text-xs text-text-secondary space-y-0.5">
-              {hostedBattle.timerSeconds
-                ? <p>{questionCount} questions · {hostedBattle.timerSeconds}s per question</p>
-                : <p>{questionCount} questions · No timer</p>
-              }
+              <p>{questionCount} questions · {hostedBattle.timerSeconds}s per question</p>
+              {selectedChapters.length > 0 && (
+                <p>
+                  {selectedChapters.length === 1
+                    ? `Chapter ${selectedChapters[0]}`
+                    : `Ch. ${selectedChapters.slice(0, -1).join(', ')} & ${selectedChapters[selectedChapters.length - 1]}`
+                  }
+                </p>
+              )}
             </div>
 
-            <button
-              onClick={() => setHostedBattle(null)}
-              className="text-sm text-text-secondary hover:text-text-primary underline"
-            >
-              Cancel room
-            </button>
+            {!opponentJoining && (
+              <button
+                onClick={() => setHostedBattle(null)}
+                className="text-sm text-text-secondary hover:text-text-primary underline"
+              >
+                Cancel room
+              </button>
+            )}
           </div>
         )}
 

@@ -182,6 +182,7 @@ class BattleType:
     question_ids: list[str]
     room_code: Optional[str]
     timer_seconds: Optional[int]
+    chapter_ids: list[int]
     created_at: datetime
 
 

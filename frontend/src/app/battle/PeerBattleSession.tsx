@@ -22,6 +22,22 @@ import { AppLogo } from '@/components/layout/AppLogo'
 import { XPBreakdownScreen, buildBattleXPItems } from './XPBreakdownScreen'
 import type { PeerBattleSetup } from './PeerBattleLobby'
 
+// ── Thinking dots (UPDATE-07) ─────────────────────────────────────────────────
+
+function ThinkingDots({ colorClass }: { colorClass: string }) {
+  return (
+    <span className="flex gap-0.5 items-center">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className={`w-1 h-1 rounded-full ${colorClass} animate-bounce opacity-70`}
+          style={{ animationDelay: `${i * 150}ms`, animationDuration: '800ms' }}
+        />
+      ))}
+    </span>
+  )
+}
+
 // ── GQL ───────────────────────────────────────────────────────────────────────
 
 const GET_BATTLE_QUESTIONS = gql`
@@ -153,8 +169,12 @@ interface PeerBattleSessionProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
-  const { battleId, timerSeconds, iAmPlayer } = setup
-  const myUserId = useUserStore((s) => s.user?.id ?? '')
+  const { battleId, timerSeconds, iAmPlayer, chapterIds } = setup
+  const myUserId  = useUserStore((s) => s.user?.id ?? '')
+  const myInitial = useUserStore((s) => {
+    const u = s.user
+    return ((u?.displayName ?? u?.email ?? 'M')[0] ?? 'M').toUpperCase()
+  })
 
   // ── Core state ────────────────────────────────────────────────────────────
   const [phase, setPhase]                     = useState<Phase>('loading')
@@ -182,6 +202,10 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const [autoAdvance, setAutoAdvance]           = useState(false)
   const [isReconnecting, setIsReconnecting]     = useState(false)
   const [showXPScreen, setShowXPScreen]         = useState(false)
+  const [myAnswered, setMyAnswered]             = useState(false)
+  const [opponentAnswered, setOpponentAnswered] = useState(false)
+  // Guest sees cinematic chapter reveal; host skips it
+  const [cinematicDone, setCinematicDone]       = useState(iAmPlayer)
 
   // ── Refs ──────────────────────────────────────────────────────────────────
   const timerRef         = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -220,6 +244,8 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
     setShuffledAnswers([...q.answers].sort(() => Math.random() - 0.5))
     setSelectedIds([])
     setRevealed(false)
+    setMyAnswered(false)
+    setOpponentAnswered(false)
     if (timerSeconds) setTimeLeft(timerSeconds)
   }, [qIndex, questions])
 
@@ -319,6 +345,13 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
     return () => { if (forfeitTimerRef.current) clearInterval(forfeitTimerRef.current) }
   }, [phase])
 
+  // ── Guest cinematic: show chapter info for ~18s before questions ─────────
+  useEffect(() => {
+    if (iAmPlayer || cinematicDone) return
+    const t = setTimeout(() => setCinematicDone(true), 18000)
+    return () => clearTimeout(t)
+  }, [])
+
   // ── Heartbeat ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (phase === 'loading' || phase === 'complete') return
@@ -383,6 +416,10 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         break
       }
 
+      case 'answer_submitted':
+        if (ev.playerId !== myUserId) setOpponentAnswered(true)
+        break
+
       case 'draw_requested':
         if (ev.playerId !== myUserId) {
           setPhase('draw_incoming')
@@ -433,6 +470,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
     const ids = timedOut ? [] : selectedIds
     setRevealed(true)
+    setMyAnswered(true)
 
     await submitAnswer({
       variables: {
@@ -487,6 +525,37 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const correctIds  = current ? new Set(current.answers.filter((a) => a.isCorrect).map((a) => a.id)) : new Set<string>()
   const timerPct    = timerSeconds ? (timeLeft ?? 0) / timerSeconds : 1
   const timerColor  = timerPct > 0.5 ? 'text-green-500' : timerPct > 0.2 ? 'text-yellow-400' : 'text-red-400'
+
+  // ── Guest cinematic loading screen (UPDATE-05) ────────────────────────────
+
+  if (!cinematicDone) {
+    const chapterLabel =
+      chapterIds.length === 0
+        ? 'All chapters'
+        : chapterIds.length === 1
+        ? `Chapter ${chapterIds[0]}`
+        : `Ch. ${chapterIds.join(' · Ch. ')}`
+
+    return (
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-8 px-6 text-center">
+        <div className="w-20 h-20 rounded-full border-4 border-green-500 border-t-transparent animate-spin" />
+        <div>
+          <h2 className="font-display text-2xl font-bold text-text-primary mb-2">Get Ready!</h2>
+          <p className="text-text-secondary text-sm">{chapterLabel}</p>
+        </div>
+        <div className="space-y-1.5">
+          <p className="text-xs text-text-secondary">Your opponent has chosen the questions</p>
+          <p className="text-xs text-text-secondary">Battle starts shortly...</p>
+        </div>
+        <button
+          onClick={() => setCinematicDone(true)}
+          className="text-xs text-text-secondary/50 hover:text-text-secondary underline"
+        >
+          Skip
+        </button>
+      </div>
+    )
+  }
 
   // ── Results screen ────────────────────────────────────────────────────────
 
@@ -604,16 +673,43 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           <AppLogo height={24} className="flex-shrink-0" />
 
           {/* Score rail */}
-          <div className="flex-1 flex items-center gap-3">
-            <span className="font-mono font-bold text-green-500 text-lg w-6 text-right">{myScore}</span>
-            <div className="flex-1 flex items-center gap-1">
+          <div className="flex-1 flex items-center gap-2">
+            {/* My side: avatar · score · answered indicator */}
+            <div className="flex items-center gap-1">
+              <div className="w-5 h-5 rounded-full bg-green-500/20 border border-green-700 flex items-center justify-center flex-shrink-0">
+                <span className="text-[9px] font-bold text-green-400">{myInitial}</span>
+              </div>
+              <span className="font-mono font-bold text-green-500 text-base">{myScore}</span>
+              <span className="w-4 flex items-center justify-center">
+                {myAnswered
+                  ? <CheckCircle size={13} className="text-green-500" />
+                  : <ThinkingDots colorClass="bg-green-500" />
+                }
+              </span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="flex-1 flex items-center gap-0.5">
               {questions.map((_, i) => (
                 <div key={i} className={`flex-1 h-1.5 rounded-full transition-all ${
                   i < qIndex ? 'bg-green-700' : i === qIndex ? 'bg-green-500' : 'bg-surface-3'
                 }`} />
               ))}
             </div>
-            <span className="font-mono font-bold text-red-400 text-lg w-6">{theirScore}</span>
+
+            {/* Opponent side: answered indicator · score · avatar */}
+            <div className="flex items-center gap-1">
+              <span className="w-4 flex items-center justify-center">
+                {opponentAnswered
+                  ? <CheckCircle size={13} className="text-red-400" />
+                  : <ThinkingDots colorClass="bg-red-400" />
+                }
+              </span>
+              <span className="font-mono font-bold text-red-400 text-base">{theirScore}</span>
+              <div className="w-5 h-5 rounded-full bg-red-500/15 border border-red-800 flex items-center justify-center flex-shrink-0">
+                <span className="text-[9px] font-bold text-red-400">?</span>
+              </div>
+            </div>
           </div>
 
           {/* Opponent status */}
