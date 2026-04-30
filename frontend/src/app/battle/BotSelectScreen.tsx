@@ -14,6 +14,7 @@ import { useState } from 'react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { ArrowLeft, Zap, Clock, AlertTriangle } from 'lucide-react'
 import { GiVintageRobot, GiMonoWheelRobot, GiRobotGolem } from 'react-icons/gi'
+import { useUserStore } from '@/stores'
 
 export type BotId = 'rusty' | 'dash' | 'apex'
 
@@ -95,6 +96,7 @@ interface BotSelectScreenProps {
 }
 
 export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
+  const stateCode     = useUserStore((s) => s.user?.stateCode ?? 'ok')
   const [selectedBot, setSelectedBot]   = useState<BotId>('rusty')
   const [questionCount, setQuestionCount] = useState(10)
   const [timer, setTimer]               = useState<number | null>(30)
@@ -225,7 +227,7 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
 
         {/* Start */}
         <button
-          onClick={() => onStart({ bot, questionCount, timerSeconds: timer, stateCode: 'ok' })}
+          onClick={() => onStart({ bot, questionCount, timerSeconds: timer, stateCode })}
           className="btn-primary w-full h-12 text-base font-semibold"
         >
           Battle {bot.name}!

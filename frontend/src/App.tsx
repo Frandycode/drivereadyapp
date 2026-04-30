@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react'
 import { useUserStore, applyTheme } from '@/stores'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { AuthPage } from '@/app/auth'
+import { OnboardingPage } from '@/app/onboarding/OnboardingPage'
 import { HomePage } from '@/app/index'
 import { LearnPage } from '@/app/learn/LearnPage'
 import { ChapterPage } from '@/app/learn/ChapterPage'
@@ -45,7 +46,7 @@ function PlaceholderPage({ title }: { title: string }) {
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
 function QuizSettingsModal({
-  chapterId,
+  chapterId: _chapterId,
   chapterNumber,
   chapterTitle,
   onStart,
@@ -57,14 +58,15 @@ function QuizSettingsModal({
   onStart: (config: QuizConfig) => void
   onCancel: () => void
 }) {
-  const [difficulty, setDifficulty] = useState<'pawn' | 'rogue' | 'king'>('pawn')
-  const [timer, setTimer]           = useState<number | null>(null)
+  const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
+  const [difficulty, setDifficulty]   = useState<'pawn' | 'rogue' | 'king'>('pawn')
+  const [timer, setTimer]             = useState<number | null>(null)
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn'  as const, label: '♟ Pawn',   desc: 'Unlimited hints & skips. 1× XP' },
-    { id: 'rogue' as const, label: '♞ Knight', desc: 'Limited hints & skips. 2× XP' },
-    { id: 'king'  as const, label: '♔ King',   desc: 'No hints or skips. 3× XP' },
+    { id: 'pawn'  as const, label: '♟ Pawn',   desc: 'Unlimited hints & skips · 1× XP', activeClass: 'border-bronze-500 bg-bronze-500/5' },
+    { id: 'rogue' as const, label: '♞ Knight', desc: 'Limited hints & skips · 2× XP',   activeClass: 'border-silver-500 bg-silver-500/5' },
+    { id: 'king'  as const, label: '♔ King',   desc: 'No hints or skips · 3× XP',        activeClass: 'border-gold-600 bg-gold-500/5'    },
   ]
 
   const TIMERS = [
@@ -102,12 +104,12 @@ function QuizSettingsModal({
 
           <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Difficulty</p>
           <div className="space-y-2 mb-5">
-            {DIFFICULTIES.map(({ id, label, desc }) => (
+            {DIFFICULTIES.map(({ id, label, desc, activeClass }) => (
               <button
                 key={id}
                 onClick={() => setDifficulty(id)}
-                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
-                  difficulty === id ? 'border-green-500 bg-green-500/5' : 'border-border hover:border-green-700'
+                className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
+                  difficulty === id ? activeClass : 'border-border hover:border-green-700'
                 }`}
               >
                 <p className="text-sm font-medium text-text-primary">{label}</p>
@@ -132,7 +134,7 @@ function QuizSettingsModal({
           </div>
 
           <button
-            onClick={() => onStart({ stateCode: 'ok', chapterNumber, chapterTitle, questionCount, difficulty, timerSeconds: timer })}
+            onClick={() => onStart({ stateCode, chapterNumber, chapterTitle, questionCount, difficulty, timerSeconds: timer })}
             className="btn-primary w-full h-12 text-base font-semibold"
           >
             Start Quiz
@@ -164,7 +166,7 @@ type AppScreen =
 export default function App() {
   const [path, setPath]       = useState(window.location.pathname)
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
-  const { user, theme, isHydrated } = useUserStore()
+  const { user, theme, isHydrated, needsOnboarding } = useUserStore()
 
   useEffect(() => { applyTheme(theme) }, [theme])
 
@@ -200,6 +202,10 @@ export default function App() {
   }
 
   if (!user) return <AuthPage />
+
+  if (needsOnboarding) {
+    return <OnboardingPage onDone={() => setAppScreen({ screen: 'home' })} />
+  }
 
   const activeNavPath =
     appScreen.screen === 'home'               ? '/' :
@@ -312,7 +318,7 @@ export default function App() {
 
   // Top-level pages
   const PAGES: Record<string, React.ReactNode> = {
-    home: <HomePage />,
+    home: <HomePage onNavigate={navigate} />,
     learn: <LearnPage onNavigate={navigate} />,
     study: (
       <StudyPage

@@ -16,7 +16,8 @@ import { type StudyConfig } from './StudyPage'
 import { FreeStudy } from './FreeStudy'
 import { DrillMode } from './DrillMode'
 import { TimerBlitz } from './TimerBlitz'
-import { CheckCircle, RotateCcw, Home } from 'lucide-react'
+import { CheckCircle, RotateCcw, Home, AlertTriangle } from 'lucide-react'
+import { useUserStore } from '@/stores'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -78,7 +79,7 @@ function ResultsScreen({
   const subline =
     mode === 'drill'
       ? pct >= 80
-        ? 'Great job! 🎉'
+        ? 'Great job! Keep it up.'
         : pct >= 50
         ? 'Keep going — you\'re making progress!'
         : 'Keep drilling — you\'ll get there!'
@@ -137,13 +138,43 @@ function ResultsScreen({
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export function StudySession({ config, onExit }: StudySessionProps) {
+  const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
   const [showResults, setShowResults] = useState(false)
   const [resultScore, setResultScore] = useState(0)
   const [resultTotal, setResultTotal] = useState(0)
   const [sessionKey, setSessionKey] = useState(0)
+  const [showExitConfirm, setShowExitConfirm] = useState(false)
+
+  const exitConfirmModal = showExitConfirm ? (
+    <>
+      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setShowExitConfirm(false)} />
+      <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+        <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm">
+          <div className="flex items-center gap-3 mb-3">
+            <AlertTriangle size={20} className="text-gold-500 flex-shrink-0" />
+            <h3 className="font-display font-bold text-text-primary">Leave session?</h3>
+          </div>
+          <p className="text-sm text-text-secondary mb-5">
+            Your progress on this session will be lost. Are you sure you want to quit?
+          </p>
+          <div className="flex gap-3">
+            <button onClick={() => setShowExitConfirm(false)} className="btn-secondary flex-1">
+              Keep going
+            </button>
+            <button
+              onClick={onExit}
+              className="flex-1 h-10 rounded-md bg-red-600 text-white text-sm font-semibold hover:bg-red-500 active:scale-95 transition-all"
+            >
+              Leave
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  ) : null
 
   const { data, loading, error } = useQuery(GET_QUESTIONS_BY_IDS, {
-    variables: { stateCode: 'ok' },
+    variables: { stateCode },
   })
 
   if (loading) {
@@ -210,34 +241,43 @@ export function StudySession({ config, onExit }: StudySessionProps) {
     key: sessionKey,
     questions,
     deckName: config.deckName,
-    onExit,
+    onExit: () => setShowExitConfirm(true),
   }
 
   if (config.mode === 'free') {
     return (
-      <FreeStudy
-        {...sharedProps}
-        onComplete={() => handleComplete(questions.length, questions.length)}
-      />
+      <>
+        <FreeStudy
+          {...sharedProps}
+          onComplete={() => handleComplete(questions.length, questions.length)}
+        />
+        {exitConfirmModal}
+      </>
     )
   }
 
   if (config.mode === 'drill') {
     return (
-      <DrillMode
-        {...sharedProps}
-        onComplete={(gotIt, total) => handleComplete(gotIt, total)}
-      />
+      <>
+        <DrillMode
+          {...sharedProps}
+          onComplete={(gotIt, total) => handleComplete(gotIt, total)}
+        />
+        {exitConfirmModal}
+      </>
     )
   }
 
   if (config.mode === 'blitz') {
     return (
-      <TimerBlitz
-        {...sharedProps}
-        seconds={config.blitzSeconds}
-        onComplete={(flipped, total) => handleComplete(flipped, total)}
-      />
+      <>
+        <TimerBlitz
+          {...sharedProps}
+          seconds={config.blitzSeconds}
+          onComplete={(flipped, total) => handleComplete(flipped, total)}
+        />
+        {exitConfirmModal}
+      </>
     )
   }
 

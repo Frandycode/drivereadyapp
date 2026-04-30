@@ -11,9 +11,10 @@
  */
 
 import { useState } from 'react'
-import { useMutation, gql } from '@apollo/client'
+import { useMutation, gql, ApolloError } from '@apollo/client'
 import { setAuthToken } from '@/lib/apollo'
 import { useUserStore } from '@/stores'
+import { AppLogo } from '@/components/layout/AppLogo'
 
 const REGISTER = gql`
   mutation Register($input: RegisterInput!) {
@@ -44,7 +45,8 @@ export function AuthPage() {
   const [displayName, setDisplayName] = useState('')
   const [error, setError] = useState('')
 
-  const setUser = useUserStore((s) => s.setUser)
+  const setUser            = useUserStore((s) => s.setUser)
+  const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
 
   const [register, { loading: registering }] = useMutation(REGISTER)
   const [login, { loading: loggingIn }] = useMutation(LOGIN)
@@ -68,30 +70,42 @@ export function AuthPage() {
       if (data?.accessToken && data?.user) {
         setAuthToken(data.accessToken)
         setUser({
-          id: data.user.id,
-          email: data.user.email,
-          displayName: data.user.displayName,
-          role: data.user.role,
-          stateCode: data.user.stateCode,
-          xpTotal: data.user.xpTotal,
-          level: data.user.level,
-          streakDays: data.user.streakDays,
+          id:           data.user.id,
+          email:        data.user.email,
+          displayName:  data.user.displayName,
+          role:         data.user.role,
+          stateCode:    data.user.stateCode,
+          xpTotal:      data.user.xpTotal,
+          level:        data.user.level,
+          streakDays:   data.user.streakDays,
           freezeTokens: data.user.freezeTokens,
         })
+        if (mode === 'register') {
+          setNeedsOnboarding(true)
+        }
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      if (err instanceof ApolloError) {
+        const msg = err.graphQLErrors[0]?.message ?? err.message
+        if (msg.includes('Invalid email or password')) {
+          setError('Incorrect email or password. Please try again.')
+        } else if (msg.includes('already registered')) {
+          setError('An account with this email already exists.')
+        } else {
+          setError(msg || 'Something went wrong. Please try again.')
+        }
+      } else {
+        setError('Unable to connect. Check your internet and try again.')
+      }
     }
   }
 
   return (
     <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4">
       {/* Logo */}
-      <div className="mb-8 text-center">
-        <h1 className="font-display text-4xl font-bold text-green-500 tracking-tight">
-          DriveReady
-        </h1>
-        <p className="text-text-secondary text-sm mt-1">
+      <div className="mb-8 text-center flex flex-col items-center gap-3">
+        <AppLogo height={110} />
+        <p className="text-text-secondary text-sm">
           Learn it. Know it. Drive it.
         </p>
       </div>
@@ -182,9 +196,8 @@ export function AuthPage() {
         </form>
       </div>
 
-      {/* State badge */}
       <p className="mt-6 text-text-secondary text-xs">
-        Oklahoma Permit Exam • 50 questions • 80% to pass
+        All 50 states · AI-powered · Free to start
       </p>
     </div>
   )

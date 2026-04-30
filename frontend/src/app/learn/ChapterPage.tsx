@@ -15,6 +15,7 @@ import { PageWrapper } from '@/components/layout/PageWrapper'
 import { ArrowLeft, BookOpen, CheckCircle, Circle } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
+import { useUserStore } from '@/stores'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -51,11 +52,12 @@ interface ChapterPageProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
+  const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null)
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set())
 
   const { data, loading, error } = useQuery(GET_CHAPTER_LESSONS, {
-    variables: { chapterId, stateCode: 'ok' },
+    variables: { chapterId, stateCode },
   })
 
   const lessons: Lesson[] = data?.lessons ?? []

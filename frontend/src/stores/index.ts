@@ -63,10 +63,12 @@ function xpToLevel(xp: number): number {
 
 interface UserStore {
   user: User | null
+  needsOnboarding: boolean
   theme: 'dark' | 'light' | 'system'
   isHydrated: boolean
   setUser: (user: User) => void
   clearUser: () => void
+  setNeedsOnboarding: (value: boolean) => void
   setTheme: (theme: 'dark' | 'light' | 'system') => void
   updateXP: (newXP: number, newLevel: number) => void
   addXP: (amount: number) => void
@@ -78,11 +80,13 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       user: null,
+      needsOnboarding: false,
       theme: 'dark',
       isHydrated: false,
 
       setUser: (user) => set({ user }),
-      clearUser: () => set({ user: null }),
+      clearUser: () => set({ user: null, needsOnboarding: false }),
+      setNeedsOnboarding: (value) => set({ needsOnboarding: value }),
       setTheme: (theme) => set({ theme }),
       updateXP: (newXP, newLevel) =>
         set((state) => ({

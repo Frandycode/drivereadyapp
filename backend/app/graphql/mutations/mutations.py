@@ -12,6 +12,7 @@ import asyncio
 import json
 import random
 import string
+import time
 import uuid
 from datetime import datetime, timezone
 from typing import Optional
@@ -191,9 +192,9 @@ class Mutation:
         if existing.scalar_one_or_none():
             raise ValueError("Email already registered")
 
-        pwd_context.hash(input.password)
         user = User(
             email=input.email.lower(),
+            password_hash=pwd_context.hash(input.password),
             display_name=input.display_name,
             state_code=input.state_code,
             role="learner",
@@ -212,11 +213,36 @@ class Mutation:
 
         result = await db.execute(select(User).where(User.email == input.email.lower()))
         user = result.scalar_one_or_none()
-        if not user:
+        if not user or not user.password_hash or not pwd_context.verify(input.password, user.password_hash):
             raise ValueError("Invalid email or password")
 
         token = create_access_token(str(user.id), user.role)
         return AuthPayloadType(access_token=token, user=map_user(user))
+
+    @strawberry.mutation
+    async def update_profile(
+        self,
+        info: Info,
+        state_code: Optional[str] = None,
+        test_date: Optional[str] = None,
+    ) -> UserType:
+        """Update user profile (state and test date) after onboarding."""
+        from datetime import date as date_type
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        if state_code is not None:
+            user.state_code = state_code.lower().strip()
+        if test_date is not None:
+            try:
+                user.test_date = date_type.fromisoformat(test_date)
+            except ValueError:
+                pass
+
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+        return map_user(user)
 
     # ── Sessions ──────────────────────────────────────────────────────────────
 
@@ -664,6 +690,44 @@ class Mutation:
         await _save_cache(str(battle.id), cache)
 
         await _publish(str(battle.id), _base_payload(battle, user, "forfeit"))
+        return map_battle(battle)
+
+    # ── Battle — rejoin ───────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def rejoin_battle(
+        self,
+        info: Info,
+        battle_id: strawberry.ID,
+    ) -> BattleType:
+        """
+        Player reconnects after a brief network drop.
+        Resets their heartbeat, publishes player_reconnected so both sides can sync,
+        and returns the current battle state (scores, state).
+        """
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        result = await db.execute(
+            select(Battle).where(Battle.id == uuid.UUID(str(battle_id)))
+        )
+        battle = result.scalar_one_or_none()
+        if not battle:
+            raise ValueError("Battle not found")
+        if battle.state not in ("active", "waiting"):
+            raise ValueError("Battle is no longer active")
+
+        is_player   = _is_player(battle, user)
+        is_opponent = (battle.opponent_id is not None and battle.opponent_id == user.id)
+        if not is_player and not is_opponent:
+            raise ValueError("You are not a participant in this battle")
+
+        cache = await _get_cache(str(battle.id))
+        hb_key = "player_heartbeat" if is_player else "opponent_heartbeat"
+        cache[hb_key] = time.time()
+        await _save_cache(str(battle.id), cache)
+
+        await _publish(str(battle.id), _base_payload(battle, user, "player_reconnected"))
         return map_battle(battle)
 
     # ── Battle — draw request ─────────────────────────────────────────────────
