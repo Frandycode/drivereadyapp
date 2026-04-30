@@ -19,6 +19,7 @@ import { IoSad } from 'react-icons/io5'
 import { FaHandshake } from 'react-icons/fa'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
+import { XPBreakdownScreen, buildBattleXPItems } from './XPBreakdownScreen'
 import type { PeerBattleSetup } from './PeerBattleLobby'
 
 // ── GQL ───────────────────────────────────────────────────────────────────────
@@ -180,6 +181,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const [autoSubmit, setAutoSubmit]             = useState(false)
   const [autoAdvance, setAutoAdvance]           = useState(false)
   const [isReconnecting, setIsReconnecting]     = useState(false)
+  const [showXPScreen, setShowXPScreen]         = useState(false)
 
   // ── Refs ──────────────────────────────────────────────────────────────────
   const timerRef         = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -376,6 +378,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         if (raw === 'opponent') resolved = iAmPlayer ? 'lose' : 'win'
         if (raw === 'tie')      resolved = 'tie'
         setWinner(resolved)
+        setShowXPScreen(true)
         setPhase('complete')
         break
       }
@@ -486,6 +489,27 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const timerColor  = timerPct > 0.5 ? 'text-green-500' : timerPct > 0.2 ? 'text-yellow-400' : 'text-red-400'
 
   // ── Results screen ────────────────────────────────────────────────────────
+
+  if (phase === 'complete' && showXPScreen) {
+    const xpOutcome = (winner === 'win' || winner === 'lose' || winner === 'tie') ? winner : 'lose'
+    const { items, totalXP } = buildBattleXPItems({
+      outcome: xpOutcome,
+      playerScore: myScore,
+      totalQuestions: questions.length,
+      isClean: myScore === questions.length,
+    })
+    return (
+      <XPBreakdownScreen
+        outcome={xpOutcome}
+        playerScore={myScore}
+        opponentScore={theirScore}
+        totalQuestions={questions.length}
+        items={items}
+        totalXP={totalXP}
+        onDone={() => setShowXPScreen(false)}
+      />
+    )
+  }
 
   if (phase === 'complete') {
     const iconMap: Record<string, React.ReactNode> = {

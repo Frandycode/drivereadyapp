@@ -13,9 +13,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { clsx } from 'clsx'
-import { X, CheckCircle, XCircle } from 'lucide-react'
+import { X, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import { AppLogo } from '@/components/layout/AppLogo'
 import { BotAvatar } from './BotAvatar'
 import { BotBattleResults } from './BotBattleResults'
+import { XPBreakdownScreen, buildBattleXPItems } from './XPBreakdownScreen'
 import type { BotBattleConfig } from './BotSelectScreen'
 
 const GET_QUESTIONS = gql`
@@ -68,7 +70,9 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
   const [botScore, setBotScore]             = useState(0)
   const [totalXP, setTotalXP]               = useState(0)
   const [showResults, setShowResults]       = useState(false)
+  const [showXPScreen, setShowXPScreen]     = useState(false)
   const [timeLeft, setTimeLeft]             = useState<number | null>(null)
+  const [showExitConfirm, setShowExitConfirm] = useState(false)
   const botTimerRef                         = useRef<ReturnType<typeof setTimeout> | null>(null)
   const questionTimerRef                    = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -181,6 +185,7 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
     const nextIndex = queueIndex + 1
     if (nextIndex >= queue.length) {
       if (sessionId) await completeSession({ variables: { sessionId } })
+      setShowXPScreen(true)
       setShowResults(true)
     } else {
       setQueueIndex(nextIndex)
@@ -203,7 +208,7 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
     setSelectedIds([]); setPlayerRevealed(false); setBotRevealed(false)
     setBothRevealed(false); setBotAnswerIds([]); setBotThinking(true)
     setPlayerScore(0); setBotScore(0); setTotalXP(0)
-    setShowResults(false); setTimeLeft(config.timerSeconds)
+    setShowResults(false); setShowXPScreen(false); setTimeLeft(config.timerSeconds)
     setRetryKey((k) => k + 1)
   }
 
@@ -212,6 +217,27 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
       <div className="min-h-dvh bg-bg flex items-center justify-center">
         <p className="text-text-secondary text-sm animate-pulse">Loading battle...</p>
       </div>
+    )
+  }
+
+  if (showResults && showXPScreen) {
+    const outcome = playerScore > botScore ? 'win' : playerScore < botScore ? 'lose' : 'tie'
+    const { items, totalXP: xpTotal } = buildBattleXPItems({
+      outcome,
+      playerScore,
+      totalQuestions: queue.length,
+      isClean: playerScore === queue.length,
+    })
+    return (
+      <XPBreakdownScreen
+        outcome={outcome}
+        playerScore={playerScore}
+        opponentScore={botScore}
+        totalQuestions={queue.length}
+        items={items}
+        totalXP={xpTotal}
+        onDone={() => setShowXPScreen(false)}
+      />
     )
   }
 
@@ -238,9 +264,10 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
       {/* Header */}
       <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
         <div className="flex items-center gap-3 max-w-content mx-auto">
-          <button onClick={onExit} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
+          <button onClick={() => setShowExitConfirm(true)} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
             <X size={20} />
           </button>
+          <AppLogo height={24} className="flex-shrink-0" />
 
           <div className="flex-1 flex items-center gap-3">
             <span className="font-mono font-bold text-green-500 text-lg w-6 text-right">{playerScore}</span>
@@ -379,6 +406,35 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
           </button>
         )}
       </div>
+
+      {/* Exit confirmation */}
+      {showExitConfirm && (
+        <>
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setShowExitConfirm(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <AlertTriangle size={20} className="text-gold-500 flex-shrink-0" />
+                <h3 className="font-display font-bold text-text-primary">Leave battle?</h3>
+              </div>
+              <p className="text-sm text-text-secondary mb-5">
+                Your battle progress will be lost. Are you sure you want to quit?
+              </p>
+              <div className="flex gap-3">
+                <button onClick={() => setShowExitConfirm(false)} className="btn-secondary flex-1">
+                  Keep going
+                </button>
+                <button
+                  onClick={onExit}
+                  className="flex-1 h-10 rounded-md bg-red-600 text-white text-sm font-semibold hover:bg-red-500 active:scale-95 transition-all"
+                >
+                  Leave
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
