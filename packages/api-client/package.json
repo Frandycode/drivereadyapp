@@ -1,0 +1,17 @@
+{
+  "name": "@driveready/api-client",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "devDependencies": {
+    "@apollo/client": "^3.11.0",
+    "graphql": "^16.9.0",
+    "graphql-ws": "^5.16.0"
+  },
+  "peerDependencies": {
+    "@apollo/client": ">=3",
+    "graphql": ">=16",
+    "graphql-ws": ">=5"
+  }
+}

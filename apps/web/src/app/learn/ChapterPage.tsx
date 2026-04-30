@@ -16,7 +16,7 @@ import { ArrowLeft, BookOpen, CheckCircle, Circle } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
 import { useUserStore } from '@/stores'
-import { useMinLoadTime } from '@/hooks/useMinLoadTime'
+import { useMinLoadTime } from '@driveready/hooks'
 import { ChapterPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────

@@ -3,7 +3,7 @@ services:
   # ── FastAPI + GraphQL ───────────────────────────────────────────────────────
   api:
     build:
-      context: ./backend
+      context: ./apps/api
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -23,7 +23,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./backend:/app        # hot reload — code changes reflect immediately
+      - ./apps/api:/app        # hot reload — code changes reflect immediately
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     networks:
       - driveready
@@ -31,7 +31,7 @@ services:
   # ── Celery Worker ───────────────────────────────────────────────────────────
   worker:
     build:
-      context: ./backend
+      context: ./apps/api
       dockerfile: Dockerfile
     environment:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/driveready
@@ -45,7 +45,7 @@ services:
       - db
       - redis
     volumes:
-      - ./backend:/app
+      - ./apps/api:/app
     command: celery -A app.tasks.celery_app worker -l info -Q default,ai
     networks:
       - driveready

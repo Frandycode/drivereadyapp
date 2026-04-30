@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
-import { setAuthToken } from '@/lib/apollo'
+import { setAuthToken } from '@driveready/api-client'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
 

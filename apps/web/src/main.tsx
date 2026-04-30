@@ -13,7 +13,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ApolloProvider } from '@apollo/client'
-import { apolloClient } from '@/lib/apollo'
+import { apolloClient } from '@driveready/api-client'
 import App from './App'
 import './index.css'
 

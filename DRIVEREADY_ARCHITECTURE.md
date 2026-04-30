@@ -1,7 +1,7 @@
 # DriveReady — Architecture & Build Decisions
 
-> Last updated: April 28, 2026
-> Status: Phase 5b in progress
+> Last updated: April 30, 2026
+> Status: Phase 6 complete — monorepo live
 
 ---
 
@@ -17,20 +17,21 @@ DriveReady will ship on three platforms, built in this order:
 
 ---
 
-## Monorepo Structure (Post Phase 5b)
+## Monorepo Structure (Phase 6 — Live)
 
 ```
-driveready/
+driveready/                   ← npm workspaces root
+  ├── package.json            ← workspaces: ["apps/*", "packages/*"]
   ├── apps/
-  │     ├── web/          ← React + Vite (current frontend)
-  │     ├── mobile/       ← React Native + Expo
-  │     └── desktop/      ← Tauri (wraps web app)
-  ├── packages/
-  │     ├── shared/       ← TypeScript types, constants, game logic
-  │     ├── api-client/   ← Apollo Client + GraphQL queries/mutations/subscriptions
-  │     ├── hooks/        ← useGame, useBattle, useAuth (platform-agnostic)
-  │     └── ui/           ← Design tokens only (colors, spacing, fonts)
-  └── backend/            ← FastAPI (unchanged)
+  │     ├── web/              ← React + Vite  (@driveready/web)
+  │     ├── api/              ← FastAPI + Strawberry + PostgreSQL + Redis
+  │     ├── mobile/           ← React Native + Expo  [Phase 7]
+  │     └── desktop/          ← Tauri  [Phase 8]
+  └── packages/
+        ├── shared/           ← TS types, enums  (@driveready/shared)
+        ├── api-client/       ← Apollo Client + token helpers  (@driveready/api-client)
+        ├── hooks/            ← Platform-agnostic React hooks  (@driveready/hooks)
+        └── ui/               ← Generic UI primitives  (@driveready/ui)
 ```
 
 ### What is shared across all platforms
@@ -287,20 +288,13 @@ last_active_at
 ## Build Order (Remaining)
 
 ```
-Phase 5b  → Peer Battle backend complete (in progress)
-           → forfeit / draw / disconnect mutations + subscription events
-           → player_behavior_log + player_stats migrations
+Phase 5b  ✅ Peer Battle backend complete
+Phase 5c  ✅ Apollo WebSocket link + PeerBattle UI
+Phase 6   ✅ Monorepo — backend → apps/api, frontend → apps/web
+              packages/@driveready/{hooks,api-client,ui,shared}
 
-Phase 5c  → Apollo WebSocket link (frontend)
-           → PeerBattle UI component
-
-Phase 6   → Monorepo restructure
-           → Move web into apps/web
-           → Create packages/ (shared, api-client, hooks, ui)
-
-Phase 7   → React Native mobile app (Expo)
-
-Phase 8   → Desktop app (Tauri)
+Phase 7   → React Native mobile app (Expo) — apps/mobile
+Phase 8   → Desktop app (Tauri)            — apps/desktop
 ```
 
 ---

@@ -15,7 +15,7 @@ import { useQuery, useMutation, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Layers, BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2 } from 'lucide-react'
 import { useUserStore } from '@/stores'
-import { useMinLoadTime } from '@/hooks/useMinLoadTime'
+import { useMinLoadTime } from '@driveready/hooks'
 import { StudyPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────

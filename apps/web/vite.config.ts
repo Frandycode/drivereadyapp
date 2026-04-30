@@ -62,7 +62,13 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@':                      path.resolve(__dirname, './src'),
+      '@driveready/hooks':      path.resolve(__dirname, '../../packages/hooks/src'),
+      '@driveready/api-client': path.resolve(__dirname, '../../packages/api-client/src'),
+      '@driveready/ui':         path.resolve(__dirname, '../../packages/ui/src'),
+      '@driveready/shared':     path.resolve(__dirname, '../../packages/shared/src'),
+    },
   },
   server: {
     port: 5173,
