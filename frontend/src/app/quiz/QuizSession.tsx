@@ -16,6 +16,7 @@ import { SessionHeader } from './SessionHeader'
 import { QuestionCard, type Question } from './QuestionCard'
 import { HintPanel } from './HintPanel'
 import { QuizResults } from './QuizResults'
+import { QuizQuestionSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -315,11 +316,7 @@ export function QuizSession({ config, onExit }: { config: QuizConfig; onExit: ()
   // ── Render ─────────────────────────────────────────────────────────────────
 
   if (!current && !showResults) {
-    return (
-      <div className="min-h-dvh bg-bg flex items-center justify-center">
-        <p className="text-text-secondary text-sm animate-pulse">Loading questions...</p>
-      </div>
-    )
+    return <QuizQuestionSkeleton />
   }
 
   if (showResults) {

@@ -16,6 +16,8 @@ import { ArrowLeft, BookOpen, CheckCircle, Circle } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
 import { useUserStore } from '@/stores'
+import { useMinLoadTime } from '@/hooks/useMinLoadTime'
+import { ChapterPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -60,6 +62,8 @@ export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
     variables: { chapterId, stateCode },
   })
 
+  const isLoading = useMinLoadTime(loading)
+
   const lessons: Lesson[] = data?.lessons ?? []
   const chapters = data?.chapters ?? []
   const chapter = chapters.find((c: { id: string }) => c.id === chapterId)
@@ -86,17 +90,10 @@ export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
     </div>
   )
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageWrapper header={header}>
-        <div className="space-y-3 mt-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="card animate-pulse">
-              <div className="h-4 bg-surface-3 rounded w-1/2 mb-2" />
-              <div className="h-3 bg-surface-3 rounded w-full" />
-            </div>
-          ))}
-        </div>
+        <ChapterPageSkeleton />
       </PageWrapper>
     )
   }

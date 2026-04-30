@@ -14,6 +14,8 @@ import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { BookOpen, Lock, ChevronRight, CheckCircle } from 'lucide-react'
 import { useUserStore } from '@/stores'
+import { useMinLoadTime } from '@/hooks/useMinLoadTime'
+import { LearnPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -67,6 +69,8 @@ export function LearnPage({ onNavigate }: LearnPageProps) {
     variables: { stateCode },
   })
 
+  const isLoading = useMinLoadTime(loading)
+
   const chapters: Chapter[] = data?.chapters ?? []
   const progressList: Progress[] = data?.myProgress ?? []
 
@@ -82,18 +86,10 @@ export function LearnPage({ onNavigate }: LearnPageProps) {
     </div>
   )
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageWrapper header={header}>
-        <div className="space-y-3 mt-2">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="card animate-pulse">
-              <div className="h-4 bg-surface-3 rounded w-2/3 mb-2" />
-              <div className="h-3 bg-surface-3 rounded w-full mb-3" />
-              <div className="h-2 bg-surface-3 rounded w-full" />
-            </div>
-          ))}
-        </div>
+        <LearnPageSkeleton />
       </PageWrapper>
     )
   }

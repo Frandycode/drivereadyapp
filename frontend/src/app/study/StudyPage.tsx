@@ -15,6 +15,8 @@ import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Layers, BookMarked, BookOpen, List, Zap, Clock } from 'lucide-react'
 import { useUserStore } from '@/stores'
+import { useMinLoadTime } from '@/hooks/useMinLoadTime'
+import { StudyPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -93,6 +95,7 @@ export function StudyPage({ onStart }: StudyPageProps) {
   const [blitzSeconds, setBlitzSeconds]   = useState(60)
 
   const { data, loading } = useQuery(GET_STUDY_DATA, { variables: { stateCode } })
+  const isLoading = useMinLoadTime(loading)
 
   const bookmarks    = data?.myBookmarks ?? []
   const decks        = data?.myDecks     ?? []
@@ -146,12 +149,10 @@ export function StudyPage({ onStart }: StudyPageProps) {
     </div>
   )
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageWrapper header={header}>
-        <div className="space-y-4 mt-2 animate-pulse">
-          {[1, 2, 3].map((i) => <div key={i} className="card h-20 bg-surface-2" />)}
-        </div>
+        <StudyPageSkeleton />
       </PageWrapper>
     )
   }
