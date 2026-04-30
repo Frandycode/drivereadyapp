@@ -19,6 +19,7 @@ from .session import (  # noqa: F401
     Achievement,
     UserAchievement,
     FlashcardDeck,
+    ChapterGroup,
     Battle,
 )
 from .stats import PlayerBehaviorLog, PlayerStats  # noqa: F401
@@ -29,6 +30,6 @@ __all__ = [
     "Chapter", "Lesson", "Question", "Answer",
     "Session", "SessionAnswer", "UserProgress",
     "Bookmark", "Achievement", "UserAchievement",
-    "FlashcardDeck", "Battle",
+    "FlashcardDeck", "ChapterGroup", "Battle",
     "PlayerBehaviorLog", "PlayerStats",
 ]

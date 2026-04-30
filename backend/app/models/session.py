@@ -160,6 +160,18 @@ class FlashcardDeck(Base, UUIDMixin, TimestampMixin):
     user: Mapped["User"] = relationship(back_populates="decks")
 
 
+class ChapterGroup(Base, UUIDMixin, TimestampMixin):
+    __tablename__ = "chapter_groups"
+
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    state_code: Mapped[str] = mapped_column(String(5), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    chapter_numbers: Mapped[list[int]] = mapped_column(ARRAY(Integer), nullable=False, default=list)
+    is_preset: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+
 class Battle(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "battles"
 

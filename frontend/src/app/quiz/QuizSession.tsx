@@ -71,6 +71,7 @@ export interface QuizConfig {
   stateCode: string
   chapterId?: string
   chapterNumber?: number
+  chapterNumbers?: number[]   // overrides chapterNumber when set (multi-chapter groups)
   chapterTitle?: string
   questionCount: number
   difficulty: 'pawn' | 'rogue' | 'king'
@@ -116,7 +117,7 @@ export function QuizSession({ config, onExit }: { config: QuizConfig; onExit: ()
   const allowance = getHintSkipAllowance(config.difficulty, config.questionCount)
   const hintsLeft = allowance === null ? null : Math.max(0, allowance - hintsUsed)
   const skipsLeft = allowance === null ? null : Math.max(0, allowance - skipsUsed)
-  const chapters  = config.chapterNumber ? [config.chapterNumber] : undefined
+  const chapters  = config.chapterNumbers ?? (config.chapterNumber ? [config.chapterNumber] : undefined)
 
   const { data } = useQuery(GET_QUESTIONS, {
     variables: { stateCode: config.stateCode, count: config.questionCount, chapters },

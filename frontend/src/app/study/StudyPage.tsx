@@ -11,9 +11,9 @@
  */
 
 import { useState } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Layers, BookMarked, BookOpen, List, Zap, Clock } from 'lucide-react'
+import { Layers, BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2 } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { useMinLoadTime } from '@/hooks/useMinLoadTime'
 import { StudyPageSkeleton } from '@/components/ui/Skeleton'
@@ -26,13 +26,28 @@ const GET_STUDY_DATA = gql`
     myDecks { id name isSmart }
     chapters(stateCode: $stateCode) { id number title }
     questions(stateCode: $stateCode, count: 999) { id questionText chapter }
+    chapterGroups(stateCode: $stateCode) { id name chapterNumbers isPreset }
+  }
+`
+
+const CREATE_GROUP = gql`
+  mutation CreateChapterGroup($name: String!, $stateCode: String!, $chapterNumbers: [Int!]!) {
+    createChapterGroup(name: $name, stateCode: $stateCode, chapterNumbers: $chapterNumbers) {
+      id name chapterNumbers isPreset
+    }
+  }
+`
+
+const DELETE_GROUP = gql`
+  mutation DeleteChapterGroup($id: ID!) {
+    deleteChapterGroup(id: $id)
   }
 `
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type StudyMode = 'free' | 'drill' | 'blitz'
-export type DeckSource = 'smart' | 'chapter' | 'saved'
+export type DeckSource = 'smart' | 'chapter' | 'saved' | 'group'
 
 export interface StudyConfig {
   mode: StudyMode
@@ -54,9 +69,10 @@ interface StudyPageProps {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const SOURCES: { id: DeckSource; label: string; description: string; Icon: React.ElementType }[] = [
-  { id: 'smart',   label: 'Smart Deck',   description: 'Bookmarks + weak areas',   Icon: BookMarked },
-  { id: 'chapter', label: 'By Chapter',   description: 'Pick a specific chapter',  Icon: BookOpen },
-  { id: 'saved',   label: 'Saved Decks',  description: 'Your custom collections',  Icon: List },
+  { id: 'smart',   label: 'Smart Deck',   description: 'Bookmarks + weak areas',   Icon: BookMarked  },
+  { id: 'chapter', label: 'By Chapter',   description: 'Pick a specific chapter',  Icon: BookOpen    },
+  { id: 'saved',   label: 'Saved Decks',  description: 'Your custom collections',  Icon: List        },
+  { id: 'group',   label: 'By Group',     description: 'Multi-chapter collections', Icon: FolderOpen },
 ]
 
 const MODES: { id: StudyMode; label: string; description: string; Icon: React.ElementType }[] = [
@@ -84,6 +100,94 @@ function StepConnector({ active }: { active: boolean }) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+// ── Create Group Modal ────────────────────────────────────────────────────────
+
+interface ChapterGroupRaw {
+  id: string
+  name: string
+  chapterNumbers: number[]
+  isPreset: boolean
+}
+
+function CreateGroupModal({
+  chapters,
+  stateCode,
+  onCreated,
+  onClose,
+}: {
+  chapters: { id: string; number: number; title: string }[]
+  stateCode: string
+  onCreated: (group: ChapterGroupRaw) => void
+  onClose: () => void
+}) {
+  const [groupName, setGroupName] = useState('')
+  const [selected, setSelected]   = useState<number[]>([])
+  const [createGroup, { loading }] = useMutation(CREATE_GROUP)
+
+  function toggleChapter(num: number) {
+    setSelected((prev) => prev.includes(num) ? prev.filter((n) => n !== num) : [...prev, num])
+  }
+
+  async function handleCreate() {
+    if (!groupName.trim() || selected.length === 0) return
+    const result = await createGroup({
+      variables: { name: groupName.trim(), stateCode, chapterNumbers: selected },
+      refetchQueries: [{ query: GET_STUDY_DATA, variables: { stateCode } }],
+    })
+    if (result.data?.createChapterGroup) onCreated(result.data.createChapterGroup)
+    onClose()
+  }
+
+  return (
+    <>
+      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div className="bg-surface border border-border rounded-2xl p-5 w-full max-w-sm max-h-[80dvh] flex flex-col">
+          <h2 className="font-display text-lg font-bold text-text-primary mb-1">New Chapter Group</h2>
+          <p className="text-text-secondary text-xs mb-4">Name your group and pick chapters to include.</p>
+
+          <input
+            className="input mb-4"
+            placeholder="Group name (e.g. Signs & Safety)"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            maxLength={60}
+          />
+
+          <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Chapters</p>
+          <div className="overflow-y-auto flex-1 space-y-1 mb-4 pr-1">
+            {chapters.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => toggleChapter(c.number)}
+                className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
+                  selected.includes(c.number)
+                    ? 'border-green-500 bg-green-500/10'
+                    : 'border-border bg-surface hover:border-green-700'
+                }`}
+              >
+                <span className={`text-sm font-medium ${selected.includes(c.number) ? 'text-green-400' : 'text-text-primary'}`}>
+                  Ch. {c.number} — {c.title}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={handleCreate}
+            disabled={loading || !groupName.trim() || selected.length === 0}
+            className="btn-primary w-full h-11 text-sm font-semibold disabled:opacity-40"
+          >
+            {loading ? 'Creating…' : `Create Group (${selected.length} chapters)`}
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
 export function StudyPage({ onStart }: StudyPageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
@@ -91,16 +195,20 @@ export function StudyPage({ onStart }: StudyPageProps) {
   const [mode, setMode]                   = useState<StudyMode>('free')
   const [selectedChapterId, setChapterId] = useState<string>('')
   const [selectedDeckId, setDeckId]       = useState<string>('')
+  const [selectedGroupId, setGroupId]     = useState<string>('')
   const [cardCount, setCardCount]         = useState(10)
   const [blitzSeconds, setBlitzSeconds]   = useState(60)
+  const [showCreateGroup, setShowCreateGroup] = useState(false)
 
   const { data, loading } = useQuery(GET_STUDY_DATA, { variables: { stateCode } })
+  const [deleteGroup] = useMutation(DELETE_GROUP)
   const isLoading = useMinLoadTime(loading)
 
-  const bookmarks    = data?.myBookmarks ?? []
-  const decks        = data?.myDecks     ?? []
-  const chapters     = data?.chapters    ?? []
-  const allQuestions = data?.questions   ?? []
+  const bookmarks    = data?.myBookmarks    ?? []
+  const decks        = data?.myDecks        ?? []
+  const chapters     = data?.chapters       ?? []
+  const allQuestions = data?.questions      ?? []
+  const groups: ChapterGroupRaw[] = data?.chapterGroups ?? []
 
   function buildQuestionIds(): string[] {
     if (source === 'smart') {
@@ -123,22 +231,50 @@ export function StudyPage({ onStart }: StudyPageProps) {
       const deck = decks.find((d: { id: string }) => d.id === selectedDeckId)
       return (deck?.question_ids ?? []).slice(0, cardCount)
     }
+    if (source === 'group') {
+      const group = groups.find((g) => g.id === selectedGroupId)
+      if (!group) return []
+      return allQuestions
+        .filter((q: { chapter: number }) => group.chapterNumbers.includes(q.chapter))
+        .map((q: { id: string }) => q.id)
+        .slice(0, cardCount)
+    }
     return []
+  }
+
+  async function handleDeleteGroup(id: string) {
+    await deleteGroup({
+      variables: { id },
+      refetchQueries: [{ query: GET_STUDY_DATA, variables: { stateCode } }],
+    })
+    if (selectedGroupId === id) setGroupId('')
   }
 
   function handleStart() {
     const questionIds = buildQuestionIds()
     if (questionIds.length === 0) return
-    const chap = chapters.find((c: { id: string }) => c.id === selectedChapterId)
-    const deck = decks.find((d: { id: string }) => d.id === selectedDeckId)
+    const chap  = chapters.find((c: { id: string }) => c.id === selectedChapterId)
+    const deck  = decks.find((d: { id: string }) => d.id === selectedDeckId)
+    const group = groups.find((g) => g.id === selectedGroupId)
     const deckName =
       source === 'smart'   ? 'Smart Deck' :
-      source === 'chapter' ? chap?.title ?? 'Chapter' :
-                             deck?.name  ?? 'Saved Deck'
-    onStart({ mode, source, chapterId: selectedChapterId || undefined, chapterNumber: chap?.number, deckId: selectedDeckId || undefined, deckName, cardCount, blitzSeconds, questionIds })
+      source === 'chapter' ? chap?.title  ?? 'Chapter' :
+      source === 'group'   ? group?.name  ?? 'Group' :
+                             deck?.name   ?? 'Saved Deck'
+    onStart({
+      mode, source,
+      chapterId: selectedChapterId || undefined,
+      chapterNumber: chap?.number,
+      deckId: selectedDeckId || undefined,
+      deckName, cardCount, blitzSeconds, questionIds,
+    })
   }
 
-  const step1Done = source === 'smart' || (source === 'chapter' && !!selectedChapterId) || (source === 'saved' && !!selectedDeckId)
+  const step1Done =
+    source === 'smart' ||
+    (source === 'chapter' && !!selectedChapterId) ||
+    (source === 'saved'   && !!selectedDeckId) ||
+    (source === 'group'   && !!selectedGroupId)
   const step2Done = !!mode
   const canStart  = step1Done && allQuestions.length > 0
 
@@ -158,6 +294,7 @@ export function StudyPage({ onStart }: StudyPageProps) {
   }
 
   return (
+    <>
     <PageWrapper header={header}>
       <div className="mt-1 pb-4">
 
@@ -166,11 +303,11 @@ export function StudyPage({ onStart }: StudyPageProps) {
           <p className="text-xs font-semibold text-green-500 uppercase tracking-widest mb-3">
             Step 1 · Choose your deck
           </p>
-          <div className="grid grid-cols-3 gap-2 mb-3">
+          <div className="grid grid-cols-2 gap-2 mb-3">
             {SOURCES.map(({ id, label, Icon }) => (
               <button
                 key={id}
-                onClick={() => { setSource(id); setChapterId(''); setDeckId('') }}
+                onClick={() => { setSource(id); setChapterId(''); setDeckId(''); setGroupId('') }}
                 className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border-2 transition-all duration-150 ${
                   source === id
                     ? 'border-green-500 bg-green-500/10'
@@ -219,6 +356,52 @@ export function StudyPage({ onStart }: StudyPageProps) {
                 ? `${bookmarks.length} bookmark${bookmarks.length !== 1 ? 's' : ''} + fills from weak areas`
                 : 'Pulls questions from your weakest areas'}
             </p>
+          )}
+          {source === 'group' && (
+            <div className="mt-1 space-y-2">
+              {groups.length === 0 && (
+                <p className="text-xs text-text-secondary">No groups yet. Create one below.</p>
+              )}
+              {groups.map((g) => (
+                <div
+                  key={g.id}
+                  onClick={() => setGroupId(g.id)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border-2 cursor-pointer transition-all ${
+                    selectedGroupId === g.id
+                      ? 'border-green-500 bg-green-500/10'
+                      : 'border-border bg-surface hover:border-green-700'
+                  }`}
+                >
+                  <FolderOpen size={16} className={selectedGroupId === g.id ? 'text-green-500' : 'text-text-secondary'} />
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-medium truncate ${selectedGroupId === g.id ? 'text-green-400' : 'text-text-primary'}`}>
+                      {g.name}
+                    </p>
+                    <p className="text-xs text-text-secondary">
+                      {g.chapterNumbers.length === 1
+                        ? `Ch. ${g.chapterNumbers[0]}`
+                        : `Ch. ${g.chapterNumbers.slice().sort((a, b) => a - b).join(', ')}`}
+                      {g.isPreset && <span className="ml-1.5 text-gold-500">preset</span>}
+                    </p>
+                  </div>
+                  {!g.isPreset && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleDeleteGroup(g.id) }}
+                      className="text-text-secondary hover:text-red-400 transition-colors p-1"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                onClick={() => setShowCreateGroup(true)}
+                className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg border-2 border-dashed border-border hover:border-green-700 transition-colors text-text-secondary hover:text-text-primary"
+              >
+                <Plus size={14} />
+                <span className="text-xs font-medium">Create New Group</span>
+              </button>
+            </div>
           )}
         </div>
 
@@ -316,5 +499,15 @@ export function StudyPage({ onStart }: StudyPageProps) {
 
       </div>
     </PageWrapper>
+
+    {showCreateGroup && (
+      <CreateGroupModal
+        chapters={chapters}
+        stateCode={stateCode}
+        onCreated={(g) => setGroupId(g.id)}
+        onClose={() => setShowCreateGroup(false)}
+      />
+    )}
+    </>
   )
 }

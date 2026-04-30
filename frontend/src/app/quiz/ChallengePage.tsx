@@ -13,7 +13,7 @@
 import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList } from 'lucide-react'
+import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList, FolderOpen } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import type { QuizConfig } from '../quiz/QuizSession'
 import type { PuzzleConfig } from '../quiz/PuzzleSession'
@@ -24,6 +24,7 @@ import type { BotBattleConfig } from '../battle/BotSelectScreen'
 const GET_CHAPTERS = gql`
   query GetChallengeChapters($stateCode: String!) {
     chapters(stateCode: $stateCode) { id number title }
+    chapterGroups(stateCode: $stateCode) { id name chapterNumbers isPreset }
   }
 `
 
@@ -107,10 +108,14 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
   const [questionCount, setQuestionCount]         = useState(10)
   const [timer, setTimer]                         = useState<number | null>(null)
   const [selectedChapterId, setSelectedChapterId] = useState<string>('')
+  const [selectedGroupId, setSelectedGroupId]     = useState<string>('')
+  const [filterType, setFilterType]               = useState<'chapter' | 'group'>('chapter')
 
   const { data, loading } = useQuery(GET_CHAPTERS, { variables: { stateCode } })
   const chapters = data?.chapters ?? []
+  const groups: { id: string; name: string; chapterNumbers: number[]; isPreset: boolean }[] = data?.chapterGroups ?? []
   const selectedChapter = chapters.find((c: { id: string }) => c.id === selectedChapterId)
+  const selectedGroup   = groups.find((g) => g.id === selectedGroupId)
 
   const isBattleMode = mode === 'bot' || mode === 'peer'
 
@@ -119,8 +124,12 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
     if (mode === 'peer') { onPeerBattle(); return }
     const base = {
       stateCode,
-      chapterNumber: selectedChapter?.number,
-      chapterTitle:  selectedChapter?.title,
+      chapterNumber:  filterType === 'chapter' ? selectedChapter?.number : undefined,
+      chapterNumbers: filterType === 'group'   ? selectedGroup?.chapterNumbers : undefined,
+      chapterTitle:
+        filterType === 'chapter' ? selectedChapter?.title :
+        filterType === 'group'   ? selectedGroup?.name :
+        undefined,
       questionCount,
       difficulty,
       timerSeconds:  timer,
@@ -141,24 +150,65 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
     <PageWrapper header={header}>
       <div className="space-y-5 mt-1">
 
-        {/* ── 1. Chapter filter ─────────────────────────────────────────── */}
+        {/* ── 1. Chapter / Group filter ──────────────────────────────────── */}
         <section>
           <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-            Chapter (optional)
+            Filter (optional)
           </h2>
           {loading ? (
             <div className="card h-11 animate-pulse bg-surface-2" />
           ) : (
-            <select
-              value={selectedChapterId}
-              onChange={(e) => setSelectedChapterId(e.target.value)}
-              className="input"
-            >
-              <option value="">All chapters</option>
-              {chapters.map((c: { id: string; number: number; title: string }) => (
-                <option key={c.id} value={c.id}>Ch. {c.number} — {c.title}</option>
-              ))}
-            </select>
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { setFilterType('chapter'); setSelectedGroupId('') }}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
+                    filterType === 'chapter' ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  By Chapter
+                </button>
+                <button
+                  onClick={() => { setFilterType('group'); setSelectedChapterId('') }}
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
+                    filterType === 'group' ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  <FolderOpen size={12} className="inline mr-1" />
+                  By Group
+                </button>
+              </div>
+
+              {filterType === 'chapter' && (
+                <select
+                  value={selectedChapterId}
+                  onChange={(e) => setSelectedChapterId(e.target.value)}
+                  className="input"
+                >
+                  <option value="">All chapters</option>
+                  {chapters.map((c: { id: string; number: number; title: string }) => (
+                    <option key={c.id} value={c.id}>Ch. {c.number} — {c.title}</option>
+                  ))}
+                </select>
+              )}
+
+              {filterType === 'group' && (
+                groups.length === 0 ? (
+                  <p className="text-xs text-text-secondary px-1">No groups yet — create one in Study.</p>
+                ) : (
+                  <select
+                    value={selectedGroupId}
+                    onChange={(e) => setSelectedGroupId(e.target.value)}
+                    className="input"
+                  >
+                    <option value="">All chapters</option>
+                    {groups.map((g) => (
+                      <option key={g.id} value={g.id}>{g.name}</option>
+                    ))}
+                  </select>
+                )
+              )}
+            </div>
           )}
         </section>
 

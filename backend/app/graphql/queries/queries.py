@@ -15,11 +15,11 @@ from sqlalchemy import select
 from strawberry.types import Info
 from sqlalchemy.orm import selectinload
 
-from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, Battle
+from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
-    StateConfigType, BookmarkType, FlashcardDeckType, BattleType
+    StateConfigType, BookmarkType, FlashcardDeckType, ChapterGroupType, BattleType
 )
 from app.config import get_state_config, STATE_CONFIGS
 from app.db import cache_get, cache_set, CacheKey, TTL
@@ -269,6 +269,39 @@ class Query:
         by_id = {str(q.id): q for q in q_result.scalars().all()}
         # Preserve the original battle order
         return [map_question(by_id[qid]) for qid in battle.question_ids if qid in by_id]
+
+    @strawberry.field
+    async def chapter_groups(
+        self, info: Info, state_code: str
+    ) -> list[ChapterGroupType]:
+        """Return preset groups + groups created by the current user for a given state."""
+        from sqlalchemy import or_
+        user: User | None = info.context.get("user")
+        db: AsyncSession = info.context["db"]
+        stmt = (
+            select(ChapterGroup)
+            .where(ChapterGroup.state_code == state_code)
+            .where(
+                or_(
+                    ChapterGroup.is_preset == True,  # noqa: E712
+                    ChapterGroup.user_id == (user.id if user else None),
+                )
+            )
+            .order_by(ChapterGroup.is_preset.desc(), ChapterGroup.created_at)
+        )
+        result = await db.execute(stmt)
+        groups = result.scalars().all()
+        return [
+            ChapterGroupType(
+                id=str(g.id),
+                name=g.name,
+                state_code=g.state_code,
+                chapter_numbers=g.chapter_numbers or [],
+                is_preset=g.is_preset,
+                created_at=g.created_at,
+            )
+            for g in groups
+        ]
 
     @strawberry.field
     async def my_decks(self, info: Info) -> list[FlashcardDeckType]:

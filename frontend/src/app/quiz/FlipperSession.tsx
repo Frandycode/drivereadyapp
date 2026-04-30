@@ -31,6 +31,7 @@ const COMPLETE_SESSION = gql`mutation CompleteFlipperSession($sessionId: ID!) { 
 export interface FlipperConfig {
   stateCode: string
   chapterNumber?: number
+  chapterNumbers?: number[]
   chapterTitle?: string
   questionCount: number
   difficulty: 'pawn' | 'rogue' | 'king'
@@ -65,7 +66,7 @@ export function FlipperSession({ config, onExit }: { config: FlipperConfig; onEx
   const allowance = getHintSkipAllowance(config.difficulty, config.questionCount)
   const hintsLeft = allowance === null ? null : Math.max(0, allowance - hintsUsed)
   const skipsLeft = allowance === null ? null : Math.max(0, allowance - skipsUsed)
-  const chapters  = config.chapterNumber ? [config.chapterNumber] : undefined
+  const chapters  = config.chapterNumbers ?? (config.chapterNumber ? [config.chapterNumber] : undefined)
 
   const { data } = useQuery(GET_QUESTIONS, {
     variables: { stateCode: config.stateCode, count: config.questionCount, chapters },

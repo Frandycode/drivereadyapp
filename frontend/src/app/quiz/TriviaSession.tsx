@@ -36,6 +36,7 @@ const COMPLETE_SESSION = gql`mutation CompleteTriviaSession($sessionId: ID!) { c
 export interface TriviaConfig {
   stateCode: string
   chapterNumber?: number
+  chapterNumbers?: number[]
   chapterTitle?: string
   questionCount: number
   difficulty: 'pawn' | 'rogue' | 'king'
@@ -76,7 +77,7 @@ export function TriviaSession({ config, onExit }: { config: TriviaConfig; onExit
   const allowance = getHintSkipAllowance(config.difficulty, config.questionCount)
   const hintsLeft = allowance === null ? null : Math.max(0, allowance - hintsUsed)
   const skipsLeft = allowance === null ? null : Math.max(0, allowance - skipsUsed)
-  const chapters  = config.chapterNumber ? [config.chapterNumber] : undefined
+  const chapters  = config.chapterNumbers ?? (config.chapterNumber ? [config.chapterNumber] : undefined)
 
   const { data }     = useQuery(GET_QUESTIONS, { variables: { stateCode: config.stateCode, count: config.questionCount, chapters } })
   const { data: poolData } = useQuery(GET_QUESTION_POOL, { variables: { stateCode: config.stateCode } })

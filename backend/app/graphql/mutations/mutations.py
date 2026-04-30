@@ -31,6 +31,7 @@ from app.graphql.types.all_types import (
     AuthPayloadType,
     BattleType,
     BookmarkType,
+    ChapterGroupType,
     ChapterProgressType,
     CreateDeckInput,
     FlashcardDeckType,
@@ -46,6 +47,7 @@ from app.models import (
     Answer,
     Battle,
     Bookmark,
+    ChapterGroup,
     FlashcardDeck,
     Question,
     Session,
@@ -1014,6 +1016,61 @@ class Mutation:
         cache[hb_key] = datetime.now(timezone.utc).isoformat()
         await _save_cache(str(battle_id), cache)
 
+        return True
+
+    # ── Chapter groups ────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def create_chapter_group(
+        self,
+        info: Info,
+        name: str,
+        state_code: str,
+        chapter_numbers: list[int],
+    ) -> ChapterGroupType:
+        """Create a user-owned chapter group for Study/Challenge filtering."""
+        user: User = info.context["user"]
+        db: AsyncSession = info.context["db"]
+        group = ChapterGroup(
+            user_id=user.id,
+            state_code=state_code,
+            name=name,
+            chapter_numbers=chapter_numbers,
+            is_preset=False,
+        )
+        db.add(group)
+        await db.commit()
+        await db.refresh(group)
+        return ChapterGroupType(
+            id=str(group.id),
+            name=group.name,
+            state_code=group.state_code,
+            chapter_numbers=group.chapter_numbers or [],
+            is_preset=group.is_preset,
+            created_at=group.created_at,
+        )
+
+    @strawberry.mutation
+    async def delete_chapter_group(
+        self,
+        info: Info,
+        id: strawberry.ID,
+    ) -> bool:
+        """Delete a user-owned chapter group. Returns True on success."""
+        import uuid as _uuid
+        user: User = info.context["user"]
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(ChapterGroup).where(
+                ChapterGroup.id == _uuid.UUID(str(id)),
+                ChapterGroup.user_id == user.id,
+            )
+        )
+        group = result.scalar_one_or_none()
+        if not group:
+            raise Exception("Group not found or access denied")
+        await db.delete(group)
+        await db.commit()
         return True
 
 

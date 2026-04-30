@@ -137,6 +137,16 @@ class FlashcardDeckType:
 
 
 @strawberry.type
+class ChapterGroupType:
+    id: strawberry.ID
+    name: str
+    state_code: str
+    chapter_numbers: list[int]
+    is_preset: bool
+    created_at: datetime
+
+
+@strawberry.type
 class SessionType:
     id: strawberry.ID
     mode: str
