@@ -51,6 +51,16 @@ export interface SessionConfig {
 
 // ── User Store ────────────────────────────────────────────────────────────────
 
+const LEVEL_THRESHOLDS = [0, 100, 300, 600, 1000, 1500, 2200, 3200]
+function xpToLevel(xp: number): number {
+  let lvl = 1
+  for (let i = 1; i < LEVEL_THRESHOLDS.length; i++) {
+    if (xp >= LEVEL_THRESHOLDS[i]) lvl = i + 1
+    else break
+  }
+  return lvl
+}
+
 interface UserStore {
   user: User | null
   theme: 'dark' | 'light' | 'system'
@@ -59,6 +69,7 @@ interface UserStore {
   clearUser: () => void
   setTheme: (theme: 'dark' | 'light' | 'system') => void
   updateXP: (newXP: number, newLevel: number) => void
+  addXP: (amount: number) => void
   updateStreak: (days: number) => void
   setHydrated: () => void
 }
@@ -77,6 +88,12 @@ export const useUserStore = create<UserStore>()(
         set((state) => ({
           user: state.user ? { ...state.user, xpTotal: newXP, level: newLevel } : null,
         })),
+      addXP: (amount) =>
+        set((state) => {
+          if (!state.user) return {}
+          const newXP = state.user.xpTotal + amount
+          return { user: { ...state.user, xpTotal: newXP, level: xpToLevel(newXP) } }
+        }),
       updateStreak: (days) =>
         set((state) => ({
           user: state.user ? { ...state.user, streakDays: days } : null,

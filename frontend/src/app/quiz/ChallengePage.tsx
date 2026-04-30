@@ -63,22 +63,22 @@ const DIFFICULTIES: {
     id: 'pawn',
     label: '♟ Pawn',
     desc: 'Unlimited hints & skips · 1× XP',
-    activeClass: 'border-green-500 bg-green-500/5',
-    badgeClass: 'text-green-400 bg-green-500/10 border-green-700/40',
+    activeClass: 'border-bronze-500 bg-bronze-500/5',
+    badgeClass: 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
   },
   {
     id: 'rogue',
     label: '♞ Knight',
     desc: 'Limited hints & skips · 2× XP',
-    activeClass: 'border-gold-600 bg-gold-500/5',
-    badgeClass: 'text-gold-500 bg-gold-500/10 border-gold-600/40',
+    activeClass: 'border-silver-500 bg-silver-500/5',
+    badgeClass: 'text-silver-400 bg-silver-500/10 border-silver-600/40',
   },
   {
     id: 'king',
     label: '♔ King',
     desc: 'No hints or skips · 3× XP',
-    activeClass: 'border-red-600 bg-red-500/5',
-    badgeClass: 'text-red-400 bg-red-500/10 border-red-700/40',
+    activeClass: 'border-gold-600 bg-gold-500/5',
+    badgeClass: 'text-gold-500 bg-gold-500/10 border-gold-600/40',
   },
 ]
 

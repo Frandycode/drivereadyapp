@@ -12,7 +12,8 @@
 
 import { useState } from 'react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { ArrowLeft, Zap, Clock } from 'lucide-react'
+import { ArrowLeft, Zap, Clock, AlertTriangle } from 'lucide-react'
+import { GiVintageRobot, GiMonoWheelRobot, GiRobotGolem } from 'react-icons/gi'
 
 export type BotId = 'rusty' | 'dash' | 'apex'
 
@@ -23,7 +24,8 @@ export interface BotConfig {
   accuracy: number
   thinkMinMs: number
   thinkMaxMs: number
-  avatar: string
+  avatar: React.ComponentType<{ size?: number; className?: string }>
+  avatarClass: string
   difficulty: string
   xpReward: number
   color: string
@@ -37,10 +39,11 @@ export const BOTS: Record<BotId, BotConfig> = {
     accuracy: 30,
     thinkMinMs: 3000,
     thinkMaxMs: 8000,
-    avatar: '🤖',
+    avatar: GiVintageRobot,
+    avatarClass: 'text-bronze-500',
     difficulty: 'Pawn',
     xpReward: 20,
-    color: 'border-green-500 bg-green-500/5',
+    color: 'border-bronze-500 bg-bronze-500/5',
   },
   dash: {
     id: 'dash',
@@ -49,10 +52,11 @@ export const BOTS: Record<BotId, BotConfig> = {
     accuracy: 60,
     thinkMinMs: 1000,
     thinkMaxMs: 3000,
-    avatar: '⚡',
+    avatar: GiMonoWheelRobot,
+    avatarClass: 'text-silver-400',
     difficulty: 'Knight',
     xpReward: 40,
-    color: 'border-gold-600 bg-gold-500/5',
+    color: 'border-silver-500 bg-silver-500/5',
   },
   apex: {
     id: 'apex',
@@ -61,17 +65,17 @@ export const BOTS: Record<BotId, BotConfig> = {
     accuracy: 95,
     thinkMinMs: 2000,
     thinkMaxMs: 4000,
-    avatar: '👑',
+    avatar: GiRobotGolem,
+    avatarClass: 'text-gold-500',
     difficulty: 'King',
     xpReward: 80,
-    color: 'border-red-600 bg-red-500/5',
+    color: 'border-gold-600 bg-gold-500/5',
   },
 }
 
 const QUESTION_COUNTS = [5, 10, 15, 20, 25, 30]
 
 const TIMERS = [
-  { value: null, label: 'Off' },
   { value: 15,   label: '15s' },
   { value: 30,   label: '30s' },
   { value: 45,   label: '45s' },
@@ -93,7 +97,7 @@ interface BotSelectScreenProps {
 export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
   const [selectedBot, setSelectedBot]   = useState<BotId>('rusty')
   const [questionCount, setQuestionCount] = useState(10)
-  const [timer, setTimer]               = useState<number | null>(null)
+  const [timer, setTimer]               = useState<number | null>(30)
 
   const bot = BOTS[selectedBot]
 
@@ -125,16 +129,16 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className="text-4xl w-12 h-12 flex items-center justify-center bg-surface-2 rounded-xl flex-shrink-0">
-                    {b.avatar}
+                  <div className="w-12 h-12 flex items-center justify-center bg-surface-2 rounded-xl flex-shrink-0">
+                    <b.avatar size={36} className={b.avatarClass} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="font-display font-bold text-text-primary">{b.name}</p>
                       <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${
-                        b.id === 'rusty' ? 'text-green-400 bg-green-500/10 border-green-700/40' :
-                        b.id === 'dash'  ? 'text-gold-500 bg-gold-500/10 border-gold-600/40' :
-                                           'text-red-400 bg-red-500/10 border-red-700/40'
+                        b.id === 'rusty' ? 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40' :
+                        b.id === 'dash'  ? 'text-silver-400 bg-silver-500/10 border-silver-600/40' :
+                                           'text-gold-500 bg-gold-500/10 border-gold-600/40'
                       }`}>
                         {b.difficulty}
                       </span>
@@ -204,11 +208,10 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
               </button>
             ))}
           </div>
-          {timer !== null && (
-            <p className="text-xs text-text-secondary mt-2">
-              ⚠️ If time runs out before you answer, the question is marked wrong.
-            </p>
-          )}
+          <p className="text-xs text-text-secondary mt-2 flex items-center gap-1.5">
+            <AlertTriangle size={12} className="text-gold-500 flex-shrink-0" />
+            If time runs out before you answer, the question is marked wrong.
+          </p>
         </section>
 
         {/* Rules */}

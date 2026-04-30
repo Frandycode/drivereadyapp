@@ -40,14 +40,14 @@ export function BotAvatar({
       {/* Avatar circle */}
       <div className={clsx(
         'relative rounded-2xl flex items-center justify-center border-2 transition-all duration-300',
-        size === 'md' ? 'w-16 h-16 text-3xl' : 'w-12 h-12 text-2xl',
+        size === 'md' ? 'w-16 h-16' : 'w-12 h-12',
         thinking  && 'animate-pulse border-gold-500 bg-gold-500/10',
         answered  && isCorrect === undefined && 'border-green-700 bg-surface-2',
         answered  && isCorrect === true  && 'border-green-500 bg-green-500/10',
         answered  && isCorrect === false && 'border-red-600 bg-red-500/10',
         !thinking && !answered && 'border-border bg-surface-2',
       )}>
-        {bot.avatar}
+        <bot.avatar size={size === 'md' ? 30 : 22} className={bot.avatarClass} />
 
         {/* Status dot */}
         {thinking && (

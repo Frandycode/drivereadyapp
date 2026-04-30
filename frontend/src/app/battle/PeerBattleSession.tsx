@@ -14,7 +14,11 @@ import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { clsx } from 'clsx'
 import { X, CheckCircle, XCircle, WifiOff, Clock } from 'lucide-react'
+import { GiLaurelsTrophy } from 'react-icons/gi'
+import { IoSad } from 'react-icons/io5'
+import { FaHandshake } from 'react-icons/fa'
 import { useUserStore } from '@/stores'
+import { AppLogo } from '@/components/layout/AppLogo'
 import type { PeerBattleSetup } from './PeerBattleLobby'
 
 // ── GQL ───────────────────────────────────────────────────────────────────────
@@ -79,6 +83,14 @@ const RECORD_SCREEN_RETURN = gql`
 const PLAYER_HEARTBEAT = gql`
   mutation PeerHeartbeat($battleId: ID!) {
     playerHeartbeat(battleId: $battleId)
+  }
+`
+
+const REJOIN_BATTLE = gql`
+  mutation PeerRejoin($battleId: ID!) {
+    rejoinBattle(battleId: $battleId) {
+      id playerScore opponentScore state
+    }
   }
 `
 
@@ -158,17 +170,25 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
   // ── Supplementary UI state ────────────────────────────────────────────────
   const [drawsLeft, setDrawsLeft]               = useState(2)
+  const [drawCountdown, setDrawCountdown]       = useState(30)
   const [opponentOnScreen, setOpponentOnScreen] = useState(true)
+  const [opponentLeftAt, setOpponentLeftAt]     = useState<number | null>(null)
+  const [opponentAwayLeft, setOpponentAwayLeft] = useState<number | null>(null)
   const [timeLeft, setTimeLeft]                 = useState<number | null>(timerSeconds)
   const [forfeitWarnLeft, setForfeitWarnLeft]   = useState(15)
   const [exitConfirm, setExitConfirm]           = useState(false)
   const [autoSubmit, setAutoSubmit]             = useState(false)
+  const [autoAdvance, setAutoAdvance]           = useState(false)
+  const [isReconnecting, setIsReconnecting]     = useState(false)
 
   // ── Refs ──────────────────────────────────────────────────────────────────
-  const timerRef       = useRef<ReturnType<typeof setInterval> | null>(null)
-  const forfeitTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const hbRef          = useRef<ReturnType<typeof setInterval> | null>(null)
-  const phaseRef       = useRef(phase)
+  const timerRef         = useRef<ReturnType<typeof setInterval> | null>(null)
+  const forfeitTimerRef  = useRef<ReturnType<typeof setInterval> | null>(null)
+  const drawTimerRef     = useRef<ReturnType<typeof setInterval> | null>(null)
+  const awayTimerRef     = useRef<ReturnType<typeof setInterval> | null>(null)
+  const autoAdvanceRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hbRef            = useRef<ReturnType<typeof setInterval> | null>(null)
+  const phaseRef         = useRef(phase)
   phaseRef.current = phase
 
   // ── GQL hooks ─────────────────────────────────────────────────────────────
@@ -180,6 +200,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const [recordLeave]    = useMutation(RECORD_SCREEN_LEAVE)
   const [recordReturn]   = useMutation(RECORD_SCREEN_RETURN)
   const [heartbeat]      = useMutation(PLAYER_HEARTBEAT)
+  const [rejoin]         = useMutation(REJOIN_BATTLE)
 
   // ── Load questions ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -227,6 +248,58 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
     handleSubmit(true)
   }, [autoSubmit])
 
+  // ── UPDATE-04: Auto-advance 2.5s after answer is revealed ────────────────
+  useEffect(() => {
+    if (!revealed) return
+    if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current)
+    autoAdvanceRef.current = setTimeout(() => {
+      if (phaseRef.current === 'active') handleNext()
+    }, 2500)
+    return () => { if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current) }
+  }, [revealed])
+
+  // ── BUG-08: 30s draw-pending countdown ───────────────────────────────────
+  useEffect(() => {
+    if (phase !== 'draw_pending') {
+      if (drawTimerRef.current) clearInterval(drawTimerRef.current)
+      return
+    }
+    setDrawCountdown(30)
+    drawTimerRef.current = setInterval(() => {
+      setDrawCountdown((t) => {
+        if (t <= 1) {
+          clearInterval(drawTimerRef.current!)
+          setPhase('active')
+          return 30
+        }
+        return t - 1
+      })
+    }, 1000)
+    return () => { if (drawTimerRef.current) clearInterval(drawTimerRef.current) }
+  }, [phase])
+
+  // ── UPDATE-10: Opponent away countdown (45s first leave, 30s second) ──────
+  useEffect(() => {
+    if (opponentOnScreen) {
+      if (awayTimerRef.current) clearInterval(awayTimerRef.current)
+      setOpponentAwayLeft(null)
+      return
+    }
+    const graceSec = 45  // conservative — backend uses 45s for first strike
+    setOpponentLeftAt(Date.now())
+    setOpponentAwayLeft(graceSec)
+    awayTimerRef.current = setInterval(() => {
+      setOpponentAwayLeft((t) => {
+        if (t === null || t <= 1) {
+          clearInterval(awayTimerRef.current!)
+          return 0
+        }
+        return t - 1
+      })
+    }, 1000)
+    return () => { if (awayTimerRef.current) clearInterval(awayTimerRef.current) }
+  }, [opponentOnScreen])
+
   // ── Forfeit warning countdown (15s after draw declined) ───────────────────
   useEffect(() => {
     if (phase !== 'forfeit_warn') return
@@ -268,7 +341,20 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   }, [battleId, phase])
 
   // ── Subscription ──────────────────────────────────────────────────────────
-  const { data: subData } = useSubscription(BATTLE_UPDATED, { variables: { battleId } })
+  const { data: subData, error: subError } = useSubscription(BATTLE_UPDATED, { variables: { battleId } })
+
+  // ── BUG-06: Reconnect on subscription error ───────────────────────────────
+  useEffect(() => {
+    if (!subError || phase === 'loading' || phase === 'complete') return
+    setIsReconnecting(true)
+    const retry = setTimeout(async () => {
+      try {
+        await rejoin({ variables: { battleId } })
+      } catch { /* battle may already be complete */ }
+      setIsReconnecting(false)
+    }, 3000)
+    return () => clearTimeout(retry)
+  }, [subError])
 
   useEffect(() => {
     const ev: BattleEvent | null = subData?.battleUpdated ?? null
@@ -296,10 +382,10 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
       case 'draw_requested':
         if (ev.playerId !== myUserId) {
-          // Opponent sent the request — I need to respond
           setPhase('draw_incoming')
+        } else if (ev.drawRequestsLeft !== null) {
+          setDrawsLeft(ev.drawRequestsLeft)
         }
-        // If it was me, I already set phase to 'draw_pending' in handleRequestDraw
         break
 
       case 'draw_declined':
@@ -318,13 +404,6 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
       case 'screen_return':
         if (ev.playerId !== myUserId) setOpponentOnScreen(true)
-        break
-
-      case 'draw_requested':
-        // Update draws remaining if it was my request
-        if (ev.playerId === myUserId && ev.drawRequestsLeft !== null) {
-          setDrawsLeft(ev.drawRequestsLeft)
-        }
         break
     }
   }, [subData])
@@ -409,18 +488,22 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   // ── Results screen ────────────────────────────────────────────────────────
 
   if (phase === 'complete') {
-    const icons: Record<string, string> = { win: '🏆', lose: '😞', tie: '🤝' }
-    const labels: Record<string, string> = {
+    const iconMap: Record<string, React.ReactNode> = {
+      win:  <GiLaurelsTrophy size={72} className="text-gold-500" />,
+      lose: <IoSad size={72} className="text-red-400" />,
+      tie:  <FaHandshake size={72} className="text-info" />,
+    }
+    const labelMap: Record<string, string> = {
       win:  'You Won!',
       lose: 'You Lost',
       tie:  "It's a Tie",
     }
-    const icon  = icons[winner ?? '']  ?? '🏁'
-    const label = labels[winner ?? ''] ?? 'Battle Over'
+    const icon  = iconMap[winner ?? '']  ?? <GiLaurelsTrophy size={72} className="text-text-secondary" />
+    const label = labelMap[winner ?? ''] ?? 'Battle Over'
 
     return (
       <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-6 px-6">
-        <div className="text-6xl">{icon}</div>
+        <div>{icon}</div>
         <h2 className="font-display text-3xl font-bold text-text-primary">{label}</h2>
 
         <div className="flex items-center gap-8">
@@ -494,6 +577,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           <button onClick={handleExit} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
             <X size={20} />
           </button>
+          <AppLogo height={24} className="flex-shrink-0" />
 
           {/* Score rail */}
           <div className="flex-1 flex items-center gap-3">
@@ -509,9 +593,10 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           </div>
 
           {/* Opponent status */}
-          {!opponentOnScreen && (
-            <span title="Opponent left screen">
-              <WifiOff size={14} className="text-yellow-400" />
+          {!opponentOnScreen && opponentAwayLeft !== null && (
+            <span className="flex items-center gap-1 text-xs text-yellow-400 font-mono">
+              <WifiOff size={13} />
+              {opponentAwayLeft}s
             </span>
           )}
         </div>
@@ -625,9 +710,11 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           </>
         )}
         {revealed && (
-          <button onClick={handleNext} className="btn-primary w-full h-12 text-base font-semibold">
-            {qIndex + 1 >= questions.length ? 'Finish →' : 'Next Question →'}
-          </button>
+          <div className="h-12 flex items-center justify-center">
+            <p className="text-sm text-text-secondary animate-pulse">
+              {qIndex + 1 >= questions.length ? 'Finishing...' : 'Next question in a moment...'}
+            </p>
+          </div>
         )}
       </div>
 
@@ -638,10 +725,15 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
             <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
               <p className="font-display text-lg font-bold text-text-primary">Draw Requested</p>
-              <p className="text-sm text-text-secondary">Waiting for opponent to respond (30s)...</p>
-              <div className="w-8 h-8 rounded-full border-4 border-green-500 border-t-transparent animate-spin mx-auto" />
+              <p className="text-sm text-text-secondary">Waiting for opponent to respond...</p>
+              <p className={clsx(
+                'font-mono text-4xl font-bold',
+                drawCountdown > 10 ? 'text-green-500' : drawCountdown > 5 ? 'text-yellow-400' : 'text-red-400'
+              )}>
+                {drawCountdown}s
+              </p>
               <button
-                onClick={() => setPhase('active')}
+                onClick={() => { setPhase('active'); if (drawTimerRef.current) clearInterval(drawTimerRef.current) }}
                 className="text-xs text-text-secondary hover:text-text-primary underline"
               >
                 Cancel and keep playing
@@ -705,6 +797,20 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
                   Forfeit
                 </button>
               </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── Reconnecting overlay ─────────────────────────────────────────── */}
+      {isReconnecting && (
+        <>
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-3">
+              <div className="w-10 h-10 rounded-full border-4 border-green-500 border-t-transparent animate-spin mx-auto" />
+              <p className="font-display font-bold text-text-primary">Reconnecting...</p>
+              <p className="text-sm text-text-secondary">Hang tight — restoring your connection</p>
             </div>
           </div>
         </>

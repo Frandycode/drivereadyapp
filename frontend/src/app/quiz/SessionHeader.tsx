@@ -11,7 +11,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { X, Lightbulb, SkipForward } from 'lucide-react'
+import { X, Lightbulb, SkipForward, AlertTriangle } from 'lucide-react'
 import { clsx } from 'clsx'
 
 type SegmentState = 'unanswered' | 'correct' | 'wrong' | 'skipped'
@@ -48,6 +48,7 @@ export function SessionHeader({
   resetKey,
 }: SessionHeaderProps) {
   const [timeLeft, setTimeLeft] = useState(timerSeconds ?? 0)
+  const [showExitConfirm, setShowExitConfirm] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export function SessionHeader({
       <div className="px-4 pt-3 pb-2 flex items-center gap-3 max-w-content mx-auto">
         {/* Exit */}
         <button
-          onClick={onExit}
+          onClick={() => setShowExitConfirm(true)}
           className="p-1 -ml-1 text-text-secondary hover:text-text-primary transition-colors flex-shrink-0"
         >
           <X size={20} />
@@ -161,13 +162,45 @@ export function SessionHeader({
       <div className="px-4 pb-2 max-w-content mx-auto">
         <span className={clsx(
           'text-xs font-medium px-2 py-0.5 rounded-full border',
-          difficulty === 'pawn' && 'text-green-400 bg-green-500/10 border-green-700/40',
-          difficulty === 'rogue' && 'text-gold-500 bg-gold-500/10 border-gold-600/40',
-          difficulty === 'king' && 'text-red-400 bg-red-500/10 border-red-700/40',
+          difficulty === 'pawn'  && 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
+          difficulty === 'rogue' && 'text-silver-400 bg-silver-500/10 border-silver-600/40',
+          difficulty === 'king'  && 'text-gold-500 bg-gold-500/10 border-gold-600/40',
         )}>
           {difficulty === 'pawn' ? '♟ Pawn' : difficulty === 'rogue' ? '♞ Knight' : '♔ King'}
         </span>
       </div>
+
+      {/* Exit confirmation modal */}
+      {showExitConfirm && (
+        <>
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setShowExitConfirm(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <AlertTriangle size={20} className="text-gold-500 flex-shrink-0" />
+                <h3 className="font-display font-bold text-text-primary">Leave session?</h3>
+              </div>
+              <p className="text-sm text-text-secondary mb-5">
+                Your progress on this session will be lost. Are you sure you want to quit?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowExitConfirm(false)}
+                  className="btn-secondary flex-1"
+                >
+                  Keep going
+                </button>
+                <button
+                  onClick={onExit}
+                  className="flex-1 h-10 rounded-md bg-red-600 text-white text-sm font-semibold hover:bg-red-500 active:scale-95 transition-all"
+                >
+                  Leave
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

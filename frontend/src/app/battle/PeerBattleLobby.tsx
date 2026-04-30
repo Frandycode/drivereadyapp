@@ -12,8 +12,9 @@
 
 import { useState, useEffect } from 'react'
 import { useMutation, useSubscription, gql } from '@apollo/client'
-import { X, Copy, Check, Loader2, Swords } from 'lucide-react'
+import { X, Copy, Check, Loader2, Swords, Share2 } from 'lucide-react'
 import { useUserStore } from '@/stores'
+import { AppLogo } from '@/components/layout/AppLogo'
 
 // ── GQL ───────────────────────────────────────────────────────────────────────
 
@@ -57,6 +58,7 @@ const WAIT_FOR_OPPONENT = gql`
 export interface PeerBattleSetup {
   battleId: string
   timerSeconds: number | null
+  playerCount: number
   iAmPlayer: boolean   // true = I created (host), false = I joined
 }
 
@@ -68,8 +70,8 @@ interface PeerBattleLobbyProps {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const QUESTION_COUNTS = [5, 10, 15, 20]
+const PLAYER_COUNTS   = [2, 3, 4, 5]
 const TIMERS = [
-  { value: null, label: 'Off' },
   { value: 15,   label: '15s' },
   { value: 30,   label: '30s' },
   { value: 45,   label: '45s' },
@@ -83,13 +85,15 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
   const [tab, setTab]             = useState<'host' | 'join'>('host')
   const [questionCount, setQCount] = useState(10)
-  const [timerSec, setTimerSec]   = useState<number | null>(null)
+  const [playerCount, setPlayerCount] = useState(2)
+  const [timerSec, setTimerSec]   = useState<number | null>(15)
 
   // Host state
   const [hostedBattle, setHostedBattle] = useState<{
     id: string; roomCode: string; timerSeconds: number | null
   } | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied]     = useState(false)
+  const [sharedLink, setSharedLink] = useState(false)
 
   // Join state
   const [joinCode, setJoinCode]   = useState('')
@@ -107,7 +111,7 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
   useEffect(() => {
     if (subData?.battleUpdated?.event === 'joined' && hostedBattle) {
-      onStart({ battleId: hostedBattle.id, timerSeconds: hostedBattle.timerSeconds, iAmPlayer: true })
+      onStart({ battleId: hostedBattle.id, timerSeconds: hostedBattle.timerSeconds, playerCount, iAmPlayer: true })
     }
   }, [subData])
 
@@ -134,7 +138,7 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
     try {
       const { data } = await joinBattle({ variables: { roomCode: code } })
       const b = data?.joinBattle
-      if (b) onStart({ battleId: b.id, timerSeconds: b.timerSeconds, iAmPlayer: false })
+      if (b) onStart({ battleId: b.id, timerSeconds: b.timerSeconds, playerCount: 2, iAmPlayer: false })
     } catch (e: unknown) {
       const msg = (e as { message?: string })?.message ?? 'Room not found or already started.'
       setJoinError(msg.replace('["', '').replace('"]', ''))
@@ -149,6 +153,19 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
     })
   }
 
+  function shareInviteLink() {
+    if (!hostedBattle) return
+    const url = `${window.location.origin}/?join=${hostedBattle.roomCode}`
+    if (navigator.share) {
+      navigator.share({ title: 'DriveReady Battle', text: `Join my battle! Code: ${hostedBattle.roomCode}`, url })
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        setSharedLink(true)
+        setTimeout(() => setSharedLink(false), 2000)
+      })
+    }
+  }
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
@@ -160,7 +177,8 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
           <button onClick={onBack} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
             <X size={20} />
           </button>
-          <div className="flex items-center gap-2">
+          <AppLogo height={26} className="flex-shrink-0" />
+          <div className="flex items-center gap-2 ml-1">
             <Swords size={18} className="text-green-500" />
             <h1 className="font-display text-lg font-bold text-text-primary">Peer Battle</h1>
           </div>
@@ -189,6 +207,31 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
         {/* ── HOST TAB ────────────────────────────────────────────────────── */}
         {tab === 'host' && !hostedBattle && (
           <div className="space-y-5">
+            {/* Player count */}
+            <section>
+              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Players</p>
+              <div className="flex gap-2">
+                {PLAYER_COUNTS.map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setPlayerCount(n)}
+                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                      playerCount === n
+                        ? 'bg-green-500 text-bg'
+                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              {playerCount > 2 && (
+                <p className="text-xs text-text-secondary mt-1.5">
+                  Dropped players are replaced by a bot automatically.
+                </p>
+              )}
+            </section>
+
             {/* Question count */}
             <section>
               <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Questions</p>
@@ -260,8 +303,11 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 <span className="font-mono text-4xl font-bold tracking-[0.25em] text-green-500">
                   {hostedBattle.roomCode}
                 </span>
-                <button onClick={copyCode} className="text-text-secondary hover:text-text-primary transition-colors">
+                <button onClick={copyCode} className="text-text-secondary hover:text-text-primary transition-colors" title="Copy code">
                   {copied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
+                </button>
+                <button onClick={shareInviteLink} className="text-text-secondary hover:text-green-500 transition-colors" title="Share invite link">
+                  {sharedLink ? <Check size={20} className="text-green-500" /> : <Share2 size={20} />}
                 </button>
               </div>
             </div>
@@ -301,6 +347,9 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 onChange={(e) => {
                   setJoinError('')
                   setJoinCode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && joinCode.length === 6 && !joining) handleJoin()
                 }}
                 className="input text-center font-mono text-2xl tracking-widest h-14"
               />
