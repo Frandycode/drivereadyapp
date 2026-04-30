@@ -25,6 +25,7 @@ import { PuzzleSession } from '@/app/quiz/PuzzleSession'
 import { FlipperSession } from '@/app/quiz/FlipperSession'
 import { TriviaSession } from '@/app/quiz/TriviaSession'
 import { ChallengePage, type ChallengeConfig } from '@/app/quiz/ChallengePage'
+import { ExamSession } from '@/app/quiz/ExamSession'
 import { BotSelectScreen, type BotBattleConfig } from '@/app/battle/BotSelectScreen'
 import { BotBattleSession } from '@/app/battle/BotBattleSession'
 import { PeerBattleLobby, type PeerBattleSetup } from '@/app/battle/PeerBattleLobby'
@@ -161,6 +162,7 @@ type AppScreen =
   | { screen: 'bot-battle'; config: BotBattleConfig }
   | { screen: 'peer-battle-lobby' }
   | { screen: 'peer-battle'; setup: PeerBattleSetup }
+  | { screen: 'exam' }
   | { screen: 'profile' }
 
 export default function App() {
@@ -215,7 +217,8 @@ export default function App() {
     appScreen.screen.startsWith('study')      ? '/study' :
     appScreen.screen.startsWith('challenge') ||
     appScreen.screen.startsWith('bot') ||
-    appScreen.screen.startsWith('peer')       ? '/challenge' : '/'
+    appScreen.screen.startsWith('peer') ||
+    appScreen.screen === 'exam'               ? '/challenge' : '/'
 
   // ── Screen routing ─────────────────────────────────────────────────────────
 
@@ -316,6 +319,13 @@ export default function App() {
     )
   }
 
+  // Exam session
+  if (appScreen.screen === 'exam') {
+    return (
+      <ExamSession onExit={() => setAppScreen({ screen: 'challenge' })} />
+    )
+  }
+
   // Top-level pages
   const PAGES: Record<string, React.ReactNode> = {
     home: <HomePage onNavigate={navigate} />,
@@ -331,6 +341,7 @@ export default function App() {
         onStart={(config) => setAppScreen({ screen: 'challenge-session', config })}
         onBotBattle={() => setAppScreen({ screen: 'bot-select' })}
         onPeerBattle={() => setAppScreen({ screen: 'peer-battle-lobby' })}
+        onExam={() => setAppScreen({ screen: 'exam' })}
       />
     ),
     profile: <PlaceholderPage title="Profile" />,

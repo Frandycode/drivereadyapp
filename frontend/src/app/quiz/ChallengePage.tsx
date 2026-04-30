@@ -13,7 +13,7 @@
 import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords } from 'lucide-react'
+import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import type { QuizConfig } from '../quiz/QuizSession'
 import type { PuzzleConfig } from '../quiz/PuzzleSession'
@@ -40,6 +40,7 @@ interface ChallengePageProps {
   onStart: (config: ChallengeConfig) => void
   onBotBattle: () => void
   onPeerBattle: () => void
+  onExam: () => void
 }
 
 // ── IQ modes: 2×2 grid ───────────────────────────────────────────────────────
@@ -98,7 +99,7 @@ const TIMERS = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function ChallengePage({ onStart, onBotBattle, onPeerBattle }: ChallengePageProps) {
+export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: ChallengePageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const [mode, setMode]                           = useState<ChallengeMode>('quiz')
@@ -222,6 +223,36 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle }: ChallengeP
               <span className="text-xs text-text-secondary text-center">Host or join a live room</span>
             </button>
           </div>
+        </section>
+
+        {/* ── 3b. Practice Exam ─────────────────────────────────────────── */}
+        <section>
+          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+            Practice Exam
+          </h2>
+          <button
+            onClick={onExam}
+            className="w-full text-left rounded-xl border-2 border-gold-600/50 bg-gold-500/5 hover:border-gold-500 hover:bg-gold-500/10 active:scale-[0.99] transition-all duration-150 px-4 py-4"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gold-500/15 border border-gold-600/40 flex items-center justify-center flex-shrink-0">
+                <ClipboardList size={24} className="text-gold-500" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-display font-bold text-text-primary">Full Practice Exam</p>
+                <p className="text-xs text-text-secondary mt-0.5">
+                  50 questions · 60-minute timer · pass with 38+
+                </p>
+                <div className="flex items-center gap-2 mt-1.5">
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-gold-500/10 border border-gold-600/40 text-gold-500 font-medium">
+                    No hints or skips
+                  </span>
+                  <span className="text-xs text-gold-500 font-medium">+200 XP on pass</span>
+                </div>
+              </div>
+              <Zap size={16} className="text-gold-500 flex-shrink-0" />
+            </div>
+          </button>
         </section>
 
         {/* ── 4. Difficulty (IQ modes only) ─────────────────────────────── */}
