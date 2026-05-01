@@ -322,7 +322,7 @@ LESSONS = {
 # ── Questions ─────────────────────────────────────────────────────────────────
 
 QUESTIONS = [
-    # Chapter 1 — Getting Your License
+    # ── Chapter 1 — Getting Your License ──────────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
         "difficulty": "pawn",
