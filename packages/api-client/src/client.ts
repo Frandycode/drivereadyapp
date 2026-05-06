@@ -14,6 +14,7 @@ import {
   ApolloClient,
   InMemoryCache,
   HttpLink,
+  Observable,
   split,
   from,
   ApolloLink,
@@ -55,16 +56,37 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-// ── Error link — logs GraphQL and network errors ──────────────────────────────
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+// ── Error link — intercepts 401s and retries after a silent token refresh ────
+let _refreshing: Promise<boolean> | null = null
+
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+  const isUnauthenticated = graphQLErrors?.some(
+    (e) => e.extensions?.code === 'UNAUTHENTICATED' || e.message === 'Not authenticated'
+  )
+
+  if (isUnauthenticated) {
+    if (!_refreshing) {
+      _refreshing = refreshAccessToken().finally(() => { _refreshing = null })
+    }
+    return new Observable((observer) => {
+      _refreshing!.then((ok) => {
+        if (!ok) { observer.error(new Error('Session expired')); return }
+        const subscriber = {
+          next: observer.next.bind(observer),
+          error: observer.error.bind(observer),
+          complete: observer.complete.bind(observer),
+        }
+        forward(operation).subscribe(subscriber)
+      })
+    })
+  }
+
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.error(`[GraphQL error] ${message}`, { locations, path })
     })
   }
-  if (networkError) {
-    console.error('[Network error]', networkError)
-  }
+  if (networkError) console.error('[Network error]', networkError)
 })
 
 // ── HTTP link — credentials:include sends the refresh token cookie ─────────────

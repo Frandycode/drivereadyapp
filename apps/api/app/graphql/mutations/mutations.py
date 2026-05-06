@@ -637,6 +637,46 @@ class Mutation:
         return True
 
     @strawberry.mutation
+    async def change_password(
+        self, info: Info, current_password: str, new_password: str
+    ) -> bool:
+        """Change password for the authenticated user."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+        if not user.password_hash or not pwd_context.verify(current_password, user.password_hash):
+            raise ValueError("Current password is incorrect.")
+
+        validate_password(new_password)
+        if pwd_context.verify(new_password, user.password_hash):
+            raise ValueError("New password must differ from your current password.")
+
+        user.password_hash = pwd_context.hash(new_password)
+        db.add(user)
+
+        # Revoke other sessions (keep current refresh token valid)
+        response = info.context.get("response")
+        raw_cookie = info.context.get("request")
+        raw = raw_cookie.cookies.get("refresh_token") if raw_cookie else None
+        current_hash = hash_token(raw) if raw else None
+
+        stmt = (
+            update(RefreshToken)
+            .where(
+                RefreshToken.user_id == user.id,
+                RefreshToken.revoked_at.is_(None),
+            )
+        )
+        if current_hash:
+            stmt = stmt.where(RefreshToken.token_hash != current_hash)
+        stmt = stmt.values(revoked_at=datetime.now(timezone.utc))
+        await db.execute(stmt)
+
+        await db.commit()
+        return True
+
+    @strawberry.mutation
     async def reset_password(self, info: Info, token: str, new_password: str) -> bool:
         """Consume a reset token and update the user's password."""
         db: AsyncSession = info.context["db"]
@@ -667,6 +707,24 @@ class Mutation:
 
         await db.commit()
         await delete_reset_token(token)
+        return True
+
+    @strawberry.mutation
+    async def delete_account(self, info: Info, password: str) -> bool:
+        """Permanently delete the authenticated user's account."""
+        db:      AsyncSession = info.context["db"]
+        user:    User         = info.context.get("user")
+        response              = info.context.get("response")
+        if not user:
+            raise ValueError("Authentication required.")
+        if not user.password_hash or not pwd_context.verify(password, user.password_hash):
+            raise ValueError("Incorrect password.")
+
+        await db.delete(user)
+        await db.commit()
+
+        if response is not None:
+            response.delete_cookie("refresh_token", path="/graphql")
         return True
 
     # ── Parent linking ────────────────────────────────────────────────────────
