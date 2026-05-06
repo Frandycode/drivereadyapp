@@ -15,6 +15,7 @@ import { useUserStore, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { AuthPage } from '@/app/auth'
+import { ResetPasswordPage } from '@/app/ResetPasswordPage'
 import { OnboardingPage } from '@/app/onboarding/OnboardingPage'
 import { HomePage } from '@/app/index'
 import { LearnPage } from '@/app/learn/LearnPage'
@@ -201,6 +202,20 @@ export default function App() {
 
     const quizMatch = to.match(/^\/learn\/([^/]+)\/quiz$/)
     if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1], chapterNumber: 0, chapterTitle: '' })
+  }
+
+  // Password reset deep link — handle before auth check
+  const resetToken = new URLSearchParams(window.location.search).get('token')
+  if (path === '/reset-password' && resetToken) {
+    return (
+      <ResetPasswordPage
+        token={resetToken}
+        onDone={() => {
+          window.history.replaceState({}, '', '/')
+          setPath('/')
+        }}
+      />
+    )
   }
 
   if (!isHydrated || !tokenReady) {
