@@ -24,6 +24,9 @@ class User(Base, UUIDMixin, TimestampMixin):
     display_name: Mapped[str] = mapped_column(String(100), nullable=False)
     avatar_url: Mapped[str | None] = mapped_column(String(500))
     role: Mapped[str] = mapped_column(String(20), nullable=False, default="learner")
+    date_of_birth: Mapped[date | None] = mapped_column(Date)
+    parental_consent_status: Mapped[str] = mapped_column(String(20), nullable=False, default="not_required")
+    parent_email: Mapped[str | None] = mapped_column(String(255))
     state_code: Mapped[str] = mapped_column(String(5), nullable=False, default="ok")
 
     # Progression

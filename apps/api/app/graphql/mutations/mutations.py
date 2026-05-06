@@ -14,7 +14,7 @@ import random
 import string
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Optional
 
 import re
@@ -181,6 +181,14 @@ def _base_payload(
     }
 
 
+def _age_from_dob(dob: date) -> int:
+    today = date.today()
+    years = today.year - dob.year
+    if (today.month, today.day) < (dob.month, dob.day):
+        years -= 1
+    return years
+
+
 def validate_password(password: str) -> None:
     if len(password) < 8:
         raise ValueError("Password must be at least 8 characters.")
@@ -210,6 +218,16 @@ class Mutation:
 
         validate_password(input.password)
 
+        age = _age_from_dob(input.date_of_birth)
+        if age < 13:
+            raise ValueError("COPPA_UNDER_13")
+        if age < 18:
+            if not input.parent_email:
+                raise ValueError("Parent email is required for users under 18.")
+            consent_status = "pending"
+        else:
+            consent_status = "not_required"
+
         existing = await db.execute(select(User).where(User.email == input.email.lower()))
         if existing.scalar_one_or_none():
             raise ValueError("Email already registered")
@@ -220,13 +238,16 @@ class Mutation:
             display_name=input.display_name,
             state_code=input.state_code,
             role="learner",
+            date_of_birth=input.date_of_birth,
+            parental_consent_status=consent_status,
+            parent_email=input.parent_email if age < 18 else None,
         )
         db.add(user)
         await db.flush()
         await db.commit()
 
         token = create_access_token(str(user.id), user.role)
-        return AuthPayloadType(access_token=token, user=map_user(user))
+        return AuthPayloadType(access_token=token, user=map_user(user), consent_status=consent_status)
 
     @strawberry.mutation
     async def login(self, info: Info, input: LoginInput) -> AuthPayloadType:
@@ -239,7 +260,7 @@ class Mutation:
             raise ValueError("Invalid email or password")
 
         token = create_access_token(str(user.id), user.role)
-        return AuthPayloadType(access_token=token, user=map_user(user))
+        return AuthPayloadType(access_token=token, user=map_user(user), consent_status=user.parental_consent_status)
 
     @strawberry.mutation
     async def update_profile(

@@ -200,6 +200,7 @@ class BattleType:
 class AuthPayloadType:
     access_token: str
     user: UserType
+    consent_status: str  # not_required | pending | approved
 
 
 @strawberry.type
@@ -221,7 +222,9 @@ class RegisterInput:
     email: str
     password: str
     display_name: str
+    date_of_birth: date
     state_code: str = "ok"
+    parent_email: Optional[str] = None
 
 
 @strawberry.input
