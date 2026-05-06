@@ -120,6 +120,9 @@ def map_user(u: User) -> UserType:
         freeze_tokens=u.freeze_tokens,
         test_date=u.test_date,
         created_at=u.created_at,
+        email_verified=u.email_verified,
+        phone_number=u.phone_number,
+        phone_verified=u.phone_verified,
     )
 
 
@@ -986,7 +989,7 @@ class Mutation:
         user: User | None = info.context.get("user")
 
         session = Session(
-            user_id=user.id if user else uuid.uuid4(),
+            user_id=user.id if user else None,
             state_code=input.state_code,
             mode=input.mode,
             difficulty=input.difficulty,

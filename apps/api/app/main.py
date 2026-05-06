@@ -9,14 +9,17 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 import asyncio
+import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
-from fastapi import FastAPI, Request, Response
+from fastapi import BackgroundTasks, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from sqlalchemy import delete
+
+_log = logging.getLogger(__name__)
 
 from app.config import settings
 from app.db import get_redis, close_redis
@@ -36,32 +39,28 @@ schema = strawberry.Schema(
 )
 
 
-# ── Context builder (HTTP + WebSocket) ───────────────────────────────────────
-async def get_context(request=None, ws=None, response: Response = None) -> dict:
+# ── Context builder ───────────────────────────────────────────────────────────
+async def get_context(
+    request: Request = None,
+    response: Response = None,
+    background_tasks: BackgroundTasks = None,
+) -> dict:
     """
-    Build the GraphQL context for HTTP requests and WebSocket subscriptions.
+    Build the GraphQL context for HTTP requests.
 
-    Strawberry calls this with request=<Request> for HTTP mutations/queries
-    and with ws=<WebSocket> for subscriptions. No type annotations on the
-    parameters — FastAPI would try to Pydantic-validate Union[Request,
-    WebSocket] and reject it. Both objects expose .headers so auth token
-    extraction works identically for both paths.
+    `request: Request` causes FastAPI to inject the live HTTP Request, giving
+    access to Authorization headers and httpOnly cookies.  Strawberry merges
+    the returned dict with its own default context keys.
     """
     import uuid
     from app.db.connection import AsyncSessionLocal
 
-    # Resolve the actual connection object regardless of which arg was used
-    connection = request or ws
-
     db   = AsyncSessionLocal()
+    if background_tasks is not None:
+        background_tasks.add_task(db.close)
     user = None
 
-    auth_header = None
-    if connection is not None:
-        try:
-            auth_header = connection.headers.get("Authorization")
-        except Exception:
-            pass
+    auth_header = request.headers.get("Authorization") if request else None
 
     if auth_header and auth_header.startswith("Bearer "):
         token = auth_header[7:]
@@ -77,18 +76,16 @@ async def get_context(request=None, ws=None, response: Response = None) -> dict:
                     select(User).where(User.id == uuid.UUID(user_id))
                 )
                 user = result.scalar_one_or_none()
-        except Exception:
-            pass
+        except Exception as _exc:
+            _log.warning("get_context user lookup failed: %s", _exc, exc_info=True)
 
-    state_code = settings.state_code
-    if connection is not None:
-        try:
-            state_code = connection.headers.get("X-State-Code", settings.state_code)
-        except Exception:
-            pass
+    state_code = (
+        request.headers.get("X-State-Code", settings.state_code)
+        if request else settings.state_code
+    )
 
     return {
-        "request":    connection,
+        "request":    request,
         "response":   response,
         "db":         db,
         "user":       user,

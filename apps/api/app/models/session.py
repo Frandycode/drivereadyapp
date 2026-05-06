@@ -22,8 +22,8 @@ from .base import UUIDMixin, TimestampMixin
 class Session(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "sessions"
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True
     )
     state_code: Mapped[str] = mapped_column(String(5), nullable=False)
     mode: Mapped[str] = mapped_column(String(20), nullable=False)
