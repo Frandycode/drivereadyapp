@@ -37,6 +37,9 @@ celery[redis]==5.4.0
 # Email
 aiosmtplib==3.0.1
 
+# SMS
+twilio==9.3.3
+
 # Utilities
 python-dateutil==2.9.0
 

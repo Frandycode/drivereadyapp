@@ -10,16 +10,83 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { LogOut, User, Mail, Zap, Flame, Shield } from 'lucide-react'
+import { useState } from 'react'
+import { useMutation, gql, ApolloError } from '@apollo/client'
+import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { clearAuthToken } from '@driveready/api-client'
 
+const SEND_PHONE_OTP = gql`
+  mutation SendPhoneOtp($input: SendPhoneOtpInput!) {
+    sendPhoneOtp(input: $input)
+  }
+`
+
+const VERIFY_PHONE_OTP = gql`
+  mutation VerifyPhoneOtp($input: VerifyOtpInput!, $phoneNumber: String!) {
+    verifyPhoneOtp(input: $input, phoneNumber: $phoneNumber)
+  }
+`
+
+type PhoneStep = 'idle' | 'enter-number' | 'enter-code' | 'done'
+
 export function ProfilePage() {
-  const { user, clearUser } = useUserStore()
+  const { user, clearUser, setUser } = useUserStore()
+
+  // Phone verification flow
+  const [phoneStep, setPhoneStep]   = useState<PhoneStep>('idle')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [phoneDigits, setPhoneDigits] = useState(['', '', '', '', '', ''])
+  const [phoneError, setPhoneError]   = useState('')
+
+  const [sendPhoneOtp,   { loading: sending   }] = useMutation(SEND_PHONE_OTP)
+  const [verifyPhoneOtp, { loading: verifying }] = useMutation(VERIFY_PHONE_OTP)
 
   function handleLogout() {
     clearAuthToken()
     clearUser()
+  }
+
+  async function handleSendPhoneOtp() {
+    setPhoneError('')
+    try {
+      await sendPhoneOtp({ variables: { input: { phoneNumber } } })
+      setPhoneDigits(['', '', '', '', '', ''])
+      setPhoneStep('enter-code')
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) {
+        setPhoneError(err.graphQLErrors[0]?.message ?? 'Could not send code.')
+      }
+    }
+  }
+
+  async function handleVerifyPhoneOtp() {
+    const code = phoneDigits.join('')
+    if (code.length < 6) { setPhoneError('Please enter all 6 digits.'); return }
+    setPhoneError('')
+    try {
+      await verifyPhoneOtp({ variables: { input: { code }, phoneNumber } })
+      if (user) setUser({ ...user, phoneVerified: true, phoneNumber })
+      setPhoneStep('done')
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) {
+        setPhoneError(err.graphQLErrors[0]?.message ?? 'Incorrect code.')
+      }
+    }
+  }
+
+  function handlePhoneDigit(index: number, value: string) {
+    const digit = value.replace(/\D/, '').slice(-1)
+    const next = [...phoneDigits]
+    next[index] = digit
+    setPhoneDigits(next)
+    if (digit && index < 5) document.getElementById(`phone-otp-${index + 1}`)?.focus()
+  }
+
+  function handlePhoneKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Backspace' && !phoneDigits[index] && index > 0) {
+      document.getElementById(`phone-otp-${index - 1}`)?.focus()
+    }
   }
 
   if (!user) return null
@@ -39,12 +106,13 @@ export function ProfilePage() {
             <div className="flex items-center gap-1 text-text-secondary text-sm mt-0.5">
               <Mail size={13} />
               <span className="truncate">{user.email}</span>
+              {user.emailVerified && <CheckCircle size={12} className="text-green-500 shrink-0" />}
             </div>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-surface border border-border rounded-xl p-3 text-center">
             <div className="flex items-center justify-center gap-1 text-yellow-400 mb-1">
               <Zap size={15} />
@@ -66,6 +134,98 @@ export function ProfilePage() {
             </div>
             <p className="font-display text-xl font-bold text-text-primary">{user.level}</p>
           </div>
+        </div>
+
+        {/* Phone verification */}
+        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <Phone size={15} className="text-text-secondary" />
+              <span className="text-sm font-medium text-text-primary">Phone Number</span>
+            </div>
+            {user.phoneVerified && (
+              <span className="flex items-center gap-1 text-xs text-green-500">
+                <CheckCircle size={12} /> Verified
+              </span>
+            )}
+          </div>
+
+          {user.phoneVerified ? (
+            <p className="text-sm text-text-secondary">{user.phoneNumber}</p>
+          ) : phoneStep === 'idle' ? (
+            <button
+              onClick={() => setPhoneStep('enter-number')}
+              className="mt-2 text-sm text-green-500 hover:text-green-400 transition-colors"
+            >
+              Add &amp; verify phone number
+            </button>
+          ) : phoneStep === 'enter-number' ? (
+            <div className="mt-3 space-y-3">
+              <input
+                className="input"
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+              {phoneError && (
+                <p className="text-wrong text-xs">{phoneError}</p>
+              )}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleSendPhoneOtp}
+                  disabled={!phoneNumber || sending}
+                  className="btn-primary flex-1 h-10 text-sm"
+                >
+                  {sending ? 'Sending...' : 'Send Code'}
+                </button>
+                <button
+                  onClick={() => { setPhoneStep('idle'); setPhoneError('') }}
+                  className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+          ) : phoneStep === 'enter-code' ? (
+            <div className="mt-3 space-y-3">
+              <p className="text-xs text-text-secondary">Enter the code sent to {phoneNumber}</p>
+              <div className="flex gap-2">
+                {phoneDigits.map((digit, i) => (
+                  <input
+                    key={i}
+                    id={`phone-otp-${i}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handlePhoneDigit(i, e.target.value)}
+                    onKeyDown={(e) => handlePhoneKeyDown(i, e)}
+                    onFocus={(e) => e.target.select()}
+                    className="w-10 h-12 text-center text-lg font-bold font-mono rounded-lg border-2 bg-bg text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
+                  />
+                ))}
+              </div>
+              {phoneError && <p className="text-wrong text-xs">{phoneError}</p>}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleVerifyPhoneOtp}
+                  disabled={phoneDigits.some((d) => !d) || verifying}
+                  className="btn-primary flex-1 h-10 text-sm"
+                >
+                  {verifying ? 'Verifying...' : 'Verify'}
+                </button>
+                <button
+                  onClick={() => { setPhoneStep('enter-number'); setPhoneError('') }}
+                  className="text-sm text-text-secondary hover:text-text-primary transition-colors px-3"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-2 text-sm text-green-500">Phone verified successfully!</p>
+          )}
         </div>
 
         {/* Logout */}

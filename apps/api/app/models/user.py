@@ -27,6 +27,9 @@ class User(Base, UUIDMixin, TimestampMixin):
     date_of_birth: Mapped[date | None] = mapped_column(Date)
     parental_consent_status: Mapped[str] = mapped_column(String(20), nullable=False, default="not_required")
     parent_email: Mapped[str | None] = mapped_column(String(255))
+    email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    phone_number: Mapped[str | None] = mapped_column(String(20))
+    phone_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     state_code: Mapped[str] = mapped_column(String(5), nullable=False, default="ok")
 
     # Progression

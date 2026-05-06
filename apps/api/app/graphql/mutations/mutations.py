@@ -30,7 +30,9 @@ from app.auth.jwt import create_access_token
 from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
 from app.services.consent import create_consent_token
-from app.services.email import send_parental_consent_email
+from app.services.email import send_otp_email, send_parental_consent_email
+from app.services.otp import clear_otp, create_otp, verify_otp
+from app.services.sms import send_otp_sms
 from app.graphql.types.all_types import (
     AnswerResultType,
     AuthPayloadType,
@@ -42,11 +44,13 @@ from app.graphql.types.all_types import (
     FlashcardDeckType,
     LoginInput,
     RegisterInput,
+    SendPhoneOtpInput,
     SessionResultType,
     SessionType,
     StartSessionInput,
     SubmitAnswerInput,
     UserType,
+    VerifyOtpInput,
 )
 from app.models import (
     Answer,
@@ -260,8 +264,17 @@ class Mutation:
                 deny_url=deny_url,
             )
 
+        # Always send email OTP after registration
+        otp_code = await create_otp(str(user.id), "email")
+        await send_otp_email(to=user.email, code=otp_code, display_name=user.display_name)
+
         jwt_token = create_access_token(str(user.id), user.role)
-        return AuthPayloadType(access_token=jwt_token, user=map_user(user), consent_status=consent_status)
+        return AuthPayloadType(
+            access_token=jwt_token,
+            user=map_user(user),
+            consent_status=consent_status,
+            email_verified=False,
+        )
 
     @strawberry.mutation
     async def login(self, info: Info, input: LoginInput) -> AuthPayloadType:
@@ -274,7 +287,12 @@ class Mutation:
             raise ValueError("Invalid email or password")
 
         token = create_access_token(str(user.id), user.role)
-        return AuthPayloadType(access_token=token, user=map_user(user), consent_status=user.parental_consent_status)
+        return AuthPayloadType(
+            access_token=token,
+            user=map_user(user),
+            consent_status=user.parental_consent_status,
+            email_verified=user.email_verified,
+        )
 
     @strawberry.mutation
     async def update_profile(
@@ -300,6 +318,63 @@ class Mutation:
         await db.commit()
         await db.refresh(user)
         return map_user(user)
+
+    # ── OTP ───────────────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def resend_email_otp(self, info: Info) -> bool:
+        """Re-send email OTP to the authenticated user."""
+        user: User = info.context["user"]
+        if not user:
+            raise ValueError("Authentication required.")
+        if user.email_verified:
+            raise ValueError("Email is already verified.")
+        code = await create_otp(str(user.id), "email")
+        await send_otp_email(to=user.email, code=code, display_name=user.display_name)
+        return True
+
+    @strawberry.mutation
+    async def verify_email_otp(self, info: Info, input: VerifyOtpInput) -> bool:
+        """Verify the email OTP and mark email as verified."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+        if not user:
+            raise ValueError("Authentication required.")
+        await verify_otp(str(user.id), "email", input.code)
+        user.email_verified = True
+        db.add(user)
+        await db.commit()
+        return True
+
+    @strawberry.mutation
+    async def send_phone_otp(self, info: Info, input: SendPhoneOtpInput) -> bool:
+        """Send an OTP to the given phone number."""
+        user: User = info.context["user"]
+        if not user:
+            raise ValueError("Authentication required.")
+        import re
+        phone = re.sub(r"[^\d+]", "", input.phone_number)
+        if not re.match(r"^\+?[1-9]\d{7,14}$", phone):
+            raise ValueError("Invalid phone number format.")
+        code = await create_otp(str(user.id), "phone")
+        await send_otp_sms(to=phone, code=code)
+        return True
+
+    @strawberry.mutation
+    async def verify_phone_otp(self, info: Info, input: VerifyOtpInput, phone_number: str) -> bool:
+        """Verify the phone OTP and store the verified number."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+        if not user:
+            raise ValueError("Authentication required.")
+        import re
+        phone = re.sub(r"[^\d+]", "", phone_number)
+        await verify_otp(str(user.id), "phone", input.code)
+        user.phone_number  = phone
+        user.phone_verified = True
+        db.add(user)
+        await db.commit()
+        return True
 
     # ── Sessions ──────────────────────────────────────────────────────────────
 

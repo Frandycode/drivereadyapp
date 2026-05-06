@@ -73,6 +73,9 @@ class UserType:
     freeze_tokens: int
     test_date: Optional[date]
     created_at: datetime
+    email_verified: bool
+    phone_number: Optional[str]
+    phone_verified: bool
 
 
 @strawberry.type
@@ -200,7 +203,8 @@ class BattleType:
 class AuthPayloadType:
     access_token: str
     user: UserType
-    consent_status: str  # not_required | pending | approved
+    consent_status: str   # not_required | pending | approved
+    email_verified: bool
 
 
 @strawberry.type
@@ -231,6 +235,16 @@ class RegisterInput:
 class LoginInput:
     email: str
     password: str
+
+
+@strawberry.input
+class VerifyOtpInput:
+    code: str
+
+
+@strawberry.input
+class SendPhoneOtpInput:
+    phone_number: str
 
 
 @strawberry.input

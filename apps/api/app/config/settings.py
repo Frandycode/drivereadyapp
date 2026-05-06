@@ -41,6 +41,11 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = True
 
+    # SMS (Twilio)
+    twilio_account_sid: str = ""
+    twilio_auth_token: str = ""
+    twilio_from_number: str = ""
+
     # Email (SMTP)
     smtp_host: str = ""
     smtp_port: int = 587

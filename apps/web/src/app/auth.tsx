@@ -55,14 +55,15 @@ function getAgeGroup(year: number, month: number): AgeGroup {
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
+const USER_FIELDS = `id email displayName role stateCode xpTotal level streakDays freezeTokens emailVerified phoneNumber phoneVerified`
+
 const REGISTER = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
       accessToken
       consentStatus
-      user {
-        id email displayName role stateCode xpTotal level streakDays freezeTokens
-      }
+      emailVerified
+      user { ${USER_FIELDS} }
     }
   }
 `
@@ -72,18 +73,30 @@ const LOGIN = gql`
     login(input: $input) {
       accessToken
       consentStatus
-      user {
-        id email displayName role stateCode xpTotal level streakDays freezeTokens
-      }
+      emailVerified
+      user { ${USER_FIELDS} }
     }
+  }
+`
+
+const VERIFY_EMAIL_OTP = gql`
+  mutation VerifyEmailOtp($input: VerifyOtpInput!) {
+    verifyEmailOtp(input: $input)
+  }
+`
+
+const RESEND_EMAIL_OTP = gql`
+  mutation ResendEmailOtp {
+    resendEmailOtp
   }
 `
 
 // ── Sub-screens ───────────────────────────────────────────────────────────────
 
 type Screen =
-  | 'auth'          // main login/register form
-  | 'consent-pending' // after minor registers, waiting for parent
+  | 'auth'
+  | 'verify-email'
+  | 'consent-pending'
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -91,7 +104,7 @@ export function AuthPage() {
   const [mode, setMode]               = useState<'login' | 'register'>('login')
   const [screen, setScreen]           = useState<Screen>('auth')
 
-  // Fields
+  // Form fields
   const [email, setEmail]             = useState('')
   const [password, setPassword]       = useState('')
   const [displayName, setDisplayName] = useState('')
@@ -101,13 +114,25 @@ export function AuthPage() {
   const [dobYear, setDobYear]         = useState('')
   const [dobMonth, setDobMonth]       = useState('')
 
+  // Pending auth (held until email OTP verified)
+  const [pendingToken, setPendingToken]   = useState('')
+  const [pendingUser, setPendingUser]     = useState<null | Record<string, unknown>>(null)
+  const [pendingIsReg, setPendingIsReg]   = useState(false)
+
+  // OTP input
+  const [otpDigits, setOtpDigits]     = useState(['', '', '', '', '', ''])
+  const [otpError, setOtpError]       = useState('')
+  const [resendCooldown, setResendCooldown] = useState(0)
+
   const [error, setError]             = useState('')
 
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
 
-  const [register, { loading: registering }] = useMutation(REGISTER)
-  const [login,    { loading: loggingIn   }] = useMutation(LOGIN)
+  const [register,        { loading: registering  }] = useMutation(REGISTER)
+  const [login,           { loading: loggingIn    }] = useMutation(LOGIN)
+  const [verifyEmailOtp,  { loading: verifying    }] = useMutation(VERIFY_EMAIL_OTP)
+  const [resendEmailOtp,  { loading: resending    }] = useMutation(RESEND_EMAIL_OTP)
 
   const loading = registering || loggingIn
 
@@ -117,13 +142,33 @@ export function AuthPage() {
 
   const dobComplete = dobYear.length === 4 && dobMonth.length > 0
 
+  function completeLogin(data: Record<string, unknown>, isRegister: boolean) {
+    const u = data.user as Record<string, unknown>
+    setAuthToken(data.accessToken as string)
+    setUser({
+      id:           u.id           as string,
+      email:        u.email        as string,
+      displayName:  u.displayName  as string,
+      role:         u.role         as 'learner' | 'parent' | 'admin',
+      stateCode:    u.stateCode    as string,
+      xpTotal:      u.xpTotal      as number,
+      level:        u.level        as number,
+      streakDays:   u.streakDays   as number,
+      freezeTokens: u.freezeTokens as number,
+      emailVerified: u.emailVerified as boolean,
+      phoneVerified: u.phoneVerified as boolean,
+      phoneNumber:   u.phoneNumber  as string | undefined,
+    })
+    if (isRegister) setNeedsOnboarding(true)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
 
     if (mode === 'register') {
       if (!dobComplete) { setError('Please enter your date of birth.'); return }
-      if (ageGroup === 'under13') return // button is hidden for under-13
+      if (ageGroup === 'under13') return
       if (!passwordValid(password)) { setError('Password does not meet the requirements below.'); return }
       if (ageGroup === 'minor' && !parentEmail) { setError("A parent or guardian's email is required."); return }
     }
@@ -131,7 +176,6 @@ export function AuthPage() {
     try {
       let data
       if (mode === 'register') {
-        const dob = new Date(parseInt(dobYear), parseInt(dobMonth) - 1, 1)
         const isoDate = `${dobYear}-${String(dobMonth).padStart(2, '0')}-01`
         const res = await register({
           variables: {
@@ -145,7 +189,6 @@ export function AuthPage() {
             },
           },
         })
-        void dob
         data = res.data?.register
       } else {
         const res = await login({ variables: { input: { email, password } } })
@@ -158,39 +201,139 @@ export function AuthPage() {
           return
         }
 
-        setAuthToken(data.accessToken)
-        setUser({
-          id:           data.user.id,
-          email:        data.user.email,
-          displayName:  data.user.displayName,
-          role:         data.user.role,
-          stateCode:    data.user.stateCode,
-          xpTotal:      data.user.xpTotal,
-          level:        data.user.level,
-          streakDays:   data.user.streakDays,
-          freezeTokens: data.user.freezeTokens,
-        })
-        if (mode === 'register') {
-          setNeedsOnboarding(true)
+        if (!data.emailVerified) {
+          // Hold credentials — require OTP before completing login
+          setAuthToken(data.accessToken)
+          setPendingToken(data.accessToken)
+          setPendingUser(data)
+          setPendingIsReg(mode === 'register')
+          setOtpDigits(['', '', '', '', '', ''])
+          setOtpError('')
+          setScreen('verify-email')
+          return
         }
+
+        completeLogin(data, mode === 'register')
       }
     } catch (err: unknown) {
       if (err instanceof ApolloError) {
         const msg = err.graphQLErrors[0]?.message ?? err.message
-        if (msg === 'COPPA_UNDER_13') {
-          // Should never reach here (button hidden), but handle defensively
-          return
-        } else if (msg.includes('Invalid email or password')) {
-          setError('Incorrect email or password. Please try again.')
-        } else if (msg.includes('already registered')) {
-          setError('An account with this email already exists.')
-        } else {
-          setError(msg || 'Something went wrong. Please try again.')
-        }
+        if (msg === 'COPPA_UNDER_13') return
+        else if (msg.includes('Invalid email or password')) setError('Incorrect email or password. Please try again.')
+        else if (msg.includes('already registered'))        setError('An account with this email already exists.')
+        else                                                setError(msg || 'Something went wrong. Please try again.')
       } else {
         setError('Unable to connect. Check your internet and try again.')
       }
     }
+  }
+
+  async function handleVerifyOtp() {
+    const code = otpDigits.join('')
+    if (code.length < 6) { setOtpError('Please enter all 6 digits.'); return }
+    setOtpError('')
+    try {
+      await verifyEmailOtp({ variables: { input: { code } } })
+      if (pendingUser) completeLogin({ ...pendingUser, emailVerified: true }, pendingIsReg)
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) {
+        setOtpError(err.graphQLErrors[0]?.message ?? 'Incorrect code. Please try again.')
+      }
+    }
+  }
+
+  async function handleResendOtp() {
+    setOtpError('')
+    try {
+      await resendEmailOtp()
+      setResendCooldown(60)
+      const interval = setInterval(() => {
+        setResendCooldown((c) => { if (c <= 1) { clearInterval(interval); return 0 } return c - 1 })
+      }, 1000)
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) {
+        setOtpError(err.graphQLErrors[0]?.message ?? 'Could not resend code.')
+      }
+    }
+  }
+
+  function handleOtpDigit(index: number, value: string) {
+    const digit = value.replace(/\D/, '').slice(-1)
+    const next = [...otpDigits]
+    next[index] = digit
+    setOtpDigits(next)
+    if (digit && index < 5) {
+      document.getElementById(`otp-${index + 1}`)?.focus()
+    }
+  }
+
+  function handleOtpKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+      document.getElementById(`otp-${index - 1}`)?.focus()
+    }
+  }
+
+  void pendingToken
+
+  // ── Email OTP verification screen ─────────────────────────────────────────
+
+  if (screen === 'verify-email') {
+    const allFilled = otpDigits.every((d) => d !== '')
+    return (
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4">
+        <div className="w-full max-w-sm">
+          <div className="text-center mb-8">
+            <AppLogo height={80} />
+          </div>
+          <div className="card-elevated">
+            <h2 className="font-display text-xl font-bold text-text-primary mb-1">Verify your email</h2>
+            <p className="text-text-secondary text-sm mb-6">
+              We sent a 6-digit code to <span className="text-text-primary font-medium">{email}</span>.
+            </p>
+
+            {/* OTP digit inputs */}
+            <div className="flex gap-2 justify-center mb-6">
+              {otpDigits.map((digit, i) => (
+                <input
+                  key={i}
+                  id={`otp-${i}`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpDigit(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                  onFocus={(e) => e.target.select()}
+                  className="w-11 h-14 text-center text-xl font-bold font-mono rounded-lg border-2 bg-surface text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
+                />
+              ))}
+            </div>
+
+            {otpError && (
+              <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
+                {otpError}
+              </p>
+            )}
+
+            <button
+              onClick={handleVerifyOtp}
+              disabled={!allFilled || verifying}
+              className="btn-primary w-full h-11 mb-3"
+            >
+              {verifying ? 'Verifying...' : 'Verify Email'}
+            </button>
+
+            <button
+              onClick={handleResendOtp}
+              disabled={resending || resendCooldown > 0}
+              className="w-full text-sm text-text-secondary hover:text-text-primary transition-colors py-2 disabled:opacity-50"
+            >
+              {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // ── Consent pending screen ─────────────────────────────────────────────────

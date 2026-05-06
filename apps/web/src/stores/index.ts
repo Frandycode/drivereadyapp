@@ -27,6 +27,9 @@ export interface User {
   streakDays: number
   freezeTokens: number
   testDate?: string
+  emailVerified: boolean
+  phoneNumber?: string
+  phoneVerified: boolean
 }
 
 export type Difficulty = 'pawn' | 'rogue' | 'king'

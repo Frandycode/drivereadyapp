@@ -67,6 +67,9 @@ def map_user(u: User) -> UserType:
         freeze_tokens=u.freeze_tokens,
         test_date=u.test_date,
         created_at=u.created_at,
+        email_verified=u.email_verified,
+        phone_number=u.phone_number,
+        phone_verified=u.phone_verified,
     )
 
 
