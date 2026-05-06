@@ -33,6 +33,7 @@ from app.db.redis import CacheKey, TTL, get_redis
 from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
 from app.services.email import (
+    send_email_change_otp,
     send_new_device_email,
     send_otp_email,
     send_parent_linked_email,
@@ -853,6 +854,61 @@ class Mutation:
         link.link_code_expires_at = None
         db.add(link)
         await db.commit()
+        return True
+
+    # ── Email change ─────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def request_email_change(self, info: Info, new_email: str) -> bool:
+        """Send a verification OTP to a new email address."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+
+        new_email = new_email.lower().strip()
+        if new_email == user.email:
+            raise ValueError("That is already your current email address.")
+
+        ip = _get_ip(info)
+        await check_rate_limit(f"email_change:{str(user.id)}", max_requests=3, window_seconds=3600)
+        await check_rate_limit(f"email_change_ip:{ip}",        max_requests=5, window_seconds=3600)
+
+        existing = await db.execute(select(User).where(User.email == new_email))
+        if existing.scalar_one_or_none():
+            raise ValueError("That email address is already registered.")
+
+        r = await get_redis()
+        await r.setex(f"email_change:{str(user.id)}:pending", 600, new_email)
+
+        code = await create_otp(str(user.id), "email_change")
+        await send_email_change_otp(to=new_email, display_name=user.display_name, code=code)
+        return True
+
+    @strawberry.mutation
+    async def confirm_email_change(self, info: Info, code: str) -> bool:
+        """Verify the OTP and commit the new email address."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+
+        await verify_otp(str(user.id), "email_change", code)
+
+        r = await get_redis()
+        new_email = await r.get(f"email_change:{str(user.id)}:pending")
+        if not new_email:
+            raise ValueError("Email change request expired. Please start over.")
+
+        existing = await db.execute(select(User).where(User.email == new_email))
+        if existing.scalar_one_or_none():
+            raise ValueError("That email address is no longer available.")
+
+        user.email = new_email
+        user.email_verified = True
+        db.add(user)
+        await db.commit()
+        await r.delete(f"email_change:{str(user.id)}:pending")
         return True
 
     # ── OTP ───────────────────────────────────────────────────────────────────

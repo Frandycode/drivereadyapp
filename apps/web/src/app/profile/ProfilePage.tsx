@@ -39,6 +39,18 @@ const MY_PARENT_LINKS = gql`
   }
 `
 
+const REQUEST_EMAIL_CHANGE = gql`
+  mutation RequestEmailChange($newEmail: String!) {
+    requestEmailChange(newEmail: $newEmail)
+  }
+`
+
+const CONFIRM_EMAIL_CHANGE = gql`
+  mutation ConfirmEmailChange($code: String!) {
+    confirmEmailChange(code: $code)
+  }
+`
+
 const CHANGE_PASSWORD = gql`
   mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
     changePassword(currentPassword: $currentPassword, newPassword: $newPassword)
@@ -67,6 +79,50 @@ type PhoneStep = 'idle' | 'enter-number' | 'enter-code' | 'done'
 
 export function ProfilePage() {
   const { user, clearUser, setUser } = useUserStore()
+
+  // Email change
+  type EmailStep = 'idle' | 'enter-email' | 'enter-code' | 'done'
+  const [emailStep, setEmailStep]           = useState<EmailStep>('idle')
+  const [newEmail, setNewEmail]             = useState('')
+  const [emailDigits, setEmailDigits]       = useState(['', '', '', '', '', ''])
+  const [emailError, setEmailError]         = useState('')
+  const [requestEmailChange, { loading: requestingEmail }] = useMutation(REQUEST_EMAIL_CHANGE)
+  const [confirmEmailChange, { loading: confirmingEmail }] = useMutation(CONFIRM_EMAIL_CHANGE)
+
+  async function handleRequestEmailChange() {
+    setEmailError('')
+    try {
+      await requestEmailChange({ variables: { newEmail } })
+      setEmailDigits(['', '', '', '', '', ''])
+      setEmailStep('enter-code')
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) setEmailError(err.graphQLErrors[0]?.message ?? 'Could not send code.')
+    }
+  }
+
+  async function handleConfirmEmailChange() {
+    const code = emailDigits.join('')
+    if (code.length < 6) { setEmailError('Please enter all 6 digits.'); return }
+    setEmailError('')
+    try {
+      await confirmEmailChange({ variables: { code } })
+      if (user) setUser({ ...user, email: newEmail, emailVerified: true })
+      setEmailStep('done')
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) setEmailError(err.graphQLErrors[0]?.message ?? 'Incorrect code.')
+    }
+  }
+
+  function handleEmailDigit(index: number, value: string) {
+    const digit = value.replace(/\D/, '').slice(-1)
+    const next = [...emailDigits]; next[index] = digit; setEmailDigits(next)
+    if (digit && index < 5) document.getElementById(`ec-otp-${index + 1}`)?.focus()
+  }
+
+  function handleEmailKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Backspace' && !emailDigits[index] && index > 0)
+      document.getElementById(`ec-otp-${index - 1}`)?.focus()
+  }
 
   // Change password
   const [showChangePw, setShowChangePw]   = useState(false)
@@ -210,6 +266,99 @@ export function ProfilePage() {
               {user.emailVerified && <CheckCircle size={12} className="text-green-500 shrink-0" />}
             </div>
           </div>
+        </div>
+
+        {/* Email change */}
+        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <Mail size={15} className="text-text-secondary" />
+              <span className="text-sm font-medium text-text-primary">Email Address</span>
+            </div>
+            {emailStep === 'idle' && (
+              <button
+                onClick={() => { setEmailStep('enter-email'); setEmailError('') }}
+                className="text-xs text-green-500 hover:text-green-400 transition-colors"
+              >
+                Change
+              </button>
+            )}
+          </div>
+
+          {emailStep === 'idle' && (
+            <p className="text-sm text-text-secondary truncate">{user.email}</p>
+          )}
+
+          {emailStep === 'enter-email' && (
+            <div className="mt-3 space-y-3">
+              <input
+                className="input"
+                type="email"
+                placeholder="new@example.com"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                autoFocus
+              />
+              {emailError && <p className="text-wrong text-xs">{emailError}</p>}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleRequestEmailChange}
+                  disabled={!newEmail || requestingEmail}
+                  className="btn-primary flex-1 h-10 text-sm"
+                >
+                  {requestingEmail ? 'Sending...' : 'Send Code'}
+                </button>
+                <button
+                  onClick={() => { setEmailStep('idle'); setEmailError('') }}
+                  className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {emailStep === 'enter-code' && (
+            <div className="mt-3 space-y-3">
+              <p className="text-xs text-text-secondary">Enter the 6-digit code sent to {newEmail}</p>
+              <div className="flex gap-2">
+                {emailDigits.map((digit, i) => (
+                  <input
+                    key={i}
+                    id={`ec-otp-${i}`}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleEmailDigit(i, e.target.value)}
+                    onKeyDown={(e) => handleEmailKeyDown(i, e)}
+                    onFocus={(e) => e.target.select()}
+                    className="w-10 h-12 text-center text-lg font-bold font-mono rounded-lg border-2 bg-bg text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
+                  />
+                ))}
+              </div>
+              {emailError && <p className="text-wrong text-xs">{emailError}</p>}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleConfirmEmailChange}
+                  disabled={emailDigits.some((d) => !d) || confirmingEmail}
+                  className="btn-primary flex-1 h-10 text-sm"
+                >
+                  {confirmingEmail ? 'Verifying...' : 'Confirm'}
+                </button>
+                <button
+                  onClick={() => { setEmailStep('enter-email'); setEmailError('') }}
+                  className="text-sm text-text-secondary hover:text-text-primary transition-colors px-3"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          )}
+
+          {emailStep === 'done' && (
+            <p className="mt-2 text-sm text-green-500">Email updated to {newEmail}.</p>
+          )}
         </div>
 
         {/* Stats */}

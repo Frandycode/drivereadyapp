@@ -148,6 +148,57 @@ async def send_parental_consent_email(
     )
 
 
+async def send_email_change_otp(
+    *,
+    to: str,
+    display_name: str,
+    code: str,
+) -> None:
+    html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Confirm your new DriveReady email</title>
+</head>
+<body style="margin:0;padding:0;background:#0A0F0D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#E8F0EB;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0A0F0D;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="480" cellpadding="0" cellspacing="0" style="background:#111A14;border:1px solid #1E2D22;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="background:#0D6B35;padding:24px 32px;">
+              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;">DriveReady</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:14px;color:#9DB8A4;">Hi {display_name},</p>
+              <p style="margin:0 0 24px;font-size:14px;color:#9DB8A4;">
+                Enter this code to confirm <strong style="color:#E8F0EB;">{to}</strong> as your new DriveReady email.
+                It expires in <strong style="color:#E8F0EB;">10 minutes</strong>.
+              </p>
+              <div style="background:#0A0F0D;border:1px solid #1E2D22;border-radius:10px;padding:24px;text-align:center;margin-bottom:24px;">
+                <span style="font-size:36px;font-weight:700;letter-spacing:12px;color:#22C55E;font-family:monospace;">{code}</span>
+              </div>
+              <p style="margin:0;font-size:12px;color:#4A6B54;">If you did not request this change, you can safely ignore this email.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
+    await send_email(
+        to=to,
+        subject=f"{code} — confirm your new DriveReady email",
+        html=html,
+    )
+
+
 async def send_password_reset_email(
     *,
     to: str,
