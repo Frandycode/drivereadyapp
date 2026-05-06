@@ -25,6 +25,7 @@ from passlib.context import CryptContext
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+from graphql import GraphQLError
 from strawberry.types import Info
 
 from app.auth.jwt import create_access_token, generate_refresh_token, hash_token
@@ -88,6 +89,10 @@ from app.models import (
 from app.models.question import Chapter, Lesson
 
 pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
+
+
+def _gql_error(message: str, code: str) -> GraphQLError:
+    return GraphQLError(message, extensions={"code": code})
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -404,7 +409,7 @@ class Mutation:
 
         existing = await db.execute(select(User).where(User.email == input.email.lower()))
         if existing.scalar_one_or_none():
-            raise ValueError("Email already registered")
+            raise _gql_error("Email already registered", "EMAIL_TAKEN")
 
         user = User(
             email=input.email.lower(),
@@ -461,7 +466,7 @@ class Mutation:
         result = await db.execute(select(User).where(User.email == input.email.lower()))
         user = result.scalar_one_or_none()
         if not user or not user.password_hash or not pwd_context.verify(input.password, user.password_hash):
-            raise ValueError("Invalid email or password")
+            raise _gql_error("Invalid email or password", "INVALID_CREDENTIALS")
 
         await _issue_refresh_token(str(user.id), db, info.context.get("response"))
         await _check_new_device(user, db, ip, _get_user_agent(info), notify=True)
@@ -510,7 +515,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context["user"]
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         if input.tos_version != settings.tos_version:
             raise ValueError("ToS version mismatch. Please refresh and try again.")
@@ -549,7 +554,7 @@ class Mutation:
 
         raw = request.cookies.get("refresh_token") if request else None
         if not raw:
-            raise ValueError("No refresh token")
+            raise _gql_error("No refresh token", "UNAUTHENTICATED")
 
         token_hash = hash_token(raw)
         now = datetime.now(timezone.utc)
@@ -560,7 +565,7 @@ class Mutation:
         stored = result.scalar_one_or_none()
 
         if not stored:
-            raise ValueError("Invalid refresh token")
+            raise _gql_error("Invalid refresh token", "UNAUTHENTICATED")
 
         if stored.revoked_at is not None:
             # Reuse detected — entire token family is compromised; revoke all
@@ -572,10 +577,10 @@ class Mutation:
             await db.commit()
             if response is not None:
                 response.delete_cookie("refresh_token", path="/graphql")
-            raise ValueError("Refresh token reuse detected — please log in again")
+            raise _gql_error("Refresh token reuse detected — please log in again", "REUSE_DETECTED")
 
         if stored.expires_at < now:
-            raise ValueError("Refresh token expired")
+            raise _gql_error("Refresh token expired", "UNAUTHENTICATED")
 
         result = await db.execute(select(User).where(User.id == stored.user_id))
         user = result.scalar_one_or_none()
@@ -645,7 +650,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         if not user.password_hash or not pwd_context.verify(current_password, user.password_hash):
             raise ValueError("Current password is incorrect.")
 
@@ -684,7 +689,7 @@ class Mutation:
 
         user_id = await resolve_reset_token(token)
         if not user_id:
-            raise ValueError("Reset link is invalid or has expired.")
+            raise _gql_error("Reset link is invalid or has expired.", "RESET_TOKEN_INVALID")
 
         validate_password(new_password)
 
@@ -717,7 +722,7 @@ class Mutation:
         user:    User         = info.context.get("user")
         response              = info.context.get("response")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         if not user.password_hash or not pwd_context.verify(password, user.password_hash):
             raise ValueError("Incorrect password.")
 
@@ -736,7 +741,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         ip = _get_ip(info)
         await check_rate_limit(f"link_code:{str(user.id)}", max_requests=5, window_seconds=3600)
@@ -776,7 +781,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         ip = _get_ip(info)
         await check_rate_limit(f"link_parent:{str(user.id)}", max_requests=10, window_seconds=3600)
@@ -838,7 +843,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         result = await db.execute(
             select(ParentLink).where(ParentLink.id == uuid.UUID(str(link_id)))
@@ -864,7 +869,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         new_email = new_email.lower().strip()
         if new_email == user.email:
@@ -891,7 +896,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context.get("user")
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
 
         await verify_otp(str(user.id), "email_change", code)
 
@@ -918,7 +923,7 @@ class Mutation:
         """Re-send email OTP to the authenticated user."""
         user: User = info.context["user"]
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         if user.email_verified:
             raise ValueError("Email is already verified.")
         ip = _get_ip(info)
@@ -933,7 +938,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context["user"]
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         await verify_otp(str(user.id), "email", input.code)
         user.email_verified = True
         db.add(user)
@@ -945,7 +950,7 @@ class Mutation:
         """Send an OTP to the given phone number."""
         user: User = info.context["user"]
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         ip = _get_ip(info)
         await check_rate_limit(f"phone_otp:{ip}", max_requests=3, window_seconds=3600)
         import re
@@ -962,7 +967,7 @@ class Mutation:
         db:   AsyncSession = info.context["db"]
         user: User         = info.context["user"]
         if not user:
-            raise ValueError("Authentication required.")
+            raise _gql_error("Authentication required.", "UNAUTHENTICATED")
         import re
         phone = re.sub(r"[^\d+]", "", phone_number)
         await verify_otp(str(user.id), "phone", input.code)

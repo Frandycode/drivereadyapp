@@ -8,6 +8,8 @@
 # Project  : DriveReady — AI-Powered Multi-State Driver Education Platform
 # ─────────────────────────────────────────────────────────────────────────────
 
+from graphql import GraphQLError
+
 from app.db.redis import get_redis
 
 
@@ -29,4 +31,4 @@ async def check_rate_limit(key: str, max_requests: int, window_seconds: int) -> 
         await redis.expire(full_key, window_seconds)
 
     if count > max_requests:
-        raise ValueError("RATE_LIMITED")
+        raise GraphQLError("RATE_LIMITED", extensions={"code": "RATE_LIMITED"})

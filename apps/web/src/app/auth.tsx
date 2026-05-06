@@ -291,14 +291,15 @@ export function AuthPage() {
       hcaptchaRef.current?.resetCaptcha()
       setCaptchaToken(null)
       if (err instanceof ApolloError) {
-        const msg = err.graphQLErrors[0]?.message ?? err.message
-        if (msg === 'COPPA_UNDER_13')                       return
-        else if (msg === 'RATE_LIMITED')                    setError('Too many attempts. Please wait a few minutes and try again.')
-        else if (msg === 'CAPTCHA_REQUIRED')                setError('Please complete the CAPTCHA verification.')
-        else if (msg === 'CAPTCHA_INVALID')                 setError('CAPTCHA verification failed. Please try again.')
-        else if (msg.includes('Invalid email or password')) setError('Incorrect email or password. Please try again.')
-        else if (msg.includes('already registered'))        setError('An account with this email already exists.')
-        else                                                setError(msg || 'Something went wrong. Please try again.')
+        const code = (err.graphQLErrors[0]?.extensions?.code as string) ?? ''
+        const msg  = err.graphQLErrors[0]?.message ?? err.message
+        if (code === 'COPPA_UNDER_13'       || msg === 'COPPA_UNDER_13')                       return
+        else if (code === 'RATE_LIMITED'    || msg === 'RATE_LIMITED')                         setError('Too many attempts. Please wait a few minutes and try again.')
+        else if (code === 'CAPTCHA_REQUIRED'|| msg === 'CAPTCHA_REQUIRED')                     setError('Please complete the CAPTCHA verification.')
+        else if (code === 'CAPTCHA_INVALID' || msg === 'CAPTCHA_INVALID')                      setError('CAPTCHA verification failed. Please try again.')
+        else if (code === 'INVALID_CREDENTIALS' || msg.includes('Invalid email or password'))  setError('Incorrect email or password. Please try again.')
+        else if (code === 'EMAIL_TAKEN'     || msg.includes('already registered'))             setError('An account with this email already exists.')
+        else                                                                                   setError(msg || 'Something went wrong. Please try again.')
       } else {
         setError('Unable to connect. Check your internet and try again.')
       }

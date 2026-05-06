@@ -11,6 +11,7 @@
 from typing import Optional
 
 import httpx
+from graphql import GraphQLError
 
 from app.config import settings
 
@@ -29,7 +30,7 @@ async def verify_captcha(token: Optional[str]) -> None:
         return
 
     if not token:
-        raise ValueError("CAPTCHA_REQUIRED")
+        raise GraphQLError("CAPTCHA_REQUIRED", extensions={"code": "CAPTCHA_REQUIRED"})
 
     async with httpx.AsyncClient(timeout=10.0) as client:
         resp = await client.post(
@@ -38,4 +39,4 @@ async def verify_captcha(token: Optional[str]) -> None:
         )
 
     if not resp.json().get("success"):
-        raise ValueError("CAPTCHA_INVALID")
+        raise GraphQLError("CAPTCHA_INVALID", extensions={"code": "CAPTCHA_INVALID"})
