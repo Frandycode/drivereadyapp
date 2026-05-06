@@ -12,9 +12,21 @@
 
 import { useState } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X } from 'lucide-react'
+import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2 } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { clearAuthToken } from '@driveready/api-client'
+
+const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
+    changePassword(currentPassword: $currentPassword, newPassword: $newPassword)
+  }
+`
+
+const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount($password: String!) {
+    deleteAccount(password: $password)
+  }
+`
 
 const SEND_PHONE_OTP = gql`
   mutation SendPhoneOtp($input: SendPhoneOtpInput!) {
@@ -32,6 +44,46 @@ type PhoneStep = 'idle' | 'enter-number' | 'enter-code' | 'done'
 
 export function ProfilePage() {
   const { user, clearUser, setUser } = useUserStore()
+
+  // Change password
+  const [showChangePw, setShowChangePw]   = useState(false)
+  const [currentPw, setCurrentPw]         = useState('')
+  const [newPw, setNewPw]                 = useState('')
+  const [confirmPw, setConfirmPw]         = useState('')
+  const [pwError, setPwError]             = useState('')
+  const [pwSuccess, setPwSuccess]         = useState(false)
+
+  // Delete account
+  const [showDelete, setShowDelete]       = useState(false)
+  const [deletePw, setDeletePw]           = useState('')
+  const [deleteError, setDeleteError]     = useState('')
+
+  const [changePassword, { loading: changingPw }]   = useMutation(CHANGE_PASSWORD)
+  const [deleteAccount,  { loading: deleting   }]   = useMutation(DELETE_ACCOUNT)
+
+  async function handleChangePassword() {
+    setPwError('')
+    if (newPw !== confirmPw) { setPwError('Passwords do not match.'); return }
+    try {
+      await changePassword({ variables: { currentPassword: currentPw, newPassword: newPw } })
+      setPwSuccess(true)
+      setCurrentPw(''); setNewPw(''); setConfirmPw('')
+      setTimeout(() => { setShowChangePw(false); setPwSuccess(false) }, 1500)
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) setPwError(err.graphQLErrors[0]?.message ?? 'Could not update password.')
+    }
+  }
+
+  async function handleDeleteAccount() {
+    setDeleteError('')
+    try {
+      await deleteAccount({ variables: { password: deletePw } })
+      clearAuthToken()
+      clearUser()
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) setDeleteError(err.graphQLErrors[0]?.message ?? 'Could not delete account.')
+    }
+  }
 
   // Phone verification flow
   const [phoneStep, setPhoneStep]   = useState<PhoneStep>('idle')
@@ -225,6 +277,92 @@ export function ProfilePage() {
             </div>
           ) : (
             <p className="mt-2 text-sm text-green-500">Phone verified successfully!</p>
+          )}
+        </div>
+
+        {/* Change password */}
+        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+          <button
+            onClick={() => { setShowChangePw((v) => !v); setPwError(''); setPwSuccess(false) }}
+            className="w-full flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2">
+              <Lock size={15} className="text-text-secondary" />
+              <span className="text-sm font-medium text-text-primary">Change Password</span>
+            </div>
+            <span className="text-xs text-text-secondary">{showChangePw ? 'Cancel' : 'Update'}</span>
+          </button>
+
+          {showChangePw && (
+            <div className="mt-4 space-y-3">
+              <input
+                className="input"
+                type="password"
+                placeholder="Current password"
+                value={currentPw}
+                onChange={(e) => setCurrentPw(e.target.value)}
+              />
+              <input
+                className="input"
+                type="password"
+                placeholder="New password"
+                value={newPw}
+                onChange={(e) => setNewPw(e.target.value)}
+              />
+              <input
+                className="input"
+                type="password"
+                placeholder="Confirm new password"
+                value={confirmPw}
+                onChange={(e) => setConfirmPw(e.target.value)}
+              />
+              {pwError   && <p className="text-wrong text-xs">{pwError}</p>}
+              {pwSuccess && <p className="text-green-500 text-xs">Password updated.</p>}
+              <button
+                onClick={handleChangePassword}
+                disabled={!currentPw || !newPw || !confirmPw || changingPw}
+                className="btn-primary w-full h-10 text-sm"
+              >
+                {changingPw ? 'Updating...' : 'Update Password'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Delete account */}
+        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+          <button
+            onClick={() => { setShowDelete((v) => !v); setDeleteError('') }}
+            className="w-full flex items-center justify-between"
+          >
+            <div className="flex items-center gap-2">
+              <Trash2 size={15} className="text-red-400" />
+              <span className="text-sm font-medium text-red-400">Delete Account</span>
+            </div>
+            <span className="text-xs text-text-secondary">{showDelete ? 'Cancel' : 'Manage'}</span>
+          </button>
+
+          {showDelete && (
+            <div className="mt-4 space-y-3">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                This permanently deletes your account and all study data. Enter your password to confirm.
+              </p>
+              <input
+                className="input border-red-500/40"
+                type="password"
+                placeholder="Your password"
+                value={deletePw}
+                onChange={(e) => setDeletePw(e.target.value)}
+              />
+              {deleteError && <p className="text-wrong text-xs">{deleteError}</p>}
+              <button
+                onClick={handleDeleteAccount}
+                disabled={!deletePw || deleting}
+                className="w-full h-10 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium"
+              >
+                {deleting ? 'Deleting...' : 'Permanently Delete My Account'}
+              </button>
+            </div>
           )}
         </div>
 
