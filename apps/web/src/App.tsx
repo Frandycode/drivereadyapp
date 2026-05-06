@@ -12,6 +12,7 @@
 
 import { useState, useEffect } from 'react'
 import { useUserStore, applyTheme } from '@/stores'
+import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { AuthPage } from '@/app/auth'
 import { OnboardingPage } from '@/app/onboarding/OnboardingPage'
@@ -154,9 +155,10 @@ type AppScreen =
   | { screen: 'profile' }
 
 export default function App() {
-  const [path, setPath]       = useState(window.location.pathname)
+  const [path, setPath]           = useState(window.location.pathname)
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
-  const { user, theme, isHydrated, needsOnboarding } = useUserStore()
+  const [tokenReady, setTokenReady] = useState(false)
+  const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
 
   useEffect(() => { applyTheme(theme) }, [theme])
 
@@ -165,6 +167,16 @@ export default function App() {
     window.addEventListener('popstate', handlePop)
     return () => window.removeEventListener('popstate', handlePop)
   }, [])
+
+  useEffect(() => {
+    if (!isHydrated) return
+    if (!user) { setTokenReady(true); return }
+    // User is in persisted store but access token is gone — silently refresh
+    refreshAccessToken().then((ok) => {
+      if (!ok) clearUser()
+      setTokenReady(true)
+    })
+  }, [isHydrated]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isHydrated && !user) {
@@ -191,7 +203,7 @@ export default function App() {
     if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1], chapterNumber: 0, chapterTitle: '' })
   }
 
-  if (!isHydrated) {
+  if (!isHydrated || !tokenReady) {
     return (
       <div className="min-h-dvh bg-bg flex items-center justify-center">
         <div className="text-green-500 font-display text-xl animate-pulse">DriveReady</div>

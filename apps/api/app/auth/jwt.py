@@ -8,9 +8,21 @@
 # Project  : DriveReady — AI-Powered Multi-State Driver Education Platform
 # ─────────────────────────────────────────────────────────────────────────────
 
+import hashlib
+import secrets
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from app.config import settings
+
+
+def hash_token(raw: str) -> str:
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
+def generate_refresh_token() -> tuple[str, str]:
+    """Return (raw_token, token_hash). Raw token is set as the cookie value."""
+    raw = secrets.token_urlsafe(32)
+    return raw, hash_token(raw)
 
 
 def create_access_token(user_id: str, role: str) -> str:

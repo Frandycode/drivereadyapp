@@ -9,7 +9,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 import strawberry
@@ -32,7 +32,7 @@ schema = strawberry.Schema(
 
 
 # ── Context builder (HTTP + WebSocket) ───────────────────────────────────────
-async def get_context(request=None, ws=None) -> dict:
+async def get_context(request=None, ws=None, response: Response = None) -> dict:
     """
     Build the GraphQL context for HTTP requests and WebSocket subscriptions.
 
@@ -84,6 +84,7 @@ async def get_context(request=None, ws=None) -> dict:
 
     return {
         "request":    connection,
+        "response":   response,
         "db":         db,
         "user":       user,
         "state_code": state_code,

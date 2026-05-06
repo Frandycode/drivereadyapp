@@ -17,6 +17,7 @@ import {
   split,
   from,
   ApolloLink,
+  gql,
 } from '@apollo/client'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
@@ -26,15 +27,28 @@ import { onError } from '@apollo/client/link/error'
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const WS_URL  = import.meta.env.VITE_WS_URL  || 'ws://localhost:8000'
 
+// ── In-memory access token (never touches localStorage) ───────────────────────
+let _accessToken: string | null = null
+
+export const setAuthToken = (token: string) => {
+  _accessToken = token
+}
+
+export const clearAuthToken = () => {
+  _accessToken = null
+  apolloClient.clearStore()
+}
+
+export const getAuthToken = (): string | null => _accessToken
+
 // ── Auth link — attaches JWT to every request ─────────────────────────────────
 const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('driveready_token')
   const stateCode = import.meta.env.VITE_STATE_CODE || 'ok'
 
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(_accessToken ? { Authorization: `Bearer ${_accessToken}` } : {}),
       'X-State-Code': stateCode,
     },
   }))
@@ -53,18 +67,17 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 })
 
-// ── HTTP link ─────────────────────────────────────────────────────────────────
-const httpLink = new HttpLink({ uri: `${API_URL}/graphql` })
+// ── HTTP link — credentials:include sends the refresh token cookie ─────────────
+const httpLink = new HttpLink({
+  uri: `${API_URL}/graphql`,
+  credentials: 'include',
+})
 
 // ── WebSocket link (subscriptions only) ──────────────────────────────────────
 const wsLink = new GraphQLWsLink(
   createClient({
     url: `${WS_URL}/graphql`,
-    connectionParams: () => {
-      const token = localStorage.getItem('driveready_token')
-      return token ? { Authorization: `Bearer ${token}` } : {}
-    },
-    // Reconnect automatically on disconnect
+    connectionParams: () => (_accessToken ? { Authorization: `Bearer ${_accessToken}` } : {}),
     shouldRetry: () => true,
     retryAttempts: 5,
   })
@@ -87,9 +100,8 @@ export const apolloClient = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          // Questions: merge by id, no duplicate fetching
           questions: {
-            merge: false,  // always replace — sessions are fresh each time
+            merge: false,
           },
         },
       },
@@ -101,16 +113,25 @@ export const apolloClient = new ApolloClient({
   },
 })
 
-// ── Token helpers ─────────────────────────────────────────────────────────────
-export const setAuthToken = (token: string) => {
-  localStorage.setItem('driveready_token', token)
-}
+// ── Refresh token helper ──────────────────────────────────────────────────────
+const REFRESH_MUTATION = gql`
+  mutation RefreshAccessToken {
+    refreshAccessToken
+  }
+`
 
-export const clearAuthToken = () => {
-  localStorage.removeItem('driveready_token')
-  apolloClient.clearStore()
-}
-
-export const getAuthToken = (): string | null => {
-  return localStorage.getItem('driveready_token')
+export async function refreshAccessToken(): Promise<boolean> {
+  try {
+    const { data } = await apolloClient.mutate<{ refreshAccessToken: string }>({
+      mutation: REFRESH_MUTATION,
+    })
+    const token = data?.refreshAccessToken
+    if (token) {
+      setAuthToken(token)
+      return true
+    }
+    return false
+  } catch {
+    return false
+  }
 }

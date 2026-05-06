@@ -30,7 +30,9 @@ class Settings(BaseSettings):
     # Auth
     jwt_secret: str = "dev-secret-change-in-production"
     jwt_algorithm: str = "HS256"
-    jwt_expire_minutes: int = 10080  # 7 days
+    jwt_expire_minutes: int = 15
+    refresh_token_expire_days: int = 30
+    cookie_secure: bool = False  # set True in production
 
     # AI
     anthropic_api_key: str = ""   # reserved for future upgrade

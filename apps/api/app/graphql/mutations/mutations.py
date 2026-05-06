@@ -14,19 +14,19 @@ import random
 import string
 import time
 import uuid
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
 import re
 
 import strawberry
 from passlib.context import CryptContext
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from strawberry.types import Info
 
-from app.auth.jwt import create_access_token
+from app.auth.jwt import create_access_token, generate_refresh_token, hash_token
 from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
 from app.services.captcha import verify_captcha
@@ -63,6 +63,7 @@ from app.models import (
     ChapterGroup,
     FlashcardDeck,
     Question,
+    RefreshToken,
     Session,
     SessionAnswer,
     User,
@@ -134,6 +135,38 @@ def map_battle(b: Battle, chapter_ids: list[int] | None = None) -> BattleType:
         chapter_ids=chapter_ids or [],
         created_at=b.created_at,
     )
+
+
+# ── Refresh token helpers ─────────────────────────────────────────────────────
+
+_REFRESH_COOKIE_MAX_AGE = 30 * 24 * 60 * 60  # 30 days in seconds
+
+
+async def _issue_refresh_token(
+    user_id: str,
+    db: AsyncSession,
+    response,
+    family_id: uuid.UUID | None = None,
+) -> None:
+    raw, token_hash = generate_refresh_token()
+    expires_at = datetime.now(timezone.utc) + timedelta(days=settings.refresh_token_expire_days)
+    stored = RefreshToken(
+        user_id=uuid.UUID(user_id),
+        token_hash=token_hash,
+        family_id=family_id or uuid.uuid4(),
+        expires_at=expires_at,
+    )
+    db.add(stored)
+    if response is not None:
+        response.set_cookie(
+            key="refresh_token",
+            value=raw,
+            httponly=True,
+            secure=settings.cookie_secure,
+            samesite="lax",
+            max_age=_REFRESH_COOKIE_MAX_AGE,
+            path="/graphql",
+        )
 
 
 # ── XP helpers ────────────────────────────────────────────────────────────────
@@ -298,6 +331,9 @@ class Mutation:
         otp_code = await create_otp(str(user.id), "email")
         await send_otp_email(to=user.email, code=otp_code, display_name=user.display_name)
 
+        await _issue_refresh_token(str(user.id), db, info.context.get("response"))
+        await db.commit()
+
         jwt_token = create_access_token(str(user.id), user.role)
         return AuthPayloadType(
             access_token=jwt_token,
@@ -321,6 +357,9 @@ class Mutation:
         user = result.scalar_one_or_none()
         if not user or not user.password_hash or not pwd_context.verify(input.password, user.password_hash):
             raise ValueError("Invalid email or password")
+
+        await _issue_refresh_token(str(user.id), db, info.context.get("response"))
+        await db.commit()
 
         token = create_access_token(str(user.id), user.role)
         return AuthPayloadType(
@@ -391,6 +430,81 @@ class Mutation:
         user.privacy_version_accepted = input.privacy_version
         db.add(user)
         await db.commit()
+        return True
+
+    # ── Token rotation ────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def refresh_access_token(self, info: Info) -> str:
+        """Exchange a valid refresh token cookie for a new access token + rotated refresh cookie."""
+        db:       AsyncSession = info.context["db"]
+        request                = info.context.get("request")
+        response               = info.context.get("response")
+
+        raw = request.cookies.get("refresh_token") if request else None
+        if not raw:
+            raise ValueError("No refresh token")
+
+        token_hash = hash_token(raw)
+        now = datetime.now(timezone.utc)
+
+        result = await db.execute(
+            select(RefreshToken).where(RefreshToken.token_hash == token_hash)
+        )
+        stored = result.scalar_one_or_none()
+
+        if not stored:
+            raise ValueError("Invalid refresh token")
+
+        if stored.revoked_at is not None:
+            # Reuse detected — entire token family is compromised; revoke all
+            await db.execute(
+                update(RefreshToken)
+                .where(RefreshToken.family_id == stored.family_id)
+                .values(revoked_at=now)
+            )
+            await db.commit()
+            if response is not None:
+                response.delete_cookie("refresh_token", path="/graphql")
+            raise ValueError("Refresh token reuse detected — please log in again")
+
+        if stored.expires_at < now:
+            raise ValueError("Refresh token expired")
+
+        result = await db.execute(select(User).where(User.id == stored.user_id))
+        user = result.scalar_one_or_none()
+        if not user:
+            raise ValueError("User not found")
+
+        stored.revoked_at = now
+        db.add(stored)
+
+        await _issue_refresh_token(str(stored.user_id), db, response, family_id=stored.family_id)
+        await db.commit()
+
+        return create_access_token(str(user.id), user.role)
+
+    @strawberry.mutation
+    async def logout(self, info: Info) -> bool:
+        """Revoke the active refresh token and clear the cookie."""
+        db:      AsyncSession = info.context["db"]
+        request               = info.context.get("request")
+        response              = info.context.get("response")
+
+        raw = request.cookies.get("refresh_token") if request else None
+        if raw:
+            token_hash = hash_token(raw)
+            result = await db.execute(
+                select(RefreshToken).where(RefreshToken.token_hash == token_hash)
+            )
+            stored = result.scalar_one_or_none()
+            if stored and stored.revoked_at is None:
+                stored.revoked_at = datetime.now(timezone.utc)
+                db.add(stored)
+                await db.commit()
+
+        if response is not None:
+            response.delete_cookie("refresh_token", path="/graphql")
         return True
 
     # ── OTP ───────────────────────────────────────────────────────────────────

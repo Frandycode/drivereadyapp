@@ -1,1 +1,1 @@
-export { apolloClient, setAuthToken, clearAuthToken, getAuthToken } from './client'
+export { apolloClient, setAuthToken, clearAuthToken, getAuthToken, refreshAccessToken } from './client'
