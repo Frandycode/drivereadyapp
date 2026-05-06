@@ -200,6 +200,58 @@ class Query:
         ]
 
     @strawberry.field
+    async def readiness_score(self, info: Info) -> Optional[ReadinessScoreType]:
+        """Return an overall exam readiness score based on chapter accuracy."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return None
+        db: AsyncSession = info.context["db"]
+
+        state_cfg = STATE_CONFIGS.get(user.state_code)
+        passing = state_cfg.passing_score if state_cfg else 0.80
+
+        result = await db.execute(
+            select(UserProgress).where(
+                UserProgress.user_id   == user.id,
+                UserProgress.state_code == user.state_code,
+                UserProgress.questions_seen > 0,
+            )
+        )
+        rows = result.scalars().all()
+
+        if not rows:
+            return ReadinessScoreType(
+                score=0.0, percentage=0,
+                level="not_ready",
+                message="Start studying to see your readiness score.",
+                growth_chapters=[],
+            )
+
+        total_seen    = sum(r.questions_seen    for r in rows)
+        total_correct = sum(r.questions_correct for r in rows)
+        score = total_correct / total_seen if total_seen else 0.0
+        percentage = round(score * 100)
+
+        growth_chapters = [r.chapter for r in rows if r.accuracy < 0.65]
+
+        if score >= passing + 0.10:
+            level, message = "very_ready",    "You're well above the passing threshold. Keep it up!"
+        elif score >= passing:
+            level, message = "likely_ready",  f"You're at or above the {round(passing * 100)}% passing mark."
+        elif score >= passing - 0.15:
+            level, message = "getting_there", "Almost there — focus on your growth chapters."
+        else:
+            level, message = "not_ready",     "Keep studying — you'll get there."
+
+        return ReadinessScoreType(
+            score=round(score, 4),
+            percentage=percentage,
+            level=level,
+            message=message,
+            growth_chapters=sorted(growth_chapters),
+        )
+
+    @strawberry.field
     def state_config(self, state_code: str) -> Optional[StateConfigType]:
         """Return configuration for a given state."""
         config = STATE_CONFIGS.get(state_code.lower())

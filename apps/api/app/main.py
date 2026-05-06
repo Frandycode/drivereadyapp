@@ -8,19 +8,24 @@
 # Project  : DriveReady — AI-Powered Multi-State Driver Education Platform
 # ─────────────────────────────────────────────────────────────────────────────
 
+import asyncio
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
+from sqlalchemy import delete
 
 from app.config import settings
 from app.db import get_redis, close_redis
-from app.db.connection import engine
+from app.db.connection import engine, AsyncSessionLocal
 from app.graphql.queries.queries import Query
 from app.graphql.mutations.mutations import Mutation
 from app.graphql.subscriptions.subscriptions import Subscription
+from app.models.auth import RefreshToken, KnownDevice
+from app.models.user import ParentLink
 
 
 # ── GraphQL schema ────────────────────────────────────────────────────────────
@@ -92,6 +97,32 @@ async def get_context(request=None, ws=None, response: Response = None) -> dict:
     }
 
 
+async def _purge_stale_records() -> None:
+    """Delete expired/revoked DB rows that accumulate over time."""
+    cutoff_90d  = datetime.now(timezone.utc) - timedelta(days=90)
+    cutoff_7d   = datetime.now(timezone.utc) - timedelta(days=7)
+    async with AsyncSessionLocal() as db:
+        # Refresh tokens: revoked or expired more than 90 days ago
+        await db.execute(
+            delete(RefreshToken).where(
+                (RefreshToken.revoked_at  < cutoff_90d) |
+                (RefreshToken.expires_at  < cutoff_90d)
+            )
+        )
+        # Known devices: not seen in 90 days
+        await db.execute(
+            delete(KnownDevice).where(KnownDevice.last_seen_at < cutoff_90d)
+        )
+        # Parent link codes: pending and expired more than 7 days ago
+        await db.execute(
+            delete(ParentLink).where(
+                ParentLink.status == "pending",
+                ParentLink.link_code_expires_at < cutoff_7d,
+            )
+        )
+        await db.commit()
+
+
 # ── Lifespan (startup / shutdown) ─────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -99,6 +130,7 @@ async def lifespan(app: FastAPI):
     redis = await get_redis()
     await redis.ping()
     print("✓ Redis connected")
+    asyncio.create_task(_purge_stale_records())
     yield
     await close_redis()
     await engine.dispose()

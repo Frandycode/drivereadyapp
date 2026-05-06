@@ -737,6 +737,10 @@ class Mutation:
         if not user:
             raise ValueError("Authentication required.")
 
+        ip = _get_ip(info)
+        await check_rate_limit(f"link_code:{str(user.id)}", max_requests=5, window_seconds=3600)
+        await check_rate_limit(f"link_code_ip:{ip}",        max_requests=10, window_seconds=3600)
+
         now = datetime.now(timezone.utc)
         expires_at = now + timedelta(hours=24)
 
@@ -772,6 +776,10 @@ class Mutation:
         user: User         = info.context.get("user")
         if not user:
             raise ValueError("Authentication required.")
+
+        ip = _get_ip(info)
+        await check_rate_limit(f"link_parent:{str(user.id)}", max_requests=10, window_seconds=3600)
+        await check_rate_limit(f"link_parent_ip:{ip}",        max_requests=20, window_seconds=3600)
 
         now = datetime.now(timezone.utc)
         result = await db.execute(
@@ -1061,6 +1069,43 @@ class Mutation:
             created_at=deck.created_at,
             updated_at=deck.updated_at,
         )
+
+    @strawberry.mutation
+    async def remove_bookmark(self, info: Info, question_id: strawberry.ID) -> bool:
+        """Remove a bookmark by question ID."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        result = await db.execute(
+            select(Bookmark).where(
+                Bookmark.user_id    == user.id,
+                Bookmark.question_id == uuid.UUID(str(question_id)),
+            )
+        )
+        bookmark = result.scalar_one_or_none()
+        if bookmark:
+            await db.delete(bookmark)
+            await db.commit()
+        return True
+
+    @strawberry.mutation
+    async def delete_deck(self, info: Info, deck_id: strawberry.ID) -> bool:
+        """Delete a flashcard deck owned by the current user."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+
+        result = await db.execute(
+            select(FlashcardDeck).where(
+                FlashcardDeck.id      == uuid.UUID(str(deck_id)),
+                FlashcardDeck.user_id == user.id,
+            )
+        )
+        deck = result.scalar_one_or_none()
+        if not deck:
+            raise ValueError("Deck not found.")
+        await db.delete(deck)
+        await db.commit()
+        return True
 
     # ── Lessons ───────────────────────────────────────────────────────────────
 
