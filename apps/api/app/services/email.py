@@ -148,6 +148,73 @@ async def send_parental_consent_email(
     )
 
 
+async def send_password_reset_email(
+    *,
+    to: str,
+    display_name: str,
+    reset_url: str,
+) -> None:
+    html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Reset your DriveReady password</title>
+</head>
+<body style="margin:0;padding:0;background:#0A0F0D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#E8F0EB;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0A0F0D;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="480" cellpadding="0" cellspacing="0" style="background:#111A14;border:1px solid #1E2D22;border-radius:12px;overflow:hidden;">
+
+          <tr>
+            <td style="background:#0D6B35;padding:24px 32px;">
+              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;">DriveReady</h1>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:14px;color:#9DB8A4;">Hi {display_name},</p>
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#9DB8A4;">
+                We received a request to reset your DriveReady password. Click the button below to choose a new one.
+                This link expires in <strong style="color:#E8F0EB;">1 hour</strong>.
+              </p>
+
+              <a href="{reset_url}"
+                 style="display:inline-block;background:#22C55E;color:#0A0F0D;text-decoration:none;padding:13px 32px;border-radius:8px;font-size:14px;font-weight:700;">
+                Reset My Password
+              </a>
+
+              <p style="margin:24px 0 0;font-size:12px;color:#4A6B54;line-height:1.6;">
+                If you didn't request this, you can safely ignore this email — your password will not change.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:20px 32px;border-top:1px solid #1E2D22;">
+              <p style="margin:0;font-size:11px;color:#4A6B54;line-height:1.6;">
+                DriveReady · driveready.app · Questions? Contact us at support@driveready.app
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
+    await send_email(
+        to=to,
+        subject="Reset your DriveReady password",
+        html=html,
+    )
+
+
 async def send_parent_linked_email(
     *,
     to: str,

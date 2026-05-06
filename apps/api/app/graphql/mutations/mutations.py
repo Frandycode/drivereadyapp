@@ -37,6 +37,12 @@ from app.services.email import (
     send_otp_email,
     send_parent_linked_email,
     send_parental_consent_email,
+    send_password_reset_email,
+)
+from app.services.password_reset import (
+    create_reset_token,
+    delete_reset_token,
+    resolve_reset_token,
 )
 from app.services.otp import clear_otp, create_otp, verify_otp
 from app.services.rate_limit import check_rate_limit
@@ -604,6 +610,63 @@ class Mutation:
 
         if response is not None:
             response.delete_cookie("refresh_token", path="/graphql")
+        return True
+
+    # ── Password reset ────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def request_password_reset(self, info: Info, email: str) -> bool:
+        """Send a password-reset email. Always returns True to prevent user enumeration."""
+        db: AsyncSession = info.context["db"]
+        ip = _get_ip(info)
+        await check_rate_limit(f"pwd_reset:{ip}", max_requests=5, window_seconds=3600)
+
+        result = await db.execute(select(User).where(User.email == email.lower().strip()))
+        user = result.scalar_one_or_none()
+        if user:
+            token = await create_reset_token(str(user.id))
+            reset_url = f"{settings.frontend_url}/reset-password?token={token}"
+            try:
+                await send_password_reset_email(
+                    to=user.email,
+                    display_name=user.display_name,
+                    reset_url=reset_url,
+                )
+            except Exception:
+                pass
+        return True
+
+    @strawberry.mutation
+    async def reset_password(self, info: Info, token: str, new_password: str) -> bool:
+        """Consume a reset token and update the user's password."""
+        db: AsyncSession = info.context["db"]
+
+        user_id = await resolve_reset_token(token)
+        if not user_id:
+            raise ValueError("Reset link is invalid or has expired.")
+
+        validate_password(new_password)
+
+        result = await db.execute(select(User).where(User.id == uuid.UUID(user_id)))
+        user = result.scalar_one_or_none()
+        if not user:
+            raise ValueError("User not found.")
+
+        user.password_hash = pwd_context.hash(new_password)
+        db.add(user)
+
+        # Revoke all refresh tokens to force re-login on all devices
+        await db.execute(
+            update(RefreshToken)
+            .where(
+                RefreshToken.user_id == user.id,
+                RefreshToken.revoked_at.is_(None),
+            )
+            .values(revoked_at=datetime.now(timezone.utc))
+        )
+
+        await db.commit()
+        await delete_reset_token(token)
         return True
 
     # ── Parent linking ────────────────────────────────────────────────────────
