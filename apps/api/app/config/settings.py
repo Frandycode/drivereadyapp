@@ -58,6 +58,12 @@ class Settings(BaseSettings):
     tos_version: str = "1.0"
     privacy_version: str = "1.0"
 
+    # CAPTCHA (hCaptcha) — leave secret empty to disable in development
+    # Test keys: site_key = 10000000-ffff-ffff-ffff-000000000001
+    #            secret   = 0x0000000000000000000000000000000000000000
+    hcaptcha_secret: str = ""
+    hcaptcha_site_key: str = "10000000-ffff-ffff-ffff-000000000001"
+
     # App
     frontend_url: str = "http://localhost:5173"
     api_url: str = "http://localhost:8000"

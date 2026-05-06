@@ -12,11 +12,12 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.0",
     "@driveready/api-client": "*",
     "@driveready/hooks": "*",
     "@driveready/shared": "*",
     "@driveready/ui": "*",
-    "@apollo/client": "^3.11.0",
+    "@hcaptcha/react-hcaptcha": "^2.0.2",
     "@tanstack/react-query": "^5.51.0",
     "@tanstack/react-router": "^1.45.0",
     "clsx": "^2.1.1",

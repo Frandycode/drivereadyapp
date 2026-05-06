@@ -237,12 +237,14 @@ class RegisterInput:
     date_of_birth: date
     state_code: str = "ok"
     parent_email: Optional[str] = None
+    captcha_token: Optional[str] = None
 
 
 @strawberry.input
 class LoginInput:
     email: str
     password: str
+    captcha_token: Optional[str] = None
 
 
 @strawberry.input

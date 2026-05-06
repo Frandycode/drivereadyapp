@@ -10,12 +10,16 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { setAuthToken } from '@driveready/api-client'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
 import { Check, X, AlertTriangle, Clock } from 'lucide-react'
+
+const HCAPTCHA_SITE_KEY =
+  import.meta.env.VITE_HCAPTCHA_SITE_KEY ?? '10000000-ffff-ffff-ffff-000000000001'
 
 // ── Password rules ────────────────────────────────────────────────────────────
 
@@ -63,6 +67,8 @@ const REGISTER = gql`
       accessToken
       consentStatus
       emailVerified
+      requiresLegalConsent
+      legalVersions { tosVersion privacyVersion }
       user { ${USER_FIELDS} }
     }
   }
@@ -74,6 +80,8 @@ const LOGIN = gql`
       accessToken
       consentStatus
       emailVerified
+      requiresLegalConsent
+      legalVersions { tosVersion privacyVersion }
       user { ${USER_FIELDS} }
     }
   }
@@ -138,6 +146,10 @@ export function AuthPage() {
   const [resendCooldown, setResendCooldown] = useState(0)
 
   const [error, setError]             = useState('')
+
+  // CAPTCHA
+  const hcaptchaRef                       = useRef<HCaptcha>(null)
+  const [captchaToken, setCaptchaToken]   = useState<string | null>(null)
 
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
@@ -216,14 +228,17 @@ export function AuthPage() {
               dateOfBirth: isoDate,
               stateCode: 'ok',
               parentEmail: ageGroup === 'minor' ? parentEmail : null,
+              captchaToken,
             },
           },
         })
         data = res.data?.register
       } else {
-        const res = await login({ variables: { input: { email, password } } })
+        const res = await login({ variables: { input: { email, password, captchaToken } } })
         data = res.data?.login
       }
+      hcaptchaRef.current?.resetCaptcha()
+      setCaptchaToken(null)
 
       if (data?.accessToken && data?.user) {
         if (data.consentStatus === 'pending') {
@@ -251,9 +266,14 @@ export function AuthPage() {
         completeLogin(data, mode === 'register')
       }
     } catch (err: unknown) {
+      hcaptchaRef.current?.resetCaptcha()
+      setCaptchaToken(null)
       if (err instanceof ApolloError) {
         const msg = err.graphQLErrors[0]?.message ?? err.message
-        if (msg === 'COPPA_UNDER_13') return
+        if (msg === 'COPPA_UNDER_13')                       return
+        else if (msg === 'RATE_LIMITED')                    setError('Too many attempts. Please wait a few minutes and try again.')
+        else if (msg === 'CAPTCHA_REQUIRED')                setError('Please complete the CAPTCHA verification.')
+        else if (msg === 'CAPTCHA_INVALID')                 setError('CAPTCHA verification failed. Please try again.')
         else if (msg.includes('Invalid email or password')) setError('Incorrect email or password. Please try again.')
         else if (msg.includes('already registered'))        setError('An account with this email already exists.')
         else                                                setError(msg || 'Something went wrong. Please try again.')
@@ -700,6 +720,16 @@ export function AuthPage() {
                   {error}
                 </p>
               )}
+
+              <div className="flex justify-center">
+                <HCaptcha
+                  ref={hcaptchaRef}
+                  sitekey={HCAPTCHA_SITE_KEY}
+                  theme="dark"
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken(null)}
+                />
+              </div>
 
               <button
                 type="submit"

@@ -29,9 +29,11 @@ from strawberry.types import Info
 from app.auth.jwt import create_access_token
 from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
+from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
 from app.services.email import send_otp_email, send_parental_consent_email
 from app.services.otp import clear_otp, create_otp, verify_otp
+from app.services.rate_limit import check_rate_limit
 from app.services.sms import send_otp_sms
 from app.graphql.types.all_types import (
     AnswerResultType,
@@ -228,6 +230,13 @@ def validate_password(password: str) -> None:
         raise ValueError("Password must not contain 3 or more consecutive identical characters.")
 
 
+def _get_ip(info: Info) -> str:
+    req = info.context.get("request")
+    if req and hasattr(req, "client") and req.client:
+        return req.client.host or "unknown"
+    return "unknown"
+
+
 # ── Mutation class ────────────────────────────────────────────────────────────
 
 @strawberry.type
@@ -238,7 +247,11 @@ class Mutation:
     @strawberry.mutation
     async def register(self, info: Info, input: RegisterInput) -> AuthPayloadType:
         """Register a new user account."""
-        db: AsyncSession = info.context["db"]
+        db:  AsyncSession = info.context["db"]
+        ip   = _get_ip(info)
+
+        await check_rate_limit(f"register:{ip}", max_requests=5,  window_seconds=3600)
+        await verify_captcha(input.captcha_token)
 
         validate_password(input.password)
 
@@ -299,6 +312,10 @@ class Mutation:
     async def login(self, info: Info, input: LoginInput) -> AuthPayloadType:
         """Login with email and password."""
         db: AsyncSession = info.context["db"]
+        ip  = _get_ip(info)
+
+        await check_rate_limit(f"login:{ip}", max_requests=10, window_seconds=900)
+        await verify_captcha(input.captcha_token)
 
         result = await db.execute(select(User).where(User.email == input.email.lower()))
         user = result.scalar_one_or_none()
@@ -386,6 +403,8 @@ class Mutation:
             raise ValueError("Authentication required.")
         if user.email_verified:
             raise ValueError("Email is already verified.")
+        ip = _get_ip(info)
+        await check_rate_limit(f"email_otp:{ip}", max_requests=3, window_seconds=3600)
         code = await create_otp(str(user.id), "email")
         await send_otp_email(to=user.email, code=code, display_name=user.display_name)
         return True
@@ -409,6 +428,8 @@ class Mutation:
         user: User = info.context["user"]
         if not user:
             raise ValueError("Authentication required.")
+        ip = _get_ip(info)
+        await check_rate_limit(f"phone_otp:{ip}", max_requests=3, window_seconds=3600)
         import re
         phone = re.sub(r"[^\d+]", "", input.phone_number)
         if not re.match(r"^\+?[1-9]\d{7,14}$", phone):
