@@ -11,10 +11,33 @@
  */
 
 import { useState } from 'react'
-import { useMutation, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2 } from 'lucide-react'
+import { useMutation, useQuery, gql, ApolloError } from '@apollo/client'
+import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { clearAuthToken } from '@driveready/api-client'
+
+const GENERATE_LINK_CODE = gql`
+  mutation GenerateLinkCode {
+    generateLinkCode
+  }
+`
+
+const REVOKE_PARENT_LINK = gql`
+  mutation RevokeParentLink($linkId: ID!) {
+    revokeParentLink(linkId: $linkId)
+  }
+`
+
+const MY_PARENT_LINKS = gql`
+  query MyParentLinks {
+    myParentLinks {
+      id
+      status
+      linkCode
+      linkCodeExpiresAt
+    }
+  }
+`
 
 const CHANGE_PASSWORD = gql`
   mutation ChangePassword($currentPassword: String!, $newPassword: String!) {
@@ -57,6 +80,32 @@ export function ProfilePage() {
   const [showDelete, setShowDelete]       = useState(false)
   const [deletePw, setDeletePw]           = useState('')
   const [deleteError, setDeleteError]     = useState('')
+
+  // Parent linking (learner side)
+  const [linkCode, setLinkCode]             = useState<string | null>(null)
+  const [linkCopyDone, setLinkCopyDone]     = useState(false)
+  const [generateLinkCode, { loading: generating }] = useMutation(GENERATE_LINK_CODE)
+  const [revokeParentLink]                          = useMutation(REVOKE_PARENT_LINK)
+  const { data: parentLinksData, refetch: refetchLinks } = useQuery(MY_PARENT_LINKS, { fetchPolicy: 'network-only' })
+
+  async function handleGenerateLinkCode() {
+    const { data } = await generateLinkCode()
+    setLinkCode(data?.generateLinkCode ?? null)
+    refetchLinks()
+  }
+
+  async function handleCopyCode() {
+    if (!linkCode) return
+    await navigator.clipboard.writeText(linkCode)
+    setLinkCopyDone(true)
+    setTimeout(() => setLinkCopyDone(false), 2000)
+  }
+
+  async function handleRevokeLink(linkId: string) {
+    await revokeParentLink({ variables: { linkId } })
+    if (linkCode) setLinkCode(null)
+    refetchLinks()
+  }
 
   const [changePassword, { loading: changingPw }]   = useMutation(CHANGE_PASSWORD)
   const [deleteAccount,  { loading: deleting   }]   = useMutation(DELETE_ACCOUNT)
@@ -277,6 +326,64 @@ export function ProfilePage() {
             </div>
           ) : (
             <p className="mt-2 text-sm text-green-500">Phone verified successfully!</p>
+          )}
+        </div>
+
+        {/* Parent linking — learner generates invite code */}
+        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Users size={15} className="text-text-secondary" />
+            <span className="text-sm font-medium text-text-primary">Family Link</span>
+          </div>
+
+          {/* Active parent links */}
+          {(parentLinksData?.myParentLinks ?? [])
+            .filter((l: { status: string }) => l.status === 'active')
+            .map((l: { id: string; status: string }) => (
+              <div key={l.id} className="flex items-center justify-between py-2 border-b border-border last:border-0 mb-2">
+                <span className="text-sm text-text-secondary">Parent linked</span>
+                <button
+                  onClick={() => handleRevokeLink(l.id)}
+                  className="text-xs text-red-400 hover:text-red-300 transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+
+          {/* Invite code */}
+          {linkCode ? (
+            <div className="space-y-2">
+              <p className="text-xs text-text-secondary">Share this code with your parent. It expires in 24 hours.</p>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 bg-bg border border-border rounded-lg px-4 py-2 text-center">
+                  <span className="font-mono text-2xl font-bold tracking-[0.3em] text-green-400">{linkCode}</span>
+                </div>
+                <button
+                  onClick={handleCopyCode}
+                  className="p-2 rounded-lg border border-border text-text-secondary hover:text-text-primary transition-colors"
+                  title="Copy code"
+                >
+                  {linkCopyDone ? <CheckCircle size={18} className="text-green-500" /> : <Copy size={18} />}
+                </button>
+                <button
+                  onClick={handleGenerateLinkCode}
+                  disabled={generating}
+                  className="p-2 rounded-lg border border-border text-text-secondary hover:text-text-primary transition-colors"
+                  title="Generate new code"
+                >
+                  <RefreshCw size={18} className={generating ? 'animate-spin' : ''} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={handleGenerateLinkCode}
+              disabled={generating}
+              className="text-sm text-green-500 hover:text-green-400 transition-colors"
+            >
+              {generating ? 'Generating...' : '+ Generate parent invite code'}
+            </button>
           )}
         </div>
 
