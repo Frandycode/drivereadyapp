@@ -9,6 +9,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 import logging
+from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -143,6 +144,97 @@ async def send_parental_consent_email(
     await send_email(
         to=parent_email,
         subject=f"Action required: {child_name} wants to use DriveReady",
+        html=html,
+    )
+
+
+async def send_new_device_email(
+    *,
+    to: str,
+    display_name: str,
+    device_label: str,
+    ip_address: str,
+    login_time: datetime,
+    change_password_url: str,
+) -> None:
+    time_str = login_time.strftime("%B %d, %Y at %H:%M UTC")
+    html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>New login to your DriveReady account</title>
+</head>
+<body style="margin:0;padding:0;background:#0A0F0D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#E8F0EB;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0A0F0D;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="480" cellpadding="0" cellspacing="0" style="background:#111A14;border:1px solid #1E2D22;border-radius:12px;overflow:hidden;">
+
+          <tr>
+            <td style="background:#0D6B35;padding:24px 32px;">
+              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;">DriveReady</h1>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:14px;color:#9DB8A4;">Hi {display_name},</p>
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#9DB8A4;">
+                We noticed a login to your account from a device we haven't seen before.
+              </p>
+
+              <div style="background:#0A0F0D;border:1px solid #1E2D22;border-radius:10px;padding:20px 24px;margin-bottom:24px;">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="font-size:12px;color:#4A6B54;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:4px;">Device</td>
+                    <td style="font-size:13px;color:#E8F0EB;font-weight:600;text-align:right;">{device_label}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:#4A6B54;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:4px;padding-top:10px;">IP Address</td>
+                    <td style="font-size:13px;color:#E8F0EB;font-family:monospace;text-align:right;padding-top:10px;">{ip_address}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;color:#4A6B54;text-transform:uppercase;letter-spacing:0.5px;padding-top:10px;">Time</td>
+                    <td style="font-size:13px;color:#E8F0EB;text-align:right;padding-top:10px;">{time_str}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <p style="margin:0 0 8px;font-size:14px;color:#9DB8A4;">
+                <strong style="color:#E8F0EB;">Was this you?</strong> No action needed — you're all set.
+              </p>
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#9DB8A4;">
+                <strong style="color:#EF4444;">Wasn't you?</strong> Change your password immediately to secure your account.
+              </p>
+
+              <a href="{change_password_url}"
+                 style="display:inline-block;background:#22C55E;color:#0A0F0D;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;">
+                Secure My Account
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:20px 32px;border-top:1px solid #1E2D22;">
+              <p style="margin:0;font-size:11px;color:#4A6B54;line-height:1.6;">
+                DriveReady · driveready.app · Questions? Contact us at support@driveready.app<br/>
+                You received this alert because your account was accessed from a new device.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
+    await send_email(
+        to=to,
+        subject="New login to your DriveReady account",
         html=html,
     )
 

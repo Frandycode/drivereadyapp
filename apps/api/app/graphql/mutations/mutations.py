@@ -9,15 +9,15 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 import asyncio
+import hashlib
 import json
 import random
+import re
 import string
 import time
 import uuid
 from datetime import date, datetime, timedelta, timezone
 from typing import Optional
-
-import re
 
 import strawberry
 from passlib.context import CryptContext
@@ -31,7 +31,7 @@ from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
 from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
-from app.services.email import send_otp_email, send_parental_consent_email
+from app.services.email import send_new_device_email, send_otp_email, send_parental_consent_email
 from app.services.otp import clear_otp, create_otp, verify_otp
 from app.services.rate_limit import check_rate_limit
 from app.services.sms import send_otp_sms
@@ -62,6 +62,7 @@ from app.models import (
     Bookmark,
     ChapterGroup,
     FlashcardDeck,
+    KnownDevice,
     Question,
     RefreshToken,
     Session,
@@ -167,6 +168,95 @@ async def _issue_refresh_token(
             max_age=_REFRESH_COOKIE_MAX_AGE,
             path="/graphql",
         )
+
+
+# ── Device fingerprint helpers ───────────────────────────────────────────────
+
+def _get_user_agent(info: Info) -> str:
+    req = info.context.get("request")
+    if req and hasattr(req, "headers"):
+        return req.headers.get("user-agent", "unknown") or "unknown"
+    return "unknown"
+
+
+def _parse_device_label(ua: str) -> str:
+    if "Edg/" in ua or "EdgA/" in ua:
+        browser = "Edge"
+    elif "OPR/" in ua or "Opera" in ua:
+        browser = "Opera"
+    elif "Chrome/" in ua:
+        browser = "Chrome"
+    elif "Firefox/" in ua:
+        browser = "Firefox"
+    elif "Safari/" in ua:
+        browser = "Safari"
+    else:
+        browser = "Unknown Browser"
+
+    if "Windows NT" in ua:
+        os_name = "Windows"
+    elif "iPhone" in ua or "iPad" in ua:
+        os_name = "iOS"
+    elif "Android" in ua:
+        os_name = "Android"
+    elif "Mac OS X" in ua:
+        os_name = "macOS"
+    elif "Linux" in ua:
+        os_name = "Linux"
+    else:
+        os_name = "Unknown OS"
+
+    return f"{browser} on {os_name}"
+
+
+def _device_fingerprint(ip: str, ua: str) -> str:
+    return hashlib.sha256(f"{ip}|{ua}".encode()).hexdigest()
+
+
+async def _check_new_device(
+    user: User,
+    db: AsyncSession,
+    ip: str,
+    ua: str,
+    notify: bool,
+) -> None:
+    fingerprint = _device_fingerprint(ip, ua)
+    now = datetime.now(timezone.utc)
+
+    result = await db.execute(
+        select(KnownDevice).where(
+            KnownDevice.user_id == user.id,
+            KnownDevice.fingerprint == fingerprint,
+        )
+    )
+    device = result.scalar_one_or_none()
+
+    if device:
+        device.last_seen_at = now
+        db.add(device)
+        return
+
+    label = _parse_device_label(ua)
+    db.add(KnownDevice(
+        user_id=user.id,
+        fingerprint=fingerprint,
+        label=label,
+        ip_address=ip,
+        last_seen_at=now,
+    ))
+
+    if notify:
+        try:
+            await send_new_device_email(
+                to=user.email,
+                display_name=user.display_name,
+                device_label=label,
+                ip_address=ip,
+                login_time=now,
+                change_password_url=f"{settings.frontend_url}/profile",
+            )
+        except Exception:
+            pass  # never block login if email fails
 
 
 # ── XP helpers ────────────────────────────────────────────────────────────────
@@ -332,6 +422,7 @@ class Mutation:
         await send_otp_email(to=user.email, code=otp_code, display_name=user.display_name)
 
         await _issue_refresh_token(str(user.id), db, info.context.get("response"))
+        await _check_new_device(user, db, ip, _get_user_agent(info), notify=False)
         await db.commit()
 
         jwt_token = create_access_token(str(user.id), user.role)
@@ -359,6 +450,7 @@ class Mutation:
             raise ValueError("Invalid email or password")
 
         await _issue_refresh_token(str(user.id), db, info.context.get("response"))
+        await _check_new_device(user, db, ip, _get_user_agent(info), notify=True)
         await db.commit()
 
         token = create_access_token(str(user.id), user.role)
