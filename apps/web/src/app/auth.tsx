@@ -105,6 +105,12 @@ const ACCEPT_LEGAL = gql`
   }
 `
 
+const REQUEST_PASSWORD_RESET = gql`
+  mutation RequestPasswordReset($email: String!) {
+    requestPasswordReset(email: $email)
+  }
+`
+
 // ── Sub-screens ───────────────────────────────────────────────────────────────
 
 type Screen =
@@ -112,6 +118,8 @@ type Screen =
   | 'verify-email'
   | 'legal-consent'
   | 'consent-pending'
+  | 'forgot-password'
+  | 'reset-sent'
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -154,11 +162,25 @@ export function AuthPage() {
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
 
-  const [register,        { loading: registering  }] = useMutation(REGISTER)
-  const [login,           { loading: loggingIn    }] = useMutation(LOGIN)
-  const [verifyEmailOtp,  { loading: verifying    }] = useMutation(VERIFY_EMAIL_OTP)
-  const [resendEmailOtp,  { loading: resending    }] = useMutation(RESEND_EMAIL_OTP)
-  const [acceptLegal,     { loading: acceptingLegal }] = useMutation(ACCEPT_LEGAL)
+  const [register,              { loading: registering    }] = useMutation(REGISTER)
+  const [login,                 { loading: loggingIn      }] = useMutation(LOGIN)
+  const [verifyEmailOtp,        { loading: verifying      }] = useMutation(VERIFY_EMAIL_OTP)
+  const [resendEmailOtp,        { loading: resending      }] = useMutation(RESEND_EMAIL_OTP)
+  const [acceptLegal,           { loading: acceptingLegal }] = useMutation(ACCEPT_LEGAL)
+  const [requestPasswordReset,  { loading: sendingReset   }] = useMutation(REQUEST_PASSWORD_RESET)
+
+  const [resetEmail, setResetEmail]   = useState('')
+  const [resetError, setResetError]   = useState('')
+
+  async function handleForgotPassword() {
+    setResetError('')
+    try {
+      await requestPasswordReset({ variables: { email: resetEmail.trim().toLowerCase() } })
+      setScreen('reset-sent')
+    } catch {
+      setResetError('Something went wrong. Please try again.')
+    }
+  }
 
   const loading = registering || loggingIn
 
@@ -548,6 +570,67 @@ export function AuthPage() {
     )
   }
 
+  // ── Forgot password screen ────────────────────────────────────────────────
+
+  if (screen === 'forgot-password') {
+    return (
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
+        <div className="w-full max-w-sm card-elevated">
+          <h2 className="font-display text-xl font-bold text-text-primary mb-2">Reset password</h2>
+          <p className="text-sm text-text-secondary mb-6">
+            Enter your account email and we'll send a reset link.
+          </p>
+          <div className="space-y-4">
+            <input
+              className="input"
+              type="email"
+              placeholder="you@example.com"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              autoFocus
+            />
+            {resetError && <p className="text-wrong text-xs">{resetError}</p>}
+            <button
+              onClick={handleForgotPassword}
+              disabled={!resetEmail || sendingReset}
+              className="btn-primary w-full h-11"
+            >
+              {sendingReset ? 'Sending...' : 'Send Reset Link'}
+            </button>
+            <button
+              onClick={() => { setScreen('auth'); setResetError('') }}
+              className="w-full text-sm text-text-secondary hover:text-text-primary transition-colors"
+            >
+              Back to sign in
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (screen === 'reset-sent') {
+    return (
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
+        <div className="w-full max-w-sm card-elevated text-center">
+          <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
+            <Check size={24} className="text-green-500" />
+          </div>
+          <h2 className="font-display text-xl font-bold text-text-primary mb-2">Check your inbox</h2>
+          <p className="text-sm text-text-secondary mb-6">
+            If <strong className="text-text-primary">{resetEmail}</strong> is registered, a reset link is on its way. It expires in 1 hour.
+          </p>
+          <button
+            onClick={() => { setScreen('auth'); setResetEmail('') }}
+            className="btn-primary w-full h-11"
+          >
+            Back to sign in
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   // ── Main auth screen ───────────────────────────────────────────────────────
 
   const MONTHS = [
@@ -719,6 +802,18 @@ export function AuthPage() {
                 <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2">
                   {error}
                 </p>
+              )}
+
+              {mode === 'login' && (
+                <div className="text-right -mt-1">
+                  <button
+                    type="button"
+                    onClick={() => { setScreen('forgot-password'); setResetEmail(email) }}
+                    className="text-xs text-text-secondary hover:text-green-500 transition-colors"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
               )}
 
               <div className="flex justify-center">
