@@ -30,13 +30,30 @@ const WS_URL  = import.meta.env.VITE_WS_URL  || 'ws://localhost:8000'
 
 // ── In-memory access token (never touches localStorage) ───────────────────────
 let _accessToken: string | null = null
+let _refreshTimer: ReturnType<typeof setTimeout> | null = null
+
+function _scheduleProactiveRefresh(token: string) {
+  if (_refreshTimer) clearTimeout(_refreshTimer)
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    const msUntilExpiry = payload.exp * 1000 - Date.now()
+    const refreshIn = msUntilExpiry - 60_000 // 60 s before expiry
+    if (refreshIn > 0) {
+      _refreshTimer = setTimeout(() => refreshAccessToken(), refreshIn)
+    }
+  } catch {
+    // malformed token — skip scheduling
+  }
+}
 
 export const setAuthToken = (token: string) => {
   _accessToken = token
+  _scheduleProactiveRefresh(token)
 }
 
 export const clearAuthToken = () => {
   _accessToken = null
+  if (_refreshTimer) { clearTimeout(_refreshTimer); _refreshTimer = null }
   apolloClient.clearStore()
 }
 
