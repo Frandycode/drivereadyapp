@@ -216,6 +216,28 @@ class AuthPayloadType:
 
 
 @strawberry.type
+class ParentLinkType:
+    id: strawberry.ID
+    status: str
+    link_code: Optional[str]
+    link_code_expires_at: Optional[datetime]
+    created_at: datetime
+
+
+@strawberry.type
+class LinkedLearnerType:
+    link_id: strawberry.ID
+    learner_id: strawberry.ID
+    display_name: str
+    avatar_url: Optional[str]
+    level: int
+    xp_total: int
+    streak_days: int
+    state_code: str
+    linked_at: datetime
+
+
+@strawberry.type
 class StateConfigType:
     code: str
     name: str

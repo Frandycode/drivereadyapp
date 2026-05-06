@@ -13,13 +13,14 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from strawberry.types import Info
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, contains_eager
 
-from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle
+from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
-    StateConfigType, BookmarkType, FlashcardDeckType, ChapterGroupType, BattleType
+    StateConfigType, BookmarkType, FlashcardDeckType, ChapterGroupType, BattleType,
+    LinkedLearnerType, ParentLinkType,
 )
 from app.config import get_state_config, STATE_CONFIGS
 from app.db import cache_get, cache_set, CacheKey, TTL
@@ -329,4 +330,63 @@ class Query:
                 updated_at=d.updated_at,
             )
             for d in decks
+        ]
+
+    @strawberry.field
+    async def my_linked_learners(self, info: Info) -> list[LinkedLearnerType]:
+        """Return all active learners linked to the current parent account."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return []
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(ParentLink)
+            .where(
+                ParentLink.parent_id == user.id,
+                ParentLink.status == "active",
+            )
+            .options(selectinload(ParentLink.learner))
+            .order_by(ParentLink.updated_at.desc())
+        )
+        links = result.scalars().all()
+        return [
+            LinkedLearnerType(
+                link_id=str(lnk.id),
+                learner_id=str(lnk.learner_id),
+                display_name=lnk.learner.display_name,
+                avatar_url=lnk.learner.avatar_url,
+                level=lnk.learner.level,
+                xp_total=lnk.learner.xp_total,
+                streak_days=lnk.learner.streak_days,
+                state_code=lnk.learner.state_code,
+                linked_at=lnk.updated_at,
+            )
+            for lnk in links
+        ]
+
+    @strawberry.field
+    async def my_parent_links(self, info: Info) -> list[ParentLinkType]:
+        """Return all parent links for the current learner (pending, active, or revoked)."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return []
+        db: AsyncSession = info.context["db"]
+        result = await db.execute(
+            select(ParentLink)
+            .where(
+                ParentLink.learner_id == user.id,
+                ParentLink.status.in_(["pending", "active"]),
+            )
+            .order_by(ParentLink.created_at.desc())
+        )
+        links = result.scalars().all()
+        return [
+            ParentLinkType(
+                id=str(lnk.id),
+                status=lnk.status,
+                link_code=lnk.link_code,
+                link_code_expires_at=lnk.link_code_expires_at,
+                created_at=lnk.created_at,
+            )
+            for lnk in links
         ]

@@ -10,7 +10,7 @@
 
 import uuid
 from datetime import date, datetime
-from sqlalchemy import String, Integer, Boolean, Date, ForeignKey, UniqueConstraint
+from sqlalchemy import DateTime, String, Integer, Boolean, Date, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.connection import Base
 from .base import UUIDMixin, TimestampMixin
@@ -63,8 +63,8 @@ class ParentLink(Base, UUIDMixin, TimestampMixin):
         UniqueConstraint("parent_id", "learner_id", name="uq_parent_learner"),
     )
 
-    parent_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    parent_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=True
     )
     learner_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False
@@ -73,6 +73,9 @@ class ParentLink(Base, UUIDMixin, TimestampMixin):
         String(20), nullable=False, default="pending"
     )  # pending | active | revoked
     link_code: Mapped[str | None] = mapped_column(String(10), unique=True)
+    link_code_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
-    parent: Mapped["User"] = relationship(foreign_keys=[parent_id])
+    parent: Mapped["User | None"] = relationship(foreign_keys=[parent_id])
     learner: Mapped["User"] = relationship(foreign_keys=[learner_id])

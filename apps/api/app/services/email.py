@@ -148,6 +148,81 @@ async def send_parental_consent_email(
     )
 
 
+async def send_parent_linked_email(
+    *,
+    to: str,
+    learner_name: str,
+    parent_name: str,
+    revoke_url: str,
+) -> None:
+    html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>A parent linked to your DriveReady account</title>
+</head>
+<body style="margin:0;padding:0;background:#0A0F0D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#E8F0EB;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0A0F0D;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="480" cellpadding="0" cellspacing="0" style="background:#111A14;border:1px solid #1E2D22;border-radius:12px;overflow:hidden;">
+
+          <tr>
+            <td style="background:#0D6B35;padding:24px 32px;">
+              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;">DriveReady</h1>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:32px;">
+              <p style="margin:0 0 8px;font-size:14px;color:#9DB8A4;">Hi {learner_name},</p>
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#9DB8A4;">
+                <strong style="color:#E8F0EB;">{parent_name}</strong> has linked to your DriveReady account using your invite code.
+                They can now view your study progress, chapter scores, and streaks.
+              </p>
+
+              <div style="background:#0A0F0D;border:1px solid #1E2D22;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:13px;color:#9DB8A4;line-height:1.6;">
+                  <strong style="color:#E8F0EB;">What they can see:</strong> your level, XP, streaks, and chapter progress.<br/>
+                  <strong style="color:#E8F0EB;">What they cannot do:</strong> change your account or access your login credentials.
+                </p>
+              </div>
+
+              <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#9DB8A4;">
+                If you didn't share your invite code with this person, you can remove the link from your profile.
+              </p>
+
+              <a href="{revoke_url}"
+                 style="display:inline-block;background:#111A14;color:#EF4444;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;border:1px solid rgba(239,68,68,0.4);">
+                Remove This Link
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:20px 32px;border-top:1px solid #1E2D22;">
+              <p style="margin:0;font-size:11px;color:#4A6B54;line-height:1.6;">
+                DriveReady · driveready.app · Questions? Contact us at support@driveready.app
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
+    await send_email(
+        to=to,
+        subject=f"{parent_name} is now linked to your DriveReady account",
+        html=html,
+    )
+
+
 async def send_new_device_email(
     *,
     to: str,

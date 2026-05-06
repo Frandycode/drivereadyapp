@@ -13,6 +13,7 @@ import hashlib
 import json
 import random
 import re
+import secrets
 import string
 import time
 import uuid
@@ -31,7 +32,12 @@ from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
 from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
-from app.services.email import send_new_device_email, send_otp_email, send_parental_consent_email
+from app.services.email import (
+    send_new_device_email,
+    send_otp_email,
+    send_parent_linked_email,
+    send_parental_consent_email,
+)
 from app.services.otp import clear_otp, create_otp, verify_otp
 from app.services.rate_limit import check_rate_limit
 from app.services.sms import send_otp_sms
@@ -63,6 +69,7 @@ from app.models import (
     ChapterGroup,
     FlashcardDeck,
     KnownDevice,
+    ParentLink,
     Question,
     RefreshToken,
     Session,
@@ -597,6 +604,126 @@ class Mutation:
 
         if response is not None:
             response.delete_cookie("refresh_token", path="/graphql")
+        return True
+
+    # ── Parent linking ────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def generate_link_code(self, info: Info) -> str:
+        """Generate a 6-character invite code a parent can use to link their account."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+
+        now = datetime.now(timezone.utc)
+        expires_at = now + timedelta(hours=24)
+
+        # Revoke any existing pending link codes for this learner
+        result = await db.execute(
+            select(ParentLink).where(
+                ParentLink.learner_id == user.id,
+                ParentLink.status == "pending",
+            )
+        )
+        for old in result.scalars().all():
+            old.status = "revoked"
+            db.add(old)
+
+        alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"  # no confusable chars
+        code = "".join(secrets.choice(alphabet) for _ in range(6))
+
+        link = ParentLink(
+            learner_id=user.id,
+            parent_id=None,
+            status="pending",
+            link_code=code,
+            link_code_expires_at=expires_at,
+        )
+        db.add(link)
+        await db.commit()
+        return code
+
+    @strawberry.mutation
+    async def link_parent_account(self, info: Info, code: str) -> bool:
+        """Use a learner's invite code to link as their parent."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+
+        now = datetime.now(timezone.utc)
+        result = await db.execute(
+            select(ParentLink).where(
+                ParentLink.link_code == code.upper().strip(),
+                ParentLink.status == "pending",
+            ).options(selectinload(ParentLink.learner))
+        )
+        link = result.scalar_one_or_none()
+
+        if not link:
+            raise ValueError("Invalid or expired invite code.")
+        if link.link_code_expires_at and link.link_code_expires_at < now:
+            link.status = "revoked"
+            db.add(link)
+            await db.commit()
+            raise ValueError("Invite code has expired.")
+        if link.learner_id == user.id:
+            raise ValueError("You cannot link to your own account.")
+
+        # Check not already linked
+        existing = await db.execute(
+            select(ParentLink).where(
+                ParentLink.parent_id == user.id,
+                ParentLink.learner_id == link.learner_id,
+                ParentLink.status == "active",
+            )
+        )
+        if existing.scalar_one_or_none():
+            raise ValueError("Already linked to this learner.")
+
+        link.parent_id = user.id
+        link.status = "active"
+        link.link_code = None
+        link.link_code_expires_at = None
+        db.add(link)
+        await db.commit()
+
+        learner = link.learner
+        try:
+            await send_parent_linked_email(
+                to=learner.email,
+                learner_name=learner.display_name,
+                parent_name=user.display_name,
+                revoke_url=f"{settings.frontend_url}/profile",
+            )
+        except Exception:
+            pass
+
+        return True
+
+    @strawberry.mutation
+    async def revoke_parent_link(self, info: Info, link_id: strawberry.ID) -> bool:
+        """Revoke a parent–learner link. Either party may call this."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context.get("user")
+        if not user:
+            raise ValueError("Authentication required.")
+
+        result = await db.execute(
+            select(ParentLink).where(ParentLink.id == uuid.UUID(str(link_id)))
+        )
+        link = result.scalar_one_or_none()
+        if not link:
+            raise ValueError("Link not found.")
+        if link.parent_id != user.id and link.learner_id != user.id:
+            raise ValueError("Not authorized.")
+
+        link.status = "revoked"
+        link.link_code = None
+        link.link_code_expires_at = None
+        db.add(link)
+        await db.commit()
         return True
 
     # ── OTP ───────────────────────────────────────────────────────────────────
