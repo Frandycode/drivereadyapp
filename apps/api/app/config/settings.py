@@ -54,6 +54,10 @@ class Settings(BaseSettings):
     smtp_from: str = "noreply@driveready.app"
     smtp_tls: bool = True
 
+    # Legal document versions — bump either to require re-consent from all users
+    tos_version: str = "1.0"
+    privacy_version: str = "1.0"
+
     # App
     frontend_url: str = "http://localhost:5173"
     api_url: str = "http://localhost:8000"

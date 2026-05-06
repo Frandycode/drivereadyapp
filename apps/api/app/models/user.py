@@ -30,6 +30,8 @@ class User(Base, UUIDMixin, TimestampMixin):
     email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     phone_number: Mapped[str | None] = mapped_column(String(20))
     phone_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    tos_version_accepted: Mapped[str | None] = mapped_column(String(20))
+    privacy_version_accepted: Mapped[str | None] = mapped_column(String(20))
     state_code: Mapped[str] = mapped_column(String(5), nullable=False, default="ok")
 
     # Progression

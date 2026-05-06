@@ -42,6 +42,8 @@ from app.graphql.types.all_types import (
     ChapterProgressType,
     CreateDeckInput,
     FlashcardDeckType,
+    AcceptLegalInput,
+    LegalVersionsType,
     LoginInput,
     RegisterInput,
     SendPhoneOtpInput,
@@ -62,6 +64,7 @@ from app.models import (
     Session,
     SessionAnswer,
     User,
+    UserConsent,
     UserProgress,
 )
 from app.models.question import Chapter, Lesson
@@ -188,6 +191,20 @@ def _base_payload(
     }
 
 
+def _legal_versions() -> LegalVersionsType:
+    return LegalVersionsType(
+        tos_version=settings.tos_version,
+        privacy_version=settings.privacy_version,
+    )
+
+
+def _requires_legal_consent(user: User) -> bool:
+    return (
+        user.tos_version_accepted != settings.tos_version
+        or user.privacy_version_accepted != settings.privacy_version
+    )
+
+
 def _age_from_dob(dob: date) -> int:
     today = date.today()
     years = today.year - dob.year
@@ -274,6 +291,8 @@ class Mutation:
             user=map_user(user),
             consent_status=consent_status,
             email_verified=False,
+            requires_legal_consent=True,
+            legal_versions=_legal_versions(),
         )
 
     @strawberry.mutation
@@ -292,6 +311,8 @@ class Mutation:
             user=map_user(user),
             consent_status=user.parental_consent_status,
             email_verified=user.email_verified,
+            requires_legal_consent=_requires_legal_consent(user),
+            legal_versions=_legal_versions(),
         )
 
     @strawberry.mutation
@@ -318,6 +339,42 @@ class Mutation:
         await db.commit()
         await db.refresh(user)
         return map_user(user)
+
+    # ── Legal consent ─────────────────────────────────────────────────────────
+
+    @strawberry.mutation
+    async def accept_legal_documents(self, info: Info, input: AcceptLegalInput) -> bool:
+        """Record the user's acceptance of the current ToS and Privacy Policy versions."""
+        db:   AsyncSession = info.context["db"]
+        user: User         = info.context["user"]
+        if not user:
+            raise ValueError("Authentication required.")
+
+        if input.tos_version != settings.tos_version:
+            raise ValueError("ToS version mismatch. Please refresh and try again.")
+        if input.privacy_version != settings.privacy_version:
+            raise ValueError("Privacy Policy version mismatch. Please refresh and try again.")
+
+        now = datetime.now(timezone.utc)
+        ip  = None
+        req = info.context.get("request")
+        if req and hasattr(req, "client") and req.client:
+            ip = req.client.host
+
+        for doc_type, version in [("tos", input.tos_version), ("privacy", input.privacy_version)]:
+            db.add(UserConsent(
+                user_id=user.id,
+                document_type=doc_type,
+                version=version,
+                accepted_at=now,
+                ip_address=ip,
+            ))
+
+        user.tos_version_accepted     = input.tos_version
+        user.privacy_version_accepted = input.privacy_version
+        db.add(user)
+        await db.commit()
+        return True
 
     # ── OTP ───────────────────────────────────────────────────────────────────
 

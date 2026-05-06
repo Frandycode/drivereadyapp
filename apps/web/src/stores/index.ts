@@ -30,6 +30,8 @@ export interface User {
   emailVerified: boolean
   phoneNumber?: string
   phoneVerified: boolean
+  tosVersionAccepted?: string
+  privacyVersionAccepted?: string
 }
 
 export type Difficulty = 'pawn' | 'rogue' | 'king'

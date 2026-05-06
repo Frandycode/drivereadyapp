@@ -91,11 +91,18 @@ const RESEND_EMAIL_OTP = gql`
   }
 `
 
+const ACCEPT_LEGAL = gql`
+  mutation AcceptLegalDocuments($input: AcceptLegalInput!) {
+    acceptLegalDocuments(input: $input)
+  }
+`
+
 // ── Sub-screens ───────────────────────────────────────────────────────────────
 
 type Screen =
   | 'auth'
   | 'verify-email'
+  | 'legal-consent'
   | 'consent-pending'
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -114,10 +121,16 @@ export function AuthPage() {
   const [dobYear, setDobYear]         = useState('')
   const [dobMonth, setDobMonth]       = useState('')
 
-  // Pending auth (held until email OTP verified)
-  const [pendingToken, setPendingToken]   = useState('')
-  const [pendingUser, setPendingUser]     = useState<null | Record<string, unknown>>(null)
-  const [pendingIsReg, setPendingIsReg]   = useState(false)
+  // Pending auth (held until email OTP + legal consent cleared)
+  const [pendingToken, setPendingToken]       = useState('')
+  const [pendingUser, setPendingUser]         = useState<null | Record<string, unknown>>(null)
+  const [pendingIsReg, setPendingIsReg]       = useState(false)
+  const [pendingLegalVersions, setPendingLegalVersions] = useState<{ tosVersion: string; privacyVersion: string } | null>(null)
+
+  // Legal consent checkboxes
+  const [tosAccepted, setTosAccepted]         = useState(false)
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  const [legalError, setLegalError]           = useState('')
 
   // OTP input
   const [otpDigits, setOtpDigits]     = useState(['', '', '', '', '', ''])
@@ -133,6 +146,7 @@ export function AuthPage() {
   const [login,           { loading: loggingIn    }] = useMutation(LOGIN)
   const [verifyEmailOtp,  { loading: verifying    }] = useMutation(VERIFY_EMAIL_OTP)
   const [resendEmailOtp,  { loading: resending    }] = useMutation(RESEND_EMAIL_OTP)
+  const [acceptLegal,     { loading: acceptingLegal }] = useMutation(ACCEPT_LEGAL)
 
   const loading = registering || loggingIn
 
@@ -146,20 +160,36 @@ export function AuthPage() {
     const u = data.user as Record<string, unknown>
     setAuthToken(data.accessToken as string)
     setUser({
-      id:           u.id           as string,
-      email:        u.email        as string,
-      displayName:  u.displayName  as string,
-      role:         u.role         as 'learner' | 'parent' | 'admin',
-      stateCode:    u.stateCode    as string,
-      xpTotal:      u.xpTotal      as number,
-      level:        u.level        as number,
-      streakDays:   u.streakDays   as number,
-      freezeTokens: u.freezeTokens as number,
-      emailVerified: u.emailVerified as boolean,
-      phoneVerified: u.phoneVerified as boolean,
-      phoneNumber:   u.phoneNumber  as string | undefined,
+      id:                     u.id                     as string,
+      email:                  u.email                  as string,
+      displayName:            u.displayName            as string,
+      role:                   u.role                   as 'learner' | 'parent' | 'admin',
+      stateCode:              u.stateCode              as string,
+      xpTotal:                u.xpTotal                as number,
+      level:                  u.level                  as number,
+      streakDays:             u.streakDays             as number,
+      freezeTokens:           u.freezeTokens           as number,
+      emailVerified:          u.emailVerified          as boolean,
+      phoneVerified:          u.phoneVerified          as boolean,
+      phoneNumber:            u.phoneNumber            as string | undefined,
+      tosVersionAccepted:     u.tosVersionAccepted     as string | undefined,
+      privacyVersionAccepted: u.privacyVersionAccepted as string | undefined,
     })
     if (isRegister) setNeedsOnboarding(true)
+  }
+
+  function goToLegalConsent(data: Record<string, unknown>, isRegister: boolean) {
+    const lv = data.legalVersions as Record<string, unknown>
+    setPendingUser(data)
+    setPendingIsReg(isRegister)
+    setPendingLegalVersions({
+      tosVersion:     lv.tosVersion     as string,
+      privacyVersion: lv.privacyVersion as string,
+    })
+    setTosAccepted(false)
+    setPrivacyAccepted(false)
+    setLegalError('')
+    setScreen('legal-consent')
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -202,7 +232,6 @@ export function AuthPage() {
         }
 
         if (!data.emailVerified) {
-          // Hold credentials — require OTP before completing login
           setAuthToken(data.accessToken)
           setPendingToken(data.accessToken)
           setPendingUser(data)
@@ -210,6 +239,12 @@ export function AuthPage() {
           setOtpDigits(['', '', '', '', '', ''])
           setOtpError('')
           setScreen('verify-email')
+          return
+        }
+
+        if (data.requiresLegalConsent) {
+          setAuthToken(data.accessToken)
+          goToLegalConsent(data, mode === 'register')
           return
         }
 
@@ -234,10 +269,39 @@ export function AuthPage() {
     setOtpError('')
     try {
       await verifyEmailOtp({ variables: { input: { code } } })
-      if (pendingUser) completeLogin({ ...pendingUser, emailVerified: true }, pendingIsReg)
+      const updated = { ...pendingUser!, emailVerified: true }
+      if (pendingUser?.requiresLegalConsent) {
+        goToLegalConsent(updated, pendingIsReg)
+      } else {
+        completeLogin(updated, pendingIsReg)
+      }
     } catch (err: unknown) {
       if (err instanceof ApolloError) {
         setOtpError(err.graphQLErrors[0]?.message ?? 'Incorrect code. Please try again.')
+      }
+    }
+  }
+
+  async function handleAcceptLegal() {
+    if (!tosAccepted || !privacyAccepted) {
+      setLegalError('You must accept both the Terms of Service and Privacy Policy to continue.')
+      return
+    }
+    if (!pendingLegalVersions) return
+    setLegalError('')
+    try {
+      await acceptLegal({
+        variables: {
+          input: {
+            tosVersion:     pendingLegalVersions.tosVersion,
+            privacyVersion: pendingLegalVersions.privacyVersion,
+          },
+        },
+      })
+      completeLogin(pendingUser!, pendingIsReg)
+    } catch (err: unknown) {
+      if (err instanceof ApolloError) {
+        setLegalError(err.graphQLErrors[0]?.message ?? 'Something went wrong. Please try again.')
       }
     }
   }
@@ -329,6 +393,90 @@ export function AuthPage() {
               className="w-full text-sm text-text-secondary hover:text-text-primary transition-colors py-2 disabled:opacity-50"
             >
               {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ── Legal consent screen ──────────────────────────────────────────────────
+
+  if (screen === 'legal-consent') {
+    return (
+      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
+        <div className="w-full max-w-sm">
+          <div className="text-center mb-6">
+            <AppLogo height={70} />
+          </div>
+
+          <div className="card-elevated">
+            <h2 className="font-display text-xl font-bold text-text-primary mb-1">
+              Before you continue
+            </h2>
+            <p className="text-text-secondary text-sm mb-5">
+              Please review and accept our Terms of Service and Privacy Policy to use DriveReady.
+            </p>
+
+            {/* ToS summary */}
+            <div className="bg-surface rounded-xl border border-border p-4 mb-3 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2">
+              <p className="font-semibold text-text-primary text-sm">
+                Terms of Service — v{pendingLegalVersions?.tosVersion}
+              </p>
+              <p>DriveReady provides driver education study materials for informational purposes. Content is based on official state driver handbooks but does not guarantee passing any official exam.</p>
+              <p>You agree to use this service only for lawful, personal study purposes. You must not share account credentials, scrape content, or use automated tools against the platform.</p>
+              <p>We reserve the right to suspend accounts that violate these terms. You may delete your account at any time and all personal data will be removed.</p>
+            </div>
+
+            {/* Privacy Policy summary */}
+            <div className="bg-surface rounded-xl border border-border p-4 mb-5 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2">
+              <p className="font-semibold text-text-primary text-sm">
+                Privacy Policy — v{pendingLegalVersions?.privacyVersion}
+              </p>
+              <p>We collect your name, email, date of birth (month and year only), and study progress to operate the service. We do not sell your data to third parties.</p>
+              <p>Study data (quiz scores, progress, streaks) is used to personalize your learning experience. We may use anonymized, aggregated data to improve the platform.</p>
+              <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@driveready.app.</p>
+            </div>
+
+            {/* Checkboxes */}
+            <label className="flex items-start gap-3 mb-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={tosAccepted}
+                onChange={(e) => setTosAccepted(e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
+              />
+              <span className="text-sm text-text-secondary">
+                I have read and agree to the{' '}
+                <span className="text-green-500">Terms of Service</span>
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3 mb-5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={privacyAccepted}
+                onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
+              />
+              <span className="text-sm text-text-secondary">
+                I have read and agree to the{' '}
+                <span className="text-green-500">Privacy Policy</span>
+              </span>
+            </label>
+
+            {legalError && (
+              <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
+                {legalError}
+              </p>
+            )}
+
+            <button
+              onClick={handleAcceptLegal}
+              disabled={acceptingLegal || !tosAccepted || !privacyAccepted}
+              className="btn-primary w-full h-11"
+            >
+              {acceptingLegal ? 'Saving...' : 'Accept & Continue'}
             </button>
           </div>
         </div>

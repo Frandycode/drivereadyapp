@@ -23,6 +23,7 @@ from .session import (  # noqa: F401
     Battle,
 )
 from .stats import PlayerBehaviorLog, PlayerStats  # noqa: F401
+from .legal import UserConsent  # noqa: F401
 
 __all__ = [
     "Base",
@@ -32,4 +33,5 @@ __all__ = [
     "Bookmark", "Achievement", "UserAchievement",
     "FlashcardDeck", "ChapterGroup", "Battle",
     "PlayerBehaviorLog", "PlayerStats",
+    "UserConsent",
 ]

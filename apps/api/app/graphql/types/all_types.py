@@ -200,11 +200,19 @@ class BattleType:
 
 
 @strawberry.type
+class LegalVersionsType:
+    tos_version: str
+    privacy_version: str
+
+
+@strawberry.type
 class AuthPayloadType:
     access_token: str
     user: UserType
     consent_status: str   # not_required | pending | approved
     email_verified: bool
+    requires_legal_consent: bool
+    legal_versions: LegalVersionsType
 
 
 @strawberry.type
@@ -235,6 +243,12 @@ class RegisterInput:
 class LoginInput:
     email: str
     password: str
+
+
+@strawberry.input
+class AcceptLegalInput:
+    tos_version: str
+    privacy_version: str
 
 
 @strawberry.input
