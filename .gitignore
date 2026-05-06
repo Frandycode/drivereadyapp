@@ -9,6 +9,9 @@ ehthumbs.db
 Desktop.ini
 *:Zone.Identifier
 
+# ── Claude Code (local tool — never commit) ───────────────────────────────────
+.claude/
+
 # ── Editor ────────────────────────────────────────────────────────────────────
 .vscode/*
 !.vscode/extensions.json

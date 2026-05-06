@@ -30,19 +30,7 @@ import { BotSelectScreen, type BotBattleConfig } from '@/app/battle/BotSelectScr
 import { BotBattleSession } from '@/app/battle/BotBattleSession'
 import { PeerBattleLobby, type PeerBattleSetup } from '@/app/battle/PeerBattleLobby'
 import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
-
-// ── Placeholder ───────────────────────────────────────────────────────────────
-
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="min-h-dvh bg-bg flex items-center justify-center pb-20">
-      <div className="text-center">
-        <h2 className="font-display text-2xl font-bold text-green-500 mb-2">{title}</h2>
-        <p className="text-text-secondary text-sm">Coming soon</p>
-      </div>
-    </div>
-  )
-}
+import { ProfilePage } from '@/app/profile/ProfilePage'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -151,9 +139,9 @@ function QuizSettingsModal({
 type AppScreen =
   | { screen: 'home' }
   | { screen: 'learn' }
-  | { screen: 'chapter'; id: string }
-  | { screen: 'quiz'; chapterId: string; config: QuizConfig }
-  | { screen: 'quiz-settings'; chapterId: string }
+  | { screen: 'chapter'; id: string; number: number; title: string }
+  | { screen: 'quiz'; chapterId: string; chapterNumber: number; chapterTitle: string; config: QuizConfig }
+  | { screen: 'quiz-settings'; chapterId: string; chapterNumber: number; chapterTitle: string }
   | { screen: 'study' }
   | { screen: 'study-session'; config: StudyConfig }
   | { screen: 'challenge' }
@@ -178,6 +166,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePop)
   }, [])
 
+  useEffect(() => {
+    if (isHydrated && !user) {
+      setAppScreen({ screen: 'home' })
+      window.history.replaceState({}, '', '/')
+      setPath('/')
+    }
+  }, [user, isHydrated])
+
   function navigate(to: string) {
     window.history.pushState({}, '', to)
     setPath(to)
@@ -189,10 +185,10 @@ export default function App() {
     if (to === '/profile')   setAppScreen({ screen: 'profile' })
 
     const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
-    if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1] })
+    if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1], number: 0, title: '' })
 
     const quizMatch = to.match(/^\/learn\/([^/]+)\/quiz$/)
-    if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1] })
+    if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1], chapterNumber: 0, chapterTitle: '' })
   }
 
   if (!isHydrated) {
@@ -227,7 +223,7 @@ export default function App() {
     return (
       <QuizSession
         config={appScreen.config}
-        onExit={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId })}
+        onExit={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId, number: appScreen.chapterNumber, title: appScreen.chapterTitle })}
       />
     )
   }
@@ -236,14 +232,20 @@ export default function App() {
   if (appScreen.screen === 'quiz-settings') {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage chapterId={appScreen.chapterId} onNavigate={navigate} />
+        <ChapterPage
+          chapterId={appScreen.chapterId}
+          chapterNumber={appScreen.chapterNumber}
+          chapterTitle={appScreen.chapterTitle}
+          onNavigate={navigate}
+          onQuizStart={() => {}}
+        />
         <BottomNav activePath="/learn" onNavigate={navigate} />
         <QuizSettingsModal
           chapterId={appScreen.chapterId}
-          chapterNumber={0}
-          chapterTitle="Pop Quiz"
-          onStart={(cfg) => setAppScreen({ screen: 'quiz', chapterId: appScreen.chapterId, config: cfg })}
-          onCancel={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId })}
+          chapterNumber={appScreen.chapterNumber}
+          chapterTitle={appScreen.chapterTitle}
+          onStart={(cfg) => setAppScreen({ screen: 'quiz', chapterId: appScreen.chapterId, chapterNumber: appScreen.chapterNumber, chapterTitle: appScreen.chapterTitle, config: cfg })}
+          onCancel={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId, number: appScreen.chapterNumber, title: appScreen.chapterTitle })}
         />
       </div>
     )
@@ -253,7 +255,13 @@ export default function App() {
   if (appScreen.screen === 'chapter') {
     return (
       <div className="bg-bg min-h-dvh">
-        <ChapterPage chapterId={appScreen.id} onNavigate={navigate} />
+        <ChapterPage
+          chapterId={appScreen.id}
+          chapterNumber={appScreen.number}
+          chapterTitle={appScreen.title}
+          onNavigate={navigate}
+          onQuizStart={() => setAppScreen({ screen: 'quiz-settings', chapterId: appScreen.id, chapterNumber: appScreen.number, chapterTitle: appScreen.title })}
+        />
         <BottomNav activePath="/learn" onNavigate={navigate} />
       </div>
     )
@@ -329,7 +337,16 @@ export default function App() {
   // Top-level pages
   const PAGES: Record<string, React.ReactNode> = {
     home: <HomePage onNavigate={navigate} />,
-    learn: <LearnPage onNavigate={navigate} />,
+    learn: (
+      <LearnPage
+        onNavigate={navigate}
+        onChapterSelect={(id, number, title) => {
+          window.history.pushState({}, '', `/learn/${id}`)
+          setPath(`/learn/${id}`)
+          setAppScreen({ screen: 'chapter', id, number, title })
+        }}
+      />
+    ),
     study: (
       <StudyPage
         onNavigate={navigate}
@@ -344,7 +361,7 @@ export default function App() {
         onExam={() => setAppScreen({ screen: 'exam' })}
       />
     ),
-    profile: <PlaceholderPage title="Profile" />,
+    profile: <ProfilePage />,
   }
 
   const pageKey = appScreen.screen as string

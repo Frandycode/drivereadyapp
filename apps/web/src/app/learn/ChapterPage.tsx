@@ -15,24 +15,18 @@ import { PageWrapper } from '@/components/layout/PageWrapper'
 import { ArrowLeft, BookOpen, CheckCircle, Circle } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
-import { useUserStore } from '@/stores'
 import { useMinLoadTime } from '@driveready/hooks'
 import { ChapterPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
 const GET_CHAPTER_LESSONS = gql`
-  query GetChapterLessons($chapterId: ID!, $stateCode: String!) {
+  query GetChapterLessons($chapterId: ID!) {
     lessons(chapterId: $chapterId) {
       id
       title
       content
       sortOrder
-    }
-    chapters(stateCode: $stateCode) {
-      id
-      number
-      title
     }
   }
 `
@@ -48,25 +42,25 @@ interface Lesson {
 
 interface ChapterPageProps {
   chapterId: string
+  chapterNumber: number
+  chapterTitle: string
   onNavigate: (path: string) => void
+  onQuizStart: () => void
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
-  const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
+export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate, onQuizStart }: ChapterPageProps) {
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null)
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set())
 
   const { data, loading, error } = useQuery(GET_CHAPTER_LESSONS, {
-    variables: { chapterId, stateCode },
+    variables: { chapterId },
   })
 
   const isLoading = useMinLoadTime(loading)
 
   const lessons: Lesson[] = data?.lessons ?? []
-  const chapters = data?.chapters ?? []
-  const chapter = chapters.find((c: { id: string }) => c.id === chapterId)
 
   function handleLessonComplete(lessonId: string) {
     setCompletedIds((prev) => new Set([...prev, lessonId]))
@@ -84,7 +78,7 @@ export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
       </button>
       <div className="flex-1 min-w-0">
         <h1 className="font-display text-base font-bold text-text-primary truncate">
-          {chapter ? `Ch. ${chapter.number} — ${chapter.title}` : 'Chapter'}
+          {chapterNumber ? `Ch. ${chapterNumber} — ${chapterTitle}` : 'Chapter'}
         </h1>
       </div>
     </div>
@@ -196,7 +190,7 @@ export function ChapterPage({ chapterId, onNavigate }: ChapterPageProps) {
           </p>
           <button
             onClick={() => {
-              onNavigate(`/learn/${chapterId}/quiz`)
+              onQuizStart()
             }}
             className="btn-gold w-full"
           >

@@ -17,6 +17,8 @@ import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
+import re
+
 import strawberry
 from passlib.context import CryptContext
 from sqlalchemy import func, select
@@ -179,6 +181,21 @@ def _base_payload(
     }
 
 
+def validate_password(password: str) -> None:
+    if len(password) < 8:
+        raise ValueError("Password must be at least 8 characters.")
+    if not re.search(r"[A-Z]", password):
+        raise ValueError("Password must contain at least one uppercase letter.")
+    if not re.search(r"[a-z]", password):
+        raise ValueError("Password must contain at least one lowercase letter.")
+    if not re.search(r"\d", password):
+        raise ValueError("Password must contain at least one digit.")
+    if not re.search(r"[#$&!*\-]", password):
+        raise ValueError("Password must contain at least one special character: # $ & ! * -")
+    if re.search(r"(.)\1\1", password):
+        raise ValueError("Password must not contain 3 or more consecutive identical characters.")
+
+
 # ── Mutation class ────────────────────────────────────────────────────────────
 
 @strawberry.type
@@ -190,6 +207,8 @@ class Mutation:
     async def register(self, info: Info, input: RegisterInput) -> AuthPayloadType:
         """Register a new user account."""
         db: AsyncSession = info.context["db"]
+
+        validate_password(input.password)
 
         existing = await db.execute(select(User).where(User.email == input.email.lower()))
         if existing.scalar_one_or_none():

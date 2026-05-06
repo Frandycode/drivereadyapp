@@ -15,6 +15,21 @@ import { useMutation, gql, ApolloError } from '@apollo/client'
 import { setAuthToken } from '@driveready/api-client'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
+import { Check, X } from 'lucide-react'
+
+const SPECIAL = /[#$&!*\-]/
+const RULES = [
+  { label: 'At least 8 characters',                test: (p: string) => p.length >= 8 },
+  { label: 'Uppercase letter',                      test: (p: string) => /[A-Z]/.test(p) },
+  { label: 'Lowercase letter',                      test: (p: string) => /[a-z]/.test(p) },
+  { label: 'Number',                                test: (p: string) => /\d/.test(p) },
+  { label: 'Special character  # $ & ! * -',       test: (p: string) => SPECIAL.test(p) },
+  { label: 'No 3+ identical characters in a row',  test: (p: string) => !/(.)\1\1/.test(p) },
+]
+
+function passwordValid(p: string) {
+  return RULES.every((r) => r.test(p))
+}
 
 const REGISTER = gql`
   mutation Register($input: RegisterInput!) {
@@ -56,6 +71,11 @@ export function AuthPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+
+    if (mode === 'register' && !passwordValid(password)) {
+      setError('Password does not meet the requirements below.')
+      return
+    }
 
     try {
       let data
@@ -169,12 +189,27 @@ export function AuthPage() {
             <input
               className="input"
               type="password"
-              placeholder={mode === 'register' ? 'At least 8 characters' : '••••••••'}
+              placeholder={mode === 'register' ? 'Create a strong password' : '••••••••'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              minLength={8}
             />
+            {mode === 'register' && password.length > 0 && (
+              <ul className="mt-2 space-y-1">
+                {RULES.map((rule) => {
+                  const ok = rule.test(password)
+                  return (
+                    <li key={rule.label} className={`flex items-center gap-1.5 text-xs ${ok ? 'text-green-500' : 'text-text-secondary'}`}>
+                      {ok
+                        ? <Check size={11} strokeWidth={3} />
+                        : <X size={11} strokeWidth={3} className="text-wrong" />
+                      }
+                      {rule.label}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
 
           {error && (

@@ -58,11 +58,12 @@ interface Progress {
 
 interface LearnPageProps {
   onNavigate: (path: string) => void
+  onChapterSelect: (id: string, number: number, title: string) => void
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function LearnPage({ onNavigate }: LearnPageProps) {
+export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const { data, loading, error } = useQuery(GET_CHAPTERS, {
@@ -140,7 +141,7 @@ export function LearnPage({ onNavigate }: LearnPageProps) {
           return (
             <button
               key={chapter.id}
-              onClick={() => !isLocked && onNavigate(`/learn/${chapter.id}`)}
+              onClick={() => !isLocked && onChapterSelect(chapter.id, chapter.number, chapter.title)}
               disabled={isLocked}
               className={`w-full text-left card transition-all duration-150 ${
                 isLocked
