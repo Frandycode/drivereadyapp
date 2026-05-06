@@ -11,7 +11,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 
@@ -150,6 +150,66 @@ def create_app() -> FastAPI:
             "environment": settings.environment,
         }
 
+    # ── Parental consent endpoints ────────────────────────────────────────────
+
+    @app.get("/consent/approve/{token}", response_class=HTMLResponse)
+    async def consent_approve(token: str):
+        from sqlalchemy import select, update
+        from app.db.connection import AsyncSessionLocal
+        from app.models import User
+        from app.services.consent import resolve_consent_token, delete_consent_token
+
+        data = await resolve_consent_token(token)
+        if not data:
+            return _consent_page(
+                title="Link Expired",
+                message="This consent link has expired or already been used.",
+                success=False,
+            )
+
+        async with AsyncSessionLocal() as db:
+            await db.execute(
+                update(User)
+                .where(User.id == data["user_id"])
+                .values(parental_consent_status="approved")
+            )
+            await db.commit()
+
+        await delete_consent_token(token)
+        return _consent_page(
+            title="Account Approved",
+            message="The account has been approved. Your child can now sign in to DriveReady.",
+            success=True,
+        )
+
+    @app.get("/consent/deny/{token}", response_class=HTMLResponse)
+    async def consent_deny(token: str):
+        from app.db.connection import AsyncSessionLocal
+        from app.models import User
+        from sqlalchemy import select, delete as sql_delete
+        from app.services.consent import resolve_consent_token, delete_consent_token
+
+        data = await resolve_consent_token(token)
+        if not data:
+            return _consent_page(
+                title="Link Expired",
+                message="This consent link has expired or already been used.",
+                success=False,
+            )
+
+        async with AsyncSessionLocal() as db:
+            await db.execute(
+                sql_delete(User).where(User.id == data["user_id"])
+            )
+            await db.commit()
+
+        await delete_consent_token(token)
+        return _consent_page(
+            title="Account Removed",
+            message="The account and all associated data have been deleted as requested.",
+            success=True,
+        )
+
     # Global error handler
     @app.exception_handler(ValueError)
     async def value_error_handler(request: Request, exc: ValueError):
@@ -159,6 +219,40 @@ def create_app() -> FastAPI:
         )
 
     return app
+
+
+def _consent_page(*, title: str, message: str, success: bool) -> str:
+    color = "#22C55E" if success else "#EF4444"
+    icon  = "✓" if success else "✕"
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>{title} — DriveReady</title>
+  <style>
+    *{{box-sizing:border-box;margin:0;padding:0}}
+    body{{background:#0A0F0D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+          display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}}
+    .card{{background:#111A14;border:1px solid #1E2D22;border-radius:16px;padding:40px 36px;
+           max-width:420px;width:100%;text-align:center}}
+    .icon{{width:64px;height:64px;border-radius:50%;background:{color}22;border:1px solid {color}55;
+           display:flex;align-items:center;justify-content:center;margin:0 auto 24px;
+           font-size:28px;color:{color}}}
+    h1{{font-size:20px;font-weight:700;color:#E8F0EB;margin-bottom:12px}}
+    p{{font-size:14px;line-height:1.6;color:#9DB8A4}}
+    .brand{{margin-top:28px;font-size:12px;color:#4A6B54}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">{icon}</div>
+    <h1>{title}</h1>
+    <p>{message}</p>
+    <p class="brand">DriveReady · driveready.app</p>
+  </div>
+</body>
+</html>"""
 
 
 app = create_app()

@@ -27,7 +27,10 @@ from sqlalchemy.orm import selectinload
 from strawberry.types import Info
 
 from app.auth.jwt import create_access_token
+from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
+from app.services.consent import create_consent_token
+from app.services.email import send_parental_consent_email
 from app.graphql.types.all_types import (
     AnswerResultType,
     AuthPayloadType,
@@ -246,8 +249,19 @@ class Mutation:
         await db.flush()
         await db.commit()
 
-        token = create_access_token(str(user.id), user.role)
-        return AuthPayloadType(access_token=token, user=map_user(user), consent_status=consent_status)
+        if consent_status == "pending":
+            consent_token = await create_consent_token(str(user.id), input.parent_email)
+            approve_url = f"{settings.api_url}/consent/approve/{consent_token}"
+            deny_url    = f"{settings.api_url}/consent/deny/{consent_token}"
+            await send_parental_consent_email(
+                parent_email=input.parent_email,
+                child_name=input.display_name,
+                approve_url=approve_url,
+                deny_url=deny_url,
+            )
+
+        jwt_token = create_access_token(str(user.id), user.role)
+        return AuthPayloadType(access_token=jwt_token, user=map_user(user), consent_status=consent_status)
 
     @strawberry.mutation
     async def login(self, info: Info, input: LoginInput) -> AuthPayloadType:

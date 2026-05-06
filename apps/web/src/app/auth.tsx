@@ -196,6 +196,7 @@ export function AuthPage() {
   // ── Consent pending screen ─────────────────────────────────────────────────
 
   if (screen === 'consent-pending') {
+    const fromRegister = mode === 'register' && parentEmail
     return (
       <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4">
         <div className="w-full max-w-sm text-center">
@@ -203,15 +204,24 @@ export function AuthPage() {
             <Clock size={28} className="text-yellow-400" />
           </div>
           <h2 className="font-display text-xl font-bold text-text-primary mb-2">
-            Check your parent's inbox
+            Waiting for parental approval
           </h2>
-          <p className="text-text-secondary text-sm leading-relaxed mb-4">
-            We sent a consent request to <span className="text-text-primary font-medium">{parentEmail}</span>.
-            Your account will be activated once they approve.
-          </p>
-          <p className="text-text-secondary text-xs mb-6">
-            The email may take a few minutes to arrive. Ask your parent or guardian to check their spam folder too.
-          </p>
+          {fromRegister ? (
+            <>
+              <p className="text-text-secondary text-sm leading-relaxed mb-3">
+                We sent a consent request to{' '}
+                <span className="text-text-primary font-medium">{parentEmail}</span>.
+                Your account will be activated once they approve.
+              </p>
+              <p className="text-text-secondary text-xs mb-6">
+                The email may take a few minutes to arrive. Ask your parent or guardian to check their spam folder too.
+              </p>
+            </>
+          ) : (
+            <p className="text-text-secondary text-sm leading-relaxed mb-6">
+              Your account is pending parental approval. Please ask your parent or guardian to check their email and click the approval link.
+            </p>
+          )}
           <button
             onClick={() => {
               setScreen('auth')

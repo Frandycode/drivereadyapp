@@ -41,6 +41,18 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = True
 
+    # Email (SMTP)
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = "noreply@driveready.app"
+    smtp_tls: bool = True
+
+    # App
+    frontend_url: str = "http://localhost:5173"
+    api_url: str = "http://localhost:8000"
+
     # Monitoring
     sentry_dsn: str = ""
 

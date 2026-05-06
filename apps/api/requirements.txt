@@ -34,6 +34,9 @@ httpx==0.27.0
 # Background jobs
 celery[redis]==5.4.0
 
+# Email
+aiosmtplib==3.0.1
+
 # Utilities
 python-dateutil==2.9.0
 
