@@ -70,6 +70,9 @@ class Settings(BaseSettings):
     frontend_url: str = "http://localhost:5173"
     api_url: str = "http://localhost:8000"
 
+    # CORS — comma-separated list of extra origins to allow beyond the defaults
+    extra_cors_origins: str = ""
+
     # Monitoring
     sentry_dsn: str = ""
 

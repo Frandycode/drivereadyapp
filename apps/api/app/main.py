@@ -145,15 +145,20 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS
+    # CORS — base origins always allowed; EXTRA_CORS_ORIGINS env var adds more (comma-separated)
     origins = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://drivereadyapp.com",
+        "https://www.drivereadyapp.com",
         "https://driveready-ok.com",
         "https://www.driveready-ok.com",
     ]
+    extra = settings.extra_cors_origins
+    if extra:
+        origins += [o.strip() for o in extra.split(",") if o.strip()]
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
