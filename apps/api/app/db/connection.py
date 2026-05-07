@@ -15,7 +15,7 @@ from app.config import settings
 
 # ── Engine ────────────────────────────────────────────────────────────────────
 engine = create_async_engine(
-    settings.database_url,
+    settings.async_database_url,
     echo=settings.debug,        # logs SQL in development
     pool_pre_ping=True,         # verify connection before use
     pool_size=10,

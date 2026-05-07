@@ -77,6 +77,16 @@ class Settings(BaseSettings):
     sentry_dsn: str = ""
 
     @property
+    def async_database_url(self) -> str:
+        """Ensure the URL uses the asyncpg driver prefix regardless of what the host provides."""
+        url = self.database_url
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+asyncpg://", 1)
+        elif url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
+
+    @property
     def is_production(self) -> bool:
         return self.environment == "production"
 
