@@ -64,12 +64,9 @@ const USER_FIELDS = `id email displayName role stateCode xpTotal level streakDay
 const REGISTER = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
-      accessToken
-      consentStatus
-      emailVerified
-      requiresLegalConsent
-      legalVersions { tosVersion privacyVersion }
-      user { ${USER_FIELDS} }
+      pendingToken
+      email
+      expiresAt
     }
   }
 `
@@ -87,15 +84,22 @@ const LOGIN = gql`
   }
 `
 
-const VERIFY_EMAIL_OTP = gql`
-  mutation VerifyEmailOtp($input: VerifyOtpInput!) {
-    verifyEmailOtp(input: $input)
+const COMPLETE_SIGNUP = gql`
+  mutation CompleteSignup($input: CompleteSignupInput!) {
+    completeSignup(input: $input) {
+      accessToken
+      consentStatus
+      emailVerified
+      requiresLegalConsent
+      legalVersions { tosVersion privacyVersion }
+      user { ${USER_FIELDS} }
+    }
   }
 `
 
-const RESEND_EMAIL_OTP = gql`
-  mutation ResendEmailOtp {
-    resendEmailOtp
+const RESEND_PENDING_SIGNUP_OTP = gql`
+  mutation ResendPendingSignupOtp($pendingToken: String!) {
+    resendPendingSignupOtp(pendingToken: $pendingToken)
   }
 `
 
@@ -162,10 +166,10 @@ export function AuthPage() {
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
 
-  const [register,              { loading: registering    }] = useMutation(REGISTER)
-  const [login,                 { loading: loggingIn      }] = useMutation(LOGIN)
-  const [verifyEmailOtp,        { loading: verifying      }] = useMutation(VERIFY_EMAIL_OTP)
-  const [resendEmailOtp,        { loading: resending      }] = useMutation(RESEND_EMAIL_OTP)
+  const [register,                  { loading: registering    }] = useMutation(REGISTER)
+  const [login,                     { loading: loggingIn      }] = useMutation(LOGIN)
+  const [completeSignup,            { loading: verifying      }] = useMutation(COMPLETE_SIGNUP)
+  const [resendPendingSignupOtp,    { loading: resending      }] = useMutation(RESEND_PENDING_SIGNUP_OTP)
   const [acceptLegal,           { loading: acceptingLegal }] = useMutation(ACCEPT_LEGAL)
   const [requestPasswordReset,  { loading: sendingReset   }] = useMutation(REQUEST_PASSWORD_RESET)
 
@@ -238,7 +242,6 @@ export function AuthPage() {
     }
 
     try {
-      let data
       if (mode === 'register') {
         const isoDate = `${dobYear}-${String(dobMonth).padStart(2, '0')}-01`
         const res = await register({
@@ -254,11 +257,22 @@ export function AuthPage() {
             },
           },
         })
-        data = res.data?.register
-      } else {
-        const res = await login({ variables: { input: { email, password, captchaToken } } })
-        data = res.data?.login
+        hcaptchaRef.current?.resetCaptcha()
+        setCaptchaToken(null)
+
+        const pending = res.data?.register
+        if (pending?.pendingToken) {
+          setPendingToken(pending.pendingToken)
+          setPendingIsReg(true)
+          setOtpDigits(['', '', '', '', '', ''])
+          setOtpError('')
+          setScreen('verify-email')
+        }
+        return
       }
+
+      const res = await login({ variables: { input: { email, password, captchaToken } } })
+      const data = res.data?.login
       hcaptchaRef.current?.resetCaptcha()
       setCaptchaToken(null)
 
@@ -268,24 +282,13 @@ export function AuthPage() {
           return
         }
 
-        if (!data.emailVerified) {
-          setAuthToken(data.accessToken)
-          setPendingToken(data.accessToken)
-          setPendingUser(data)
-          setPendingIsReg(mode === 'register')
-          setOtpDigits(['', '', '', '', '', ''])
-          setOtpError('')
-          setScreen('verify-email')
-          return
-        }
-
         if (data.requiresLegalConsent) {
           setAuthToken(data.accessToken)
-          goToLegalConsent(data, mode === 'register')
+          goToLegalConsent(data, false)
           return
         }
 
-        completeLogin(data, mode === 'register')
+        completeLogin(data, false)
       }
     } catch (err: unknown) {
       hcaptchaRef.current?.resetCaptcha()
@@ -311,16 +314,37 @@ export function AuthPage() {
     if (code.length < 6) { setOtpError('Please enter all 6 digits.'); return }
     setOtpError('')
     try {
-      await verifyEmailOtp({ variables: { input: { code } } })
-      const updated = { ...pendingUser!, emailVerified: true }
-      if (pendingUser?.requiresLegalConsent) {
-        goToLegalConsent(updated, pendingIsReg)
-      } else {
-        completeLogin(updated, pendingIsReg)
+      const res = await completeSignup({
+        variables: { input: { pendingToken, code } },
+      })
+      const data = res.data?.completeSignup
+      if (!data?.accessToken || !data?.user) {
+        setOtpError('Unexpected response. Please try again.')
+        return
       }
+
+      if (data.consentStatus === 'pending') {
+        setScreen('consent-pending')
+        return
+      }
+
+      setAuthToken(data.accessToken)
+
+      if (data.requiresLegalConsent) {
+        goToLegalConsent(data, pendingIsReg)
+        return
+      }
+
+      completeLogin(data, pendingIsReg)
     } catch (err: unknown) {
       if (err instanceof ApolloError) {
-        setOtpError(err.graphQLErrors[0]?.message ?? 'Incorrect code. Please try again.')
+        const code = (err.graphQLErrors[0]?.extensions?.code as string) ?? ''
+        const msg  = err.graphQLErrors[0]?.message ?? 'Incorrect code. Please try again.'
+        if (code === 'PENDING_SIGNUP_NOT_FOUND') {
+          setOtpError('Your signup expired. Please start over.')
+        } else {
+          setOtpError(msg)
+        }
       }
     }
   }
@@ -352,14 +376,20 @@ export function AuthPage() {
   async function handleResendOtp() {
     setOtpError('')
     try {
-      await resendEmailOtp()
+      await resendPendingSignupOtp({ variables: { pendingToken } })
       setResendCooldown(60)
       const interval = setInterval(() => {
         setResendCooldown((c) => { if (c <= 1) { clearInterval(interval); return 0 } return c - 1 })
       }, 1000)
     } catch (err: unknown) {
       if (err instanceof ApolloError) {
-        setOtpError(err.graphQLErrors[0]?.message ?? 'Could not resend code.')
+        const code = (err.graphQLErrors[0]?.extensions?.code as string) ?? ''
+        const msg  = err.graphQLErrors[0]?.message ?? 'Could not resend code.'
+        if (code === 'PENDING_SIGNUP_NOT_FOUND') {
+          setOtpError('Your signup expired. Please start over.')
+        } else {
+          setOtpError(msg)
+        }
       }
     }
   }
@@ -379,8 +409,6 @@ export function AuthPage() {
       document.getElementById(`otp-${index - 1}`)?.focus()
     }
   }
-
-  void pendingToken
 
   // ── Email OTP verification screen ─────────────────────────────────────────
 

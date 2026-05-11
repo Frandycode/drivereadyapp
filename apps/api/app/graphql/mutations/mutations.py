@@ -47,6 +47,12 @@ from app.services.password_reset import (
     resolve_reset_token,
 )
 from app.services.otp import clear_otp, create_otp, verify_otp
+from app.services.pending_signup import (
+    create_pending_signup,
+    delete_pending_signup,
+    email_has_pending_signup,
+    get_pending_signup,
+)
 from app.services.rate_limit import check_rate_limit
 from app.services.sms import send_otp_sms
 from app.graphql.types.all_types import (
@@ -56,11 +62,13 @@ from app.graphql.types.all_types import (
     BookmarkType,
     ChapterGroupType,
     ChapterProgressType,
+    CompleteSignupInput,
     CreateDeckInput,
     FlashcardDeckType,
     AcceptLegalInput,
     LegalVersionsType,
     LoginInput,
+    PendingSignupPayloadType,
     RegisterInput,
     SendPhoneOtpInput,
     SessionResultType,
@@ -390,69 +398,127 @@ class Mutation:
     # ── Auth ──────────────────────────────────────────────────────────────────
 
     @strawberry.mutation
-    async def register(self, info: Info, input: RegisterInput) -> AuthPayloadType:
-        """Register a new user account."""
-        db:  AsyncSession = info.context["db"]
-        ip   = _get_ip(info)
+    async def register(self, info: Info, input: RegisterInput) -> PendingSignupPayloadType:
+        """Stage a pending signup in Redis and send an email OTP.
 
-        await check_rate_limit(f"register:{ip}", max_requests=5,  window_seconds=3600)
+        The User row is NOT created here — only on successful OTP verification
+        via the `complete_signup` mutation. Pending signups auto-expire after
+        48 hours.
+        """
+        db: AsyncSession = info.context["db"]
+        ip = _get_ip(info)
+
+        await check_rate_limit(f"register:{ip}", max_requests=5, window_seconds=3600)
         await verify_captcha(input.captcha_token)
-
         validate_password(input.password)
 
         age = _age_from_dob(input.date_of_birth)
         if age < 13:
             raise ValueError("COPPA_UNDER_13")
-        if age < 18:
-            if not input.parent_email:
-                raise ValueError("Parent email is required for users under 18.")
-            consent_status = "pending"
-        else:
-            consent_status = "not_required"
+        if age < 18 and not input.parent_email:
+            raise ValueError("Parent email is required for users under 18.")
 
-        existing = await db.execute(select(User).where(User.email == input.email.lower()))
+        email = input.email.lower()
+
+        existing = await db.execute(select(User).where(User.email == email))
         if existing.scalar_one_or_none():
             raise _gql_error("Email already registered", "EMAIL_TAKEN")
 
+        if await email_has_pending_signup(email):
+            raise _gql_error(
+                "A signup is already in progress for this email. "
+                "Check your inbox for the code, or wait for it to expire.",
+                "PENDING_SIGNUP_EXISTS",
+            )
+
+        pending_data = {
+            "email":           email,
+            "password_hash":   pwd_context.hash(input.password),
+            "display_name":    input.display_name,
+            "state_code":      input.state_code,
+            "date_of_birth":   input.date_of_birth.isoformat(),
+            "parent_email":    input.parent_email,
+        }
+        pending_token, expires_at = await create_pending_signup(pending_data)
+
+        otp_code = await create_otp(f"pending:{pending_token}", "email")
+        await send_otp_email(to=email, code=otp_code, display_name=input.display_name)
+
+        return PendingSignupPayloadType(
+            pending_token=pending_token,
+            email=email,
+            expires_at=expires_at,
+        )
+
+    @strawberry.mutation
+    async def complete_signup(self, info: Info, input: CompleteSignupInput) -> AuthPayloadType:
+        """Finalize a pending signup: verify OTP, create the User, issue tokens."""
+        db: AsyncSession = info.context["db"]
+        ip = _get_ip(info)
+
+        await check_rate_limit(f"complete_signup:{ip}", max_requests=10, window_seconds=3600)
+
+        pending = await get_pending_signup(input.pending_token)
+        if not pending:
+            raise _gql_error(
+                "Signup expired or invalid. Please start over.",
+                "PENDING_SIGNUP_NOT_FOUND",
+            )
+
+        await verify_otp(f"pending:{input.pending_token}", "email", input.code)
+
+        email = pending["email"]
+        existing = await db.execute(select(User).where(User.email == email))
+        if existing.scalar_one_or_none():
+            await delete_pending_signup(input.pending_token, email)
+            raise _gql_error("Email already registered", "EMAIL_TAKEN")
+
+        dob = date.fromisoformat(pending["date_of_birth"])
+        age = _age_from_dob(dob)
+        if age < 18:
+            consent_status = "pending"
+            parent_email   = pending["parent_email"]
+        else:
+            consent_status = "not_required"
+            parent_email   = None
+
         user = User(
-            email=input.email.lower(),
-            password_hash=pwd_context.hash(input.password),
-            display_name=input.display_name,
-            state_code=input.state_code,
+            email=email,
+            password_hash=pending["password_hash"],
+            display_name=pending["display_name"],
+            state_code=pending["state_code"],
             role="learner",
-            date_of_birth=input.date_of_birth,
+            date_of_birth=dob,
+            email_verified=True,
             parental_consent_status=consent_status,
-            parent_email=input.parent_email if age < 18 else None,
+            parent_email=parent_email,
         )
         db.add(user)
         await db.flush()
-        await db.commit()
 
         if consent_status == "pending":
-            consent_token = await create_consent_token(str(user.id), input.parent_email)
+            consent_token = await create_consent_token(str(user.id), parent_email)
             approve_url = f"{settings.api_url}/consent/approve/{consent_token}"
             deny_url    = f"{settings.api_url}/consent/deny/{consent_token}"
             await send_parental_consent_email(
-                parent_email=input.parent_email,
-                child_name=input.display_name,
+                parent_email=parent_email,
+                child_name=user.display_name,
                 approve_url=approve_url,
                 deny_url=deny_url,
             )
 
-        # Always send email OTP after registration
-        otp_code = await create_otp(str(user.id), "email")
-        await send_otp_email(to=user.email, code=otp_code, display_name=user.display_name)
-
         await _issue_refresh_token(str(user.id), db, info.context.get("response"))
         await _check_new_device(user, db, ip, _get_user_agent(info), notify=False)
         await db.commit()
+
+        await delete_pending_signup(input.pending_token, email)
 
         jwt_token = create_access_token(str(user.id), user.role)
         return AuthPayloadType(
             access_token=jwt_token,
             user=map_user(user),
             consent_status=consent_status,
-            email_verified=False,
+            email_verified=True,
             requires_legal_consent=True,
             legal_versions=_legal_versions(),
         )
@@ -933,6 +999,27 @@ class Mutation:
         await check_rate_limit(f"email_otp:{ip}", max_requests=3, window_seconds=3600)
         code = await create_otp(str(user.id), "email")
         await send_otp_email(to=user.email, code=code, display_name=user.display_name)
+        return True
+
+    @strawberry.mutation
+    async def resend_pending_signup_otp(self, info: Info, pending_token: str) -> bool:
+        """Re-send the email OTP for a pending (unverified) signup."""
+        ip = _get_ip(info)
+        await check_rate_limit(f"resend_pending:{ip}", max_requests=5, window_seconds=3600)
+
+        pending = await get_pending_signup(pending_token)
+        if not pending:
+            raise _gql_error(
+                "Signup expired or invalid. Please start over.",
+                "PENDING_SIGNUP_NOT_FOUND",
+            )
+
+        code = await create_otp(f"pending:{pending_token}", "email")
+        await send_otp_email(
+            to=pending["email"],
+            code=code,
+            display_name=pending["display_name"],
+        )
         return True
 
     @strawberry.mutation

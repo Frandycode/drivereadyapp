@@ -216,6 +216,13 @@ class AuthPayloadType:
 
 
 @strawberry.type
+class PendingSignupPayloadType:
+    pending_token: str
+    email: str
+    expires_at: datetime
+
+
+@strawberry.type
 class ParentLinkType:
     id: strawberry.ID
     status: str
@@ -277,6 +284,12 @@ class AcceptLegalInput:
 
 @strawberry.input
 class VerifyOtpInput:
+    code: str
+
+
+@strawberry.input
+class CompleteSignupInput:
+    pending_token: str
     code: str
 
 
