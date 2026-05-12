@@ -10,7 +10,7 @@
 
 import uuid
 from datetime import date, datetime
-from sqlalchemy import DateTime, String, Integer, Boolean, Date, ForeignKey, UniqueConstraint
+from sqlalchemy import DateTime, String, Integer, Boolean, Date, ForeignKey, Index, UniqueConstraint, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.connection import Base
 from .base import UUIDMixin, TimestampMixin
@@ -18,6 +18,14 @@ from .base import UUIDMixin, TimestampMixin
 
 class User(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "users"
+    __table_args__ = (
+        Index(
+            "uq_users_phone_number",
+            "phone_number",
+            unique=True,
+            postgresql_where=text("phone_number IS NOT NULL"),
+        ),
+    )
 
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     password_hash: Mapped[str | None] = mapped_column(String(255))
