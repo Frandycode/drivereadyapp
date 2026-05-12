@@ -10,7 +10,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { useUserStore } from '@/stores'
 import { PageWrapper } from '@/components/layout/PageWrapper'
@@ -22,6 +22,17 @@ import { MdWavingHand } from 'react-icons/md'
 const USE_FREEZE_TOKEN = gql`
   mutation UseFreezeToken {
     useFreezeToken { id streakDays freezeTokens }
+  }
+`
+
+const GENERATE_WEEKLY_REPORT = gql`
+  mutation GenerateWeeklyReport($stateCode: String!) {
+    generateWeeklyReport(stateCode: $stateCode) {
+      summary
+      focusAreas
+      checklist
+      generatedAt
+    }
   }
 `
 
@@ -38,6 +49,18 @@ export function HomePage({ onNavigate }: HomePageProps) {
   const setUser = useUserStore((s) => s.setUser)
 
   const [freezeModal, setFreezeModal] = useState(false)
+  const [report, setReport] = useState<{ summary: string; checklist: string[] } | null>(null)
+  const [generateReport] = useMutation(GENERATE_WEEKLY_REPORT)
+
+  useEffect(() => {
+    if (!user) return
+    generateReport({ variables: { stateCode: user.stateCode } })
+      .then((r) => {
+        const data = r.data?.generateWeeklyReport
+        if (data) setReport({ summary: data.summary, checklist: data.checklist ?? [] })
+      })
+      .catch(() => {})
+  }, [user?.id])
   const [useFreezeToken, { loading: freezing }] = useMutation(USE_FREEZE_TOKEN, {
     onCompleted: (data) => {
       if (data?.useFreezeToken && user) {
@@ -180,6 +203,24 @@ export function HomePage({ onNavigate }: HomePageProps) {
           </div>
         </div>
       </button>
+
+      {/* ── Weekly study plan ────────────────────────────────────────────── */}
+      {report && (
+        <div className="mt-4 card-elevated">
+          <p className="text-xs text-green-500 font-medium uppercase tracking-wider mb-1.5">This week's plan</p>
+          <p className="text-sm text-text-primary leading-relaxed mb-3">{report.summary}</p>
+          {report.checklist.slice(0, 3).length > 0 && (
+            <ul className="space-y-1.5">
+              {report.checklist.slice(0, 3).map((item, i) => (
+                <li key={i} className="text-sm text-text-secondary flex items-start gap-2">
+                  <span className="text-green-500 mt-0.5">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       {/* ── Adaptive Practice ────────────────────────────────────────────── */}
       <button
