@@ -199,7 +199,7 @@ ACHIEVEMENTS = [
 
 
 async def seed():
-    engine = create_async_engine(settings.database_url, echo=True)
+    engine = create_async_engine(settings.async_database_url, echo=True)
     session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
     async with session_factory() as session:
