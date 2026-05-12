@@ -22,6 +22,13 @@ class AnswerType:
 
 
 @strawberry.type
+class ExplanationType:
+    explanation: str
+    generated: bool
+    generated_at: Optional[datetime] = None
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str
