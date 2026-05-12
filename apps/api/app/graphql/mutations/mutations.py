@@ -38,6 +38,7 @@ from app.ai.prompts.explain_answer import (
     SYSTEM_PROMPT as EXPLAIN_SYSTEM_PROMPT,
     build_user_prompt as build_explain_user_prompt,
 )
+from app.ai.rate_limit import ai_rate_limit
 from app.ai.telemetry import ai_log
 from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
@@ -1425,6 +1426,8 @@ class Mutation:
         user: User | None = info.context.get("user")
         if not user:
             raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        await ai_rate_limit(str(user.id), "explain", max_requests=30, window_seconds=3600)
 
         q = (await db.execute(
             select(Question)
