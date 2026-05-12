@@ -55,6 +55,9 @@ class Question(Base, UUIDMixin, TimestampMixin):
     chapter_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("chapters.id", ondelete="SET NULL")
     )
+    lesson_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("lessons.id", ondelete="SET NULL"), nullable=True, index=True
+    )
     category: Mapped[str] = mapped_column(String(50), nullable=False)
     difficulty: Mapped[str] = mapped_column(
         String(10), nullable=False, index=True
