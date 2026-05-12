@@ -412,6 +412,10 @@ class Mutation:
         await verify_captcha(input.captcha_token)
         validate_password(input.password)
 
+        phone = re.sub(r"[^\d+]", "", input.phone_number)
+        if not re.match(r"^\+?[1-9]\d{7,14}$", phone):
+            raise ValueError("Invalid phone number format.")
+
         age = _age_from_dob(input.date_of_birth)
         if age < 13:
             raise ValueError("COPPA_UNDER_13")
@@ -424,6 +428,10 @@ class Mutation:
         if existing.scalar_one_or_none():
             raise _gql_error("Email already registered", "EMAIL_TAKEN")
 
+        existing_phone = await db.execute(select(User).where(User.phone_number == phone))
+        if existing_phone.scalar_one_or_none():
+            raise _gql_error("Phone number already registered", "PHONE_TAKEN")
+
         if await email_has_pending_signup(email):
             raise _gql_error(
                 "A signup is already in progress for this email. "
@@ -435,6 +443,7 @@ class Mutation:
             "email":           email,
             "password_hash":   pwd_context.hash(input.password),
             "display_name":    input.display_name,
+            "phone_number":    phone,
             "state_code":      input.state_code,
             "date_of_birth":   input.date_of_birth.isoformat(),
             "parent_email":    input.parent_email,
@@ -486,6 +495,7 @@ class Mutation:
             email=email,
             password_hash=pending["password_hash"],
             display_name=pending["display_name"],
+            phone_number=pending["phone_number"],
             state_code=pending["state_code"],
             role="learner",
             date_of_birth=dob,

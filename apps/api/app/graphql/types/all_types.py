@@ -263,6 +263,7 @@ class RegisterInput:
     email: str
     password: str
     display_name: str
+    phone_number: str
     date_of_birth: date
     state_code: str = "ok"
     parent_email: Optional[str] = None
