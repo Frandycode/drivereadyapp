@@ -12,7 +12,7 @@
 
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { ArrowLeft, BookOpen, CheckCircle, Circle } from 'lucide-react'
+import { ArrowLeft, BookOpen, CheckCircle, Circle, AlertCircle } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
 import { useMinLoadTime } from '@driveready/hooks'
@@ -20,13 +20,15 @@ import { ChapterPageSkeleton } from '@/components/ui/Skeleton'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
-const GET_CHAPTER_LESSONS = gql`
+export const GET_CHAPTER_LESSONS = gql`
   query GetChapterLessons($chapterId: ID!) {
     lessons(chapterId: $chapterId) {
       id
       title
       content
       sortOrder
+      readAt
+      quizCompletedAt
     }
   }
 `
@@ -38,6 +40,8 @@ interface Lesson {
   title?: string
   content: string
   sortOrder: number
+  readAt?: string | null
+  quizCompletedAt?: string | null
 }
 
 interface ChapterPageProps {
@@ -52,19 +56,20 @@ interface ChapterPageProps {
 
 export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate, onQuizStart }: ChapterPageProps) {
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null)
-  const [completedIds, setCompletedIds] = useState<Set<string>>(new Set())
 
-  const { data, loading, error } = useQuery(GET_CHAPTER_LESSONS, {
+  const { data, loading, error, refetch } = useQuery(GET_CHAPTER_LESSONS, {
     variables: { chapterId },
+    fetchPolicy: 'cache-and-network',
   })
 
   const isLoading = useMinLoadTime(loading)
 
   const lessons: Lesson[] = data?.lessons ?? []
+  const readCount = lessons.filter((l) => l.readAt).length
 
-  function handleLessonComplete(lessonId: string) {
-    setCompletedIds((prev) => new Set([...prev, lessonId]))
+  function handleLessonComplete() {
     setActiveLessonId(null)
+    refetch()
   }
 
   const header = (
@@ -113,12 +118,14 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
           lessonIndex={lessons.findIndex((l) => l.id === activeLessonId)}
           totalLessons={lessons.length}
           onBack={() => setActiveLessonId(null)}
-          onComplete={() => handleLessonComplete(lesson.id)}
+          onComplete={() => handleLessonComplete()}
           onNext={() => {
-            handleLessonComplete(lesson.id)
             const nextIndex = lessons.findIndex((l) => l.id === activeLessonId) + 1
+            refetch()
             if (nextIndex < lessons.length) {
               setActiveLessonId(lessons[nextIndex].id)
+            } else {
+              setActiveLessonId(null)
             }
           }}
         />
@@ -126,7 +133,7 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
     }
   }
 
-  const allComplete = lessons.length > 0 && lessons.every((l) => completedIds.has(l.id))
+  const allRead = lessons.length > 0 && lessons.every((l) => l.readAt)
 
   return (
     <PageWrapper header={header}>
@@ -134,16 +141,16 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
       <div className="mb-4 mt-1">
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-text-secondary text-sm">
-            {completedIds.size} of {lessons.length} lessons completed
+            {readCount} of {lessons.length} lessons completed
           </span>
           <span className="text-xs font-mono text-text-secondary">
-            {lessons.length > 0 ? Math.round((completedIds.size / lessons.length) * 100) : 0}%
+            {lessons.length > 0 ? Math.round((readCount / lessons.length) * 100) : 0}%
           </span>
         </div>
         <div className="h-1.5 bg-surface-3 rounded-full overflow-hidden">
           <div
             className="h-full bg-green-500 rounded-full transition-all duration-500"
-            style={{ width: `${lessons.length > 0 ? (completedIds.size / lessons.length) * 100 : 0}%` }}
+            style={{ width: `${lessons.length > 0 ? (readCount / lessons.length) * 100 : 0}%` }}
           />
         </div>
       </div>
@@ -151,25 +158,33 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
       {/* Lesson list */}
       <div className="space-y-2">
         {lessons.map((lesson, index) => {
-          const isDone = completedIds.has(lesson.id)
+          const isRead = !!lesson.readAt
+          const isQuizDone = !!lesson.quizCompletedAt
+          const borderClass = isQuizDone
+            ? 'border-green-500'
+            : isRead
+              ? 'border-orange-500'
+              : 'border-border'
           return (
             <button
               key={lesson.id}
               onClick={() => setActiveLessonId(lesson.id)}
-              className="w-full text-left card hover:border-green-700 hover:bg-surface-2 active:scale-[0.99] transition-all duration-150"
+              className={`w-full text-left card ${borderClass} hover:bg-surface-2 active:scale-[0.99] transition-all duration-150`}
             >
               <div className="flex items-center gap-3">
-                {isDone ? (
+                {isQuizDone ? (
                   <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
+                ) : isRead ? (
+                  <AlertCircle size={18} className="text-orange-500 flex-shrink-0" />
                 ) : (
                   <Circle size={18} className="text-text-secondary flex-shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium ${isDone ? 'text-text-secondary' : 'text-text-primary'}`}>
+                  <p className={`text-sm font-medium ${isQuizDone ? 'text-text-secondary' : 'text-text-primary'}`}>
                     {lesson.title ?? `Lesson ${index + 1}`}
                   </p>
                   <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">
-                    {lesson.content}
+                    {isRead && !isQuizDone ? 'Pop quiz pending' : lesson.content}
                   </p>
                 </div>
                 <BookOpen size={14} className="text-text-secondary flex-shrink-0" />
@@ -180,7 +195,7 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
       </div>
 
       {/* Pop quiz CTA */}
-      {allComplete && (
+      {allRead && (
         <div className="mt-6 card border-gold-600/50">
           <p className="font-display font-bold text-text-primary mb-1">
             Chapter Complete! 🎉

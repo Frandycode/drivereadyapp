@@ -27,6 +27,12 @@ const COMPLETE_LESSON = gql`
   }
 `
 
+const MARK_LESSON_READ = gql`
+  mutation MarkLessonRead($lessonId: ID!) {
+    markLessonRead(lessonId: $lessonId)
+  }
+`
+
 const SAVE_BOOKMARK = gql`
   mutation SaveBookmark($questionId: ID!) {
     saveBookmark(questionId: $questionId) {
@@ -79,8 +85,15 @@ export function LessonView({
     },
   })
 
+  const [markLessonRead] = useMutation(MARK_LESSON_READ, {
+    variables: { lessonId: lesson.id },
+    onError: (err) => {
+      console.warn('markLessonRead error:', err.message)
+    },
+  })
+
   async function handleComplete() {
-    await completeLesson()
+    await Promise.all([completeLesson(), markLessonRead()])
     onComplete()
   }
 

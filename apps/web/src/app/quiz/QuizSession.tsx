@@ -97,7 +97,7 @@ function getHintSkipAllowance(difficulty: string, questionCount: number): number
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function QuizSession({ config, onExit }: { config: QuizConfig; onExit: () => void }) {
+export function QuizSession({ config, onExit, onQuizComplete }: { config: QuizConfig; onExit: () => void; onQuizComplete?: () => void }) {
   const [sessionId, setSessionId]       = useState<string | null>(null)
   const [retryKey, setRetryKey]         = useState(0)
   const [queue, setQueue]               = useState<Question[]>([])
@@ -112,6 +112,14 @@ export function QuizSession({ config, onExit }: { config: QuizConfig; onExit: ()
   const [answerStates, setAnswerStates] = useState<SegmentState[]>([])
   const [totalXP, setTotalXP]           = useState(0)
   const [showResults, setShowResults]   = useState(false)
+  const [hasFiredComplete, setHasFiredComplete] = useState(false)
+
+  useEffect(() => {
+    if (showResults && !hasFiredComplete) {
+      setHasFiredComplete(true)
+      onQuizComplete?.()
+    }
+  }, [showResults, hasFiredComplete, onQuizComplete])
   const [timerResetKey, setTimerResetKey] = useState(0)
 
   const allowance = getHintSkipAllowance(config.difficulty, config.questionCount)

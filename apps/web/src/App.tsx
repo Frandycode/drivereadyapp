@@ -11,6 +11,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useMutation, gql } from '@apollo/client'
 import { useUserStore, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
@@ -155,11 +156,18 @@ type AppScreen =
   | { screen: 'exam' }
   | { screen: 'profile' }
 
+const RECORD_CHAPTER_POP_QUIZ_COMPLETED = gql`
+  mutation RecordChapterPopQuizCompleted($chapterId: ID!) {
+    recordChapterPopQuizCompleted(chapterId: $chapterId)
+  }
+`
+
 export default function App() {
   const [path, setPath]           = useState(window.location.pathname)
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
   const [tokenReady, setTokenReady] = useState(false)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
+  const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
   useEffect(() => { applyTheme(theme) }, [theme])
 
@@ -251,6 +259,11 @@ export default function App() {
       <QuizSession
         config={appScreen.config}
         onExit={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId, number: appScreen.chapterNumber, title: appScreen.chapterTitle })}
+        onQuizComplete={() => {
+          recordChapterPopQuizCompleted({ variables: { chapterId: appScreen.chapterId } }).catch((err) => {
+            console.warn('recordChapterPopQuizCompleted error:', err.message)
+          })
+        }}
       />
     )
   }
