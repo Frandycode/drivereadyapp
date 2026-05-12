@@ -13,6 +13,7 @@
 import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
 import { CheckCircle, XCircle } from 'lucide-react'
+import { AIExplanationPanel } from './AIExplanationPanel'
 
 export interface Answer {
   id: string
@@ -135,14 +136,20 @@ export function QuestionCard({ question, selectedIds, revealed, onSelect }: Ques
 
       {/* Explanation — shown after reveal */}
       {revealed && (
-        <div className="mt-4 px-4 py-3 rounded-lg bg-surface-2 border border-border">
-          <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-1">
-            Explanation
-          </p>
-          <p className="text-sm text-text-primary leading-relaxed">
-            {question.explanation}
-          </p>
-        </div>
+        <>
+          <div className="mt-4 px-4 py-3 rounded-lg bg-surface-2 border border-border">
+            <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-1">
+              Explanation
+            </p>
+            <p className="text-sm text-text-primary leading-relaxed">
+              {question.explanation}
+            </p>
+          </div>
+          <AIExplanationPanel
+            questionId={question.id}
+            selectedAnswerId={selectedIds[0] ?? null}
+          />
+        </>
       )}
     </div>
   )
