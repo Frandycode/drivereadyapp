@@ -165,6 +165,22 @@ export function HomePage({ onNavigate }: HomePageProps) {
         </button>
       </div>
 
+      {/* ── Ask DriveReady (AI tutor) ───────────────────────────────────── */}
+      <button
+        onClick={() => onNavigate('/tutor')}
+        className="w-full mt-4 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center flex-shrink-0">
+            <span className="text-green-500 text-lg">✨</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-display font-bold text-text-primary">Ask DriveReady</p>
+            <p className="text-text-secondary text-xs">Get instant answers to driving questions</p>
+          </div>
+        </div>
+      </button>
+
       {/* ── Freeze token modal ────────────────────────────────────────────── */}
       {freezeModal && (
         <>
