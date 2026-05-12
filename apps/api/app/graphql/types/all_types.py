@@ -43,6 +43,22 @@ class BotAccuracyStatType:
 
 
 @strawberry.type
+class ChatMessageType:
+    id: strawberry.ID
+    role: str
+    content: str
+    created_at: datetime
+
+
+@strawberry.type
+class ChatThreadType:
+    id: strawberry.ID
+    title: Optional[str]
+    created_at: datetime
+    messages: list[ChatMessageType]
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str
