@@ -65,6 +65,7 @@ from app.graphql.types.all_types import (
     ChapterProgressType,
     CompleteSignupInput,
     CreateDeckInput,
+    ExplanationType,
     FlashcardDeckType,
     AcceptLegalInput,
     LegalVersionsType,
@@ -1403,6 +1404,28 @@ class Mutation:
 
         await db.commit()
         return True
+
+    @strawberry.mutation
+    async def explain_answer(
+        self,
+        info: Info,
+        question_id: strawberry.ID,
+        selected_answer_id: strawberry.ID,
+    ) -> ExplanationType:
+        """Return an explanation for the user's selected answer to a question.
+        Stub returns the static explanation; AI generation lands in 2.4."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        q = (await db.execute(
+            select(Question).where(Question.id == uuid.UUID(str(question_id)))
+        )).scalar_one_or_none()
+        if not q:
+            raise _gql_error("Question not found", "NOT_FOUND")
+
+        return ExplanationType(explanation=q.explanation, generated=False, generated_at=None)
 
     @strawberry.mutation
     async def record_chapter_pop_quiz_completed(self, info: Info, chapter_id: strawberry.ID) -> bool:
