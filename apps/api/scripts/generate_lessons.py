@@ -25,12 +25,18 @@ Human review the JSON, then run merge_generated_lessons.py to write to DB.
 
 import argparse
 import asyncio
+import json
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from app.ai.deepseek import DEFAULT_MODEL  # noqa: E402
+from sqlalchemy import select  # noqa: E402
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker  # noqa: E402
+
+from app.ai.deepseek import DEFAULT_MODEL, chat  # noqa: E402
+from app.config import settings  # noqa: E402
+from app.models import Chapter, Question  # noqa: E402
 
 
 SYSTEM_PROMPT = """You are an expert author of state driver-education materials. Your output is used to teach learners preparing for the Oklahoma driver's license written exam.
@@ -87,13 +93,100 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+def _parse_json_response(content: str) -> dict:
+    raw = content.strip()
+    if raw.startswith("```"):
+        raw = raw.strip("`").lstrip()
+        if raw.lower().startswith("json"):
+            raw = raw[4:].lstrip()
+    return json.loads(raw)
+
+
 async def main() -> None:
     args = parse_args()
-    print(
-        f"[stub] chapter={args.chapter} count={args.count} state={args.state_code} "
-        f"model={args.model} out={args.out}"
-    )
-    print("DeepSeek wiring lands in sub-step 1.3.")
+
+    engine = create_async_engine(settings.async_database_url, echo=False)
+    session_factory = async_sessionmaker(engine, expire_on_commit=False)
+
+    try:
+        async with session_factory() as session:
+            ch = (await session.execute(
+                select(Chapter).where(
+                    Chapter.state_code == args.state_code,
+                    Chapter.number == args.chapter,
+                )
+            )).scalar_one_or_none()
+            if not ch:
+                print(f"Chapter {args.chapter} not found for state {args.state_code}")
+                return
+
+            qs = (await session.execute(
+                select(Question)
+                .where(
+                    Question.state_code == args.state_code,
+                    Question.chapter == args.chapter,
+                )
+                .order_by(Question.id)
+            )).scalars().all()
+            if not qs:
+                print(f"No questions for chapter {args.chapter} / {args.state_code}")
+                return
+
+            question_texts = [q.question_text for q in qs]
+            question_ids = [str(q.id) for q in qs]
+
+            print(f"Chapter {args.chapter}: {ch.title} — {len(qs)} questions")
+            print(f"Requesting ~{args.count} lessons from {args.model}...")
+
+            user_prompt = build_user_prompt(
+                chapter_number=args.chapter,
+                chapter_title=ch.title,
+                state_code=args.state_code,
+                questions=question_texts,
+                target_lessons=args.count,
+            )
+
+            result = await chat(
+                [
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": user_prompt},
+                ],
+                model=args.model,
+                temperature=0.4,
+                max_tokens=8000,
+            )
+            print(f"DeepSeek: {result.tokens_in} → {result.tokens_out} tokens, {result.latency_ms}ms")
+
+            parsed = _parse_json_response(result.content)
+
+            output_lessons = []
+            for i, lesson in enumerate(parsed.get("lessons", []), start=1):
+                indices = lesson.get("question_indices", [])
+                lesson_question_ids = [
+                    question_ids[idx - 1]
+                    for idx in indices
+                    if isinstance(idx, int) and 0 < idx <= len(question_ids)
+                ]
+                output_lessons.append({
+                    "sort_order": i,
+                    "title": lesson.get("title", ""),
+                    "content": lesson.get("content", ""),
+                    "question_ids": lesson_question_ids,
+                })
+
+            output = {
+                "state_code": args.state_code,
+                "chapter": args.chapter,
+                "chapter_id": str(ch.id),
+                "chapter_title": ch.title,
+                "lessons": output_lessons,
+            }
+
+            with open(args.out, "w") as f:
+                json.dump(output, f, indent=2)
+            print(f"Wrote {len(output_lessons)} lessons to {args.out}")
+    finally:
+        await engine.dispose()
 
 
 if __name__ == '__main__':
