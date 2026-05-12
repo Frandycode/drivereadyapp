@@ -127,6 +127,8 @@ async def lifespan(app: FastAPI):
     redis = await get_redis()
     await redis.ping()
     print("✓ Redis connected")
+    if not settings.deepseek_api_key:
+        print("⚠ DEEPSEEK_API_KEY not set — AI features will be disabled")
     asyncio.create_task(_purge_stale_records())
     yield
     await close_redis()
