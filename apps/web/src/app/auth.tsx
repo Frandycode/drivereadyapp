@@ -164,6 +164,11 @@ export function AuthPage() {
   const hcaptchaRef                       = useRef<HCaptcha>(null)
   const [captchaToken, setCaptchaToken]   = useState<string | null>(null)
 
+  // Per-field validity tracking (register mode)
+  const [touched, setTouched]                 = useState<Record<string, boolean>>({})
+  const [submitAttempted, setSubmitAttempted] = useState(false)
+  const markTouched = (field: string) => setTouched((t) => (t[field] ? t : { ...t, [field]: true }))
+
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
 
@@ -194,6 +199,52 @@ export function AuthPage() {
     : null
 
   const dobComplete = dobYear.length === 4 && dobMonth.length > 0
+
+  // ── Per-field validity (register mode only) ───────────────────────────────
+  type Validity = 'empty' | 'partial' | 'valid'
+  const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const PHONE_SHAPE = /^\+?[1-9]\d{7,14}$/
+
+  function fieldValidity(field: string): Validity {
+    switch (field) {
+      case 'displayName':
+        if (!displayName) return 'empty'
+        return displayName.trim().length >= 2 ? 'valid' : 'partial'
+      case 'email':
+        if (!email) return 'empty'
+        return EMAIL_SHAPE.test(email) ? 'valid' : 'partial'
+      case 'phoneNumber': {
+        if (!phoneNumber) return 'empty'
+        const cleaned = phoneNumber.replace(/[^\d+]/g, '')
+        return PHONE_SHAPE.test(cleaned) ? 'valid' : 'partial'
+      }
+      case 'password':
+        if (!password) return 'empty'
+        return passwordValid(password) ? 'valid' : 'partial'
+      case 'dobMonth':
+        return dobMonth ? 'valid' : 'empty'
+      case 'dobYear': {
+        if (!dobYear) return 'empty'
+        const y = parseInt(dobYear)
+        const yr = new Date().getFullYear()
+        if (dobYear.length < 4 || isNaN(y) || y < yr - 120 || y > yr) return 'partial'
+        return 'valid'
+      }
+      case 'parentEmail':
+        if (!parentEmail) return 'empty'
+        return EMAIL_SHAPE.test(parentEmail) ? 'valid' : 'partial'
+    }
+    return 'valid'
+  }
+
+  function borderClass(field: string): string {
+    if (mode !== 'register') return ''
+    if (!(touched[field] || submitAttempted)) return ''
+    const v = fieldValidity(field)
+    if (v === 'empty')   return 'border-red-500 focus:border-red-500 focus:ring-red-500/30'
+    if (v === 'partial') return 'border-orange-500 focus:border-orange-500 focus:ring-orange-500/30'
+    return 'border-green-500 focus:border-green-500 focus:ring-green-500/30'
+  }
 
   function completeLogin(data: Record<string, unknown>, isRegister: boolean) {
     const u = data.user as Record<string, unknown>
@@ -234,6 +285,7 @@ export function AuthPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+    if (mode === 'register') setSubmitAttempted(true)
 
     if (mode === 'register') {
       if (!dobComplete) { setError('Please enter your date of birth.'); return }
@@ -713,9 +765,10 @@ export function AuthPage() {
               </label>
               <div className="flex gap-2">
                 <select
-                  className="input flex-1"
+                  className={`input flex-1 ${borderClass('dobMonth')}`}
                   value={dobMonth}
                   onChange={(e) => { setDobMonth(e.target.value); setError('') }}
+                  onBlur={() => markTouched('dobMonth')}
                   required
                 >
                   <option value="">Month</option>
@@ -724,13 +777,14 @@ export function AuthPage() {
                   ))}
                 </select>
                 <input
-                  className="input w-24"
+                  className={`input w-24 ${borderClass('dobYear')}`}
                   type="number"
                   placeholder="Year"
                   min={currentYear - 120}
                   max={currentYear}
                   value={dobYear}
                   onChange={(e) => { setDobYear(e.target.value); setError('') }}
+                  onBlur={() => markTouched('dobYear')}
                   required
                 />
               </div>
@@ -762,11 +816,12 @@ export function AuthPage() {
                     Display Name
                   </label>
                   <input
-                    className="input"
+                    className={`input ${borderClass('displayName')}`}
                     type="text"
                     placeholder="Your name"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
+                    onBlur={() => markTouched('displayName')}
                     required
                     minLength={2}
                     maxLength={50}
@@ -777,11 +832,12 @@ export function AuthPage() {
               <div>
                 <label className="block text-sm text-text-secondary mb-1.5">Email</label>
                 <input
-                  className="input"
+                  className={`input ${borderClass('email')}`}
                   type="email"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => markTouched('email')}
                   required
                 />
               </div>
@@ -790,11 +846,12 @@ export function AuthPage() {
                 <div>
                   <label className="block text-sm text-text-secondary mb-1.5">Phone Number</label>
                   <input
-                    className="input"
+                    className={`input ${borderClass('phoneNumber')}`}
                     type="tel"
                     placeholder="+1 555 123 4567"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
+                    onBlur={() => markTouched('phoneNumber')}
                     required
                     autoComplete="tel"
                   />
@@ -804,11 +861,12 @@ export function AuthPage() {
               <div>
                 <label className="block text-sm text-text-secondary mb-1.5">Password</label>
                 <input
-                  className="input"
+                  className={`input ${borderClass('password')}`}
                   type="password"
                   placeholder={mode === 'register' ? 'Create a strong password' : '••••••••'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => markTouched('password')}
                   required
                 />
                 {mode === 'register' && password.length > 0 && (
@@ -836,11 +894,12 @@ export function AuthPage() {
                     Parent / Guardian Email
                   </label>
                   <input
-                    className="input"
+                    className={`input ${borderClass('parentEmail')}`}
                     type="email"
                     placeholder="parent@example.com"
                     value={parentEmail}
                     onChange={(e) => setParentEmail(e.target.value)}
+                    onBlur={() => markTouched('parentEmail')}
                     required
                   />
                   <p className="mt-1.5 text-xs text-text-secondary">
