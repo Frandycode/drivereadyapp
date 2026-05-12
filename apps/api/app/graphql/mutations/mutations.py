@@ -43,6 +43,11 @@ from app.ai.prompts.explain_answer import (
     SYSTEM_PROMPT as EXPLAIN_SYSTEM_PROMPT,
     build_user_prompt as build_explain_user_prompt,
 )
+from app.ai.prompts.tutor import (
+    SYSTEM_PROMPT as TUTOR_SYSTEM_PROMPT,
+    fetch_relevant_lessons,
+    format_lesson_context,
+)
 from app.ai.rate_limit import ai_rate_limit
 from app.ai.telemetry import ai_log
 from app.services.captcha import verify_captcha
@@ -77,6 +82,8 @@ from app.graphql.types.all_types import (
     ChapterGroupType,
     ChapterProgressType,
     BotMoveType,
+    ChatMessageType,
+    ChatThreadType,
     CompleteSignupInput,
     CreateDeckInput,
     ExplanationType,
@@ -99,6 +106,8 @@ from app.models import (
     Battle,
     Bookmark,
     ChapterGroup,
+    ChatMessage,
+    ChatThread,
     FlashcardDeck,
     KnownDevice,
     LessonProgress,
@@ -1620,6 +1629,109 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def start_chat_thread(self, info: Info) -> ChatThreadType:
+        """Open a new empty AI tutor chat thread for the current user."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        thread = ChatThread(user_id=user.id, title=None)
+        db.add(thread)
+        await db.commit()
+        await db.refresh(thread)
+
+        return ChatThreadType(
+            id=str(thread.id),
+            title=thread.title,
+            created_at=thread.created_at,
+            messages=[],
+        )
+
+    @strawberry.mutation
+    async def send_chat_message(
+        self,
+        info: Info,
+        thread_id: strawberry.ID,
+        content: str,
+    ) -> ChatMessageType:
+        """Send a message in a tutor thread; returns the assistant reply."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        content = content.strip()
+        if not content:
+            raise _gql_error("Message cannot be empty", "INVALID_INPUT")
+        if len(content) > 1000:
+            raise _gql_error("Message too long (max 1000 chars)", "INVALID_INPUT")
+
+        await ai_rate_limit(str(user.id), "chat", max_requests=10, window_seconds=3600)
+
+        thread = (await db.execute(
+            select(ChatThread).where(
+                ChatThread.id == uuid.UUID(str(thread_id)),
+                ChatThread.user_id == user.id,
+            )
+        )).scalar_one_or_none()
+        if not thread:
+            raise _gql_error("Thread not found", "NOT_FOUND")
+
+        prior = (await db.execute(
+            select(ChatMessage)
+            .where(ChatMessage.thread_id == thread.id)
+            .order_by(ChatMessage.created_at)
+        )).scalars().all()
+
+        db.add(ChatMessage(thread_id=thread.id, role="user", content=content))
+
+        lessons = await fetch_relevant_lessons(db, content, k=3)
+        rag_block = format_lesson_context(lessons)
+        system_content = TUTOR_SYSTEM_PROMPT + (f"\n\n{rag_block}" if rag_block else "")
+
+        messages: list[dict] = [{"role": "system", "content": system_content}]
+        for m in prior[-20:]:  # last 20 turns max
+            messages.append({"role": m.role, "content": m.content})
+        messages.append({"role": "user", "content": content})
+
+        result_obj = None
+        assistant_text = "Sorry, I'm having trouble right now. Please try again in a moment."
+        try:
+            result_obj = await chat(messages, temperature=0.5, max_tokens=400)
+            assistant_text = result_obj.content
+            await ai_log(
+                db=db, user_id=str(user.id), route="tutor_chat",
+                cached=False, result=result_obj,
+            )
+        except AIModelError as e:
+            await ai_log(
+                db=db, user_id=str(user.id), route="tutor_chat",
+                cached=False, error=str(e),
+            )
+
+        assistant_msg = ChatMessage(
+            thread_id=thread.id,
+            role="assistant",
+            content=assistant_text,
+            tokens_used=result_obj.tokens_out if result_obj else None,
+        )
+        db.add(assistant_msg)
+
+        if not thread.title:
+            thread.title = content[:60]
+
+        await db.commit()
+        await db.refresh(assistant_msg)
+
+        return ChatMessageType(
+            id=str(assistant_msg.id),
+            role=assistant_msg.role,
+            content=assistant_msg.content,
+            created_at=assistant_msg.created_at,
+        )
 
     @strawberry.mutation
     async def record_chapter_pop_quiz_completed(self, info: Info, chapter_id: strawberry.ID) -> bool:
