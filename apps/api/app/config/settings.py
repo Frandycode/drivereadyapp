@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     jwt_expire_minutes: int = 15
     refresh_token_expire_days: int = 30
     cookie_secure: bool = False  # set True in production
+    cookie_samesite: str = "lax"  # set "none" for cross-site (requires cookie_secure=True)
 
     # AI
     anthropic_api_key: str = ""   # reserved for future upgrade

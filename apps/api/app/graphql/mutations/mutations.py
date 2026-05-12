@@ -194,7 +194,7 @@ async def _issue_refresh_token(
             value=raw,
             httponly=True,
             secure=settings.cookie_secure,
-            samesite="lax",
+            samesite=settings.cookie_samesite,
             max_age=_REFRESH_COOKIE_MAX_AGE,
             path="/graphql",
         )
@@ -645,7 +645,12 @@ class Mutation:
             )
             await db.commit()
             if response is not None:
-                response.delete_cookie("refresh_token", path="/graphql")
+                response.delete_cookie(
+                    "refresh_token",
+                    path="/graphql",
+                    secure=settings.cookie_secure,
+                    samesite=settings.cookie_samesite,
+                )
             raise _gql_error("Refresh token reuse detected — please log in again", "REUSE_DETECTED")
 
         if stored.expires_at < now:
@@ -684,7 +689,12 @@ class Mutation:
                 await db.commit()
 
         if response is not None:
-            response.delete_cookie("refresh_token", path="/graphql")
+            response.delete_cookie(
+                "refresh_token",
+                path="/graphql",
+                secure=settings.cookie_secure,
+                samesite=settings.cookie_samesite,
+            )
         return True
 
     # ── Password reset ────────────────────────────────────────────────────────
@@ -799,7 +809,12 @@ class Mutation:
         await db.commit()
 
         if response is not None:
-            response.delete_cookie("refresh_token", path="/graphql")
+            response.delete_cookie(
+                "refresh_token",
+                path="/graphql",
+                secure=settings.cookie_secure,
+                samesite=settings.cookie_samesite,
+            )
         return True
 
     # ── Parent linking ────────────────────────────────────────────────────────
