@@ -43,6 +43,10 @@ from app.ai.prompts.explain_answer import (
     SYSTEM_PROMPT as EXPLAIN_SYSTEM_PROMPT,
     build_user_prompt as build_explain_user_prompt,
 )
+from app.ai.prompts.adaptive_hint import (
+    SYSTEM_PROMPT as HINT_SYSTEM_PROMPT,
+    build_user_prompt as build_hint_user_prompt,
+)
 from app.ai.prompts.tutor import (
     SYSTEM_PROMPT as TUTOR_SYSTEM_PROMPT,
     fetch_relevant_lessons,
@@ -1634,6 +1638,67 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def get_adaptive_hint(
+        self,
+        info: Info,
+        question_id: strawberry.ID,
+        attempt: int,
+        wrong_answer_ids: list[strawberry.ID],
+    ) -> str:
+        """Return an adaptive hint tuned to the user's attempt number. Falls back
+        to the static hint_text on AI error."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        await ai_rate_limit(str(user.id), "hint", max_requests=60, window_seconds=3600)
+
+        q = (await db.execute(
+            select(Question)
+            .options(selectinload(Question.answers))
+            .where(Question.id == uuid.UUID(str(question_id)))
+        )).scalar_one_or_none()
+        if not q:
+            raise _gql_error("Question not found", "NOT_FOUND")
+
+        wrong_id_set = {str(w) for w in wrong_answer_ids}
+        wrong_choices = [a.text for a in q.answers if str(a.id) in wrong_id_set]
+
+        messages = [
+            {"role": "system", "content": HINT_SYSTEM_PROMPT},
+            {"role": "user", "content": build_hint_user_prompt(
+                question_text=q.question_text,
+                static_hint=q.hint_text,
+                attempt=attempt,
+                wrong_choices=wrong_choices,
+            )},
+        ]
+
+        cached = await ai_cache_get(messages, DEFAULT_MODEL)
+        hint_text = q.hint_text or "Think about which rule applies here."
+        if cached:
+            await ai_log(db=db, user_id=str(user.id), route="adaptive_hint", cached=True)
+            hint_text = cached
+        else:
+            try:
+                result = await chat(messages, temperature=0.4, max_tokens=120)
+                await ai_cache_set(messages, DEFAULT_MODEL, result.content)
+                await ai_log(
+                    db=db, user_id=str(user.id), route="adaptive_hint",
+                    cached=False, result=result,
+                )
+                hint_text = result.content.strip().strip('"')
+            except AIModelError as e:
+                await ai_log(
+                    db=db, user_id=str(user.id), route="adaptive_hint",
+                    cached=False, error=str(e),
+                )
+
+        await db.commit()
+        return hint_text
 
     @strawberry.mutation
     async def generate_weekly_report(
