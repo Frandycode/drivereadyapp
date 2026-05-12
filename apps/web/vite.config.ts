@@ -39,18 +39,24 @@ export default defineConfig({
       devOptions: { enabled: true },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
+        navigateFallback: '/index.html',
         runtimeCaching: [
           {
-            // Cache API responses for questions (cache-first, background update)
-            urlPattern: /\/graphql/,
+            urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'graphql-cache',
-              expiration: { maxAgeSeconds: 3600 },
+              cacheName: 'pages-cache',
+              networkTimeoutSeconds: 3,
             },
           },
           {
-            // Cache sign images aggressively
+            urlPattern: /\/graphql/,
+            handler: 'NetworkOnly',
+          },
+          {
             urlPattern: /\/storage\/.*\.(png|jpg|webp)/,
             handler: 'CacheFirst',
             options: {
