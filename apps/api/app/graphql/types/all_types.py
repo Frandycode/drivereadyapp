@@ -37,6 +37,7 @@ class QuestionType:
     tags: list[str]
     source: str
     answers: list[AnswerType]
+    lesson_id: Optional[strawberry.ID] = None
 
 
 @strawberry.type

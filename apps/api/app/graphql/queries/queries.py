@@ -42,6 +42,7 @@ def map_question(q: Question) -> QuestionType:
         source_page=q.source_page,
         tags=q.tags or [],
         source=q.source,
+        lesson_id=str(q.lesson_id) if q.lesson_id else None,
         answers=[
             AnswerType(
                 id=str(a.id),
