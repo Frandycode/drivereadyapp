@@ -32,6 +32,13 @@ from strawberry.types import Info
 from app.auth.jwt import create_access_token, generate_refresh_token, hash_token
 from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
+from app.ai.cache import ai_cache_get, ai_cache_set
+from app.ai.deepseek import AIModelError, DEFAULT_MODEL, chat
+from app.ai.prompts.explain_answer import (
+    SYSTEM_PROMPT as EXPLAIN_SYSTEM_PROMPT,
+    build_user_prompt as build_explain_user_prompt,
+)
+from app.ai.telemetry import ai_log
 from app.services.captcha import verify_captcha
 from app.services.consent import create_consent_token
 from app.services.email import (
@@ -1412,20 +1419,82 @@ class Mutation:
         question_id: strawberry.ID,
         selected_answer_id: strawberry.ID,
     ) -> ExplanationType:
-        """Return an explanation for the user's selected answer to a question.
-        Stub returns the static explanation; AI generation lands in 2.4."""
+        """AI-generated explanation tailored to the user's selected answer.
+        Falls back to the static explanation column on AI error."""
         db: AsyncSession = info.context["db"]
         user: User | None = info.context.get("user")
         if not user:
             raise _gql_error("Authentication required", "UNAUTHENTICATED")
 
         q = (await db.execute(
-            select(Question).where(Question.id == uuid.UUID(str(question_id)))
+            select(Question)
+            .options(selectinload(Question.answers))
+            .where(Question.id == uuid.UUID(str(question_id)))
         )).scalar_one_or_none()
         if not q:
             raise _gql_error("Question not found", "NOT_FOUND")
 
-        return ExplanationType(explanation=q.explanation, generated=False, generated_at=None)
+        answers = sorted(q.answers, key=lambda a: a.sort_order)
+        answer_texts = [a.text for a in answers]
+        selected_idx = next(
+            (i for i, a in enumerate(answers) if str(a.id) == str(selected_answer_id)),
+            -1,
+        )
+        correct_idxs = [i for i, a in enumerate(answers) if a.is_correct]
+        if selected_idx < 0:
+            raise _gql_error("Answer not found for this question", "NOT_FOUND")
+
+        chapter_title = ""
+        if q.chapter_id:
+            ch = (await db.execute(
+                select(Chapter).where(Chapter.id == q.chapter_id)
+            )).scalar_one_or_none()
+            if ch:
+                chapter_title = ch.title
+
+        user_prompt = build_explain_user_prompt(
+            chapter_title=chapter_title,
+            state_code=q.state_code,
+            question_text=q.question_text,
+            answers=answer_texts,
+            selected_idx=selected_idx,
+            correct_idxs=correct_idxs,
+        )
+        messages = [
+            {"role": "system", "content": EXPLAIN_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ]
+
+        cached_content = await ai_cache_get(messages, DEFAULT_MODEL)
+        explanation_text = q.explanation
+        was_generated = False
+
+        if cached_content:
+            await ai_log(db=db, user_id=str(user.id), route="explain_answer", cached=True)
+            explanation_text = cached_content
+            was_generated = True
+        else:
+            try:
+                result = await chat(messages, temperature=0.4, max_tokens=300)
+                await ai_cache_set(messages, DEFAULT_MODEL, result.content)
+                await ai_log(
+                    db=db, user_id=str(user.id), route="explain_answer", cached=False, result=result
+                )
+                explanation_text = result.content
+                was_generated = True
+            except AIModelError as e:
+                await ai_log(
+                    db=db, user_id=str(user.id), route="explain_answer",
+                    cached=False, error=str(e),
+                )
+
+        await db.commit()
+
+        return ExplanationType(
+            explanation=explanation_text,
+            generated=was_generated,
+            generated_at=datetime.now(timezone.utc) if was_generated else None,
+        )
 
     @strawberry.mutation
     async def record_chapter_pop_quiz_completed(self, info: Info, chapter_id: strawberry.ID) -> bool:
