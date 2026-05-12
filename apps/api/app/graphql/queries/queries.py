@@ -17,12 +17,12 @@ from sqlalchemy import select
 from strawberry.types import Info
 from sqlalchemy.orm import selectinload, contains_eager
 
-from app.models import User, Question, Answer, Chapter, Lesson, LessonProgress, PlayerBehaviorLog, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
+from app.models import User, Question, Answer, Chapter, Lesson, LessonProgress, PlayerBehaviorLog, Session, SessionAnswer, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
     StateConfigType, BookmarkType, FlashcardDeckType, ChapterGroupType, BattleType,
-    BotAccuracyStatType,
+    BotAccuracyStatType, ChapterAccuracyType,
     LinkedLearnerType, ParentLinkType,
 )
 from app.config import get_state_config, STATE_CONFIGS
@@ -436,6 +436,100 @@ class Query:
             )
             for lnk in links
         ]
+
+    @strawberry.field
+    async def accuracy_by_chapter(
+        self, info: Info, state_code: str = "ok"
+    ) -> list[ChapterAccuracyType]:
+        """Per-chapter accuracy aggregate for the current user, from UserProgress."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return []
+        db: AsyncSession = info.context["db"]
+        rows = (await db.execute(
+            select(UserProgress)
+            .where(
+                UserProgress.user_id == user.id,
+                UserProgress.state_code == state_code,
+            )
+            .order_by(UserProgress.chapter)
+        )).scalars().all()
+        return [
+            ChapterAccuracyType(
+                chapter=p.chapter,
+                questions_seen=p.questions_seen,
+                questions_correct=p.questions_correct,
+                accuracy=p.accuracy,
+            )
+            for p in rows
+        ]
+
+    @strawberry.field
+    async def next_adaptive_question(
+        self, info: Info, state_code: str = "ok"
+    ) -> Optional[QuestionType]:
+        """Pick the next question for the user, weighted toward weakest chapters with
+        recency anti-repeat. Returns null if there's no question to surface."""
+        user: User | None = info.context.get("user")
+        if not user:
+            return None
+        db: AsyncSession = info.context["db"]
+
+        progress = (await db.execute(
+            select(UserProgress).where(
+                UserProgress.user_id == user.id,
+                UserProgress.state_code == state_code,
+            )
+        )).scalars().all()
+        accuracy_by_chapter = {p.chapter: p.accuracy for p in progress}
+
+        all_chapters = (await db.execute(
+            select(Chapter).where(Chapter.state_code == state_code).order_by(Chapter.number)
+        )).scalars().all()
+        if not all_chapters:
+            return None
+
+        weights: list[tuple[int, int]] = []
+        for ch in all_chapters:
+            if ch.number not in accuracy_by_chapter:
+                weights.append((ch.number, 100))
+            else:
+                acc = accuracy_by_chapter[ch.number] * 100
+                weights.append((ch.number, max(5, int(100 - acc))))
+
+        total_weight = sum(w for _, w in weights)
+        roll = random.random() * total_weight
+        cumulative = 0
+        selected_chapter = weights[0][0]
+        for ch_num, w in weights:
+            cumulative += w
+            if roll < cumulative:
+                selected_chapter = ch_num
+                break
+
+        recent = (await db.execute(
+            select(SessionAnswer.question_id)
+            .join(Session, Session.id == SessionAnswer.session_id)
+            .where(Session.user_id == user.id)
+            .order_by(SessionAnswer.answered_at.desc())
+            .limit(30)
+        )).scalars().all()
+        recent_ids = set(recent)
+
+        questions = (await db.execute(
+            select(Question)
+            .options(selectinload(Question.answers))
+            .where(
+                Question.state_code == state_code,
+                Question.chapter == selected_chapter,
+            )
+        )).scalars().all()
+        if not questions:
+            return None
+
+        fresh = [q for q in questions if q.id not in recent_ids]
+        pool = fresh if fresh else questions
+        return map_question(random.choice(pool))
 
     @strawberry.field
     async def bot_accuracy_recent(self, info: Info, days: int = 7) -> list[BotAccuracyStatType]:

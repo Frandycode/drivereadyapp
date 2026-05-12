@@ -59,6 +59,14 @@ class ChatThreadType:
 
 
 @strawberry.type
+class ChapterAccuracyType:
+    chapter: int
+    questions_seen: int
+    questions_correct: int
+    accuracy: float
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str
