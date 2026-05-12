@@ -181,6 +181,22 @@ export function HomePage({ onNavigate }: HomePageProps) {
         </div>
       </button>
 
+      {/* ── Adaptive Practice ────────────────────────────────────────────── */}
+      <button
+        onClick={() => onNavigate('/adaptive')}
+        className="w-full mt-3 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-600/30 flex items-center justify-center flex-shrink-0">
+            <span className="text-gold-500 text-lg">🎯</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-display font-bold text-text-primary">Adaptive Practice</p>
+            <p className="text-text-secondary text-xs">Personalized questions from your weakest chapters</p>
+          </div>
+        </div>
+      </button>
+
       {/* ── Freeze token modal ────────────────────────────────────────────── */}
       {freezeModal && (
         <>

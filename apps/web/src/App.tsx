@@ -35,6 +35,7 @@ import { PeerBattleLobby, type PeerBattleSetup } from '@/app/battle/PeerBattleLo
 import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
 import { ProfilePage } from '@/app/profile/ProfilePage'
 import { TutorPage } from '@/app/tutor/TutorPage'
+import { AdaptivePage } from '@/app/study/AdaptivePage'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -157,6 +158,7 @@ type AppScreen =
   | { screen: 'exam' }
   | { screen: 'profile' }
   | { screen: 'tutor' }
+  | { screen: 'adaptive' }
 
 const RECORD_CHAPTER_POP_QUIZ_COMPLETED = gql`
   mutation RecordChapterPopQuizCompleted($chapterId: ID!) {
@@ -207,6 +209,7 @@ export default function App() {
     if (to === '/challenge') setAppScreen({ screen: 'challenge' })
     if (to === '/profile')   setAppScreen({ screen: 'profile' })
     if (to === '/tutor')     setAppScreen({ screen: 'tutor' })
+    if (to === '/adaptive')  setAppScreen({ screen: 'adaptive' })
 
     const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
     if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1], number: 0, title: '' })
@@ -406,6 +409,7 @@ export default function App() {
     ),
     profile: <ProfilePage />,
     tutor: <TutorPage />,
+    adaptive: <AdaptivePage stateCode={user?.stateCode ?? 'ok'} />,
   }
 
   const pageKey = appScreen.screen as string
