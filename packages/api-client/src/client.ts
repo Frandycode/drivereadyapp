@@ -81,7 +81,9 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
     (e) => e.extensions?.code === 'UNAUTHENTICATED' || e.message === 'Not authenticated'
   )
 
-  if (isUnauthenticated) {
+  // Skip retry when the failing operation IS the refresh mutation — otherwise
+  // the recursive refresh hits the same UNAUTH branch and deadlocks _refreshing.
+  if (isUnauthenticated && operation.operationName !== 'RefreshAccessToken') {
     if (!_refreshing) {
       _refreshing = refreshAccessToken().finally(() => { _refreshing = null })
     }
