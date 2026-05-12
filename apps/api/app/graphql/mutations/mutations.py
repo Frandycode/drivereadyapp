@@ -23,6 +23,7 @@ from typing import Optional
 import strawberry
 from passlib.context import CryptContext
 from sqlalchemy import func, select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from graphql import GraphQLError
@@ -482,6 +483,12 @@ class Mutation:
             await delete_pending_signup(input.pending_token, email)
             raise _gql_error("Email already registered", "EMAIL_TAKEN")
 
+        phone = pending["phone_number"]
+        existing_phone = await db.execute(select(User).where(User.phone_number == phone))
+        if existing_phone.scalar_one_or_none():
+            await delete_pending_signup(input.pending_token, email)
+            raise _gql_error("Phone number already registered", "PHONE_TAKEN")
+
         dob = date.fromisoformat(pending["date_of_birth"])
         age = _age_from_dob(dob)
         if age < 18:
@@ -504,7 +511,18 @@ class Mutation:
             parent_email=parent_email,
         )
         db.add(user)
-        await db.flush()
+        try:
+            await db.flush()
+        except IntegrityError as e:
+            await db.rollback()
+            constraint = (getattr(e.orig, "constraint_name", "") or "").lower()
+            msg = str(e).lower()
+            await delete_pending_signup(input.pending_token, email)
+            if "phone" in constraint or "uq_users_phone_number" in msg:
+                raise _gql_error("Phone number already registered", "PHONE_TAKEN")
+            if "email" in constraint or "users_email_key" in msg:
+                raise _gql_error("Email already registered", "EMAIL_TAKEN")
+            raise
 
         if consent_status == "pending":
             consent_token = await create_consent_token(str(user.id), parent_email)
