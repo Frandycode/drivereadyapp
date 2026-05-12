@@ -32,8 +32,13 @@ from strawberry.types import Info
 from app.auth.jwt import create_access_token, generate_refresh_token, hash_token
 from app.config import settings
 from app.db.redis import CacheKey, TTL, get_redis
+from app.ai.bot_personalities import BOT_PERSONALITIES
 from app.ai.cache import ai_cache_get, ai_cache_set
 from app.ai.deepseek import AIModelError, DEFAULT_MODEL, chat
+from app.ai.prompts.bot_battle import (
+    build_system_prompt as build_bot_system_prompt,
+    build_user_prompt as build_bot_user_prompt,
+)
 from app.ai.prompts.explain_answer import (
     SYSTEM_PROMPT as EXPLAIN_SYSTEM_PROMPT,
     build_user_prompt as build_explain_user_prompt,
@@ -71,6 +76,7 @@ from app.graphql.types.all_types import (
     BookmarkType,
     ChapterGroupType,
     ChapterProgressType,
+    BotMoveType,
     CompleteSignupInput,
     CreateDeckInput,
     ExplanationType,
@@ -1510,6 +1516,95 @@ class Mutation:
             generated=was_generated,
             generated_at=datetime.now(timezone.utc) if was_generated else None,
         )
+
+    @strawberry.mutation
+    async def bot_answer_question(
+        self,
+        info: Info,
+        question_id: strawberry.ID,
+        bot_id: str,
+    ) -> BotMoveType:
+        """Return the bot's pick for a question, in character. Cache by (question_id, bot_id);
+        fall back to a random pick weighted by the bot's target accuracy on AI failure."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        personality = BOT_PERSONALITIES.get(bot_id)
+        if not personality:
+            raise _gql_error("Unknown bot", "NOT_FOUND")
+
+        q = (await db.execute(
+            select(Question)
+            .options(selectinload(Question.answers))
+            .where(Question.id == uuid.UUID(str(question_id)))
+        )).scalar_one_or_none()
+        if not q:
+            raise _gql_error("Question not found", "NOT_FOUND")
+
+        answers = sorted(q.answers, key=lambda a: a.sort_order)
+        option_texts = [a.text for a in answers]
+
+        messages = [
+            {"role": "system", "content": build_bot_system_prompt(personality, q.correct_count)},
+            {"role": "user", "content": build_bot_user_prompt(
+                question_text=q.question_text,
+                options=option_texts,
+                correct_count=q.correct_count,
+            )},
+        ]
+
+        selected_idxs: list[int] = []
+        reasoning: str | None = None
+        cached = await ai_cache_get(messages, DEFAULT_MODEL)
+
+        if cached:
+            try:
+                parsed = json.loads(cached)
+                selected_idxs = parsed.get("selected_indices", []) or []
+                reasoning = parsed.get("reasoning")
+                await ai_log(db=db, user_id=str(user.id), route=f"bot:{bot_id}", cached=True)
+            except (json.JSONDecodeError, AttributeError):
+                cached = None
+
+        if not cached:
+            try:
+                result = await chat(messages, temperature=0.7, max_tokens=200)
+                await ai_cache_set(messages, DEFAULT_MODEL, result.content)
+                await ai_log(
+                    db=db, user_id=str(user.id), route=f"bot:{bot_id}",
+                    cached=False, result=result,
+                )
+                raw = result.content.strip()
+                if raw.startswith("```"):
+                    raw = raw.strip("`").lstrip()
+                    if raw.lower().startswith("json"):
+                        raw = raw[4:].lstrip()
+                parsed = json.loads(raw)
+                selected_idxs = parsed.get("selected_indices", []) or []
+                reasoning = parsed.get("reasoning")
+            except (AIModelError, json.JSONDecodeError, AttributeError) as e:
+                await ai_log(
+                    db=db, user_id=str(user.id), route=f"bot:{bot_id}",
+                    cached=False, error=f"fallback: {e}",
+                )
+                correct_idxs = [i for i, a in enumerate(answers) if a.is_correct]
+                if random.random() * 100 < personality.target_accuracy:
+                    selected_idxs = correct_idxs[: q.correct_count]
+                else:
+                    wrong_idxs = [i for i in range(len(answers)) if i not in correct_idxs]
+                    random.shuffle(wrong_idxs)
+                    selected_idxs = wrong_idxs[: q.correct_count]
+
+        selected_idxs = [
+            i for i in selected_idxs
+            if isinstance(i, int) and 0 <= i < len(answers)
+        ][: q.correct_count]
+        selected_answer_ids = [str(answers[i].id) for i in selected_idxs]
+
+        await db.commit()
+        return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
 
     @strawberry.mutation
     async def record_chapter_pop_quiz_completed(self, info: Info, chapter_id: strawberry.ID) -> bool:

@@ -29,6 +29,12 @@ class ExplanationType:
 
 
 @strawberry.type
+class BotMoveType:
+    selected_answer_ids: list[strawberry.ID]
+    reasoning: Optional[str] = None
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str
