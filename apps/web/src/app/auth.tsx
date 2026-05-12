@@ -135,6 +135,7 @@ export function AuthPage() {
   const [email, setEmail]             = useState('')
   const [password, setPassword]       = useState('')
   const [displayName, setDisplayName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [parentEmail, setParentEmail] = useState('')
 
   // DOB
@@ -238,6 +239,10 @@ export function AuthPage() {
       if (!dobComplete) { setError('Please enter your date of birth.'); return }
       if (ageGroup === 'under13') return
       if (!passwordValid(password)) { setError('Password does not meet the requirements below.'); return }
+      if (!/^\+?[1-9]\d{7,14}$/.test(phoneNumber.replace(/[^\d+]/g, ''))) {
+        setError('Please enter a valid phone number.')
+        return
+      }
       if (ageGroup === 'minor' && !parentEmail) { setError("A parent or guardian's email is required."); return }
     }
 
@@ -250,6 +255,7 @@ export function AuthPage() {
               email,
               password,
               displayName,
+              phoneNumber,
               dateOfBirth: isoDate,
               stateCode: 'ok',
               parentEmail: ageGroup === 'minor' ? parentEmail : null,
@@ -778,6 +784,21 @@ export function AuthPage() {
                   required
                 />
               </div>
+
+              {mode === 'register' && (
+                <div>
+                  <label className="block text-sm text-text-secondary mb-1.5">Phone Number</label>
+                  <input
+                    className="input"
+                    type="tel"
+                    placeholder="+1 555 123 4567"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                    autoComplete="tel"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm text-text-secondary mb-1.5">Password</label>
