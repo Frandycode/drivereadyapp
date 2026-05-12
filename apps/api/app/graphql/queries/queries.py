@@ -9,17 +9,20 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 import strawberry
+from datetime import datetime, timedelta, timezone
 from typing import Optional
+from graphql import GraphQLError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from strawberry.types import Info
 from sqlalchemy.orm import selectinload, contains_eager
 
-from app.models import User, Question, Answer, Chapter, Lesson, LessonProgress, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
+from app.models import User, Question, Answer, Chapter, Lesson, LessonProgress, PlayerBehaviorLog, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
     StateConfigType, BookmarkType, FlashcardDeckType, ChapterGroupType, BattleType,
+    BotAccuracyStatType,
     LinkedLearnerType, ParentLinkType,
 )
 from app.config import get_state_config, STATE_CONFIGS
@@ -432,6 +435,43 @@ class Query:
                 linked_at=lnk.updated_at,
             )
             for lnk in links
+        ]
+
+    @strawberry.field
+    async def bot_accuracy_recent(self, info: Info, days: int = 7) -> list[BotAccuracyStatType]:
+        """Admin metric: average accuracy per bot personality over the last N days.
+        Read from PlayerBehaviorLog bot_move events."""
+        user: User | None = info.context.get("user")
+        if not user or user.role != "admin":
+            raise GraphQLError("Admin required", extensions={"code": "FORBIDDEN"})
+
+        db: AsyncSession = info.context["db"]
+        cutoff = datetime.now(timezone.utc) - timedelta(days=max(1, days))
+        rows = (await db.execute(
+            select(PlayerBehaviorLog).where(
+                PlayerBehaviorLog.event_type == "bot_move",
+                PlayerBehaviorLog.created_at >= cutoff,
+            )
+        )).scalars().all()
+
+        by_bot: dict[str, dict[str, int]] = {}
+        for r in rows:
+            detail = r.detail or {}
+            bot_id = detail.get("bot_id") or "unknown"
+            was_correct = bool(detail.get("was_correct"))
+            s = by_bot.setdefault(bot_id, {"sample_size": 0, "correct": 0})
+            s["sample_size"] += 1
+            if was_correct:
+                s["correct"] += 1
+
+        return [
+            BotAccuracyStatType(
+                bot_id=bot_id,
+                sample_size=s["sample_size"],
+                correct=s["correct"],
+                accuracy=(s["correct"] / s["sample_size"]) if s["sample_size"] else 0.0,
+            )
+            for bot_id, s in sorted(by_bot.items())
         ]
 
     @strawberry.field

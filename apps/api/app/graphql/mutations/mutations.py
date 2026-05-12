@@ -1603,6 +1603,21 @@ class Mutation:
         ][: q.correct_count]
         selected_answer_ids = [str(answers[i].id) for i in selected_idxs]
 
+        correct_set = {i for i, a in enumerate(answers) if a.is_correct}
+        was_correct = len(selected_idxs) == len(correct_set) and set(selected_idxs) == correct_set
+
+        db.add(PlayerBehaviorLog(
+            user_id=user.id,
+            event_type="bot_move",
+            detail={
+                "bot_id": bot_id,
+                "question_id": str(q.id),
+                "was_correct": was_correct,
+                "generated": cached is None or bool(reasoning),
+            },
+            created_at=datetime.now(timezone.utc),
+        ))
+
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
 

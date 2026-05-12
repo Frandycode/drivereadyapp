@@ -35,6 +35,14 @@ class BotMoveType:
 
 
 @strawberry.type
+class BotAccuracyStatType:
+    bot_id: str
+    sample_size: int
+    correct: int
+    accuracy: float
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str
