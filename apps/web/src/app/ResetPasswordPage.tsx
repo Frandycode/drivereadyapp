@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
-import { Check } from 'lucide-react'
+import { Check, Eye, EyeOff } from 'lucide-react'
 import { AppLogo } from '@/components/layout/AppLogo'
 
 const RESET_PASSWORD = gql`
@@ -39,6 +39,8 @@ export function ResetPasswordPage({ token, onDone }: Props) {
   const [confirm,  setConfirm]    = useState('')
   const [error,    setError]      = useState('')
   const [success,  setSuccess]    = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm,  setShowConfirm]  = useState(false)
 
   const [resetPassword, { loading }] = useMutation(RESET_PASSWORD)
 
@@ -89,14 +91,25 @@ export function ResetPasswordPage({ token, onDone }: Props) {
         <p className="text-sm text-text-secondary mb-6">Must meet all requirements below.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            className="input"
-            type="password"
-            placeholder="New password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoFocus
-          />
+          <div className="relative">
+            <input
+              className="input pr-10"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
 
           {password.length > 0 && (
             <ul className="space-y-1">
@@ -109,13 +122,24 @@ export function ResetPasswordPage({ token, onDone }: Props) {
             </ul>
           )}
 
-          <input
-            className="input"
-            type="password"
-            placeholder="Confirm new password"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              className="input pr-10"
+              type={showConfirm ? 'text' : 'password'}
+              placeholder="Confirm new password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+              aria-label={showConfirm ? 'Hide password' : 'Show password'}
+              tabIndex={-1}
+            >
+              {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
 
           {error && (
             <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2">

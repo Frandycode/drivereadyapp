@@ -16,7 +16,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { setAuthToken } from '@driveready/api-client'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
-import { Check, X, AlertTriangle, Clock } from 'lucide-react'
+import { Check, X, AlertTriangle, Clock, Eye, EyeOff } from 'lucide-react'
 
 const HCAPTCHA_SITE_KEY =
   import.meta.env.VITE_HCAPTCHA_SITE_KEY ?? '10000000-ffff-ffff-ffff-000000000001'
@@ -168,6 +168,8 @@ export function AuthPage() {
   const [touched, setTouched]                 = useState<Record<string, boolean>>({})
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const markTouched = (field: string) => setTouched((t) => (t[field] ? t : { ...t, [field]: true }))
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const setUser            = useUserStore((s) => s.setUser)
   const setNeedsOnboarding = useUserStore((s) => s.setNeedsOnboarding)
@@ -860,15 +862,26 @@ export function AuthPage() {
 
               <div>
                 <label className="block text-sm text-text-secondary mb-1.5">Password</label>
-                <input
-                  className={`input ${borderClass('password')}`}
-                  type="password"
-                  placeholder={mode === 'register' ? 'Create a strong password' : '••••••••'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onBlur={() => markTouched('password')}
-                  required
-                />
+                <div className="relative">
+                  <input
+                    className={`input pr-10 ${borderClass('password')}`}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={mode === 'register' ? 'Create a strong password' : '••••••••'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onBlur={() => markTouched('password')}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
                 {mode === 'register' && password.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {RULES.map((rule) => {
