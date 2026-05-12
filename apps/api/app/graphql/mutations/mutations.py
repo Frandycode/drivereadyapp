@@ -86,6 +86,7 @@ from app.models import (
     ChapterGroup,
     FlashcardDeck,
     KnownDevice,
+    LessonProgress,
     ParentLink,
     Question,
     RefreshToken,
@@ -1372,6 +1373,61 @@ class Mutation:
             lessons_total=lessons_total,
             last_studied_at=None,
         )
+
+    @strawberry.mutation
+    async def mark_lesson_read(self, info: Info, lesson_id: strawberry.ID) -> bool:
+        """Idempotently record that the current user has read a lesson."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        lid = uuid.UUID(str(lesson_id))
+        lesson = (await db.execute(select(Lesson).where(Lesson.id == lid))).scalar_one_or_none()
+        if not lesson:
+            raise _gql_error("Lesson not found", "NOT_FOUND")
+
+        existing = (await db.execute(
+            select(LessonProgress).where(
+                LessonProgress.user_id == user.id,
+                LessonProgress.lesson_id == lid,
+            )
+        )).scalar_one_or_none()
+
+        now = datetime.now(timezone.utc)
+        if existing:
+            if existing.read_at is None:
+                existing.read_at = now
+        else:
+            db.add(LessonProgress(user_id=user.id, lesson_id=lid, read_at=now))
+
+        await db.commit()
+        return True
+
+    @strawberry.mutation
+    async def record_chapter_pop_quiz_completed(self, info: Info, chapter_id: strawberry.ID) -> bool:
+        """Set quiz_completed_at on every LessonProgress row for lessons the user
+        has read in this chapter. Interim behavior until per-lesson pop quizzes ship."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        cid = uuid.UUID(str(chapter_id))
+        await db.execute(
+            update(LessonProgress)
+            .where(
+                LessonProgress.user_id == user.id,
+                LessonProgress.quiz_completed_at.is_(None),
+                LessonProgress.read_at.isnot(None),
+                LessonProgress.lesson_id.in_(
+                    select(Lesson.id).where(Lesson.chapter_id == cid)
+                ),
+            )
+            .values(quiz_completed_at=datetime.now(timezone.utc))
+        )
+        await db.commit()
+        return True
 
     # ── Battle — setup ────────────────────────────────────────────────────────
 
