@@ -8,26 +8,32 @@
 # Project  : DriveReady — AI-Powered Multi-State Driver Education Platform
 # ─────────────────────────────────────────────────────────────────────────────
 
-"""Telemetry for AI calls. Single entry point so cost / latency / cache-hit
-metrics live in one place. Persistence to a DB table arrives in Phase 0.7."""
+"""Telemetry for AI calls. Emits a structured log line and, when a session is
+passed, persists a row to ai_call_log for cost / latency reporting."""
 
 import logging
+import uuid
 from typing import Optional
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.ai.deepseek import AICallResult
+from app.models import AICallLog
 
 _log = logging.getLogger("driveready.ai")
 
 
-def ai_log(
+async def ai_log(
     *,
+    db: Optional[AsyncSession],
     user_id: Optional[str],
     route: str,
     cached: bool,
     result: Optional[AICallResult] = None,
     error: Optional[str] = None,
 ) -> None:
-    """Structured log line per AI call. Pass `result` on success, `error` on failure."""
+    """Record an AI call. Always logs; persists to ai_call_log when db is provided.
+    The caller controls the transaction (commit happens at the surrounding mutation)."""
     fields = {
         "event": "ai_call",
         "user_id": user_id or "",
@@ -40,3 +46,15 @@ def ai_log(
         "error": error or "",
     }
     _log.info(" ".join(f"{k}={v}" for k, v in fields.items()))
+
+    if db is not None:
+        db.add(AICallLog(
+            user_id=uuid.UUID(user_id) if user_id else None,
+            route=route,
+            cached=cached,
+            model=result.model if result else "",
+            tokens_in=result.tokens_in if result else 0,
+            tokens_out=result.tokens_out if result else 0,
+            latency_ms=result.latency_ms if result else 0,
+            error=(error or "")[:500],
+        ))

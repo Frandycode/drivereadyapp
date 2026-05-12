@@ -26,6 +26,7 @@ from .session import (  # noqa: F401
 from .stats import PlayerBehaviorLog, PlayerStats  # noqa: F401
 from .legal import UserConsent  # noqa: F401
 from .auth import RefreshToken, KnownDevice  # noqa: F401
+from .ai import AICallLog  # noqa: F401
 
 __all__ = [
     "Base",
@@ -37,4 +38,5 @@ __all__ = [
     "PlayerBehaviorLog", "PlayerStats",
     "UserConsent",
     "RefreshToken", "KnownDevice",
+    "AICallLog",
 ]
