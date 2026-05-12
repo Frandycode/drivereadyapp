@@ -97,6 +97,7 @@ from app.models import (
     KnownDevice,
     LessonProgress,
     ParentLink,
+    PlayerBehaviorLog,
     Question,
     RefreshToken,
     Session,
@@ -1491,6 +1492,17 @@ class Mutation:
                     cached=False, error=str(e),
                 )
 
+        db.add(PlayerBehaviorLog(
+            user_id=user.id,
+            event_type="ai_explanation_requested",
+            detail={
+                "question_id": str(q.id),
+                "selected_answer_id": str(selected_answer_id),
+                "was_correct": selected_idx in correct_idxs,
+                "generated": was_generated,
+            },
+            created_at=datetime.now(timezone.utc),
+        ))
         await db.commit()
 
         return ExplanationType(
