@@ -67,6 +67,14 @@ class ChapterAccuracyType:
 
 
 @strawberry.type
+class WeeklyReportType:
+    summary: str
+    focus_areas: list[str]
+    checklist: list[str]
+    generated_at: datetime
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str

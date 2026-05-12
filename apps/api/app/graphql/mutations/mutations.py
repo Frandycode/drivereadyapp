@@ -48,6 +48,10 @@ from app.ai.prompts.tutor import (
     fetch_relevant_lessons,
     format_lesson_context,
 )
+from app.ai.prompts.weekly_report import (
+    SYSTEM_PROMPT as REPORT_SYSTEM_PROMPT,
+    build_user_prompt as build_report_user_prompt,
+)
 from app.ai.rate_limit import ai_rate_limit
 from app.ai.telemetry import ai_log
 from app.services.captcha import verify_captcha
@@ -88,6 +92,7 @@ from app.graphql.types.all_types import (
     CreateDeckInput,
     ExplanationType,
     FlashcardDeckType,
+    WeeklyReportType,
     AcceptLegalInput,
     LegalVersionsType,
     LoginInput,
@@ -1629,6 +1634,119 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def generate_weekly_report(
+        self, info: Info, state_code: str = "ok"
+    ) -> WeeklyReportType:
+        """LLM-generated weekly study plan based on the user's aggregate progress.
+        Cached per (user_id, iso_week) so a single AI call covers the whole week."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        now = datetime.now(timezone.utc)
+        iso_year, iso_week, _ = now.isocalendar()
+        cache_key = f"weekly_report:{user.id}:{iso_year}-w{iso_week}"
+
+        r = await get_redis()
+        cached = await r.get(cache_key)
+        if cached:
+            try:
+                obj = json.loads(cached)
+                return WeeklyReportType(
+                    summary=obj["summary"],
+                    focus_areas=obj.get("focus_areas", []),
+                    checklist=obj.get("checklist", []),
+                    generated_at=datetime.fromisoformat(obj["generated_at"]),
+                )
+            except (json.JSONDecodeError, KeyError):
+                pass
+
+        progress_rows = (await db.execute(
+            select(UserProgress).where(
+                UserProgress.user_id == user.id,
+                UserProgress.state_code == state_code,
+            )
+        )).scalars().all()
+        chapters_meta = {
+            c.number: c.title
+            for c in (await db.execute(
+                select(Chapter).where(Chapter.state_code == state_code)
+            )).scalars().all()
+        }
+
+        stats = {
+            "total_questions": sum(p.questions_seen for p in progress_rows),
+            "overall_accuracy": (
+                sum(p.questions_correct for p in progress_rows)
+                / max(1, sum(p.questions_seen for p in progress_rows))
+            ),
+            "sessions_completed": 0,
+            "chapters": sorted(
+                [
+                    {
+                        "chapter": p.chapter,
+                        "title": chapters_meta.get(p.chapter, ""),
+                        "accuracy": p.accuracy,
+                        "questions_seen": p.questions_seen,
+                    }
+                    for p in progress_rows
+                    if p.questions_seen > 0
+                ],
+                key=lambda c: c["accuracy"],
+            ),
+        }
+
+        messages = [
+            {"role": "system", "content": REPORT_SYSTEM_PROMPT},
+            {"role": "user", "content": build_report_user_prompt(stats=stats)},
+        ]
+
+        summary = "Keep up the good work — practice a bit each day."
+        focus_areas: list[str] = []
+        checklist: list[str] = ["Review your weakest chapter", "Take a chapter pop quiz", "Try Adaptive Practice"]
+
+        try:
+            result = await chat(messages, temperature=0.5, max_tokens=400)
+            await ai_log(
+                db=db, user_id=str(user.id), route="weekly_report",
+                cached=False, result=result,
+            )
+            raw = result.content.strip()
+            if raw.startswith("```"):
+                raw = raw.strip("`").lstrip()
+                if raw.lower().startswith("json"):
+                    raw = raw[4:].lstrip()
+            parsed = json.loads(raw)
+            summary = parsed.get("summary", summary)
+            focus_areas = parsed.get("focus_areas", []) or []
+            checklist = parsed.get("checklist", []) or checklist
+        except (AIModelError, json.JSONDecodeError) as e:
+            await ai_log(
+                db=db, user_id=str(user.id), route="weekly_report",
+                cached=False, error=str(e),
+            )
+
+        generated_at = datetime.now(timezone.utc)
+        await r.setex(
+            cache_key,
+            7 * 24 * 3600,
+            json.dumps({
+                "summary": summary,
+                "focus_areas": focus_areas,
+                "checklist": checklist,
+                "generated_at": generated_at.isoformat(),
+            }),
+        )
+        await db.commit()
+        return WeeklyReportType(
+            summary=summary,
+            focus_areas=focus_areas,
+            checklist=checklist,
+            generated_at=generated_at,
+        )
 
     @strawberry.mutation
     async def start_chat_thread(self, info: Info) -> ChatThreadType:
