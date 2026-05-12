@@ -94,6 +94,22 @@ class UserProgress(Base, UUIDMixin, TimestampMixin):
         return self.questions_correct / self.questions_seen
 
 
+class LessonProgress(Base, UUIDMixin, TimestampMixin):
+    __tablename__ = "lesson_progress"
+    __table_args__ = (
+        UniqueConstraint("user_id", "lesson_id", name="uq_lesson_progress_user_lesson"),
+    )
+
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    lesson_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("lessons.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    quiz_completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
 class Bookmark(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "bookmarks"
     __table_args__ = (
