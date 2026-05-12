@@ -57,6 +57,8 @@ class LessonType:
     content: str
     image_url: Optional[str]
     fact_tags: list[str]
+    read_at: Optional[datetime]
+    quiz_completed_at: Optional[datetime]
 
 
 @strawberry.type

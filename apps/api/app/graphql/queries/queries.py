@@ -15,7 +15,7 @@ from sqlalchemy import select
 from strawberry.types import Info
 from sqlalchemy.orm import selectinload, contains_eager
 
-from app.models import User, Question, Answer, Chapter, Lesson, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
+from app.models import User, Question, Answer, Chapter, Lesson, LessonProgress, UserProgress, Bookmark, FlashcardDeck, ChapterGroup, Battle, ParentLink
 from app.graphql.types.all_types import (
     QuestionType, AnswerType, UserType, ChapterType,
     LessonType, ChapterProgressType, ReadinessScoreType,
@@ -147,15 +147,30 @@ class Query:
     async def lessons(
         self, info: Info, chapter_id: strawberry.ID
     ) -> list[LessonType]:
-        """Fetch all lessons for a chapter, ordered by sort_order."""
+        """Fetch all lessons for a chapter, ordered by sort_order.
+        When the request is authenticated, each lesson is enriched with the
+        current user's read_at / quiz_completed_at from LessonProgress."""
         import uuid
         db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+
         result = await db.execute(
             select(Lesson)
             .where(Lesson.chapter_id == uuid.UUID(str(chapter_id)))
             .order_by(Lesson.sort_order)
         )
         lessons = result.scalars().all()
+
+        progress_by_lesson: dict = {}
+        if user and lessons:
+            progress_rows = (await db.execute(
+                select(LessonProgress).where(
+                    LessonProgress.user_id == user.id,
+                    LessonProgress.lesson_id.in_([l.id for l in lessons]),
+                )
+            )).scalars().all()
+            progress_by_lesson = {p.lesson_id: p for p in progress_rows}
+
         return [
             LessonType(
                 id=str(l.id),
@@ -165,6 +180,8 @@ class Query:
                 content=l.content,
                 image_url=l.image_url,
                 fact_tags=l.fact_tags or [],
+                read_at=progress_by_lesson.get(l.id).read_at if progress_by_lesson.get(l.id) else None,
+                quiz_completed_at=progress_by_lesson.get(l.id).quiz_completed_at if progress_by_lesson.get(l.id) else None,
             )
             for l in lessons
         ]
