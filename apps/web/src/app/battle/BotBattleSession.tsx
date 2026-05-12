@@ -31,6 +31,7 @@ const GET_QUESTIONS = gql`
 const START_SESSION    = gql`mutation StartBotBattleSession($input: StartSessionInput!) { startSession(input: $input) { id } }`
 const SUBMIT_ANSWER    = gql`mutation SubmitBotAnswer($input: SubmitAnswerInput!) { submitAnswer(input: $input) { isCorrect xpEarned } }`
 const COMPLETE_SESSION = gql`mutation CompleteBotSession($sessionId: ID!) { completeSession(sessionId: $sessionId) { xpEarned accuracy } }`
+const BOT_ANSWER       = gql`mutation BotAnswerQuestion($questionId: ID!, $botId: String!) { botAnswerQuestion(questionId: $questionId, botId: $botId) { selectedAnswerIds reasoning } }`
 
 interface Answer { id: string; text: string; isCorrect: boolean; sortOrder: number }
 interface Question { id: string; questionText: string; explanation: string; correctCount: number; chapter: number; answers: Answer[] }
@@ -66,6 +67,7 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
   const [bothRevealed, setBothRevealed]     = useState(false)
   const [botAnswerIds, setBotAnswerIds]     = useState<string[]>([])
   const [botThinking, setBotThinking]       = useState(true)
+  const [botReasoning, setBotReasoning]     = useState<string | null>(null)
   const [playerScore, setPlayerScore]       = useState(0)
   const [botScore, setBotScore]             = useState(0)
   const [totalXP, setTotalXP]               = useState(0)
@@ -82,6 +84,7 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
   const [startSession]    = useMutation(START_SESSION)
   const [submitAnswer]    = useMutation(SUBMIT_ANSWER)
   const [completeSession] = useMutation(COMPLETE_SESSION)
+  const [botAnswerMutation] = useMutation(BOT_ANSWER)
 
   // Init session
   useEffect(() => {
@@ -102,22 +105,54 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
     setShuffledAnswers([...current.answers].sort(() => Math.random() - 0.5))
   }, [current?.id, retryKey])
 
-  // Bot think timer per question
+  // Bot think + LLM call per question. Mutation runs in parallel with the
+  // think-time UX delay; whichever finishes last triggers reveal.
   useEffect(() => {
     if (!current || bothRevealed) return
     setBotThinking(true)
     setBotRevealed(false)
     setBotAnswerIds([])
+    setBotReasoning(null)
+
+    let cancelled = false
+    let pendingIds: string[] | null = null
+    let timerDone = false
+
+    const maybeReveal = () => {
+      if (cancelled) return
+      if (pendingIds !== null && timerDone) {
+        setBotAnswerIds(pendingIds)
+        setBotRevealed(true)
+        setBotThinking(false)
+      }
+    }
+
+    botAnswerMutation({ variables: { questionId: current.id, botId: bot.id } })
+      .then((r) => {
+        const move = r.data?.botAnswerQuestion
+        if (move?.selectedAnswerIds?.length) {
+          pendingIds = move.selectedAnswerIds
+          setBotReasoning(move.reasoning ?? null)
+        } else {
+          pendingIds = simulateBotAnswer(current, bot.accuracy)
+        }
+        maybeReveal()
+      })
+      .catch(() => {
+        pendingIds = simulateBotAnswer(current, bot.accuracy)
+        maybeReveal()
+      })
 
     const thinkTime = randomThinkTime(bot.thinkMinMs, bot.thinkMaxMs)
     botTimerRef.current = setTimeout(() => {
-      const botAnswer = simulateBotAnswer(current, bot.accuracy)
-      setBotAnswerIds(botAnswer)
-      setBotRevealed(true)
-      setBotThinking(false)
+      timerDone = true
+      maybeReveal()
     }, thinkTime)
 
-    return () => { if (botTimerRef.current) clearTimeout(botTimerRef.current) }
+    return () => {
+      cancelled = true
+      if (botTimerRef.current) clearTimeout(botTimerRef.current)
+    }
   }, [queueIndex, current?.id, retryKey])
 
   // Per-question countdown timer
@@ -381,6 +416,13 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
             <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-1">Explanation</p>
             <p className="text-sm text-text-primary leading-relaxed">{current.explanation}</p>
           </div>
+        )}
+
+        {/* Bot reasoning */}
+        {bothRevealed && botReasoning && (
+          <p className="mt-2 text-xs italic text-text-secondary leading-relaxed">
+            <span className="font-semibold not-italic text-text-primary">{bot.name}:</span> "{botReasoning}"
+          </p>
         )}
       </div>
 
