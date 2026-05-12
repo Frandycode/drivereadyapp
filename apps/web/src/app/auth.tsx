@@ -307,7 +307,8 @@ export function AuthPage() {
         else if (code === 'CAPTCHA_REQUIRED'|| msg === 'CAPTCHA_REQUIRED')                     setError('Please complete the CAPTCHA verification.')
         else if (code === 'CAPTCHA_INVALID' || msg === 'CAPTCHA_INVALID')                      setError('CAPTCHA verification failed. Please try again.')
         else if (code === 'INVALID_CREDENTIALS' || msg.includes('Invalid email or password'))  setError('Incorrect email or password. Please try again.')
-        else if (code === 'EMAIL_TAKEN'     || msg.includes('already registered'))             setError('An account with this email already exists.')
+        else if (code === 'PHONE_TAKEN'     || msg.includes('Phone number already registered')) setError('An account with this phone number already exists.')
+        else if (code === 'EMAIL_TAKEN'     || msg.includes('Email already registered'))       setError('An account with this email already exists.')
         else                                                                                   setError(msg || 'Something went wrong. Please try again.')
       } else {
         setError('Unable to connect. Check your internet and try again.')
