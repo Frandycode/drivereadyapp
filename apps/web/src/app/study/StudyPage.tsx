@@ -13,7 +13,8 @@
 import { useState } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Layers, BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2 } from 'lucide-react'
+import { PageHeader } from '@/components/layout/PageHeader'
+import { BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2 } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { useMinLoadTime } from '@driveready/hooks'
 import { StudyPageSkeleton } from '@/components/ui/Skeleton'
@@ -88,12 +89,12 @@ const CARD_COUNTS     = [5, 10, 15, 20]
 
 function StepConnector({ active }: { active: boolean }) {
   return (
-    <div className="flex flex-col items-center py-1">
-      <div className={`w-px h-3 transition-colors duration-500 ${active ? 'bg-green-500/70' : 'bg-border'}`} />
+    <div className="flex flex-col items-center py-1.5">
+      <div className={`w-px h-3 transition-colors duration-500 ${active ? 'bg-orange/70' : 'bg-border'}`} />
       <div className={`w-2.5 h-2.5 rounded-full border-2 transition-all duration-500 ${
-        active ? 'border-green-500 bg-green-500/20 animate-pulse' : 'border-border bg-surface-2'
+        active ? 'border-orange bg-orange-soft animate-pulse' : 'border-border bg-surface-2'
       }`} />
-      <div className={`w-px h-3 transition-colors duration-500 ${active ? 'bg-green-500/70' : 'bg-border'}`} />
+      <div className={`w-px h-3 transition-colors duration-500 ${active ? 'bg-orange/70' : 'bg-border'}`} />
     </div>
   )
 }
@@ -154,19 +155,19 @@ function CreateGroupModal({
             maxLength={60}
           />
 
-          <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Chapters</p>
+          <p className="mono text-[10px] font-semibold text-text-muted uppercase tracking-[0.12em] mb-2">Chapters</p>
           <div className="overflow-y-auto flex-1 space-y-1 mb-4 pr-1">
             {chapters.map((c) => (
               <button
                 key={c.id}
                 onClick={() => toggleChapter(c.number)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
+                className={`w-full text-left px-3 py-2.5 rounded-md border transition-all ${
                   selected.includes(c.number)
-                    ? 'border-green-500 bg-green-500/10'
-                    : 'border-border bg-surface hover:border-green-700'
+                    ? 'border-orange bg-orange-soft'
+                    : 'border-border bg-surface hover:border-orange/40'
                 }`}
               >
-                <span className={`text-sm font-medium ${selected.includes(c.number) ? 'text-green-400' : 'text-text-primary'}`}>
+                <span className={`text-sm font-medium ${selected.includes(c.number) ? 'text-orange' : 'text-text-primary'}`}>
                   Ch. {c.number} — {c.title}
                 </span>
               </button>
@@ -188,7 +189,7 @@ function CreateGroupModal({
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function StudyPage({ onStart }: StudyPageProps) {
+export function StudyPage({ onNavigate, onStart }: StudyPageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const [source, setSource]               = useState<DeckSource>('smart')
@@ -278,44 +279,63 @@ export function StudyPage({ onStart }: StudyPageProps) {
   const step2Done = !!mode
   const canStart  = step1Done && allQuestions.length > 0
 
-  const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <Layers size={20} className="text-green-500" />
-      <h1 className="font-display text-lg font-bold text-text-primary">Study</h1>
-    </div>
+  const pageHeader = (
+    <PageHeader
+      eyebrow="Flashcards · drill · blitz"
+      title={
+        <>
+          Practice on <em className="not-italic text-orange">your terms.</em>
+        </>
+      }
+      sub="Pick a deck, pick a mode, then run. Bookmarks bubble up first, weak areas auto-fill the rest."
+      stats={[
+        { label: 'Decks',     value: decks.length    || '—' },
+        { label: 'Bookmarks', value: bookmarks.length || '—', tone: 'orange' },
+        { label: 'Groups',    value: groups.length    || '—', tone: 'gold' },
+      ]}
+      slab="orange"
+    />
   )
 
   if (isLoading) {
     return (
-      <PageWrapper header={header}>
-        <StudyPageSkeleton />
+      <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+        {pageHeader}
+        <div className="bg-navy blueprint-grid">
+          <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10">
+            <StudyPageSkeleton />
+          </div>
+        </div>
       </PageWrapper>
     )
   }
 
   return (
     <>
-    <PageWrapper header={header}>
-      <div className="mt-1 pb-4">
+    <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+      {pageHeader}
+      <div className="bg-navy blueprint-grid">
+       <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10 pb-12 space-y-1">
 
         {/* ── Step 1: Deck ──────────────────────────────────────────────── */}
         <div className="card">
-          <p className="text-xs font-semibold text-green-500 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-2 mb-4 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Step 1 · Choose your deck
-          </p>
+          </div>
           <div className="grid grid-cols-2 gap-2 mb-3">
             {SOURCES.map(({ id, label, Icon }) => (
               <button
                 key={id}
                 onClick={() => { setSource(id); setChapterId(''); setDeckId(''); setGroupId('') }}
-                className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border-2 transition-all duration-150 ${
+                className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-md border-2 transition-all duration-150 ${
                   source === id
-                    ? 'border-green-500 bg-green-500/10'
-                    : 'border-border bg-surface hover:border-green-700'
+                    ? 'border-orange bg-orange-soft'
+                    : 'border-border bg-surface hover:border-orange/40'
                 }`}
               >
-                <Icon size={20} className={source === id ? 'text-green-500' : 'text-text-secondary'} />
-                <span className={`text-xs font-medium leading-tight text-center ${source === id ? 'text-green-400' : 'text-text-secondary'}`}>
+                <Icon size={20} className={source === id ? 'text-orange' : 'text-text-secondary'} />
+                <span className={`text-xs font-medium leading-tight text-center ${source === id ? 'text-orange' : 'text-text-secondary'}`}>
                   {label}
                 </span>
               </button>
@@ -366,28 +386,28 @@ export function StudyPage({ onStart }: StudyPageProps) {
                 <div
                   key={g.id}
                   onClick={() => setGroupId(g.id)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border-2 cursor-pointer transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md border-2 cursor-pointer transition-all ${
                     selectedGroupId === g.id
-                      ? 'border-green-500 bg-green-500/10'
-                      : 'border-border bg-surface hover:border-green-700'
+                      ? 'border-orange bg-orange-soft'
+                      : 'border-border bg-surface hover:border-orange/40'
                   }`}
                 >
-                  <FolderOpen size={16} className={selectedGroupId === g.id ? 'text-green-500' : 'text-text-secondary'} />
+                  <FolderOpen size={16} className={selectedGroupId === g.id ? 'text-orange' : 'text-text-secondary'} />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium truncate ${selectedGroupId === g.id ? 'text-green-400' : 'text-text-primary'}`}>
+                    <p className={`text-sm font-medium truncate ${selectedGroupId === g.id ? 'text-orange' : 'text-text-primary'}`}>
                       {g.name}
                     </p>
                     <p className="text-xs text-text-secondary">
                       {g.chapterNumbers.length === 1
                         ? `Ch. ${g.chapterNumbers[0]}`
                         : `Ch. ${g.chapterNumbers.slice().sort((a, b) => a - b).join(', ')}`}
-                      {g.isPreset && <span className="ml-1.5 text-gold-500">preset</span>}
+                      {g.isPreset && <span className="ml-1.5 text-yellow">preset</span>}
                     </p>
                   </div>
                   {!g.isPreset && (
                     <button
                       onClick={(e) => { e.stopPropagation(); handleDeleteGroup(g.id) }}
-                      className="text-text-secondary hover:text-red-400 transition-colors p-1"
+                      className="text-text-secondary hover:text-wrong transition-colors p-1"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -396,7 +416,7 @@ export function StudyPage({ onStart }: StudyPageProps) {
               ))}
               <button
                 onClick={() => setShowCreateGroup(true)}
-                className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg border-2 border-dashed border-border hover:border-green-700 transition-colors text-text-secondary hover:text-text-primary"
+                className="flex items-center gap-2 w-full px-3 py-2.5 rounded-md border-2 border-dashed border-border hover:border-orange/40 transition-colors text-text-secondary hover:text-orange"
               >
                 <Plus size={14} />
                 <span className="text-xs font-medium">Create New Group</span>
@@ -409,25 +429,26 @@ export function StudyPage({ onStart }: StudyPageProps) {
 
         {/* ── Step 2: Mode ──────────────────────────────────────────────── */}
         <div className="card">
-          <p className="text-xs font-semibold text-green-500 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-2 mb-4 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Step 2 · Choose your mode
-          </p>
+          </div>
           <div className="grid grid-cols-3 gap-2">
             {MODES.map(({ id, label, description, Icon }) => (
               <button
                 key={id}
                 onClick={() => setMode(id)}
-                className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border-2 transition-all duration-150 ${
+                className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-md border-2 transition-all duration-150 ${
                   mode === id
-                    ? 'border-green-500 bg-green-500/10'
-                    : 'border-border bg-surface hover:border-green-700'
+                    ? 'border-orange bg-orange-soft'
+                    : 'border-border bg-surface hover:border-orange/40'
                 }`}
               >
-                <Icon size={20} className={mode === id ? 'text-green-500' : 'text-text-secondary'} />
-                <span className={`text-xs font-medium leading-tight text-center ${mode === id ? 'text-green-400' : 'text-text-secondary'}`}>
+                <Icon size={20} className={mode === id ? 'text-orange' : 'text-text-secondary'} />
+                <span className={`text-xs font-medium leading-tight text-center ${mode === id ? 'text-orange' : 'text-text-secondary'}`}>
                   {label}
                 </span>
-                <span className="text-[10px] text-text-secondary leading-tight text-center hidden sm:block">
+                <span className="text-[10px] text-text-muted leading-tight text-center hidden sm:block">
                   {description}
                 </span>
               </button>
@@ -439,22 +460,23 @@ export function StudyPage({ onStart }: StudyPageProps) {
 
         {/* ── Step 3: Settings + Start ───────────────────────────────────── */}
         <div className="card">
-          <p className="text-xs font-semibold text-green-500 uppercase tracking-widest mb-3">
+          <div className="inline-flex items-center gap-2 mb-4 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Step 3 · Settings & start
-          </p>
+          </div>
 
           {mode !== 'blitz' && (
             <div className="mb-4">
-              <p className="text-sm font-medium text-text-primary mb-2">Number of cards</p>
+              <p className="mono text-[10px] font-semibold text-text-muted uppercase tracking-[0.12em] mb-2">Number of cards</p>
               <div className="flex gap-2">
                 {CARD_COUNTS.map((n) => (
                   <button
                     key={n}
                     onClick={() => setCardCount(n)}
-                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                    className={`flex-1 py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                       cardCount === n
-                        ? 'bg-green-500 text-bg'
-                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                        ? 'bg-orange text-white border-orange'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     {n}
@@ -467,18 +489,18 @@ export function StudyPage({ onStart }: StudyPageProps) {
           {mode === 'blitz' && (
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-2">
-                <Clock size={14} className="text-text-secondary" />
-                <p className="text-sm font-medium text-text-primary">Time limit</p>
+                <Clock size={12} className="text-yellow" />
+                <p className="mono text-[10px] font-semibold text-text-muted uppercase tracking-[0.12em]">Time limit</p>
               </div>
               <div className="flex gap-2">
                 {BLITZ_OPTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => setBlitzSeconds(s)}
-                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                    className={`flex-1 py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                       blitzSeconds === s
-                        ? 'bg-green-500 text-bg'
-                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                        ? 'bg-orange text-white border-orange'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     {s}s
@@ -491,12 +513,13 @@ export function StudyPage({ onStart }: StudyPageProps) {
           <button
             onClick={handleStart}
             disabled={!canStart}
-            className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-40"
+            className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-40 mt-1"
           >
             Start Session
           </button>
         </div>
 
+       </div>
       </div>
     </PageWrapper>
 
