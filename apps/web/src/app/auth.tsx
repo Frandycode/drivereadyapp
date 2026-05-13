@@ -480,59 +480,55 @@ export function AuthPage() {
   if (screen === 'verify-email') {
     const allFilled = otpDigits.every((d) => d !== '')
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm">
-          <div className="text-center mb-8">
-            <AppLogo height={80} />
-          </div>
-          <div className="card-elevated">
-            <h2 className="font-display text-xl font-bold text-text-primary mb-1">Verify your email</h2>
-            <p className="text-text-secondary text-sm mb-6">
-              We sent a 6-digit code to <span className="text-text-primary font-medium">{email}</span>.
-            </p>
-
-            {/* OTP digit inputs */}
-            <div className="flex gap-2 justify-center mb-6">
-              {otpDigits.map((digit, i) => (
-                <input
-                  key={i}
-                  id={`otp-${i}`}
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpDigit(i, e.target.value)}
-                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                  onFocus={(e) => e.target.select()}
-                  className="w-11 h-14 text-center text-xl font-bold font-mono rounded-lg border-2 bg-surface text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
-                />
-              ))}
-            </div>
-
-            {otpError && (
-              <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
-                {otpError}
-              </p>
-            )}
-
-            <button
-              onClick={handleVerifyOtp}
-              disabled={!allFilled || verifying}
-              className="btn-primary w-full h-11 mb-3"
-            >
-              {verifying ? 'Verifying...' : 'Verify Email'}
-            </button>
-
-            <button
-              onClick={handleResendOtp}
-              disabled={resending || resendCooldown > 0}
-              className="w-full text-sm text-text-secondary hover:text-text-primary transition-colors py-2 disabled:opacity-50"
-            >
-              {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
-            </button>
-          </div>
+      <AuthLayout>
+        <div className="mb-7 animate-fade-up">
+          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-1.5">
+            Verify your email
+          </h2>
+          <p className="text-sm text-text-secondary font-light">
+            We sent a 6-digit code to <span className="text-white font-medium">{email}</span>.
+          </p>
         </div>
-      </div>
+
+        <div className="flex gap-2 justify-center mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          {otpDigits.map((digit, i) => (
+            <input
+              key={i}
+              id={`otp-${i}`}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleOtpDigit(i, e.target.value)}
+              onKeyDown={(e) => handleOtpKeyDown(i, e)}
+              onFocus={(e) => e.target.select()}
+              className="w-11 h-14 text-center text-xl font-bold mono rounded-md border bg-white/[0.05] border-white/10 text-white outline-none focus:border-orange focus:bg-orange/[0.04] focus:ring-[3px] focus:ring-orange/20 transition-colors"
+            />
+          ))}
+        </div>
+
+        {otpError && (
+          <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
+            {otpError}
+          </p>
+        )}
+
+        <button
+          onClick={handleVerifyOtp}
+          disabled={!allFilled || verifying}
+          className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
+        >
+          {verifying ? 'Verifying...' : (<>Verify Email <FiArrowRight size={16} /></>)}
+        </button>
+
+        <button
+          onClick={handleResendOtp}
+          disabled={resending || resendCooldown > 0}
+          className="w-full text-sm text-text-secondary hover:text-white transition-colors py-2 disabled:opacity-50"
+        >
+          {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
+        </button>
+      </AuthLayout>
     )
   }
 
@@ -540,83 +536,75 @@ export function AuthPage() {
 
   if (screen === 'legal-consent') {
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
-        <div className="w-full max-w-sm">
-          <div className="text-center mb-6">
-            <AppLogo height={70} />
-          </div>
-
-          <div className="card-elevated">
-            <h2 className="font-display text-xl font-bold text-text-primary mb-1">
-              Before you continue
-            </h2>
-            <p className="text-text-secondary text-sm mb-5">
-              Please review and accept our Terms of Service and Privacy Policy to use DriveReady.
-            </p>
-
-            {/* ToS summary */}
-            <div className="bg-surface rounded-xl border border-border p-4 mb-3 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2">
-              <p className="font-semibold text-text-primary text-sm">
-                Terms of Service — v{pendingLegalVersions?.tosVersion}
-              </p>
-              <p>DriveReady provides driver education study materials for informational purposes. Content is based on official state driver handbooks but does not guarantee passing any official exam.</p>
-              <p>You agree to use this service only for lawful, personal study purposes. You must not share account credentials, scrape content, or use automated tools against the platform.</p>
-              <p>We reserve the right to suspend accounts that violate these terms. You may delete your account at any time and all personal data will be removed.</p>
-            </div>
-
-            {/* Privacy Policy summary */}
-            <div className="bg-surface rounded-xl border border-border p-4 mb-5 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2">
-              <p className="font-semibold text-text-primary text-sm">
-                Privacy Policy — v{pendingLegalVersions?.privacyVersion}
-              </p>
-              <p>We collect your name, email, date of birth (month and year only), and study progress to operate the service. We do not sell your data to third parties.</p>
-              <p>Study data (quiz scores, progress, streaks) is used to personalize your learning experience. We may use anonymized, aggregated data to improve the platform.</p>
-              <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@driveready.app.</p>
-            </div>
-
-            {/* Checkboxes */}
-            <label className="flex items-start gap-3 mb-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={tosAccepted}
-                onChange={(e) => setTosAccepted(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
-              />
-              <span className="text-sm text-text-secondary">
-                I have read and agree to the{' '}
-                <span className="text-green-500">Terms of Service</span>
-              </span>
-            </label>
-
-            <label className="flex items-start gap-3 mb-5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={privacyAccepted}
-                onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-green-500 shrink-0"
-              />
-              <span className="text-sm text-text-secondary">
-                I have read and agree to the{' '}
-                <span className="text-green-500">Privacy Policy</span>
-              </span>
-            </label>
-
-            {legalError && (
-              <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
-                {legalError}
-              </p>
-            )}
-
-            <button
-              onClick={handleAcceptLegal}
-              disabled={acceptingLegal || !tosAccepted || !privacyAccepted}
-              className="btn-primary w-full h-11"
-            >
-              {acceptingLegal ? 'Saving...' : 'Accept & Continue'}
-            </button>
-          </div>
+      <AuthLayout>
+        <div className="mb-6 animate-fade-up">
+          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-1.5">
+            Before you continue
+          </h2>
+          <p className="text-sm text-text-secondary font-light">
+            Please review and accept our Terms of Service and Privacy Policy to use DriveReady.
+          </p>
         </div>
-      </div>
+
+        <div className="bg-white/[0.04] rounded-md border border-white/10 p-4 mb-3 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2 animate-fade-up" style={{ animationDelay: '0.08s' }}>
+          <p className="font-semibold text-white text-sm">
+            Terms of Service — v{pendingLegalVersions?.tosVersion}
+          </p>
+          <p>DriveReady provides driver education study materials for informational purposes. Content is based on official state driver handbooks but does not guarantee passing any official exam.</p>
+          <p>You agree to use this service only for lawful, personal study purposes. You must not share account credentials, scrape content, or use automated tools against the platform.</p>
+          <p>We reserve the right to suspend accounts that violate these terms. You may delete your account at any time and all personal data will be removed.</p>
+        </div>
+
+        <div className="bg-white/[0.04] rounded-md border border-white/10 p-4 mb-5 max-h-36 overflow-y-auto text-xs text-text-secondary leading-relaxed space-y-2 animate-fade-up" style={{ animationDelay: '0.16s' }}>
+          <p className="font-semibold text-white text-sm">
+            Privacy Policy — v{pendingLegalVersions?.privacyVersion}
+          </p>
+          <p>We collect your name, email, date of birth (month and year only), and study progress to operate the service. We do not sell your data to third parties.</p>
+          <p>Study data (quiz scores, progress, streaks) is used to personalize your learning experience. We may use anonymized, aggregated data to improve the platform.</p>
+          <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@driveready.app.</p>
+        </div>
+
+        <label className="flex items-start gap-3 mb-3 cursor-pointer animate-fade-up" style={{ animationDelay: '0.22s' }}>
+          <input
+            type="checkbox"
+            checked={tosAccepted}
+            onChange={(e) => setTosAccepted(e.target.checked)}
+            className="mt-0.5 w-4 h-4 accent-orange shrink-0"
+          />
+          <span className="text-sm text-text-secondary">
+            I have read and agree to the{' '}
+            <span className="text-orange font-medium">Terms of Service</span>
+          </span>
+        </label>
+
+        <label className="flex items-start gap-3 mb-5 cursor-pointer animate-fade-up" style={{ animationDelay: '0.28s' }}>
+          <input
+            type="checkbox"
+            checked={privacyAccepted}
+            onChange={(e) => setPrivacyAccepted(e.target.checked)}
+            className="mt-0.5 w-4 h-4 accent-orange shrink-0"
+          />
+          <span className="text-sm text-text-secondary">
+            I have read and agree to the{' '}
+            <span className="text-orange font-medium">Privacy Policy</span>
+          </span>
+        </label>
+
+        {legalError && (
+          <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
+            {legalError}
+          </p>
+        )}
+
+        <button
+          onClick={handleAcceptLegal}
+          disabled={acceptingLegal || !tosAccepted || !privacyAccepted}
+          className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed animate-fade-up"
+          style={{ animationDelay: '0.34s' }}
+        >
+          {acceptingLegal ? 'Saving...' : (<>Accept &amp; Continue <FiArrowRight size={16} /></>)}
+        </button>
+      </AuthLayout>
     )
   }
 
@@ -625,42 +613,38 @@ export function AuthPage() {
   if (screen === 'consent-pending') {
     const fromRegister = mode === 'register' && parentEmail
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm text-center">
-          <div className="w-16 h-16 rounded-full bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center mx-auto mb-5">
-            <Clock size={28} className="text-yellow-400" />
+      <AuthLayout>
+        <div className="text-center animate-fade-up">
+          <div className="w-16 h-16 rounded-full bg-yellow-soft border border-yellow-rim flex items-center justify-center mx-auto mb-5">
+            <Clock size={28} className="text-yellow" />
           </div>
-          <h2 className="font-display text-xl font-bold text-text-primary mb-2">
+          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-2">
             Waiting for parental approval
           </h2>
           {fromRegister ? (
             <>
-              <p className="text-text-secondary text-sm leading-relaxed mb-3">
+              <p className="text-text-secondary text-sm leading-relaxed mb-3 font-light">
                 We sent a consent request to{' '}
-                <span className="text-text-primary font-medium">{parentEmail}</span>.
-                Your account will be activated once they approve.
+                <span className="text-white font-medium">{parentEmail}</span>. Your account will be activated once they approve.
               </p>
-              <p className="text-text-secondary text-xs mb-6">
+              <p className="text-text-muted text-xs mb-6 font-light">
                 The email may take a few minutes to arrive. Ask your parent or guardian to check their spam folder too.
               </p>
             </>
           ) : (
-            <p className="text-text-secondary text-sm leading-relaxed mb-6">
+            <p className="text-text-secondary text-sm leading-relaxed mb-6 font-light">
               Your account is pending parental approval. Please ask your parent or guardian to check their email and click the approval link.
             </p>
           )}
           <button
-            onClick={() => {
-              setScreen('auth')
-              setMode('login')
-              setError('')
-            }}
-            className="btn-primary w-full h-11"
+            onClick={() => { setScreen('auth'); setMode('login'); setError('') }}
+            className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2"
           >
             Back to Sign In
+            <FiArrowRight size={16} />
           </button>
         </div>
-      </div>
+      </AuthLayout>
     )
   }
 
@@ -668,60 +652,67 @@ export function AuthPage() {
 
   if (screen === 'forgot-password') {
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
-        <div className="w-full max-w-sm card-elevated">
-          <h2 className="font-display text-xl font-bold text-text-primary mb-2">Reset password</h2>
-          <p className="text-sm text-text-secondary mb-6">
+      <AuthLayout>
+        <div className="mb-7 animate-fade-up">
+          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-1.5">
+            Reset password
+          </h2>
+          <p className="text-sm text-text-secondary font-light">
             Enter your account email and we'll send a reset link.
           </p>
-          <div className="space-y-4">
-            <input
-              className="input"
-              type="email"
-              placeholder="you@example.com"
-              value={resetEmail}
-              onChange={(e) => setResetEmail(e.target.value)}
-              autoFocus
-            />
-            {resetError && <p className="text-wrong text-xs">{resetError}</p>}
-            <button
-              onClick={handleForgotPassword}
-              disabled={!resetEmail || sendingReset}
-              className="btn-primary w-full h-11"
-            >
-              {sendingReset ? 'Sending...' : 'Send Reset Link'}
-            </button>
-            <button
-              onClick={() => { setScreen('auth'); setResetError('') }}
-              className="w-full text-sm text-text-secondary hover:text-text-primary transition-colors"
-            >
-              Back to sign in
-            </button>
-          </div>
         </div>
-      </div>
+
+        <AuthField
+          label="Email address"
+          LeadingIcon={FiMail}
+          type="email"
+          placeholder="you@email.com"
+          value={resetEmail}
+          onChange={(e) => setResetEmail(e.target.value)}
+          autoFocus
+        />
+
+        {resetError && <p className="text-wrong text-xs mb-3">{resetError}</p>}
+
+        <button
+          onClick={handleForgotPassword}
+          disabled={!resetEmail || sendingReset}
+          className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
+        >
+          {sendingReset ? 'Sending...' : (<>Send Reset Link <FiArrowRight size={16} /></>)}
+        </button>
+        <button
+          onClick={() => { setScreen('auth'); setResetError('') }}
+          className="w-full text-sm text-text-secondary hover:text-white transition-colors py-2"
+        >
+          ← Back to sign in
+        </button>
+      </AuthLayout>
     )
   }
 
   if (screen === 'reset-sent') {
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
-        <div className="w-full max-w-sm card-elevated text-center">
-          <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
-            <Check size={24} className="text-green-500" />
+      <AuthLayout>
+        <div className="text-center animate-fade-up">
+          <div className="w-12 h-12 rounded-full bg-correct/10 border border-correct/40 flex items-center justify-center mx-auto mb-4">
+            <Check size={24} className="text-correct" />
           </div>
-          <h2 className="font-display text-xl font-bold text-text-primary mb-2">Check your inbox</h2>
-          <p className="text-sm text-text-secondary mb-6">
-            If <strong className="text-text-primary">{resetEmail}</strong> is registered, a reset link is on its way. It expires in 1 hour.
+          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-2">
+            Check your inbox
+          </h2>
+          <p className="text-sm text-text-secondary mb-6 font-light">
+            If <strong className="text-white font-medium">{resetEmail}</strong> is registered, a reset link is on its way. It expires in 1 hour.
           </p>
           <button
             onClick={() => { setScreen('auth'); setResetEmail('') }}
-            className="btn-primary w-full h-11"
+            className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2"
           >
             Back to sign in
+            <FiArrowRight size={16} />
           </button>
         </div>
-      </div>
+      </AuthLayout>
     )
   }
 
