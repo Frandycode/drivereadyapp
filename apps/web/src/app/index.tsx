@@ -14,10 +14,11 @@ import { useState, useEffect } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { useUserStore } from '@/stores'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { Flame, Target, Zap, BookOpen, Snowflake, X } from 'lucide-react'
+import { PageHeader } from '@/components/layout/PageHeader'
+import { Flame, Snowflake, X, BookOpen, Layers, Zap, Moon, ArrowUpRight } from 'lucide-react'
 import { RiSparklingFill } from 'react-icons/ri'
-import { FiTarget } from 'react-icons/fi'
-import { MdWavingHand } from 'react-icons/md'
+import { FiTarget, FiArrowRight } from 'react-icons/fi'
+import { GiRobotGolem } from 'react-icons/gi'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
 
@@ -38,13 +39,9 @@ const GENERATE_WEEKLY_REPORT = gql`
   }
 `
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface HomePageProps {
   onNavigate: (path: string) => void
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export function HomePage({ onNavigate }: HomePageProps) {
   const user = useUserStore((s) => s.user)
@@ -63,6 +60,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       })
       .catch(() => {})
   }, [user?.id])
+
   const [useFreezeToken, { loading: freezing }] = useMutation(USE_FREEZE_TOKEN, {
     onCompleted: (data) => {
       if (data?.useFreezeToken && user) {
@@ -72,191 +70,224 @@ export function HomePage({ onNavigate }: HomePageProps) {
     },
   })
 
-  const hour         = new Date().getHours()
-  const greeting     = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
-  const streak       = user?.streakDays ?? 0
+  const hour     = new Date().getHours()
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const streak   = user?.streakDays ?? 0
+  const xp       = user?.xpTotal ?? 0
   const freezeTokens = user?.freezeTokens ?? 0
 
-  // Show "study today" nudge in the evening if streak > 0
-  const isEvening    = hour >= 18
-  const streakAtRisk = streak > 0 && isEvening
+  // Placeholder readiness derived from XP (until backend exposes a real score)
+  const readiness = Math.min(95, Math.round((xp % 5000) / 50))
 
   return (
-    <PageWrapper>
-      {/* Greeting */}
-      <div className="mb-5">
-        <p className="text-text-secondary text-sm">{greeting}</p>
-        <h2 className="font-display text-2xl font-bold text-text-primary flex items-center gap-2">
-          {user?.displayName ?? 'Learner'}
-          <MdWavingHand size={26} className="text-gold-500" />
-        </h2>
-      </div>
+    <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+      <PageHeader
+        eyebrow={`${greeting}, ${user?.displayName ?? 'learner'}`}
+        title={
+          <>
+            Today's <em className="not-italic text-orange">mission.</em>
+          </>
+        }
+        sub="Knock out today's daily challenge and a quick drill in your weakest chapter to keep your streak alive."
+        stats={[
+          { label: 'Total XP',   value: xp.toLocaleString(),     tone: 'gold' },
+          { label: 'Day streak', value: streak },
+          { label: 'Readiness', value: `${readiness}%`,         tone: 'orange' },
+        ]}
+        slab="orange"
+      />
 
-      {/* ── Streak banner ──────────────────────────────────────────────────── */}
-      <div className={`card mb-5 ${
-        streakAtRisk ? 'border-gold-600/60 bg-gold-500/5' : streak > 0 ? 'border-orange-700/40' : 'border-border'
-      }`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              streak > 0 ? 'bg-gold-500/20 border border-gold-600/40' : 'bg-surface-2 border border-border'
-            }`}>
-              <Flame size={20} className={streak > 0 ? 'text-gold-500' : 'text-text-secondary'} />
+      <div className="bg-navy blueprint-grid">
+        <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10 sm:py-14">
+
+          {/* Streak chip row (separate so it doesn't compete with stats above) */}
+          {streak > 0 && (
+            <div className="mb-6 flex items-center gap-3 flex-wrap animate-fade-up">
+              <div className="streak-chip">
+                <Flame size={14} className="text-yellow" />
+                {streak} day streak
+              </div>
+              {freezeTokens > 0 && (
+                <button
+                  onClick={() => setFreezeModal(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-info/10 border border-info/30 text-info text-xs font-medium hover:bg-info/20 transition-colors"
+                  title="Freeze tokens protect your streak for one missed day"
+                >
+                  <Snowflake size={12} />
+                  <span className="mono font-bold">{freezeTokens}</span>
+                  freeze
+                </button>
+              )}
             </div>
-            <div>
-              <p className="font-display font-bold text-text-primary text-lg leading-tight flex items-center gap-1.5">
-                {streak > 0
-                  ? <>{streak} day streak <Flame size={16} className="text-gold-500 flex-shrink-0" /></>
-                  : 'No streak yet'}
+          )}
+
+          {/* Dashboard grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            {/* Continue Learning — span 2 on lg */}
+            <button
+              onClick={() => onNavigate('/learn')}
+              className="card card-hover lg:col-span-2 text-left animate-fade-up"
+            >
+              <CardEyebrow color="orange">Continue Learning</CardEyebrow>
+              <div className="mono text-[11px] text-text-muted uppercase tracking-[0.06em] mb-1.5">
+                Pick a chapter
+              </div>
+              <div className="display font-bold text-lg mb-3.5 tracking-[-0.2px]">
+                Resume where you left off
+              </div>
+              <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-full rounded-full bg-orange-yellow w-1/2" />
+              </div>
+              <div className="mt-1.5 flex justify-between mono text-[10px] text-text-muted">
+                <span>Browse chapters</span>
+                <span>—</span>
+              </div>
+              <span className="inline-flex items-center gap-1.5 mt-4 text-sm text-orange font-medium">
+                Open Learn
+                <FiArrowRight size={14} />
+              </span>
+            </button>
+
+            {/* Readiness ring */}
+            <div className="card flex flex-col items-center text-center justify-center gap-1.5 py-7 animate-fade-up" style={{ animationDelay: '0.08s' }}>
+              <CardEyebrow color="orange" centered>Readiness</CardEyebrow>
+              <ReadinessRing pct={readiness} />
+              <div className="display font-bold text-sm mt-2">
+                {readiness >= 80 ? 'Almost test-ready' : readiness >= 50 ? 'Making progress' : 'Just getting started'}
+              </div>
+              <div className="text-[11px] text-text-muted">
+                <strong className="text-correct font-semibold">↑ {Math.max(0, readiness - 60)} pts</strong>{' '}this week
+              </div>
+            </div>
+
+            {/* Daily Challenge */}
+            <button
+              onClick={() => onNavigate('/challenge')}
+              className="card card-hover text-left animate-fade-up"
+              style={{ animationDelay: '0.16s', borderColor: 'rgba(248,222,34,0.25)' }}
+            >
+              <CardEyebrow color="yellow">Daily Challenge · 2× XP</CardEyebrow>
+              <p className="text-sm leading-relaxed text-white mb-3">
+                Answer today's featured question to keep your streak alive.
               </p>
-              <p className="text-xs text-text-secondary">
-                {streak > 0 ? 'Keep it going — study daily!' : 'Start studying to build your streak'}
-              </p>
+              <span className="mono text-[11px] text-yellow font-semibold inline-flex items-center gap-1.5">
+                <Zap size={12} />
+                +40 XP for today's challenge
+              </span>
+            </button>
+
+            {/* Ask DriveReady */}
+            <button
+              onClick={() => onNavigate('/tutor')}
+              className="card card-hover text-left animate-fade-up"
+              style={{ animationDelay: '0.20s' }}
+            >
+              <CardEyebrow color="orange">AI Tutor</CardEyebrow>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+                  <RiSparklingFill className="text-orange" size={18} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="display font-bold text-white">Ask DriveReady</p>
+                  <p className="text-text-secondary text-xs">Instant answers, any time</p>
+                </div>
+                <ArrowUpRight size={16} className="text-text-muted" />
+              </div>
+            </button>
+
+            {/* Adaptive Practice */}
+            <button
+              onClick={() => onNavigate('/adaptive')}
+              className="card card-hover text-left animate-fade-up"
+              style={{ animationDelay: '0.24s' }}
+            >
+              <CardEyebrow color="yellow">Adaptive</CardEyebrow>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
+                  <FiTarget className="text-yellow" size={18} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="display font-bold text-white">Adaptive Practice</p>
+                  <p className="text-text-secondary text-xs">Hit your weakest chapters</p>
+                </div>
+                <ArrowUpRight size={16} className="text-text-muted" />
+              </div>
+            </button>
+
+            {/* Bot Battle */}
+            <button
+              onClick={() => onNavigate('/challenge')}
+              className="card card-hover text-left animate-fade-up"
+              style={{ animationDelay: '0.28s' }}
+            >
+              <CardEyebrow color="orange">Bot Battle</CardEyebrow>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+                  <GiRobotGolem className="text-orange" size={20} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="display font-bold text-white">Pick an opponent</p>
+                  <p className="text-text-secondary text-xs">Rusty · Dash · Apex</p>
+                </div>
+                <ArrowUpRight size={16} className="text-text-muted" />
+              </div>
+            </button>
+
+          </div>
+
+          {/* Weekly study plan */}
+          {report && (
+            <div className="card mt-8 animate-fade-up" style={{ animationDelay: '0.32s' }}>
+              <CardEyebrow color="orange">This week's plan</CardEyebrow>
+              <p className="text-sm text-white leading-relaxed mb-3">{report.summary}</p>
+              {report.checklist.slice(0, 3).length > 0 && (
+                <ul className="space-y-1.5">
+                  {report.checklist.slice(0, 3).map((item, i) => (
+                    <li key={i} className="text-sm text-text-secondary flex items-start gap-2">
+                      <span className="text-orange mt-0.5">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {/* Quick Access */}
+          <div className="mt-12">
+            <div className="text-[10px] font-semibold tracking-[0.14em] text-orange uppercase mb-4 inline-flex items-center gap-2">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+              Quick Access
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <QuickTile Icon={BookOpen} label="Learn"  desc="Chapter lessons" onClick={() => onNavigate('/learn')} />
+              <QuickTile Icon={Layers}   label="Study"  desc="Flashcards · Drill" onClick={() => onNavigate('/study')} />
+              <QuickTile Icon={Zap}      label="Challenge" desc="Quiz · Battle"   onClick={() => onNavigate('/challenge')} />
+              <QuickTile Icon={Moon}     label="Profile" desc="Stats · Settings" onClick={() => onNavigate('/profile')} />
             </div>
           </div>
 
-          {/* Freeze tokens */}
-          {freezeTokens > 0 && (
-            <button
-              onClick={() => setFreezeModal(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20 transition-all"
-              title="Freeze tokens protect your streak for one missed day"
-            >
-              <Snowflake size={14} />
-              <span className="text-sm font-mono font-bold">{freezeTokens}</span>
-            </button>
-          )}
         </div>
-
-        {/* Streak-at-risk nudge */}
-        {streakAtRisk && (
-          <div className="mt-3 pt-3 border-t border-gold-700/30 flex items-center justify-between gap-3">
-            <p className="text-xs text-gold-400">
-              Your streak ends tonight! Study now to keep it.
-            </p>
-            <button
-              onClick={() => onNavigate('/study')}
-              className="text-xs font-semibold text-bg bg-gold-500 hover:bg-gold-400 px-3 py-1.5 rounded-md transition-all flex-shrink-0"
-            >
-              Study now
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* ── XP + Readiness stats ──────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3 mb-5">
-        <StatCard
-          icon={<Zap size={18} className="text-green-500" />}
-          value={user?.xpTotal ?? 0}
-          label="Total XP"
-          color="green"
-        />
-        <StatCard
-          icon={<Target size={18} className="text-info" />}
-          value="—"
-          label="Readiness"
-          color="info"
-        />
-      </div>
-
-      {/* ── Continue studying ─────────────────────────────────────────────── */}
-      <div className="card mb-4">
-        <div className="flex items-center gap-2 mb-3">
-          <BookOpen size={18} className="text-green-500" />
-          <span className="font-medium text-text-primary">Continue Learning</span>
-        </div>
-        <p className="text-text-secondary text-sm mb-3">
-          Pick up where you left off
-        </p>
-        <button className="btn-primary w-full" onClick={() => onNavigate('/study')}>
-          Start Studying
-        </button>
-      </div>
-
-      {/* ── Daily challenge ───────────────────────────────────────────────── */}
-      <div className="card border-gold-600/50">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-display font-bold text-text-primary">Daily Challenge</span>
-          <span className="text-xs text-gold-500 bg-gold-500/10 border border-gold-600/30 px-2 py-0.5 rounded-full">
-            2× XP
-          </span>
-        </div>
-        <p className="text-text-secondary text-sm">
-          Answer today's featured question to keep your streak alive.
-        </p>
-        <button className="btn-gold w-full mt-3" onClick={() => onNavigate('/challenge')}>
-          Take the Challenge
-        </button>
-      </div>
-
-      {/* ── Ask DriveReady (AI tutor) ───────────────────────────────────── */}
-      <button
-        onClick={() => onNavigate('/tutor')}
-        className="w-full mt-4 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
-            <RiSparklingFill className="text-orange" size={18} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-display font-bold text-text-primary">Ask DriveReady</p>
-            <p className="text-text-secondary text-xs">Get instant answers to driving questions</p>
-          </div>
-        </div>
-      </button>
-
-      {/* ── Weekly study plan ────────────────────────────────────────────── */}
-      {report && (
-        <div className="mt-4 card-elevated">
-          <p className="text-xs text-green-500 font-medium uppercase tracking-wider mb-1.5">This week's plan</p>
-          <p className="text-sm text-text-primary leading-relaxed mb-3">{report.summary}</p>
-          {report.checklist.slice(0, 3).length > 0 && (
-            <ul className="space-y-1.5">
-              {report.checklist.slice(0, 3).map((item, i) => (
-                <li key={i} className="text-sm text-text-secondary flex items-start gap-2">
-                  <span className="text-green-500 mt-0.5">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {/* ── Adaptive Practice ────────────────────────────────────────────── */}
-      <button
-        onClick={() => onNavigate('/adaptive')}
-        className="w-full mt-3 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
-            <FiTarget className="text-yellow" size={18} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-display font-bold text-text-primary">Adaptive Practice</p>
-            <p className="text-text-secondary text-xs">Personalized questions from your weakest chapters</p>
-          </div>
-        </div>
-      </button>
-
-      {/* ── Freeze token modal ────────────────────────────────────────────── */}
+      {/* Freeze token modal */}
       {freezeModal && (
         <>
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setFreezeModal(false)} />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm">
+            <div className="bg-surface-2 border border-border rounded-2xl p-6 w-full max-w-sm">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center">
-                    <Snowflake size={20} className="text-blue-400" />
+                  <div className="w-10 h-10 rounded-full bg-info/10 border border-info/30 flex items-center justify-center">
+                    <Snowflake size={20} className="text-info" />
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-text-primary">Freeze Token</h3>
+                    <h3 className="display font-bold text-white">Freeze Token</h3>
                     <p className="text-xs text-text-secondary">{freezeTokens} remaining</p>
                   </div>
                 </div>
-                <button onClick={() => setFreezeModal(false)} className="text-text-secondary hover:text-text-primary">
+                <button onClick={() => setFreezeModal(false)} className="text-text-secondary hover:text-white">
                   <X size={18} />
                 </button>
               </div>
@@ -270,7 +301,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 <button
                   onClick={() => useFreezeToken()}
                   disabled={freezing}
-                  className="flex-1 h-10 rounded-md bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500 disabled:opacity-50 transition-all"
+                  className="flex-1 h-10 rounded-md bg-info text-white text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition-all"
                 >
                   Use Token
                 </button>
@@ -283,25 +314,67 @@ export function HomePage({ onNavigate }: HomePageProps) {
   )
 }
 
-function StatCard({
-  icon, value, label, color,
-}: {
-  icon: React.ReactNode
-  value: number | string
-  label: string
-  color: 'gold' | 'green' | 'info'
-}) {
-  const valueClass = {
-    gold: 'text-gold-500',
-    green: 'text-green-500',
-    info: 'text-info',
-  }[color]
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
+function CardEyebrow({ color, centered, children }: { color: 'orange' | 'yellow' | 'red'; centered?: boolean; children: React.ReactNode }) {
+  const dotClass = color === 'orange' ? 'bg-orange' : color === 'yellow' ? 'bg-yellow' : 'bg-wrong'
   return (
-    <div className="card text-center p-3">
-      <div className="flex justify-center mb-1">{icon}</div>
-      <div className={`font-mono text-lg font-bold ${valueClass}`}>{value}</div>
-      <div className="text-text-secondary text-xs">{label}</div>
+    <div className={`text-[9px] font-semibold tracking-[0.13em] uppercase text-text-muted flex items-center gap-1.5 mb-3.5 ${centered ? 'justify-center' : ''}`}>
+      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotClass}`} />
+      {children}
+    </div>
+  )
+}
+
+function QuickTile({ Icon, label, desc, onClick }: { Icon: React.ComponentType<any>; label: string; desc: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="relative bg-surface-2 border border-border rounded-md p-5 text-left hover:bg-surface-3 hover:border-orange/40 hover:-translate-y-0.5 transition-all group"
+    >
+      <div className="w-9 h-9 rounded-md bg-orange-soft border border-orange/20 flex items-center justify-center mb-3.5">
+        <Icon size={18} className="text-orange" />
+      </div>
+      <div className="display font-bold text-sm text-white mb-1 tracking-[-0.2px]">{label}</div>
+      <div className="text-[11px] text-text-muted leading-snug">{desc}</div>
+      <ArrowUpRight size={14} className="absolute top-4 right-4 text-text-muted group-hover:text-orange group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+    </button>
+  )
+}
+
+function ReadinessRing({ pct }: { pct: number }) {
+  const circumference = 2 * Math.PI * 40
+  const offset = circumference * (1 - pct / 100)
+  return (
+    <div className="relative w-[120px] h-[120px]">
+      <svg width="120" height="120" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke="url(#readinessRingGrad)"
+          strokeWidth="8"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          transform="rotate(-90 50 50)"
+          style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)' }}
+        />
+        <defs>
+          <linearGradient id="readinessRingGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#F45B26" />
+            <stop offset="100%" stopColor="#F8DE22" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="mono text-3xl font-bold text-white leading-none">
+          {pct}<span className="text-sm">%</span>
+        </div>
+        <div className="text-[9px] text-text-muted tracking-[0.1em] uppercase mt-1">ready</div>
+      </div>
     </div>
   )
 }
