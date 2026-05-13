@@ -37,6 +37,7 @@ import { ProfilePage } from '@/app/profile/ProfilePage'
 import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
+import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -59,9 +60,9 @@ function QuizSettingsModal({
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn'  as const, label: '♟ Pawn',   desc: 'Unlimited hints & skips · 1× XP', activeClass: 'border-bronze-500 bg-bronze-500/5' },
-    { id: 'rogue' as const, label: '♞ Knight', desc: 'Limited hints & skips · 2× XP',   activeClass: 'border-silver-500 bg-silver-500/5' },
-    { id: 'king'  as const, label: '♔ King',   desc: 'No hints or skips · 3× XP',        activeClass: 'border-gold-600 bg-gold-500/5'    },
+    { id: 'pawn'  as const, Icon: GiChessPawn,   label: 'Pawn',   desc: 'Unlimited hints & skips · 1× XP', activeClass: 'border-bronze-500 bg-bronze-500/5' },
+    { id: 'rogue' as const, Icon: GiChessKnight, label: 'Knight', desc: 'Limited hints & skips · 2× XP',   activeClass: 'border-silver-500 bg-silver-500/5' },
+    { id: 'king'  as const, Icon: GiChessKing,   label: 'King',   desc: 'No hints or skips · 3× XP',        activeClass: 'border-yellow/40 bg-yellow-soft'   },
   ]
 
   const TIMERS = [
@@ -99,15 +100,18 @@ function QuizSettingsModal({
 
           <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Difficulty</p>
           <div className="space-y-2 mb-5">
-            {DIFFICULTIES.map(({ id, label, desc, activeClass }) => (
+            {DIFFICULTIES.map(({ id, Icon, label, desc, activeClass }) => (
               <button
                 key={id}
                 onClick={() => setDifficulty(id)}
                 className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                  difficulty === id ? activeClass : 'border-border hover:border-green-700'
+                  difficulty === id ? activeClass : 'border-border hover:border-orange/40'
                 }`}
               >
-                <p className="text-sm font-medium text-text-primary">{label}</p>
+                <p className="text-sm font-medium text-text-primary inline-flex items-center gap-1.5">
+                  <Icon size={14} />
+                  {label}
+                </p>
                 <p className="text-xs text-text-secondary">{desc}</p>
               </button>
             ))}

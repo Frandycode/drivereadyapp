@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { FlashCard } from './FlashCard'
-import { X, ThumbsUp, ThumbsDown, RotateCcw } from 'lucide-react'
+import { X, ThumbsUp, ThumbsDown, RotateCcw, Check, CornerDownLeft } from 'lucide-react'
 
 interface Question {
   id: string
@@ -86,11 +86,13 @@ export function DrillMode({ questions, deckName, onExit, onComplete }: DrillMode
           <div className="flex-1">
             <p className="text-xs text-text-secondary font-medium truncate">{deckName} — Drill</p>
             <div className="flex items-center gap-3 mt-1">
-              <span className="text-xs text-green-500 font-mono">
-                ✓ {gotItIds.size} mastered
+              <span className="text-xs text-green-500 font-mono inline-flex items-center gap-1">
+                <Check size={11} strokeWidth={3} />
+                {gotItIds.size} mastered
               </span>
-              <span className="text-xs text-text-secondary font-mono">
-                ↩ {remaining} remaining
+              <span className="text-xs text-text-secondary font-mono inline-flex items-center gap-1">
+                <CornerDownLeft size={11} />
+                {remaining} remaining
               </span>
             </div>
           </div>

@@ -12,7 +12,7 @@
 
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { ArrowLeft, BookOpen, CheckCircle, Circle, AlertCircle } from 'lucide-react'
+import { ArrowLeft, BookOpen, CheckCircle, Circle, AlertCircle, Trophy } from 'lucide-react'
 import { LessonView } from './LessonView'
 import { useState } from 'react'
 import { useMinLoadTime } from '@driveready/hooks'
@@ -196,9 +196,10 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
 
       {/* Pop quiz CTA */}
       {allRead && (
-        <div className="mt-6 card border-gold-600/50">
-          <p className="font-display font-bold text-text-primary mb-1">
-            Chapter Complete! 🎉
+        <div className="mt-6 card border-yellow-rim">
+          <p className="font-display font-bold text-text-primary mb-1 inline-flex items-center gap-2">
+            <Trophy size={16} className="text-yellow" />
+            Chapter Complete!
           </p>
           <p className="text-text-secondary text-sm mb-3">
             Test your knowledge with a quick 5-question pop quiz.

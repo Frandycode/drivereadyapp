@@ -11,6 +11,7 @@
  */
 
 import { clsx } from 'clsx'
+import { FiCheck, FiX } from 'react-icons/fi'
 import type { BotConfig } from './BotSelectScreen'
 
 interface BotAvatarProps {
@@ -56,10 +57,14 @@ export function BotAvatar({
           </span>
         )}
         {answered && isCorrect === true && (
-          <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-bg flex items-center justify-center text-bg text-[8px] font-bold">✓</span>
+          <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-bg flex items-center justify-center text-bg">
+            <FiCheck size={9} strokeWidth={3} />
+          </span>
         )}
         {answered && isCorrect === false && (
-          <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-red-500 border-2 border-bg flex items-center justify-center text-bg text-[8px] font-bold">✗</span>
+          <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-wrong border-2 border-bg flex items-center justify-center text-bg">
+            <FiX size={9} strokeWidth={3} />
+          </span>
         )}
       </div>
 

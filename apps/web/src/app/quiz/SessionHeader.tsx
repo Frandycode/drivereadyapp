@@ -12,6 +12,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { X, Lightbulb, SkipForward, AlertTriangle } from 'lucide-react'
+import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 import { clsx } from 'clsx'
 
 type SegmentState = 'unanswered' | 'correct' | 'wrong' | 'skipped'
@@ -161,12 +162,14 @@ export function SessionHeader({
       {/* Difficulty badge */}
       <div className="px-4 pb-2 max-w-content mx-auto">
         <span className={clsx(
-          'text-xs font-medium px-2 py-0.5 rounded-full border',
+          'inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border',
           difficulty === 'pawn'  && 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
           difficulty === 'rogue' && 'text-silver-400 bg-silver-500/10 border-silver-600/40',
-          difficulty === 'king'  && 'text-gold-500 bg-gold-500/10 border-gold-600/40',
+          difficulty === 'king'  && 'text-yellow bg-yellow-soft border-yellow-rim',
         )}>
-          {difficulty === 'pawn' ? '♟ Pawn' : difficulty === 'rogue' ? '♞ Knight' : '♔ King'}
+          {difficulty === 'pawn'  && <><GiChessPawn   size={12} /> Pawn</>}
+          {difficulty === 'rogue' && <><GiChessKnight size={12} /> Knight</>}
+          {difficulty === 'king'  && <><GiChessKing   size={12} /> King</>}
         </span>
       </div>
 

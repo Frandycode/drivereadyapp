@@ -14,6 +14,8 @@ import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList, FolderOpen } from 'lucide-react'
+import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
+import type { IconType } from 'react-icons'
 import { useUserStore } from '@/stores'
 import type { QuizConfig } from '../quiz/QuizSession'
 import type { PuzzleConfig } from '../quiz/PuzzleSession'
@@ -57,6 +59,7 @@ const IQ_MODES: { id: ChallengeMode; label: string; desc: string; Icon: React.El
 
 const DIFFICULTIES: {
   id: 'pawn' | 'rogue' | 'king'
+  Icon: IconType
   label: string
   desc: string
   activeClass: string
@@ -65,7 +68,8 @@ const DIFFICULTIES: {
 }[] = [
   {
     id: 'pawn',
-    label: '♟ Pawn',
+    Icon: GiChessPawn,
+    label: 'Pawn',
     desc: 'Unlimited hints & skips · 1× XP',
     activeClass: 'border-bronze-500 bg-bronze-500/5',
     badgeClass: 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
@@ -73,7 +77,8 @@ const DIFFICULTIES: {
   },
   {
     id: 'rogue',
-    label: '♞ Knight',
+    Icon: GiChessKnight,
+    label: 'Knight',
     desc: 'Limited hints & skips · 2× XP',
     activeClass: 'border-silver-500 bg-silver-500/5',
     badgeClass: 'text-silver-400 bg-silver-500/10 border-silver-600/40',
@@ -81,11 +86,12 @@ const DIFFICULTIES: {
   },
   {
     id: 'king',
-    label: '♔ King',
+    Icon: GiChessKing,
+    label: 'King',
     desc: 'No hints or skips · 3× XP',
-    activeClass: 'border-gold-600 bg-gold-500/5',
-    badgeClass: 'text-gold-500 bg-gold-500/10 border-gold-600/40',
-    chevronClass: 'text-gold-500',
+    activeClass: 'border-yellow/40 bg-yellow-soft',
+    badgeClass: 'text-yellow bg-yellow-soft border-yellow-rim',
+    chevronClass: 'text-yellow',
   },
 ]
 
@@ -312,20 +318,17 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
               Difficulty
             </h2>
             <div className="grid grid-cols-3 gap-2">
-              {DIFFICULTIES.map(({ id, label, badgeClass, activeClass }) => (
+              {DIFFICULTIES.map(({ id, Icon, label, badgeClass, activeClass }) => (
                 <button
                   key={id}
                   onClick={() => setDifficulty(id)}
-                  className={`py-3 px-2 rounded-xl border-2 transition-all duration-150 text-center ${
-                    difficulty === id ? activeClass : 'border-border bg-surface hover:border-green-700'
+                  className={`py-3 px-2 rounded-xl border-2 transition-all duration-150 text-center flex flex-col items-center gap-1 ${
+                    difficulty === id ? activeClass : 'border-border bg-surface hover:border-orange/40'
                   }`}
                 >
-                  <span className={`text-sm font-medium ${difficulty === id ? '' : 'text-text-secondary'}`}>
-                    {label.split(' ')[0]}
-                  </span>
-                  <br />
-                  <span className={`text-xs ${difficulty === id ? `${badgeClass.split(' ')[0]}` : 'text-text-secondary'}`}>
-                    {label.split(' ')[1]}
+                  <Icon size={20} className={difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'} />
+                  <span className={`text-xs ${difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'}`}>
+                    {label}
                   </span>
                 </button>
               ))}

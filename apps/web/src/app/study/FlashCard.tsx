@@ -12,6 +12,7 @@
 
 import { useState } from 'react'
 import { clsx } from 'clsx'
+import { BiBulb } from 'react-icons/bi'
 
 interface FlashCardProps {
   question: string
@@ -61,8 +62,9 @@ export function FlashCard({ question, answer, hint, flipped, onFlip, className }
             </p>
             <div className="flex items-center justify-between">
               {hint ? (
-                <span className="text-xs text-text-secondary italic line-clamp-1 max-w-[80%]">
-                  💡 {hint}
+                <span className="text-xs text-text-secondary italic line-clamp-1 max-w-[80%] inline-flex items-center gap-1.5">
+                  <BiBulb size={13} className="text-yellow shrink-0" />
+                  {hint}
                 </span>
               ) : (
                 <span />

@@ -15,6 +15,8 @@ import { useMutation, gql } from '@apollo/client'
 import { useUserStore } from '@/stores'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { Flame, Target, Zap, BookOpen, Snowflake, X } from 'lucide-react'
+import { RiSparklingFill } from 'react-icons/ri'
+import { FiTarget } from 'react-icons/fi'
 import { MdWavingHand } from 'react-icons/md'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
@@ -194,8 +196,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
         className="w-full mt-4 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center flex-shrink-0">
-            <span className="text-green-500 text-lg">✨</span>
+          <div className="w-10 h-10 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+            <RiSparklingFill className="text-orange" size={18} />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-display font-bold text-text-primary">Ask DriveReady</p>
@@ -228,8 +230,8 @@ export function HomePage({ onNavigate }: HomePageProps) {
         className="w-full mt-3 card-elevated text-left hover:border-green-700 active:scale-[0.99] transition-all duration-150"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-600/30 flex items-center justify-center flex-shrink-0">
-            <span className="text-gold-500 text-lg">🎯</span>
+          <div className="w-10 h-10 rounded-full bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
+            <FiTarget className="text-yellow" size={18} />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-display font-bold text-text-primary">Adaptive Practice</p>
