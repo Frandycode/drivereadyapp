@@ -97,7 +97,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-green-500 animate-bounce"
+          className="w-1.5 h-1.5 rounded-full bg-orange animate-bounce"
           style={{ animationDelay: `${i * 150}ms`, animationDuration: '600ms' }}
         />
       ))}
@@ -238,26 +238,30 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
 
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
-          <button onClick={onBack} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="px-4 pt-4 pb-3 max-w-[760px] mx-auto flex items-center gap-3">
+          <button
+            onClick={onBack}
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
+          >
             <X size={20} />
           </button>
-          <AppLogo height={26} className="flex-shrink-0" />
-          <div className="flex items-center gap-2 ml-1">
-            <Swords size={18} className="text-green-500" />
-            <h1 className="font-display text-lg font-bold text-text-primary">Peer Battle</h1>
+          <AppLogo height={24} className="flex-shrink-0" />
+          <div className="inline-flex items-center gap-1.5 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange ml-1">
+            <Swords size={11} />
+            Peer Battle
           </div>
         </div>
       </div>
 
-      <div className="flex-1 px-4 pt-5 max-w-content mx-auto w-full space-y-6">
+      <div className="flex-1 px-4 pt-6 max-w-[760px] mx-auto w-full space-y-6 pb-10">
 
         {/* Tabs */}
-        <div className="flex rounded-lg border border-border overflow-hidden">
+        <div className="flex rounded-md border border-border overflow-hidden">
           {(['host', 'join'] as const).map((t) => (
             <button
               key={t}
@@ -267,10 +271,10 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 setJoinError('')
                 setOpponentJoining(false)
               }}
-              className={`flex-1 py-2.5 text-sm font-medium transition-all ${
+              className={`flex-1 py-2.5 mono text-[11px] tracking-[0.1em] uppercase font-semibold transition-all ${
                 tab === t
-                  ? 'bg-green-500 text-bg'
-                  : 'bg-surface text-text-secondary hover:text-text-primary'
+                  ? 'bg-orange text-white'
+                  : 'bg-white/[0.04] text-text-secondary hover:text-white'
               }`}
             >
               {t === 'host' ? 'Host a Room' : 'Join a Room'}
@@ -285,17 +289,17 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
             {/* Chapter selection */}
             {chapters.length > 0 && (
               <section>
-                <div className="flex items-center gap-2 mb-2">
-                  <BookOpen size={12} className="text-text-secondary" />
-                  <p className="text-xs font-medium text-text-secondary uppercase tracking-wider">Chapters</p>
+                <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                  <BookOpen size={11} />
+                  Chapters
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setSelectedChapters([])}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                    className={`mono text-[11px] tracking-[0.08em] uppercase font-semibold px-3 py-1.5 rounded-md transition-all border ${
                       selectedChapters.length === 0
-                        ? 'bg-green-500 border-green-500 text-bg'
-                        : 'bg-surface-2 border-border text-text-secondary hover:border-green-700'
+                        ? 'bg-orange border-orange text-white'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     All
@@ -304,20 +308,20 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                     <button
                       key={ch.id}
                       onClick={() => toggleChapter(ch.number)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                      className={`mono text-[11px] tracking-[0.08em] uppercase font-semibold px-3 py-1.5 rounded-md transition-all border ${
                         selectedChapters.includes(ch.number)
-                          ? 'bg-green-500/15 border-green-500 text-green-400'
-                          : 'bg-surface-2 border-border text-text-secondary hover:border-green-700'
+                          ? 'bg-orange-soft border-orange text-orange'
+                          : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                       }`}
                     >
-                      Ch. {ch.number}
+                      Ch. {String(ch.number).padStart(2, '0')}
                     </button>
                   ))}
                 </div>
                 {selectedChapters.length > 0 && (
-                  <p className="text-xs text-text-secondary mt-1.5">
+                  <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted mt-2">
                     {selectedChapters.length === 1
-                      ? `Ch. ${selectedChapters[0]} selected`
+                      ? `Ch. ${String(selectedChapters[0]).padStart(2, '0')} selected`
                       : `${selectedChapters.length} chapters selected`
                     }
                   </p>
@@ -327,16 +331,19 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
             {/* Player count */}
             <section>
-              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Players</p>
+              <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+                Players
+              </div>
               <div className="flex gap-2">
                 {PLAYER_COUNTS.map((n) => (
                   <button
                     key={n}
                     onClick={() => setPlayerCount(n)}
-                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                    className={`flex-1 py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                       playerCount === n
-                        ? 'bg-green-500 text-bg'
-                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                        ? 'bg-orange text-white border-orange'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     {n}
@@ -344,7 +351,7 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 ))}
               </div>
               {playerCount > 2 && (
-                <p className="text-xs text-text-secondary mt-1.5">
+                <p className="text-[12px] text-text-secondary mt-2">
                   Dropped players are replaced by a bot automatically.
                 </p>
               )}
@@ -352,16 +359,19 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
             {/* Question count */}
             <section>
-              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Questions</p>
+              <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+                Questions
+              </div>
               <div className="flex gap-2">
                 {QUESTION_COUNTS.map((n) => (
                   <button
                     key={n}
                     onClick={() => setQCount(n)}
-                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                    className={`flex-1 py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                       questionCount === n
-                        ? 'bg-green-500 text-bg'
-                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                        ? 'bg-orange text-white border-orange'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     {n}
@@ -372,18 +382,19 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
             {/* Timer */}
             <section>
-              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
                 Timer per question
-              </p>
+              </div>
               <div className="flex gap-2">
                 {TIMERS.map(({ value, label }) => (
                   <button
                     key={label}
                     onClick={() => setTimerSec(value)}
-                    className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                    className={`flex-1 py-2 rounded-md mono text-[13px] font-bold tabular-nums transition-all border ${
                       timerSec === value
-                        ? 'bg-green-500 text-bg'
-                        : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                        ? 'bg-orange text-white border-orange'
+                        : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                     }`}
                   >
                     {label}
@@ -393,18 +404,24 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
             </section>
 
             {/* Rules reminder */}
-            <div className="card border-border bg-surface-2 text-xs text-text-secondary space-y-1">
-              <p className="font-medium text-text-primary mb-1">Peer Battle rules</p>
-              <p>• Both players answer the same questions independently</p>
-              <p>• Up to 2 draw requests per player</p>
-              <p>• Leaving the screen gives 45s / 30s grace on strikes 1 / 2</p>
-              <p>• 3rd screen leave = auto-defeat</p>
+            <div className="card relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+              <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-orange" />
+                Peer Battle rules
+              </div>
+              <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
+                <li>• Both players answer the same questions independently</li>
+                <li>• Up to 2 draw requests per player</li>
+                <li>• Leaving the screen gives 45s / 30s grace on strikes 1 / 2</li>
+                <li>• 3rd screen leave = auto-defeat</li>
+              </ul>
             </div>
 
             <button
               onClick={handleCreate}
               disabled={creating}
-              className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+              className="btn-primary w-full h-12 text-sm font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {creating ? <Loader2 size={18} className="animate-spin" /> : null}
               Create Room
@@ -414,43 +431,48 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
 
         {/* ── WAITING FOR OPPONENT ─────────────────────────────────────────── */}
         {tab === 'host' && hostedBattle && (
-          <div className="space-y-6 text-center">
+          <div className="space-y-6 text-center pt-4">
             <div>
-              <p className="text-sm text-text-secondary mb-3">Share this code with your opponent</p>
-              <div className="inline-flex items-center gap-3 bg-surface border border-border rounded-xl px-6 py-4">
-                <span className="font-mono text-4xl font-bold tracking-[0.25em] text-green-500">
+              <div className="mono text-[10px] tracking-[0.14em] uppercase text-text-muted mb-3">
+                Share this code with your opponent
+              </div>
+              <div className="inline-flex items-center gap-3 bg-surface border border-orange/30 rounded-lg px-6 py-4 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+                <span className="mono text-[40px] font-bold tracking-[0.25em] text-orange tabular-nums leading-none">
                   {hostedBattle.roomCode}
                 </span>
                 <button
                   onClick={copyCode}
-                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-text-secondary hover:text-white transition-colors"
                   title="Copy code"
+                  aria-label="Copy code"
                 >
-                  {copied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
+                  {copied ? <Check size={20} className="text-correct" /> : <Copy size={20} />}
                 </button>
                 <button
                   onClick={shareInviteLink}
-                  className="text-text-secondary hover:text-green-500 transition-colors"
+                  className="text-text-secondary hover:text-orange transition-colors"
                   title="Share invite link"
+                  aria-label="Share invite link"
                 >
-                  {sharedLink ? <Check size={20} className="text-green-500" /> : <Share2 size={20} />}
+                  {sharedLink ? <Check size={20} className="text-correct" /> : <Share2 size={20} />}
                 </button>
               </div>
             </div>
 
             {opponentJoining ? (
-              <div className="flex items-center justify-center gap-1 text-green-500">
-                <span className="text-sm font-medium">Opponent joining</span>
+              <div className="inline-flex items-center justify-center gap-1 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-orange">
+                <span>Opponent joining</span>
                 <TypingDots />
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-2 text-text-secondary">
-                <Loader2 size={16} className="animate-spin text-green-500" />
-                <span className="text-sm">Waiting for opponent to join...</span>
+              <div className="inline-flex items-center justify-center gap-2 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary">
+                <Loader2 size={14} className="animate-spin text-orange" />
+                <span>Waiting for opponent…</span>
               </div>
             )}
 
-            <div className="text-xs text-text-secondary space-y-0.5">
+            <div className="mono text-[10px] tracking-[0.08em] uppercase text-text-muted space-y-0.5">
               <p>{questionCount} questions · {hostedBattle.timerSeconds}s per question</p>
               {selectedChapters.length > 0 && (
                 <p>
@@ -465,7 +487,7 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
             {!opponentJoining && (
               <button
                 onClick={() => setHostedBattle(null)}
-                className="text-sm text-text-secondary hover:text-text-primary underline"
+                className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary hover:text-white underline transition-colors"
               >
                 Cancel room
               </button>
@@ -477,7 +499,10 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
         {tab === 'join' && (
           <div className="space-y-5">
             <section>
-              <p className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Room Code</p>
+              <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+                Room code
+              </div>
               <input
                 type="text"
                 inputMode="numeric"
@@ -491,17 +516,17 @@ export function PeerBattleLobby({ onStart, onBack }: PeerBattleLobbyProps) {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && joinCode.length === 6 && !joining) handleJoin()
                 }}
-                className="input text-center font-mono text-2xl tracking-widest h-14"
+                className="input text-center mono text-[28px] font-bold tracking-[0.25em] tabular-nums h-16 placeholder:text-text-faint"
               />
               {joinError && (
-                <p className="text-xs text-red-400 mt-1.5">{joinError}</p>
+                <p className="text-[12px] text-wrong mt-2">{joinError}</p>
               )}
             </section>
 
             <button
               onClick={handleJoin}
               disabled={joining || joinCode.length !== 6}
-              className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+              className="btn-primary w-full h-12 text-sm font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {joining ? <Loader2 size={18} className="animate-spin" /> : null}
               Join Battle
