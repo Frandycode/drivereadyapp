@@ -12,6 +12,7 @@
 
 import { ReactNode } from 'react'
 import { clsx } from 'clsx'
+import { Footer } from './Footer'
 
 interface PageWrapperProps {
   children: ReactNode
@@ -20,19 +21,31 @@ interface PageWrapperProps {
   fullScreen?: boolean
   /** Optional sticky header content */
   header?: ReactNode
+  /** Hide the footer (for full-screen sessions like quizzes, exam, etc.) */
+  hideFooter?: boolean
+  /** Optional onNavigate forwarded to footer status link */
+  onNavigate?: (path: string) => void
 }
 
-export function PageWrapper({ children, className, fullScreen, header }: PageWrapperProps) {
+export function PageWrapper({
+  children,
+  className,
+  fullScreen,
+  header,
+  hideFooter,
+  onNavigate,
+}: PageWrapperProps) {
   return (
-    <div className={clsx('min-h-dvh bg-bg', !fullScreen && 'pb-20')}>
+    <div className={clsx('min-h-dvh bg-bg flex flex-col', !fullScreen && 'pb-20')}>
       {header && (
-        <div className="sticky top-0 z-40 bg-bg/90 backdrop-blur-sm border-b border-border">
+        <div className="sticky top-0 z-40 glass border-b border-border">
           {header}
         </div>
       )}
-      <main className={clsx('px-4 pt-4 max-w-content mx-auto', className)}>
+      <main className={clsx('flex-1 px-4 pt-4 max-w-content mx-auto w-full', className)}>
         {children}
       </main>
+      {!hideFooter && !fullScreen && <Footer onNavigate={onNavigate} />}
     </div>
   )
 }
