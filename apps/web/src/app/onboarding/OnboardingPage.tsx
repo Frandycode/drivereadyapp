@@ -67,24 +67,24 @@ const CONFIDENCE_LEVELS = [
     label: 'Just starting',
     desc: "Haven't studied yet",
     Icon: MdSentimentVeryDissatisfied,
-    color: 'text-red-400',
-    activeClass: 'border-red-500 bg-red-500/10',
+    color: 'text-wrong',
+    activeClass: 'border-wrong/50 bg-wrong/10',
   },
   {
     id: 'learning',
     label: 'Getting there',
-    desc: "Studied some material",
+    desc: 'Studied some material',
     Icon: MdSentimentNeutral,
-    color: 'text-gold-500',
-    activeClass: 'border-gold-600 bg-gold-500/10',
+    color: 'text-yellow',
+    activeClass: 'border-yellow-rim bg-yellow-soft',
   },
   {
     id: 'ready',
     label: 'Almost ready',
     desc: 'Feeling confident',
     Icon: MdSentimentVerySatisfied,
-    color: 'text-green-500',
-    activeClass: 'border-green-500 bg-green-500/10',
+    color: 'text-correct',
+    activeClass: 'border-correct/50 bg-green-soft',
   },
 ]
 
@@ -148,45 +148,64 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
     ? direction === 1 ? 'opacity-0 -translate-x-4' : 'opacity-0 translate-x-4'
     : 'opacity-100 translate-x-0'
 
+  const stepEyebrows = ['State · 1 of 3', 'Test date · 2 of 3', 'Confidence · 3 of 3']
+
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col relative overflow-hidden">
+      <div
+        className="absolute top-0 left-0 right-0 h-[3px]"
+        style={{
+          background:
+            'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+        }}
+      />
 
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-6 pb-2">
-        <AppLogo height={28} />
+      <div className="flex items-center justify-between px-5 pt-6 pb-2 max-w-[480px] mx-auto w-full">
+        <AppLogo height={26} />
         <button
           onClick={() => { setNeedsOnboarding(false); onDone() }}
-          className="text-xs text-text-secondary hover:text-text-primary underline"
+          className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-muted hover:text-white underline transition-colors"
         >
           Skip for now
         </button>
       </div>
 
       {/* Progress dots */}
-      <div className="flex items-center justify-center gap-2 py-4">
+      <div className="flex items-center justify-center gap-2 py-5">
         {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
           <div
             key={i}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === step ? 'w-6 bg-green-500' : i < step ? 'w-3 bg-green-700' : 'w-3 bg-surface-3'
+              i === step ? 'w-8 bg-orange' : i < step ? 'w-3 bg-orange/40' : 'w-3 bg-white/[0.08]'
             }`}
           />
         ))}
       </div>
 
+      {/* Step eyebrow */}
+      <div className="text-center pb-2 max-w-[480px] mx-auto w-full px-5">
+        <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+          {stepEyebrows[step]}
+        </div>
+      </div>
+
       {/* Slide content */}
-      <div className={`flex-1 px-5 pt-2 transition-all duration-200 ease-out ${slideClass}`}>
+      <div className={`flex-1 px-5 pt-3 transition-all duration-200 ease-out max-w-[480px] mx-auto w-full ${slideClass}`}>
 
         {/* ── Step 0: State ─────────────────────────────────────────────── */}
         {step === 0 && (
           <div className="space-y-5">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-700/40 flex items-center justify-center flex-shrink-0">
-                <GiSteeringWheel size={22} className="text-green-500" />
+            <div className="flex items-start gap-3 mb-1">
+              <div className="w-11 h-11 rounded-md bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+                <GiSteeringWheel size={22} className="text-orange" />
               </div>
               <div>
-                <h2 className="font-display text-xl font-bold text-text-primary">Which state?</h2>
-                <p className="text-sm text-text-secondary">Pick the state whose permit test you're studying for.</p>
+                <h2 className="display font-extrabold text-[clamp(22px,3vw,28px)] leading-[1.05] tracking-[-0.6px] text-white mb-1">
+                  Which state?
+                </h2>
+                <p className="text-[13px] text-text-secondary leading-relaxed">Pick the state whose permit test you’re studying for.</p>
               </div>
             </div>
 
@@ -201,11 +220,15 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
               ))}
             </select>
 
-            <div className="card bg-surface-2 border-border text-xs text-text-secondary">
-              <p className="font-medium text-text-primary mb-1">
-                {US_STATES.find((s) => s.code === stateCode)?.name} Permit Exam
+            <div className="card bg-surface-2 border-border relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+              <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-orange" />
+                {US_STATES.find((s) => s.code === stateCode)?.name} permit exam
+              </div>
+              <p className="text-[13px] text-text-secondary leading-relaxed">
+                DriveReady tailors your questions, rules, and study plan to your state.
               </p>
-              <p>DriveReady tailors your questions, rules, and study plan to your state.</p>
             </div>
           </div>
         )}
@@ -213,13 +236,15 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
         {/* ── Step 1: Test Date ─────────────────────────────────────────── */}
         {step === 1 && (
           <div className="space-y-5">
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-600/40 flex items-center justify-center flex-shrink-0">
-                <Calendar size={20} className="text-gold-500" />
+            <div className="flex items-start gap-3 mb-1">
+              <div className="w-11 h-11 rounded-md bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
+                <Calendar size={20} className="text-yellow" />
               </div>
               <div>
-                <h2 className="font-display text-xl font-bold text-text-primary">When's your test?</h2>
-                <p className="text-sm text-text-secondary">We'll count down and prioritize your weak spots.</p>
+                <h2 className="display font-extrabold text-[clamp(22px,3vw,28px)] leading-[1.05] tracking-[-0.6px] text-white mb-1">
+                  When&apos;s your test?
+                </h2>
+                <p className="text-[13px] text-text-secondary leading-relaxed">We’ll count down and prioritize your weak spots.</p>
               </div>
             </div>
 
@@ -231,7 +256,7 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
                 min={new Date().toISOString().split('T')[0]}
                 className="input text-base"
               />
-              <p className="text-xs text-text-secondary mt-1.5">Optional — you can set this later in your profile.</p>
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted mt-2">Optional — set this later in your profile.</p>
             </div>
           </div>
         )}
@@ -240,25 +265,27 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
         {step === 2 && (
           <div className="space-y-5">
             <div>
-              <h2 className="font-display text-xl font-bold text-text-primary mb-1">How prepared are you?</h2>
-              <p className="text-sm text-text-secondary">This helps us set your starting difficulty.</p>
+              <h2 className="display font-extrabold text-[clamp(22px,3vw,28px)] leading-[1.05] tracking-[-0.6px] text-white mb-1.5">
+                How prepared are you?
+              </h2>
+              <p className="text-[13px] text-text-secondary leading-relaxed">This helps us set your starting difficulty.</p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {CONFIDENCE_LEVELS.map(({ id, label, desc, Icon, color, activeClass }) => (
                 <button
                   key={id}
                   onClick={() => setConfidence(id)}
-                  className={`w-full text-left flex items-center gap-4 rounded-xl border-2 px-4 py-4 transition-all duration-150 ${
-                    confidence === id ? activeClass : 'border-border bg-surface hover:border-green-700'
+                  className={`w-full text-left flex items-center gap-4 rounded-md border-2 px-4 py-3.5 transition-all duration-150 ${
+                    confidence === id ? activeClass : 'border-border bg-surface hover:border-orange/40'
                   }`}
                 >
-                  <Icon size={32} className={confidence === id ? color : 'text-text-secondary'} />
+                  <Icon size={30} className={confidence === id ? color : 'text-text-secondary'} />
                   <div>
-                    <p className={`font-medium text-sm ${confidence === id ? 'text-text-primary' : 'text-text-primary'}`}>
+                    <p className={`font-semibold text-sm ${confidence === id ? color : 'text-white'}`}>
                       {label}
                     </p>
-                    <p className="text-xs text-text-secondary">{desc}</p>
+                    <p className="text-[12px] text-text-muted mt-0.5">{desc}</p>
                   </div>
                 </button>
               ))}
@@ -269,13 +296,13 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
       </div>
 
       {/* Bottom actions */}
-      <div className="px-5 pb-10 pt-4 flex items-center gap-3">
+      <div className="px-5 pb-10 pt-4 flex items-center gap-3 max-w-[480px] mx-auto w-full">
         {step > 0 && (
           <button
             onClick={() => advance(-1)}
-            className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors"
+            className="inline-flex items-center gap-1 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary hover:text-white transition-colors"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} />
             Back
           </button>
         )}
@@ -285,19 +312,19 @@ export function OnboardingPage({ onDone }: OnboardingPageProps) {
         {step < TOTAL_STEPS - 1 ? (
           <button
             onClick={() => advance(1)}
-            className="btn-primary flex items-center gap-2 px-6"
+            className="btn-primary flex items-center gap-2 px-6 h-11 text-sm font-semibold"
           >
             Next
-            <ChevronRight size={18} />
+            <ChevronRight size={16} />
           </button>
         ) : (
           <button
             onClick={handleFinish}
             disabled={loading}
-            className="btn-primary flex items-center gap-2 px-6 disabled:opacity-50"
+            className="btn-primary flex items-center gap-2 px-6 h-11 text-sm font-semibold disabled:opacity-50"
           >
             {loading ? <Loader2 size={16} className="animate-spin" /> : null}
-            Let's go!
+            Let&apos;s go!
           </button>
         )}
       </div>
