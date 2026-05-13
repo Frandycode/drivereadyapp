@@ -11,6 +11,7 @@
  */
 
 import { CheckCircle, XCircle, SkipForward, Lightbulb, RotateCcw, Home, TrendingUp } from 'lucide-react'
+import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 
 interface AnswerRecord {
   questionId: string
@@ -34,6 +35,15 @@ interface QuizResultsProps {
   onExit: () => void
 }
 
+const DIFFICULTY_META: Record<
+  QuizResultsProps['difficulty'],
+  { label: string; Icon: React.ElementType; classes: string }
+> = {
+  pawn:  { label: 'Pawn',   Icon: GiChessPawn,   classes: 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40' },
+  rogue: { label: 'Knight', Icon: GiChessKnight, classes: 'text-silver-400 bg-silver-500/10 border-silver-600/40' },
+  king:  { label: 'King',   Icon: GiChessKing,   classes: 'text-yellow bg-yellow-soft border-yellow-rim' },
+}
+
 export function QuizResults({
   score,
   total,
@@ -50,52 +60,72 @@ export function QuizResults({
   const pct = answered > 0 ? Math.round((score / answered) * 100) : 0
 
   const grade =
-    pct >= 90 ? { label: 'Excellent!', color: 'text-green-400' } :
-    pct >= 75 ? { label: 'Great job!', color: 'text-green-500' } :
-    pct >= 60 ? { label: 'Good effort', color: 'text-gold-500' } :
-    { label: 'Keep practicing', color: 'text-red-400' }
+    pct >= 90 ? { label: 'Excellent!',     tone: 'text-correct' } :
+    pct >= 75 ? { label: 'Great job!',     tone: 'text-correct' } :
+    pct >= 60 ? { label: 'Good effort',    tone: 'text-yellow'  } :
+                { label: 'Keep practicing', tone: 'text-orange'  }
+
+  const ringColor =
+    pct >= 75 ? '#22C55E' : pct >= 60 ? '#F8DE22' : '#F45B26'
 
   const wrongAnswers = answers.filter((a) => !a.isCorrect && !a.skipped)
-  const skippedAnswers = answers.filter((a) => a.skipped)
-
-  // Group wrong answers by chapter for Growth Areas
-  const growthChapters = [...new Set(wrongAnswers.map((a) => a.chapter))].sort()
+  const growthChapters = [...new Set(wrongAnswers.map((a) => a.chapter))].sort((a, b) => a - b)
+  const diff = DIFFICULTY_META[difficulty]
 
   return (
-    <div className="min-h-dvh bg-bg pb-8">
-      {/* Header */}
-      <div className="px-4 pt-8 pb-6 text-center max-w-content mx-auto">
-        <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-700 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle size={28} className="text-green-500" />
+    <div className="min-h-dvh bg-navy-deep blueprint-grid pb-10">
+      {/* Hero */}
+      <div className="relative overflow-hidden px-4 pt-10 pb-8 text-center max-w-[760px] mx-auto">
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{
+            background:
+              'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+          }}
+        />
+        <div className="w-14 h-14 rounded-full bg-green-soft border border-correct/30 flex items-center justify-center mx-auto mb-5 animate-fade-up">
+          <CheckCircle size={26} className="text-correct" strokeWidth={2.5} />
         </div>
-        <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-1">
-          {deckName}
-        </p>
-        <h2 className={`font-display text-3xl font-bold mb-1 ${grade.color}`}>
+
+        <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+          Quiz complete · {deckName}
+        </div>
+
+        <h2 className={`display font-extrabold text-[clamp(32px,5vw,48px)] leading-[1.02] tracking-[-1px] mb-2 ${grade.tone}`}>
           {grade.label}
         </h2>
-        <p className="text-text-secondary text-sm">
-          {score} correct out of {answered} answered
+        <p className="text-text-secondary text-sm mb-4">
+          <span className="mono text-white font-bold">{score}</span> correct out of{' '}
+          <span className="mono text-white font-bold">{answered}</span> answered
         </p>
+
+        <span
+          className={`inline-flex items-center gap-1.5 mono text-[10px] font-medium tracking-[0.08em] uppercase px-2 py-1 rounded-md border ${diff.classes}`}
+        >
+          <diff.Icon size={11} />
+          {diff.label}
+        </span>
       </div>
 
-      <div className="px-4 max-w-content mx-auto space-y-4">
+      <div className="px-4 max-w-[760px] mx-auto space-y-3">
 
         {/* Score ring + stats */}
         <div className="card flex items-center gap-6">
           {/* Ring */}
-          <div className="relative w-20 h-20 flex-shrink-0">
+          <div className="relative w-24 h-24 flex-shrink-0">
             <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#243D29" strokeWidth="12" />
+              <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="9" />
               <circle
-                cx="50" cy="50" r="38" fill="none"
-                stroke="#22C55E" strokeWidth="12"
-                strokeDasharray={`${2 * Math.PI * 38}`}
-                strokeDashoffset={`${2 * Math.PI * 38 * (1 - pct / 100)}`}
+                cx="50" cy="50" r="40" fill="none"
+                stroke={ringColor} strokeWidth="9"
+                strokeDasharray={`${2 * Math.PI * 40}`}
+                strokeDashoffset={`${2 * Math.PI * 40 * (1 - pct / 100)}`}
                 strokeLinecap="round"
+                className="transition-all duration-700"
               />
             </svg>
-            <span className="absolute inset-0 flex items-center justify-center font-mono font-bold text-lg text-text-primary">
+            <span className={`absolute inset-0 flex items-center justify-center mono font-bold text-[20px] tabular-nums ${grade.tone}`}>
               {pct}%
             </span>
           </div>
@@ -103,31 +133,31 @@ export function QuizResults({
           {/* Stats */}
           <div className="flex-1 space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1.5 text-green-400">
+              <span className="flex items-center gap-1.5 text-correct">
                 <CheckCircle size={14} /> Correct
               </span>
-              <span className="font-mono font-medium text-green-400">{score}</span>
+              <span className="mono font-bold text-correct tabular-nums">{score}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1.5 text-red-400">
+              <span className="flex items-center gap-1.5 text-wrong">
                 <XCircle size={14} /> Wrong
               </span>
-              <span className="font-mono font-medium text-red-400">{answered - score}</span>
+              <span className="mono font-bold text-wrong tabular-nums">{answered - score}</span>
             </div>
             {skipped > 0 && (
               <div className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-1.5 text-text-secondary">
                   <SkipForward size={14} /> Skipped
                 </span>
-                <span className="font-mono font-medium text-text-secondary">{skipped}</span>
+                <span className="mono font-bold text-text-secondary tabular-nums">{skipped}</span>
               </div>
             )}
             {hintsUsed > 0 && (
               <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-gold-500">
+                <span className="flex items-center gap-1.5 text-yellow">
                   <Lightbulb size={14} /> Hints used
                 </span>
-                <span className="font-mono font-medium text-gold-500">{hintsUsed}</span>
+                <span className="mono font-bold text-yellow tabular-nums">{hintsUsed}</span>
               </div>
             )}
           </div>
@@ -135,29 +165,29 @@ export function QuizResults({
 
         {/* XP earned */}
         {xpEarned > 0 && (
-          <div className="card border-gold-600/30 flex items-center justify-between">
-            <span className="text-sm font-medium text-text-primary">XP Earned</span>
-            <span className="font-mono font-bold text-gold-500 text-lg">+{xpEarned} XP</span>
+          <div className="card border-yellow-rim bg-yellow-soft flex items-center justify-between">
+            <span className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-yellow">XP Earned</span>
+            <span className="mono font-bold text-yellow text-xl tabular-nums">+{xpEarned}</span>
           </div>
         )}
 
         {/* Growth Areas */}
         {growthChapters.length > 0 && (
           <div className="card">
-            <div className="flex items-center gap-2 mb-3">
-              <TrendingUp size={16} className="text-gold-500" />
-              <h3 className="text-sm font-medium text-text-primary">Growth Areas</h3>
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <TrendingUp size={12} />
+              Growth areas
             </div>
-            <p className="text-xs text-text-secondary mb-3">
-              Review these chapters to improve your score:
+            <p className="text-[13px] text-text-secondary mb-3 leading-relaxed">
+              Review these chapters to bring your score up.
             </p>
             <div className="flex flex-wrap gap-2">
               {growthChapters.map((ch) => (
                 <span
                   key={ch}
-                  className="px-2.5 py-1 bg-gold-500/10 border border-gold-600/30 rounded-full text-xs text-gold-500 font-medium"
+                  className="inline-flex items-center gap-1 mono text-[10px] tracking-[0.08em] uppercase px-2 py-1 rounded-md bg-orange-soft border border-orange/30 text-orange font-medium"
                 >
-                  Chapter {ch}
+                  Ch. {String(ch).padStart(2, '0')}
                 </span>
               ))}
             </div>
@@ -167,16 +197,22 @@ export function QuizResults({
         {/* Missed questions list */}
         {wrongAnswers.length > 0 && (
           <div className="card">
-            <h3 className="text-sm font-medium text-text-primary mb-3">
-              Missed Questions ({wrongAnswers.length})
-            </h3>
-            <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-wrong">
+              <span className="w-[14px] h-[1.5px] rounded-full bg-wrong" />
+              Missed · {wrongAnswers.length}
+            </div>
+            <div className="space-y-2.5">
               {wrongAnswers.map((a) => (
-                <div key={a.questionId} className="flex items-start gap-2">
-                  <XCircle size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-text-secondary leading-relaxed">
-                    {a.questionText}
-                  </p>
+                <div key={a.questionId} className="flex items-start gap-2.5 py-1.5 border-b border-white/[0.04] last:border-b-0">
+                  <XCircle size={14} className="text-wrong flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] text-text-primary leading-relaxed mb-0.5">
+                      {a.questionText}
+                    </p>
+                    <span className="mono text-[10px] tracking-[0.08em] uppercase text-text-muted">
+                      Ch. {String(a.chapter).padStart(2, '0')}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -184,17 +220,17 @@ export function QuizResults({
         )}
 
         {/* Actions */}
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-3">
           <button
             onClick={onRetry}
-            className="btn-primary w-full flex items-center justify-center gap-2"
+            className="btn-primary w-full h-12 flex items-center justify-center gap-2 text-sm font-semibold"
           >
             <RotateCcw size={16} />
             Try Again
           </button>
           <button
             onClick={onExit}
-            className="btn-secondary w-full flex items-center justify-center gap-2"
+            className="btn-secondary w-full h-12 flex items-center justify-center gap-2 text-sm font-semibold"
           >
             <Home size={16} />
             Back to Learn
