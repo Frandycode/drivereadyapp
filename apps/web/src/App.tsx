@@ -36,6 +36,7 @@ import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
 import { ProfilePage } from '@/app/profile/ProfilePage'
 import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
+import { FloatingBBT } from '@/components/layout/FloatingBBT'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -415,9 +416,15 @@ export default function App() {
   const pageKey = appScreen.screen as string
   const currentPage = PAGES[pageKey] ?? PAGES['home']
 
+  // FloatingBBT visible only on dashboard-style pages, never during sessions
+  const showFloatingBBT = pageKey in PAGES
+
   return (
     <div className="bg-bg min-h-dvh">
       {currentPage}
+      {showFloatingBBT && (
+        <FloatingBBT onClick={() => setAppScreen({ screen: 'bot-select' })} />
+      )}
       <BottomNav activePath={activeNavPath} onNavigate={navigate} />
     </div>
   )
