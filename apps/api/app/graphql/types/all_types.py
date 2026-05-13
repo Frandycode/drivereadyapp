@@ -90,6 +90,12 @@ class SuggestedQuestionType:
 
 
 @strawberry.type
+class GradedAnswerType:
+    score: int
+    feedback: str
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str

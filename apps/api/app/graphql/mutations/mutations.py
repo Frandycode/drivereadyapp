@@ -51,6 +51,10 @@ from app.ai.prompts.exam_coaching import (
     SYSTEM_PROMPT as EXAM_SYSTEM_PROMPT,
     build_user_prompt as build_exam_user_prompt,
 )
+from app.ai.prompts.grade_short_answer import (
+    SYSTEM_PROMPT as GRADE_SYSTEM_PROMPT,
+    build_user_prompt as build_grade_user_prompt,
+)
 from app.ai.prompts.suggest_question import (
     SYSTEM_PROMPT as SUGGEST_SYSTEM_PROMPT,
     build_user_prompt as build_suggest_user_prompt,
@@ -105,6 +109,7 @@ from app.graphql.types.all_types import (
     ExamChapterStatInput,
     ExplanationType,
     FlashcardDeckType,
+    GradedAnswerType,
     SuggestedAnswerType,
     SuggestedQuestionType,
     WeeklyReportType,
@@ -1649,6 +1654,56 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def grade_short_answer(
+        self,
+        info: Info,
+        prompt: str,
+        expected_concepts: list[str],
+        user_response: str,
+    ) -> GradedAnswerType:
+        """LLM-graded short-answer practice. Returns score 0-100 + feedback."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        await ai_rate_limit(str(user.id), "grade", max_requests=20, window_seconds=3600)
+
+        messages = [
+            {"role": "system", "content": GRADE_SYSTEM_PROMPT},
+            {"role": "user", "content": build_grade_user_prompt(
+                prompt=prompt,
+                expected_concepts=expected_concepts,
+                user_response=user_response,
+            )},
+        ]
+
+        score = 0
+        feedback = "We couldn't grade that response right now — try again in a moment."
+        try:
+            result = await chat(messages, temperature=0.3, max_tokens=300)
+            await ai_log(
+                db=db, user_id=str(user.id), route="grade_short_answer",
+                cached=False, result=result,
+            )
+            raw = result.content.strip()
+            if raw.startswith("```"):
+                raw = raw.strip("`").lstrip()
+                if raw.lower().startswith("json"):
+                    raw = raw[4:].lstrip()
+            parsed = json.loads(raw)
+            score = max(0, min(100, int(parsed.get("score", 0))))
+            feedback = str(parsed.get("feedback", feedback))
+        except (AIModelError, json.JSONDecodeError, ValueError) as e:
+            await ai_log(
+                db=db, user_id=str(user.id), route="grade_short_answer",
+                cached=False, error=str(e),
+            )
+
+        await db.commit()
+        return GradedAnswerType(score=score, feedback=feedback)
 
     @strawberry.mutation
     async def suggest_question_distractors(
