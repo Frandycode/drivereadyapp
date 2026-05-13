@@ -72,11 +72,18 @@ export function AdaptivePage({ stateCode }: Props) {
   }
 
   const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <Target size={18} className="text-green-500" />
-      <h1 className="font-display text-base font-bold text-text-primary flex-1">Adaptive Practice</h1>
-      <span className="text-xs font-mono text-text-secondary">
-        {score.correct} / {score.total}
+    <div className="px-4 pt-4 pb-3 flex items-center gap-3 max-w-[760px] mx-auto">
+      <div className="w-8 h-8 rounded-md bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+        <Target size={14} className="text-orange" />
+      </div>
+      <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange flex-1">
+        <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+        Adaptive practice
+      </div>
+      <span className="mono text-[13px] font-medium text-text-secondary tabular-nums">
+        <strong className="text-correct font-bold">{score.correct}</strong>
+        <span className="mx-1">/</span>
+        {score.total}
       </span>
     </div>
   )
@@ -84,15 +91,20 @@ export function AdaptivePage({ stateCode }: Props) {
   return (
     <PageWrapper header={header}>
       {!current && loading && (
-        <div className="text-center text-text-secondary text-sm py-12">
-          <RefreshCw size={20} className="animate-spin mx-auto mb-2" />
-          Choosing your next question…
+        <div className="text-center py-12">
+          <RefreshCw size={20} className="animate-spin mx-auto mb-3 text-orange" />
+          <p className="mono text-[11px] tracking-[0.12em] uppercase font-semibold text-text-secondary">
+            Choosing your next question…
+          </p>
         </div>
       )}
 
       {current && (
         <div className="space-y-4">
-          <p className="text-xs text-text-secondary uppercase tracking-wider">Chapter {current.chapter}</p>
+          <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Chapter {String(current.chapter).padStart(2, '0')}
+          </div>
           <QuestionCard
             question={current}
             selectedIds={selectedIds}
@@ -103,7 +115,7 @@ export function AdaptivePage({ stateCode }: Props) {
             <button
               onClick={handleSubmit}
               disabled={selectedIds.length === 0}
-              className="btn-primary w-full h-12 disabled:opacity-40"
+              className="btn-primary w-full h-12 text-sm font-semibold disabled:opacity-40"
             >
               Submit
             </button>
@@ -111,7 +123,7 @@ export function AdaptivePage({ stateCode }: Props) {
             <button
               onClick={handleNext}
               disabled={loading}
-              className="btn-primary w-full h-12"
+              className="btn-primary w-full h-12 text-sm font-semibold"
             >
               {loading ? 'Loading…' : 'Next Question →'}
             </button>
