@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { FlashCard } from './FlashCard'
-import { X, ThumbsUp, ThumbsDown, RotateCcw, Check, CornerDownLeft } from 'lucide-react'
+import { X, ThumbsUp, ThumbsDown, RotateCcw, CornerDownLeft } from 'lucide-react'
 
 interface Question {
   id: string
@@ -70,47 +70,65 @@ export function DrillMode({ questions, deckName, onExit, onComplete }: DrillMode
   }
 
   const remaining = deck.length
-  const masteredCount = questions.length - remaining + (gotItIds.has(current?.id) ? 0 : 0)
+  const pct = questions.length > 0 ? (gotItIds.size / questions.length) * 100 : 0
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-bg/90 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="flex items-center gap-3 sm:gap-4 px-4 pt-4 pb-3 max-w-[760px] mx-auto">
           <button
             onClick={onExit}
-            className="p-1 -ml-1 text-text-secondary hover:text-text-primary transition-colors"
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
           >
             <X size={20} />
           </button>
-          <div className="flex-1">
-            <p className="text-xs text-text-secondary font-medium truncate">{deckName} — Drill</p>
-            <div className="flex items-center gap-3 mt-1">
-              <span className="text-xs text-green-500 font-mono inline-flex items-center gap-1">
-                <Check size={11} strokeWidth={3} />
-                {gotItIds.size} mastered
-              </span>
-              <span className="text-xs text-text-secondary font-mono inline-flex items-center gap-1">
-                <CornerDownLeft size={11} />
-                {remaining} remaining
-              </span>
-            </div>
+
+          <div className="mono text-[13px] font-medium text-text-secondary flex-shrink-0">
+            <strong className="text-correct font-bold">{gotItIds.size}</strong>
+            <span className="mx-1">/</span>
+            {questions.length}
+            <span className="ml-1 text-text-muted text-[11px]">mastered</span>
           </div>
+
+          <div className="flex-1 min-w-0 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+            <div
+              className="h-full bg-correct rounded-full transition-all duration-300"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+
+          <div className="inline-flex items-center gap-1 mono text-[10px] font-semibold tracking-[0.1em] uppercase text-yellow flex-shrink-0">
+            <CornerDownLeft size={11} />
+            {remaining} left
+          </div>
+        </div>
+
+        <div className="px-4 pb-3 max-w-[760px] mx-auto">
+          <span className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted truncate block">
+            {deckName} · Drill
+          </span>
         </div>
       </div>
 
       {/* Card area */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-6 max-w-content mx-auto w-full">
-        {!flipped && (
-          <p className="text-xs text-text-secondary text-center mb-4 uppercase tracking-wider font-medium">
-            Think, then flip to check
-          </p>
-        )}
-        {flipped && (
-          <p className="text-xs text-green-500 text-center mb-4 uppercase tracking-wider font-medium">
-            How did you do?
-          </p>
-        )}
+      <div className="flex-1 flex flex-col justify-center px-4 py-6 max-w-[760px] mx-auto w-full">
+        <div className="inline-flex items-center justify-center gap-2 mb-5 mono text-[10px] font-semibold tracking-[0.14em] uppercase">
+          {flipped ? (
+            <>
+              <span className="w-[18px] h-[1.5px] rounded-full bg-correct" />
+              <span className="text-correct">How did you do?</span>
+              <span className="w-[18px] h-[1.5px] rounded-full bg-correct" />
+            </>
+          ) : (
+            <>
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+              <span className="text-orange">Think, then flip to check</span>
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            </>
+          )}
+        </div>
 
         <FlashCard
           question={current.questionText}
@@ -125,7 +143,7 @@ export function DrillMode({ questions, deckName, onExit, onComplete }: DrillMode
           {!flipped ? (
             <button
               onClick={() => setFlipped(true)}
-              className="btn-secondary w-full"
+              className="btn-secondary w-full h-11 text-sm font-semibold"
             >
               Reveal Answer
             </button>
@@ -133,18 +151,18 @@ export function DrillMode({ questions, deckName, onExit, onComplete }: DrillMode
             <div className="flex gap-3">
               <button
                 onClick={handleStillLearning}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-md
-                           bg-surface-2 border border-red-800/50 text-red-400
-                           hover:bg-red-900/20 active:scale-95 transition-all duration-100 font-medium"
+                className="flex-1 h-11 flex items-center justify-center gap-2 rounded-md
+                           bg-wrong/10 border border-wrong/40 text-wrong
+                           hover:bg-wrong hover:text-white active:scale-95 transition-all duration-100 text-sm font-semibold"
               >
                 <ThumbsDown size={16} />
                 Still Learning
               </button>
               <button
                 onClick={handleGotIt}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-md
-                           bg-green-500/10 border border-green-700 text-green-400
-                           hover:bg-green-500/20 active:scale-95 transition-all duration-100 font-medium"
+                className="flex-1 h-11 flex items-center justify-center gap-2 rounded-md
+                           bg-green-soft border border-correct/40 text-correct
+                           hover:bg-correct hover:text-white active:scale-95 transition-all duration-100 text-sm font-semibold"
               >
                 <ThumbsUp size={16} />
                 Got It!
@@ -157,9 +175,9 @@ export function DrillMode({ questions, deckName, onExit, onComplete }: DrillMode
         {totalSeen > 0 && (
           <button
             onClick={onExit}
-            className="flex items-center justify-center gap-1.5 mt-4 text-xs text-text-secondary hover:text-text-primary transition-colors mx-auto"
+            className="inline-flex items-center justify-center gap-1.5 mt-5 mono text-[10px] tracking-[0.1em] uppercase text-text-muted hover:text-white transition-colors mx-auto"
           >
-            <RotateCcw size={12} />
+            <RotateCcw size={11} />
             Exit session
           </button>
         )}
