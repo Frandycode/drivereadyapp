@@ -28,8 +28,50 @@ export function LandingPage({ onSignIn, onStartFree }: LandingPageProps) {
       <Hero onSignIn={onSignIn} onStartFree={onStartFree} />
       <TrustMarquee />
       <FeaturesStrip />
+      <CtaBand onStartFree={onStartFree} />
       <Footer />
     </div>
+  )
+}
+
+// ── CTA band (orange, blueprint texture) ──────────────────────────────────────
+
+function CtaBand({ onStartFree }: { onStartFree: () => void }) {
+  return (
+    <section className="relative overflow-hidden bg-orange text-center py-[clamp(60px,8vw,96px)] px-4 sm:px-10">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
+        aria-hidden="true"
+      />
+      <div className="relative z-[1] max-w-[780px] mx-auto">
+        <h2 className="display font-extrabold text-[clamp(30px,5vw,52px)] leading-[1.05] tracking-[-1.2px] text-navy-deep mb-4">
+          Ready to get your permit?
+        </h2>
+        <p className="text-navy-deep/70 text-base mb-7">
+          Free to start. No credit card. Oklahoma's smartest permit prep.
+        </p>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <button
+            onClick={onStartFree}
+            className="btn-navy inline-flex items-center gap-1.5 px-7 py-3.5 text-[15px]"
+          >
+            Start studying free
+            <FiArrowRight size={16} />
+          </button>
+          <button
+            onClick={onStartFree}
+            className="inline-flex items-center px-7 py-3.5 text-[15px] rounded-md border-[1.5px] border-navy-deep/35 text-navy-deep hover:bg-navy-deep/5 transition-colors"
+          >
+            How it works
+          </button>
+        </div>
+      </div>
+    </section>
   )
 }
 

@@ -16,6 +16,7 @@ import { useUserStore, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { AuthPage } from '@/app/auth'
+import { LandingPage } from '@/app/landing/LandingPage'
 import { ResetPasswordPage } from '@/app/ResetPasswordPage'
 import { OnboardingPage } from '@/app/onboarding/OnboardingPage'
 import { HomePage } from '@/app/index'
@@ -182,6 +183,7 @@ export default function App() {
   const [tokenReady, setTokenReady] = useState(false)
   const [tutorialOpen, setTutorialOpen] = useState(false)
   const [deleteOpen, setDeleteOpen]     = useState(false)
+  const [showAuth, setShowAuth]         = useState(false)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
@@ -253,7 +255,15 @@ export default function App() {
     )
   }
 
-  if (!user) return <AuthPage />
+  if (!user) {
+    if (showAuth) return <AuthPage />
+    return (
+      <LandingPage
+        onSignIn={() => setShowAuth(true)}
+        onStartFree={() => setShowAuth(true)}
+      />
+    )
+  }
 
   if (needsOnboarding) {
     return <OnboardingPage onDone={() => setAppScreen({ screen: 'home' })} />
