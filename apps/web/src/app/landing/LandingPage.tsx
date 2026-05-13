@@ -10,9 +10,11 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { FiArrowRight, FiZap, FiShield, FiCheck, FiX } from 'react-icons/fi'
+import { FiArrowRight, FiZap, FiShield, FiCheck, FiX, FiAward, FiCpu } from 'react-icons/fi'
 import { BsDiamondFill } from 'react-icons/bs'
+import { GiSwordSpade } from 'react-icons/gi'
 import { Footer } from '@/components/layout/Footer'
+import type { IconType } from 'react-icons'
 
 interface LandingPageProps {
   onSignIn: () => void
@@ -25,8 +27,100 @@ export function LandingPage({ onSignIn, onStartFree }: LandingPageProps) {
       <TopBar onSignIn={onSignIn} onStartFree={onStartFree} />
       <Hero onSignIn={onSignIn} onStartFree={onStartFree} />
       <TrustMarquee />
+      <FeaturesStrip />
       <Footer />
     </div>
+  )
+}
+
+// ── Features strip ────────────────────────────────────────────────────────────
+
+interface Feature {
+  Icon: IconType
+  iconTone: 'orange' | 'yellow' | 'green'
+  name: string
+  desc: string
+  meta: [string, string]
+}
+
+const FEATURES: Feature[] = [
+  {
+    Icon: FiCpu,
+    iconTone: 'orange',
+    name: 'AI that adapts',
+    desc:
+      'Readiness score updates after every session. Growth Areas auto-detect weak chapters and prioritize them in every drill.',
+    meta: ['Adaptive', 'Realtime'],
+  },
+  {
+    Icon: GiSwordSpade,
+    iconTone: 'yellow',
+    name: 'Six ways to study',
+    desc:
+      'Quiz, Puzzle, Flipper, Trivia, Bot Battle, Peer Battle — all pull from the same question bank, so variety never means gaps.',
+    meta: ['6 modes', '1 bank'],
+  },
+  {
+    Icon: FiAward,
+    iconTone: 'green',
+    name: 'Gamified progress',
+    desc:
+      'XP, levels, achievement badges, daily streaks with freeze tokens, and a readiness score that tells you when you are truly ready.',
+    meta: ['7 levels', 'Streak Freeze'],
+  },
+]
+
+const TONE_CLASS: Record<Feature['iconTone'], string> = {
+  orange: 'bg-orange-soft border-orange/30 text-orange',
+  yellow: 'bg-yellow-soft border-yellow-rim text-yellow',
+  green:  'bg-green-soft border-green/30 text-green-400',
+}
+
+function FeaturesStrip() {
+  return (
+    <section className="relative bg-navy-deep blueprint-grid border-b border-yellow-rim/20">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-10 py-[clamp(48px,7vw,84px)]">
+        {/* Section header */}
+        <div className="mb-10">
+          <div className="inline-flex items-center gap-2 mb-3 text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Why DriveReady
+          </div>
+          <h2 className="display font-extrabold text-[clamp(22px,2.6vw,32px)] leading-tight tracking-[-0.6px] text-white mb-2.5">
+            Built different.
+            <br />
+            Built to pass.
+          </h2>
+          <p className="text-text-secondary font-light leading-relaxed max-w-[560px]">
+            Not a quiz app with a paywall. A full learning system designed around how teenagers
+            actually retain information.
+          </p>
+        </div>
+
+        {/* Cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {FEATURES.map(({ Icon, iconTone, name, desc, meta }) => (
+            <div
+              key={name}
+              className="relative overflow-hidden bg-navy-card border border-border rounded-2xl p-6 transition-colors hover:border-orange/40"
+            >
+              <div
+                className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 ${TONE_CLASS[iconTone]}`}
+              >
+                <Icon size={22} />
+              </div>
+              <h3 className="display font-bold text-base text-white mb-1.5">{name}</h3>
+              <p className="text-sm text-text-secondary leading-relaxed mb-4">{desc}</p>
+              <div className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted flex items-center gap-2.5">
+                <span>{meta[0]}</span>
+                <span className="w-1 h-1 rounded-full bg-text-faint" />
+                <span>{meta[1]}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
