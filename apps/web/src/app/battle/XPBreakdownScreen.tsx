@@ -82,28 +82,43 @@ export function XPBreakdownScreen({
   }, [])
 
   const outcomeLabel  = outcome === 'win' ? 'Victory' : outcome === 'tie' ? "It's a Tie" : 'Defeat'
-  const outcomeColor  = outcome === 'win' ? 'text-green-500' : outcome === 'tie' ? 'text-gold-500' : 'text-red-400'
+  const outcomeColor  = outcome === 'win' ? 'text-correct' : outcome === 'tie' ? 'text-yellow' : 'text-wrong'
   const OutcomeIcon   = outcome === 'win'
-    ? <GiLaurelsTrophy size={60} className="text-gold-500" />
+    ? <GiLaurelsTrophy size={56} className="text-yellow" />
     : outcome === 'tie'
-    ? <FaHandshake size={60} className="text-info" />
-    : <IoSad size={60} className="text-red-400" />
-
-  const earnedItems   = items.filter((i) => i.earned)
+    ? <FaHandshake size={56} className="text-info" />
+    : <IoSad size={56} className="text-wrong" />
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-6">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      <div
+        className="absolute top-0 left-0 right-0 h-[3px]"
+        style={{
+          background:
+            'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+        }}
+      />
+
       {/* Outcome */}
       <div className="text-center mb-8">
-        <div className="flex justify-center mb-3">{OutcomeIcon}</div>
-        <h2 className={`font-display text-3xl font-bold ${outcomeColor}`}>{outcomeLabel}</h2>
-        <p className="text-text-secondary text-sm mt-1">
-          {playerScore} – {opponentScore} &nbsp;·&nbsp; {totalQuestions} questions
+        <div className="flex justify-center mb-4 animate-fade-up">{OutcomeIcon}</div>
+        <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+          XP breakdown
+        </div>
+        <h2 className={`display font-extrabold text-[clamp(28px,4.5vw,40px)] leading-[1.02] tracking-[-1px] ${outcomeColor}`}>
+          {outcomeLabel}
+        </h2>
+        <p className="mono text-[11px] tracking-[0.1em] uppercase text-text-muted mt-2">
+          <span className="text-white font-bold">{playerScore}</span> – <span className="text-text-secondary">{opponentScore}</span>
+          <span className="mx-2 text-text-faint">·</span>
+          {totalQuestions} questions
         </p>
       </div>
 
       {/* XP breakdown card */}
-      <div className="w-full max-w-xs card mb-5 space-y-2">
+      <div className="w-full max-w-sm card mb-5 space-y-2.5 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-yellow" />
         {items.map((item, i) => (
           <div
             key={i}
@@ -112,41 +127,41 @@ export function XPBreakdownScreen({
             }`}
             style={{ transitionDelay: `${i * 50}ms` }}
           >
-            <span className={`text-sm ${item.earned ? 'text-text-primary' : 'text-text-secondary line-through'}`}>
+            <span className={`text-[13px] ${item.earned ? 'text-text-primary' : 'text-text-muted line-through'}`}>
               {item.label}
             </span>
-            <span className={`font-mono text-sm font-bold ${item.earned ? 'text-green-500' : 'text-text-secondary'}`}>
-              {item.earned ? `+${item.xp}` : `+${item.xp}`}
+            <span className={`mono text-sm font-bold tabular-nums ${item.earned ? 'text-correct' : 'text-text-muted'}`}>
+              +{item.xp}
             </span>
           </div>
         ))}
 
         {showTotal && (
-          <div className="pt-2 mt-1 border-t border-border flex items-center justify-between">
-            <span className="font-medium text-text-primary">Total XP earned</span>
-            <span className="font-mono font-bold text-green-500 text-lg">+{totalXP}</span>
+          <div className="pt-3 mt-1 border-t border-white/[0.06] flex items-center justify-between animate-fade-up">
+            <span className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-yellow">Total XP earned</span>
+            <span className="mono font-bold text-yellow text-xl tabular-nums">+{totalXP}</span>
           </div>
         )}
       </div>
 
       {/* Level progress */}
       {showLevel && (
-        <div className="w-full max-w-xs">
+        <div className="w-full max-w-sm animate-fade-up">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-text-secondary">Level {levelCurrent}</span>
-            <span className="text-xs text-text-secondary font-mono">
+            <span className="mono text-[10px] tracking-[0.12em] uppercase font-semibold text-orange">Level {levelCurrent}</span>
+            <span className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted tabular-nums">
               {Math.min(xpAfter, levelNext)} / {levelNext} XP
             </span>
           </div>
-          <div className="h-2.5 bg-surface-3 rounded-full overflow-hidden">
+          <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
             <div
-              className="h-full bg-green-500 rounded-full transition-all duration-1000 ease-out"
+              className="h-full bg-orange-yellow rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${barWidth}%` }}
             />
           </div>
           {levelCurrent > levelBefore && (
-            <p className="text-center text-green-500 text-sm font-bold mt-3 animate-pulse">
-              ⬆ Level Up! You're now Level {levelCurrent}
+            <p className="text-center text-yellow text-sm font-bold mt-3 animate-pulse mono tracking-[0.05em] uppercase">
+              ⬆ Level Up! You&apos;re now Level {levelCurrent}
             </p>
           )}
         </div>
@@ -154,7 +169,7 @@ export function XPBreakdownScreen({
 
       <button
         onClick={onDone}
-        className="mt-8 text-sm text-text-secondary hover:text-text-primary underline transition-colors"
+        className="mt-8 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary hover:text-white underline transition-colors"
       >
         Skip
       </button>
