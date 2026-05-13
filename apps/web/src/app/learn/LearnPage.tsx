@@ -11,8 +11,9 @@
  */
 
 import { useQuery, gql } from '@apollo/client'
+import { FiCheck, FiLock } from 'react-icons/fi'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { BookOpen, Lock, ChevronRight, CheckCircle } from 'lucide-react'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'
 import { useMinLoadTime } from '@driveready/hooks'
 import { LearnPageSkeleton } from '@/components/ui/Skeleton'
@@ -38,8 +39,6 @@ const GET_CHAPTERS = gql`
   }
 `
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface Chapter {
   id: string
   number: number
@@ -61,156 +60,247 @@ interface LearnPageProps {
   onChapterSelect: (id: string, number: number, title: string) => void
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
-  const { data, loading, error } = useQuery(GET_CHAPTERS, {
-    variables: { stateCode },
-  })
-
+  const { data, loading, error } = useQuery(GET_CHAPTERS, { variables: { stateCode } })
   const isLoading = useMinLoadTime(loading)
 
   const chapters: Chapter[] = data?.chapters ?? []
   const progressList: Progress[] = data?.myProgress ?? []
-
   const progressMap = progressList.reduce<Record<number, Progress>>((acc, p) => {
     acc[p.chapter] = p
     return acc
   }, {})
 
+  const totalLessons = progressList.reduce((sum, p) => sum + p.lessonsTotal, 0)
+  const completedChapters = chapters.filter((ch) => {
+    const p = progressMap[ch.number]
+    return p && p.lessonsCompleted > 0 && p.lessonsCompleted >= p.lessonsTotal
+  }).length
+
   const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <BookOpen size={20} className="text-green-500" />
-      <h1 className="font-display text-lg font-bold text-text-primary">Learn</h1>
-    </div>
+    <PageHeader
+      eyebrow="Curriculum · Oklahoma DPS"
+      title={
+        <>
+          Every chapter, <em className="not-italic text-orange">every sign,</em>
+          <br />every rule.
+        </>
+      }
+      sub="Twelve chapters, bite-sized cards, end-of-chapter pop quizzes. Bookmark anything tricky and the AI will keep it warm."
+      stats={[
+        { label: 'Chapters',  value: chapters.length || '—' },
+        { label: 'Lessons',   value: totalLessons || '—',          tone: 'gold' },
+        { label: 'Completed', value: completedChapters,            tone: 'orange' },
+      ]}
+      slab="yellow"
+    />
   )
 
   if (isLoading) {
     return (
-      <PageWrapper header={header}>
-        <LearnPageSkeleton />
+      <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+        {header}
+        <div className="bg-navy blueprint-grid">
+          <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10">
+            <LearnPageSkeleton />
+          </div>
+        </div>
       </PageWrapper>
     )
   }
 
   if (error) {
     return (
-      <PageWrapper header={header}>
-        <div className="card border-wrong/30 mt-4">
-          <p className="text-wrong text-sm">Failed to load chapters. Check your connection.</p>
+      <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+        {header}
+        <div className="bg-navy blueprint-grid">
+          <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10">
+            <div className="card border-wrong/30">
+              <p className="text-wrong text-sm">Failed to load chapters. Check your connection.</p>
+            </div>
+          </div>
         </div>
       </PageWrapper>
     )
   }
 
-  const completedCount = chapters.filter((ch) => {
-    const p = progressMap[ch.number]
-    return p && p.lessonsCompleted > 0 && p.lessonsCompleted >= p.lessonsTotal
-  }).length
+  return (
+    <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+      {header}
+
+      <div className="bg-navy blueprint-grid">
+        <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10 sm:py-14">
+
+          {/* Section header */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 mb-3 text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+              Chapters
+            </div>
+            <h2 className="display font-extrabold text-[clamp(22px,2.6vw,32px)] leading-tight tracking-[-0.6px] text-white mb-2.5">
+              Work top to bottom, or pick your gap.
+            </h2>
+            <p className="text-text-secondary font-light leading-relaxed max-w-[560px]">
+              Each chapter ends with a quick pop quiz. Hit 80% to mark it done — anything red is fair game for adaptive practice later.
+            </p>
+          </div>
+
+          {/* Chapter grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {chapters.map((chapter, index) => {
+              const progress = progressMap[chapter.number]
+              const lessonsCompleted = progress?.lessonsCompleted ?? 0
+              const lessonsTotal     = progress?.lessonsTotal ?? 0
+              const isStarted        = lessonsCompleted > 0
+              const isComplete       = isStarted && lessonsTotal > 0 && lessonsCompleted >= lessonsTotal
+              const prevProgress     = index > 0 ? progressMap[chapters[index - 1].number] : null
+              const isLocked         = index > 0 && !prevProgress && !isStarted
+              const pct              = lessonsTotal > 0 ? Math.round((lessonsCompleted / lessonsTotal) * 100) : 0
+
+              return (
+                <ChapterCard
+                  key={chapter.id}
+                  chapter={chapter}
+                  lessonsCompleted={lessonsCompleted}
+                  lessonsTotal={lessonsTotal}
+                  pct={pct}
+                  isLocked={isLocked}
+                  isStarted={isStarted}
+                  isComplete={isComplete}
+                  delaySec={(index % 6) * 0.05}
+                  onClick={() => !isLocked && onChapterSelect(chapter.id, chapter.number, chapter.title)}
+                />
+              )
+            })}
+          </div>
+
+        </div>
+      </div>
+    </PageWrapper>
+  )
+}
+
+// ── Chapter card ─────────────────────────────────────────────────────────────
+
+interface ChapterCardProps {
+  chapter: Chapter
+  lessonsCompleted: number
+  lessonsTotal: number
+  pct: number
+  isLocked: boolean
+  isStarted: boolean
+  isComplete: boolean
+  delaySec: number
+  onClick: () => void
+}
+
+function ChapterCard({
+  chapter,
+  lessonsCompleted,
+  lessonsTotal,
+  pct,
+  isLocked,
+  isStarted,
+  isComplete,
+  delaySec,
+  onClick,
+}: ChapterCardProps) {
+  const status: 'done' | 'active' | 'locked' | 'open' = isComplete
+    ? 'done'
+    : isLocked
+      ? 'locked'
+      : isStarted
+        ? 'active'
+        : 'open'
 
   return (
-    <PageWrapper header={header}>
-      {/* Summary row */}
-      <div className="flex items-center justify-between mb-4 mt-1">
-        <p className="text-text-secondary text-sm">
-          {completedCount} of {chapters.length} chapters started
-        </p>
-        <span className="text-xs text-green-500 bg-green-500/10 border border-green-700/40 px-2 py-0.5 rounded-full">
-          Oklahoma
-        </span>
+    <button
+      onClick={onClick}
+      disabled={isLocked}
+      style={{ animationDelay: `${delaySec}s` }}
+      className={`group relative flex flex-col text-left rounded-lg overflow-hidden bg-surface-2 border transition-all duration-200 animate-fade-up
+        ${isLocked
+          ? 'opacity-50 cursor-not-allowed border-border'
+          : 'border-border hover:bg-surface-3 hover:border-orange/40 hover:-translate-y-0.5 cursor-pointer'
+        }`}
+    >
+      {/* Head */}
+      <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-4 border-b border-white/[0.06]">
+        <div className="min-w-0">
+          <div className="mono text-[11px] text-text-muted uppercase tracking-[0.1em] mb-1.5">
+            Chapter {String(chapter.number).padStart(2, '0')}
+          </div>
+          <div className="display font-bold text-base leading-tight tracking-[-0.2px] text-white">
+            {chapter.title}
+          </div>
+        </div>
+        <div className="mono text-[34px] font-bold text-orange/50 leading-none flex-shrink-0">
+          {String(chapter.number).padStart(2, '0')}
+        </div>
       </div>
 
-      {/* Chapter list */}
-      <div className="space-y-3">
-        {chapters.map((chapter, index) => {
-          const progress = progressMap[chapter.number]
-          const lessonsCompleted = progress?.lessonsCompleted ?? 0
-          const lessonsTotal = progress?.lessonsTotal ?? 0
-          const isStarted = lessonsCompleted > 0
-          const isComplete = isStarted && lessonsTotal > 0 && lessonsCompleted >= lessonsTotal
+      {/* Body */}
+      <div className="flex-1 flex flex-col px-5 py-4">
+        <div className="flex items-center gap-3 mb-3 mono text-[10px] text-text-muted uppercase tracking-[0.08em]">
+          <span>{lessonsTotal || '—'} lessons</span>
+          <span className="w-[3px] h-[3px] rounded-full bg-text-faint" />
+          <span>~{Math.max(8, lessonsTotal * 2)} min</span>
+        </div>
+        {chapter.description && (
+          <p className="text-[13px] text-text-secondary leading-relaxed mb-4 flex-1">
+            {chapter.description}
+          </p>
+        )}
 
-          // Lock chapters after the first if nothing started yet
-          // (only lock if previous chapter hasn't been touched at all)
-          const prevProgress = index > 0 ? progressMap[chapters[index - 1].number] : null
-          const isLocked = index > 0 && !prevProgress && !isStarted
-
-          const pct = lessonsTotal > 0 ? Math.round((lessonsCompleted / lessonsTotal) * 100) : 0
-
-          return (
-            <button
-              key={chapter.id}
-              onClick={() => !isLocked && onChapterSelect(chapter.id, chapter.number, chapter.title)}
-              disabled={isLocked}
-              className={`w-full text-left card transition-all duration-150 ${
-                isLocked
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:border-green-700 hover:bg-surface-2 active:scale-[0.99]'
-              }`}
-            >
-              <div className="flex items-start gap-3">
-                {/* Chapter number badge */}
-                <div className={`flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center text-sm font-bold font-mono ${
-                  isComplete
-                    ? 'bg-green-500/20 text-green-500 border border-green-700/50'
-                    : isStarted
-                    ? 'bg-surface-3 text-text-primary border border-border'
-                    : 'bg-surface-2 text-text-secondary border border-border'
-                }`}>
-                  {isComplete ? <CheckCircle size={16} className="text-green-500" /> : chapter.number}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-medium text-text-primary text-sm leading-tight">
-                      {chapter.title}
-                    </h3>
-                    {isLocked ? (
-                      <Lock size={14} className="text-text-secondary flex-shrink-0" />
-                    ) : (
-                      <ChevronRight size={16} className="text-text-secondary flex-shrink-0" />
-                    )}
-                  </div>
-
-                  {chapter.description && (
-                    <p className="text-text-secondary text-xs mt-0.5 line-clamp-1">
-                      {chapter.description}
-                    </p>
-                  )}
-
-                  {/* Progress bar */}
-                  <div className="mt-2.5">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-text-secondary">
-                        {isStarted ? `${lessonsCompleted} / ${lessonsTotal} lessons` : 'Not started'}
-                      </span>
-                      {isStarted && (
-                        <span className={`text-xs font-mono font-medium ${
-                          isComplete ? 'text-green-500' : 'text-text-secondary'
-                        }`}>
-                          {pct}%
-                        </span>
-                      )}
-                    </div>
-                    <div className="h-1.5 bg-surface-3 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          isComplete ? 'bg-green-500' : 'bg-green-700'
-                        }`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </button>
-          )
-        })}
+        {/* Foot */}
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
+          <div className="flex-1 min-w-0">
+            <div className="mono text-[11px] font-semibold text-yellow mb-1.5">
+              {lessonsCompleted} / {lessonsTotal || '—'} lessons
+            </div>
+            <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  isComplete ? 'bg-correct' : 'bg-orange-yellow'
+                }`}
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+          </div>
+          <StatusChip status={status} />
+        </div>
       </div>
+    </button>
+  )
+}
 
-      <div className="h-4" />
-    </PageWrapper>
+function StatusChip({ status }: { status: 'done' | 'active' | 'locked' | 'open' }) {
+  const base =
+    'inline-flex items-center gap-1 mono text-[10px] tracking-[0.1em] uppercase px-2 py-1 rounded-md flex-shrink-0 border'
+  if (status === 'done') {
+    return (
+      <span className={`${base} bg-green-soft text-correct border-correct/30`}>
+        <FiCheck size={10} strokeWidth={3} /> Done
+      </span>
+    )
+  }
+  if (status === 'active') {
+    return (
+      <span className={`${base} bg-orange-soft text-orange border-orange/30`}>
+        In progress
+      </span>
+    )
+  }
+  if (status === 'locked') {
+    return (
+      <span className={`${base} bg-white/[0.04] text-text-muted border-strong`}>
+        <FiLock size={10} /> Locked
+      </span>
+    )
+  }
+  return (
+    <span className={`${base} bg-white/[0.04] text-text-muted border-strong`}>Open</span>
   )
 }
