@@ -36,6 +36,7 @@ import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
 import { ProfilePage } from '@/app/profile/ProfilePage'
 import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
+import { SettingsPage } from '@/app/settings/SettingsPage'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
 import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 
@@ -164,6 +165,7 @@ type AppScreen =
   | { screen: 'profile' }
   | { screen: 'tutor' }
   | { screen: 'adaptive' }
+  | { screen: 'settings' }
 
 const RECORD_CHAPTER_POP_QUIZ_COMPLETED = gql`
   mutation RecordChapterPopQuizCompleted($chapterId: ID!) {
@@ -215,6 +217,7 @@ export default function App() {
     if (to === '/profile')   setAppScreen({ screen: 'profile' })
     if (to === '/tutor')     setAppScreen({ screen: 'tutor' })
     if (to === '/adaptive')  setAppScreen({ screen: 'adaptive' })
+    if (to === '/settings')  setAppScreen({ screen: 'settings' })
 
     const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
     if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1], number: 0, title: '' })
@@ -412,9 +415,17 @@ export default function App() {
         onExam={() => setAppScreen({ screen: 'exam' })}
       />
     ),
-    profile: <ProfilePage />,
+    profile: <ProfilePage onNavigate={navigate} />,
     tutor: <TutorPage />,
     adaptive: <AdaptivePage stateCode={user?.stateCode ?? 'ok'} />,
+    settings: (
+      <SettingsPage
+        onNavigate={navigate}
+        onOpenTutorial={() => {/* wired in H.S4 */}}
+        onSignOut={() => {/* wired in H.S5 */}}
+        onDeleteAccount={() => {/* wired in H.S7 */}}
+      />
+    ),
   }
 
   const pageKey = appScreen.screen as string

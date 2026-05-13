@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, useQuery, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw } from 'lucide-react'
+import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { clearAuthToken } from '@driveready/api-client'
 
@@ -77,7 +77,11 @@ const VERIFY_PHONE_OTP = gql`
 
 type PhoneStep = 'idle' | 'enter-number' | 'enter-code' | 'done'
 
-export function ProfilePage() {
+interface ProfilePageProps {
+  onNavigate?: (path: string) => void
+}
+
+export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
   const { user, clearUser, setUser } = useUserStore()
 
   // Email change
@@ -251,7 +255,19 @@ export function ProfilePage() {
   return (
     <div className="min-h-dvh bg-bg pb-24">
       <div className="px-4 pt-12 pb-6 max-w-lg mx-auto">
-        <h1 className="font-display text-2xl font-bold text-text-primary mb-6">Profile</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="font-display text-2xl font-bold text-text-primary">Profile</h1>
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('/settings')}
+              className="p-2 rounded-md text-text-secondary hover:text-white hover:bg-surface-2 transition-colors"
+              aria-label="Settings"
+              title="Settings"
+            >
+              <SettingsIcon size={20} />
+            </button>
+          )}
+        </div>
 
         {/* Avatar + name */}
         <div className="flex items-center gap-4 bg-surface border border-border rounded-2xl p-4 mb-4">
