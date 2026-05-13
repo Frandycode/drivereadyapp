@@ -55,38 +55,44 @@ export function FreeStudy({ questions, deckName, onExit, onComplete }: FreeStudy
   const pct = Math.round(((index + 1) / questions.length) * 100)
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-bg/90 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="flex items-center gap-3 sm:gap-4 px-4 pt-4 pb-3 max-w-[760px] mx-auto">
           <button
             onClick={onExit}
-            className="p-1 -ml-1 text-text-secondary hover:text-text-primary transition-colors"
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
           >
             <X size={20} />
           </button>
-          <div className="flex-1">
-            <p className="text-xs text-text-secondary font-medium truncate">{deckName}</p>
-            <div className="flex items-center gap-2 mt-1">
-              <div className="flex-1 h-1 bg-surface-3 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-green-500 rounded-full transition-all duration-300"
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-              <span className="text-xs font-mono text-text-secondary">
-                {index + 1}/{questions.length}
-              </span>
-            </div>
+
+          <div className="mono text-[13px] font-medium text-text-secondary flex-shrink-0">
+            <strong className="text-white font-bold">{index + 1}</strong>
+            <span className="mx-1">/</span>
+            {questions.length}
+          </div>
+
+          <div className="flex-1 min-w-0 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+            <div
+              className="h-full bg-orange rounded-full transition-all duration-300"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+
+          <div className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted truncate max-w-[140px] hidden sm:block">
+            {deckName}
           </div>
         </div>
       </div>
 
       {/* Card area */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-6 max-w-content mx-auto w-full">
-        <p className="text-xs text-text-secondary text-center mb-4 uppercase tracking-wider font-medium">
-          Free Study — no scoring
-        </p>
+      <div className="flex-1 flex flex-col justify-center px-4 py-6 max-w-[760px] mx-auto w-full">
+        <div className="inline-flex items-center justify-center gap-2 mb-5 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+          Free study · no scoring
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+        </div>
 
         <FlashCard
           question={current.questionText}
@@ -101,14 +107,14 @@ export function FreeStudy({ questions, deckName, onExit, onComplete }: FreeStudy
           <button
             onClick={goPrev}
             disabled={index === 0}
-            className="btn-secondary flex items-center gap-2 flex-1 justify-center disabled:opacity-30"
+            className="btn-secondary h-11 flex items-center gap-2 flex-1 justify-center disabled:opacity-30 text-sm font-semibold"
           >
             <ArrowLeft size={16} />
             Prev
           </button>
           <button
             onClick={goNext}
-            className="btn-primary flex items-center gap-2 flex-1 justify-center"
+            className="btn-primary h-11 flex items-center gap-2 flex-1 justify-center text-sm font-semibold"
           >
             {isLast ? 'Finish' : 'Next'}
             <ArrowRight size={16} />
