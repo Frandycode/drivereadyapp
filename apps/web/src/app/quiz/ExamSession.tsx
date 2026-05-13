@@ -137,69 +137,93 @@ function ExamResults({
   }, [records, questions])
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
-          <button onClick={onExit} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="flex items-center gap-3 max-w-[760px] mx-auto px-4 pt-4 pb-3">
+          <button
+            onClick={onExit}
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
+          >
             <X size={20} />
           </button>
-          <h1 className="font-display text-lg font-bold text-text-primary">Exam Results</h1>
+          <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-yellow" />
+            Practice exam · results
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 px-4 pt-6 pb-8 max-w-content mx-auto w-full space-y-6">
+      <div className="flex-1 px-4 pt-8 pb-10 max-w-[760px] mx-auto w-full space-y-5">
 
         {/* Verdict */}
         <div className={clsx(
-          'card text-center border-2',
-          passed ? 'border-green-500 bg-green-500/5' : 'border-red-600 bg-red-500/5'
+          'card text-center relative overflow-hidden border-2',
+          passed ? 'border-correct/40 bg-green-soft' : 'border-wrong/40 bg-wrong/5'
         )}>
           <div className={clsx(
-            'w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4',
-            passed ? 'bg-green-500/20 border border-green-700' : 'bg-red-500/15 border border-red-800'
+            'absolute top-0 left-0 right-0 h-[3px]',
+            passed ? 'bg-correct' : 'bg-wrong'
+          )} />
+
+          <div className={clsx(
+            'w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 mt-1 border',
+            passed ? 'bg-green-soft border-correct/40' : 'bg-wrong/10 border-wrong/40'
           )}>
             {passed
-              ? <CheckCircle size={32} className="text-green-500" />
-              : <XCircle    size={32} className="text-red-400" />
+              ? <CheckCircle size={26} className="text-correct" strokeWidth={2.5} />
+              : <XCircle    size={26} className="text-wrong"   strokeWidth={2.5} />
             }
           </div>
 
+          <div className={clsx(
+            'inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.16em] uppercase',
+            passed ? 'text-correct' : 'text-wrong'
+          )}>
+            <span className={clsx('w-[14px] h-[1.5px] rounded-full', passed ? 'bg-correct' : 'bg-wrong')} />
+            {passed ? 'Verdict · pass' : 'Verdict · fail'}
+          </div>
+
           <h2 className={clsx(
-            'font-display text-4xl font-bold mb-1',
-            passed ? 'text-green-500' : 'text-red-400'
+            'display font-extrabold text-[clamp(40px,6vw,56px)] leading-[0.95] tracking-[-2px] mb-3',
+            passed ? 'text-correct' : 'text-wrong'
           )}>
             {passed ? 'PASS' : 'FAIL'}
           </h2>
 
-          <p className="font-mono text-5xl font-bold text-text-primary my-3">
-            {correct}<span className="text-text-secondary text-3xl">/{EXAM_TOTAL}</span>
+          <p className="mono font-bold text-[44px] tabular-nums leading-none text-white mb-2">
+            {correct}<span className="text-text-muted text-[26px]">/{EXAM_TOTAL}</span>
           </p>
 
           <p className={clsx(
-            'text-sm font-medium',
-            passed ? 'text-green-400' : 'text-text-secondary'
+            'mono text-[11px] tracking-[0.1em] uppercase font-semibold',
+            passed ? 'text-correct' : 'text-text-secondary'
           )}>
             {pct}% · {passed
-              ? 'Great work — you\'re ready!'
+              ? "You're ready"
               : `${EXAM_PASS} required to pass`
             }
           </p>
 
           {!passed && (
-            <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-text-secondary">
-              <AlertTriangle size={12} className="text-gold-500" />
-              <span>Need {EXAM_PASS - correct} more correct answer{EXAM_PASS - correct !== 1 ? 's' : ''} to pass</span>
+            <div className="mt-3 inline-flex items-center justify-center gap-1.5 mono text-[10px] tracking-[0.08em] uppercase text-yellow font-semibold">
+              <AlertTriangle size={11} />
+              Need {EXAM_PASS - correct} more correct
             </div>
           )}
         </div>
 
         {/* AI coaching */}
         {(coaching || coachingLoading) && (
-          <div className="card-elevated border border-green-500/30">
-            <p className="text-xs text-green-500 font-medium uppercase tracking-wider mb-2">AI Coach</p>
+          <div className="card-elevated border border-orange/30 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+            <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[14px] h-[1.5px] rounded-full bg-orange" />
+              AI Coach
+            </div>
             {coachingLoading && !coaching ? (
-              <p className="text-sm text-text-secondary italic">Reviewing your exam…</p>
+              <p className="text-[13px] text-text-secondary italic">Reviewing your exam…</p>
             ) : (
               <p className="text-sm text-text-primary leading-relaxed">{coaching}</p>
             )}
@@ -208,35 +232,36 @@ function ExamResults({
 
         {/* Per-chapter breakdown */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-3">
-            Chapter Breakdown
-          </h2>
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Chapter breakdown
+          </div>
           <div className="space-y-2">
             {chapterStats.map(({ chapter, correct: chCorrect, total }) => {
               const chPct  = total > 0 ? Math.round((chCorrect / total) * 100) : 0
               const weak   = chPct < 70
               return (
                 <div key={chapter} className="card py-3">
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1.5 gap-2">
                     <div className="flex items-center gap-2 min-w-0">
-                      {weak && <AlertTriangle size={12} className="text-gold-500 flex-shrink-0" />}
+                      {weak && <AlertTriangle size={11} className="text-yellow flex-shrink-0" />}
                       <span className={clsx(
-                        'text-sm font-medium truncate',
-                        weak ? 'text-gold-500' : 'text-text-primary'
+                        'text-[13px] font-medium truncate',
+                        weak ? 'text-yellow' : 'text-white'
                       )}>
-                        Ch. {chapter}
-                        {chapterTitles[chapter] ? ` — ${chapterTitles[chapter]}` : ''}
+                        <span className="mono text-[11px] text-text-muted mr-1">Ch. {String(chapter).padStart(2, '0')}</span>
+                        {chapterTitles[chapter] ?? ''}
                       </span>
                     </div>
-                    <span className="font-mono text-xs text-text-secondary flex-shrink-0 ml-2">
+                    <span className="mono text-[11px] font-bold tabular-nums text-text-secondary flex-shrink-0">
                       {chCorrect}/{total}
                     </span>
                   </div>
-                  <div className="h-1.5 bg-surface-3 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                     <div
                       className={clsx(
                         'h-full rounded-full transition-all duration-500',
-                        chPct >= 80 ? 'bg-green-500' : chPct >= 60 ? 'bg-gold-500' : 'bg-red-500'
+                        chPct >= 80 ? 'bg-correct' : chPct >= 60 ? 'bg-yellow' : 'bg-orange'
                       )}
                       style={{ width: `${chPct}%` }}
                     />
@@ -248,17 +273,17 @@ function ExamResults({
         </section>
 
         {/* Actions */}
-        <div className="space-y-3">
+        <div className="space-y-3 pt-2">
           <button
             onClick={onRetake}
-            className="btn-primary w-full h-12 text-base font-semibold flex items-center justify-center gap-2"
+            className="btn-primary w-full h-12 text-sm font-semibold flex items-center justify-center gap-2"
           >
             <RotateCcw size={16} />
             Retake Exam
           </button>
           <button
             onClick={onExit}
-            className="btn-secondary w-full h-12 flex items-center justify-center gap-2"
+            className="btn-secondary w-full h-12 text-sm font-semibold flex items-center justify-center gap-2"
           >
             <Home size={16} />
             Back to Challenge
@@ -398,36 +423,39 @@ export function ExamSession({ onExit }: ExamSessionProps) {
 
   const current   = questions[qIndex]
   const timerPct  = timeLeft / EXAM_DURATION
-  const timerCls  = timerPct > 0.25 ? 'text-text-primary' : timerPct > 0.1 ? 'text-gold-500 animate-pulse' : 'text-red-400 animate-pulse'
+  const timerCls  = timerPct > 0.25 ? 'text-white' : timerPct > 0.1 ? 'text-yellow animate-pulse' : 'text-orange animate-pulse'
   const answered  = records.length
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="flex items-center gap-3 max-w-[760px] mx-auto px-4 pt-4 pb-3">
           <button
             onClick={() => setExitConfirm(true)}
-            className="p-1 -ml-1 text-text-secondary hover:text-text-primary flex-shrink-0"
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
           >
             <X size={20} />
           </button>
 
           {/* Progress */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-text-secondary font-medium">
-                Q {qIndex + 1} of {questions.length}
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="mono text-[11px] text-text-secondary font-medium tabular-nums">
+                <strong className="text-white font-bold">{qIndex + 1}</strong>
+                <span className="mx-1">/</span>
+                {questions.length}
               </span>
-              <span className={clsx('flex items-center gap-1 text-xs font-mono font-bold', timerCls)}>
+              <span className={clsx('inline-flex items-center gap-1 mono text-[11px] font-bold tabular-nums', timerCls)}>
                 <Clock size={11} />
                 {formatTime(timeLeft)}
               </span>
             </div>
-            <div className="h-1 bg-surface-3 rounded-full overflow-hidden">
+            <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden">
               <div
-                className="h-full bg-green-500 rounded-full transition-all duration-300"
+                className="h-full bg-orange rounded-full transition-all duration-300"
                 style={{ width: `${(answered / EXAM_TOTAL) * 100}%` }}
               />
             </div>
@@ -436,46 +464,51 @@ export function ExamSession({ onExit }: ExamSessionProps) {
       </div>
 
       {/* ── Question ───────────────────────────────────────────────────────── */}
-      <div className="px-4 pt-6 max-w-content mx-auto w-full flex-1 flex flex-col">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs font-medium uppercase tracking-wider text-text-secondary">
-            Practice Exam
-          </span>
-          <span className="text-xs text-text-secondary">·</span>
-          <span className="text-xs text-text-secondary">
-            Ch. {current?.chapter}
-          </span>
+      <div className="px-4 pt-6 max-w-[760px] mx-auto w-full flex-1 flex flex-col">
+        <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-yellow" />
+          <span className="text-yellow">Practice exam</span>
+          <span className="text-text-faint">·</span>
+          <span className="text-text-muted">Ch. {String(current?.chapter ?? 0).padStart(2, '0')}</span>
         </div>
 
-        <div className="card-elevated mb-5">
-          <p className="text-text-primary text-base font-medium leading-relaxed">
+        <div className="card-elevated mb-5 relative overflow-hidden">
+          <div
+            className="absolute top-0 left-0 right-0 h-[3px]"
+            style={{
+              background:
+                'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+            }}
+          />
+          <p className="display text-white text-[clamp(15px,1.8vw,18px)] font-semibold leading-snug tracking-[-0.2px] pt-1">
             {current?.questionText}
           </p>
         </div>
 
         {/* ── Answers ──────────────────────────────────────────────────────── */}
         <div className="space-y-2 flex-1">
-          {shuffledAnswers.map((answer) => {
+          {shuffledAnswers.map((answer, idx) => {
             const isSelected = selectedId === answer.id
+            const letter     = String.fromCharCode(65 + idx)
             return (
               <button
                 key={answer.id}
                 onClick={() => { if (!advancing) setSelectedId(answer.id) }}
                 disabled={advancing}
                 className={clsx(
-                  'w-full text-left rounded-lg border px-4 py-3 transition-all duration-150 flex items-center gap-3',
+                  'w-full text-left rounded-md border px-4 py-3 transition-all duration-150 flex items-center gap-3',
                   isSelected
-                    ? 'bg-green-500/10 border-green-500'
-                    : 'bg-surface border-border hover:border-green-700 hover:bg-surface-2',
+                    ? 'bg-orange-soft border-orange'
+                    : 'bg-surface border-border hover:border-orange/40 hover:bg-surface-2',
                 )}
               >
-                <div className={clsx(
-                  'w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center',
-                  isSelected ? 'bg-green-500 border-green-500' : 'border-border'
+                <span className={clsx(
+                  'w-6 h-6 rounded-md mono text-[11px] font-bold flex-shrink-0 flex items-center justify-center border',
+                  isSelected ? 'bg-orange text-white border-orange' : 'border-border text-text-muted'
                 )}>
-                  {isSelected && <div className="w-2 h-2 rounded-full bg-bg" />}
-                </div>
-                <span className="text-sm leading-snug flex-1 text-text-primary">{answer.text}</span>
+                  {letter}
+                </span>
+                <span className="text-[14px] leading-snug flex-1 text-white">{answer.text}</span>
               </button>
             )
           })}
@@ -483,15 +516,15 @@ export function ExamSession({ onExit }: ExamSessionProps) {
       </div>
 
       {/* ── Bottom action ───────────────────────────────────────────────────── */}
-      <div className="px-4 pb-8 pt-4 max-w-content mx-auto w-full">
+      <div className="px-4 pb-8 pt-4 max-w-[760px] mx-auto w-full">
         <button
           onClick={handleConfirm}
           disabled={!selectedId || advancing}
-          className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-40"
+          className="btn-primary w-full h-12 text-sm font-semibold disabled:opacity-40"
         >
-          {advancing ? 'Next question...' : qIndex + 1 >= questions.length ? 'Finish Exam' : 'Confirm Answer'}
+          {advancing ? 'Next question…' : qIndex + 1 >= questions.length ? 'Finish Exam' : 'Confirm Answer'}
         </button>
-        <p className="text-xs text-text-secondary text-center mt-2">
+        <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted text-center mt-3">
           No hints or skips · answers revealed at the end
         </p>
       </div>
@@ -504,22 +537,27 @@ export function ExamSession({ onExit }: ExamSessionProps) {
             onClick={() => setExitConfirm(false)}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
-              <AlertTriangle size={28} className="text-gold-500 mx-auto" />
-              <p className="font-display text-lg font-bold text-text-primary">Abandon Exam?</p>
+            <div className="bg-surface border border-wrong/40 rounded-lg p-6 w-full max-w-sm space-y-4 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-wrong" />
+              <div className="flex items-center gap-3 mt-1">
+                <div className="w-9 h-9 rounded-md bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle size={16} className="text-yellow" />
+                </div>
+                <h3 className="display font-bold text-base text-white">Abandon exam?</h3>
+              </div>
               <p className="text-sm text-text-secondary">
-                Your progress will be lost. You'll need to start a fresh 50-question exam.
+                Your progress will be lost. You&apos;ll need to start a fresh 50-question exam.
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => setExitConfirm(false)}
-                  className="flex-1 h-11 rounded-lg border border-border text-sm font-medium text-text-secondary hover:text-text-primary transition-all"
+                  className="btn-secondary flex-1 h-10 text-sm font-semibold"
                 >
-                  Keep Going
+                  Keep going
                 </button>
                 <button
                   onClick={onExit}
-                  className="flex-1 h-11 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-500 transition-all"
+                  className="flex-1 h-10 rounded-md bg-wrong/15 border border-wrong/40 text-wrong text-sm font-semibold hover:bg-wrong hover:text-white active:scale-95 transition-all"
                 >
                   Abandon
                 </button>
