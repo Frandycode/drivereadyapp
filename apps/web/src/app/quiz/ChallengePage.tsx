@@ -13,6 +13,7 @@
 import { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList, FolderOpen } from 'lucide-react'
 import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 import type { IconType } from 'react-icons'
@@ -145,22 +146,36 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
 
   const activeDiff = DIFFICULTIES.find((d) => d.id === difficulty)
 
-  const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <Zap size={20} className="text-green-500" />
-      <h1 className="font-display text-lg font-bold text-text-primary">Challenge</h1>
-    </div>
+  const pageHeader = (
+    <PageHeader
+      eyebrow="Quiz · battle · exam"
+      title={
+        <>
+          Pick a fight, <em className="not-italic text-orange">pick a level.</em>
+        </>
+      }
+      sub="Four IQ modes, two battle modes, and the full practice exam. Difficulty tier scales hints, skips, and XP."
+      stats={[
+        { label: 'IQ modes',     value: IQ_MODES.length },
+        { label: 'Battle modes', value: 2,            tone: 'orange' },
+        { label: 'Difficulties', value: DIFFICULTIES.length, tone: 'gold' },
+      ]}
+      slab="orange"
+    />
   )
 
   return (
-    <PageWrapper header={header}>
-      <div className="space-y-5 mt-1">
+    <PageWrapper className="!max-w-dashboard !px-0">
+      {pageHeader}
+      <div className="bg-navy blueprint-grid">
+       <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10 pb-12 space-y-6">
 
         {/* ── 1. Chapter / Group filter ──────────────────────────────────── */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Filter (optional)
-          </h2>
+          </div>
           {loading ? (
             <div className="card h-11 animate-pulse bg-surface-2" />
           ) : (
@@ -168,19 +183,23 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
               <div className="flex gap-2">
                 <button
                   onClick={() => { setFilterType('chapter'); setSelectedGroupId('') }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
-                    filterType === 'chapter' ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  className={`flex-1 py-2 rounded-md mono text-[11px] tracking-[0.08em] uppercase font-semibold transition-all border ${
+                    filterType === 'chapter'
+                      ? 'bg-orange text-white border-orange'
+                      : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                   }`}
                 >
                   By Chapter
                 </button>
                 <button
                   onClick={() => { setFilterType('group'); setSelectedChapterId('') }}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
-                    filterType === 'group' ? 'bg-green-500 text-bg' : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                  className={`flex-1 py-2 rounded-md mono text-[11px] tracking-[0.08em] uppercase font-semibold transition-all border inline-flex items-center justify-center gap-1.5 ${
+                    filterType === 'group'
+                      ? 'bg-orange text-white border-orange'
+                      : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                   }`}
                 >
-                  <FolderOpen size={12} className="inline mr-1" />
+                  <FolderOpen size={12} />
                   By Group
                 </button>
               </div>
@@ -220,25 +239,26 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
 
         {/* ── 2. IQ mode grid (2×2) ─────────────────────────────────────── */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-            IQ Mode
-          </h2>
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            IQ mode
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {IQ_MODES.map(({ id, label, desc, Icon }) => (
               <button
                 key={id}
                 onClick={() => setMode(id)}
-                className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 transition-all duration-150 ${
+                className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-md border-2 transition-all duration-150 ${
                   mode === id
-                    ? 'border-green-500 bg-green-500/10'
-                    : 'border-border bg-surface hover:border-green-700'
+                    ? 'border-orange bg-orange-soft'
+                    : 'border-border bg-surface hover:border-orange/40'
                 }`}
               >
-                <Icon size={22} className={mode === id ? 'text-green-500' : 'text-text-secondary'} />
-                <span className={`text-sm font-semibold ${mode === id ? 'text-green-400' : 'text-text-primary'}`}>
+                <Icon size={22} className={mode === id ? 'text-orange' : 'text-text-secondary'} />
+                <span className={`text-sm font-semibold ${mode === id ? 'text-orange' : 'text-white'}`}>
                   {label}
                 </span>
-                <span className="text-xs text-text-secondary leading-tight text-center">{desc}</span>
+                <span className="text-xs text-text-muted leading-tight text-center">{desc}</span>
               </button>
             ))}
           </div>
@@ -246,67 +266,70 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
 
         {/* ── 3. Battle mode row (1×2) ──────────────────────────────────── */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-            Battle Mode
-          </h2>
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Battle mode
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setMode('bot')}
-              className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 transition-all duration-150 ${
+              className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-md border-2 transition-all duration-150 ${
                 mode === 'bot'
                   ? 'border-bronze-500 bg-bronze-500/10'
                   : 'border-border bg-surface hover:border-bronze-600/40'
               }`}
             >
               <Bot size={22} className={mode === 'bot' ? 'text-bronze-500' : 'text-text-secondary'} />
-              <span className={`text-sm font-semibold ${mode === 'bot' ? 'text-bronze-500' : 'text-text-primary'}`}>
+              <span className={`text-sm font-semibold ${mode === 'bot' ? 'text-bronze-500' : 'text-white'}`}>
                 Bot Battle
               </span>
-              <span className="text-xs text-text-secondary text-center">vs Rusty, Dash, or Apex</span>
+              <span className="text-xs text-text-muted text-center">vs Rusty, Dash, or Apex</span>
             </button>
             <button
               onClick={() => setMode('peer')}
-              className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 transition-all duration-150 ${
+              className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-md border-2 transition-all duration-150 ${
                 mode === 'peer'
-                  ? 'border-green-500 bg-green-500/10'
-                  : 'border-border bg-surface hover:border-green-700'
+                  ? 'border-orange bg-orange-soft'
+                  : 'border-border bg-surface hover:border-orange/40'
               }`}
             >
-              <Swords size={22} className={mode === 'peer' ? 'text-green-500' : 'text-text-secondary'} />
-              <span className={`text-sm font-semibold ${mode === 'peer' ? 'text-green-400' : 'text-text-primary'}`}>
+              <Swords size={22} className={mode === 'peer' ? 'text-orange' : 'text-text-secondary'} />
+              <span className={`text-sm font-semibold ${mode === 'peer' ? 'text-orange' : 'text-white'}`}>
                 Peer Battle
               </span>
-              <span className="text-xs text-text-secondary text-center">Host or join a live room</span>
+              <span className="text-xs text-text-muted text-center">Host or join a live room</span>
             </button>
           </div>
         </section>
 
         {/* ── 3b. Practice Exam ─────────────────────────────────────────── */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
-            Practice Exam
-          </h2>
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-yellow" />
+            Practice exam
+          </div>
           <button
             onClick={onExam}
-            className="w-full text-left rounded-xl border-2 border-gold-600/50 bg-gold-500/5 hover:border-gold-500 hover:bg-gold-500/10 active:scale-[0.99] transition-all duration-150 px-4 py-4"
+            className="w-full text-left rounded-lg border border-yellow-rim bg-yellow-soft hover:border-yellow hover:bg-yellow/20 active:scale-[0.99] transition-all duration-150 px-4 py-4 relative overflow-hidden"
           >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-yellow" />
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gold-500/15 border border-gold-600/40 flex items-center justify-center flex-shrink-0">
-                <ClipboardList size={24} className="text-gold-500" />
+              <div className="w-12 h-12 rounded-md bg-yellow-soft border border-yellow-rim flex items-center justify-center flex-shrink-0">
+                <ClipboardList size={22} className="text-yellow" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-display font-bold text-text-primary">Full Practice Exam</p>
-                <p className="text-xs text-text-secondary mt-0.5">
-                  50 questions · 60-minute timer · pass with 38+
+                <p className="display font-bold text-white text-base tracking-[-0.2px]">Full Practice Exam</p>
+                <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted mt-1">
+                  50 questions · 60 min · pass 38+
                 </p>
-                <div className="flex items-center gap-2 mt-1.5">
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-gold-500/10 border border-gold-600/40 text-gold-500 font-medium">
-                    No hints or skips
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="inline-flex items-center mono text-[10px] tracking-[0.08em] uppercase px-2 py-0.5 rounded-md bg-white/[0.04] border border-yellow-rim text-yellow font-semibold">
+                    No hints / skips
                   </span>
-                  <span className="text-xs text-gold-500 font-medium">+200 XP on pass</span>
+                  <span className="mono text-[11px] text-yellow font-bold">+200 XP</span>
                 </div>
               </div>
-              <Zap size={16} className="text-gold-500 flex-shrink-0" />
+              <Zap size={16} className="text-yellow flex-shrink-0" />
             </div>
           </button>
         </section>
@@ -314,27 +337,28 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
         {/* ── 4. Difficulty (IQ modes only) ─────────────────────────────── */}
         {!isBattleMode && (
           <section>
-            <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
               Difficulty
-            </h2>
+            </div>
             <div className="grid grid-cols-3 gap-2">
               {DIFFICULTIES.map(({ id, Icon, label, badgeClass, activeClass }) => (
                 <button
                   key={id}
                   onClick={() => setDifficulty(id)}
-                  className={`py-3 px-2 rounded-xl border-2 transition-all duration-150 text-center flex flex-col items-center gap-1 ${
+                  className={`py-3 px-2 rounded-md border-2 transition-all duration-150 text-center flex flex-col items-center gap-1.5 ${
                     difficulty === id ? activeClass : 'border-border bg-surface hover:border-orange/40'
                   }`}
                 >
                   <Icon size={20} className={difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'} />
-                  <span className={`text-xs ${difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'}`}>
+                  <span className={`mono text-[11px] tracking-[0.08em] uppercase font-semibold ${difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'}`}>
                     {label}
                   </span>
                 </button>
               ))}
             </div>
             {activeDiff && (
-              <p className="text-xs text-text-secondary mt-1.5 px-0.5">{activeDiff.desc}</p>
+              <p className="text-[12px] text-text-secondary mt-2 px-0.5 leading-relaxed">{activeDiff.desc}</p>
             )}
           </section>
         )}
@@ -342,19 +366,22 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
         {/* ── 5. Settings (IQ modes only) ───────────────────────────────── */}
         {!isBattleMode && (
           <section>
-            <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">Settings</h2>
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+              Settings
+            </div>
             <div className="card space-y-4">
               <div>
-                <p className="text-sm font-medium text-text-primary mb-2">Questions</p>
+                <p className="mono text-[10px] font-semibold text-text-muted uppercase tracking-[0.12em] mb-2">Questions</p>
                 <div className="flex gap-2">
                   {QUESTION_COUNTS.map((n) => (
                     <button
                       key={n}
                       onClick={() => setQuestionCount(n)}
-                      className={`flex-1 py-1.5 rounded-md text-sm font-mono font-medium transition-all ${
+                      className={`flex-1 py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                         questionCount === n
-                          ? 'bg-green-500 text-bg'
-                          : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                          ? 'bg-orange text-white border-orange'
+                          : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                       }`}
                     >
                       {n}
@@ -363,16 +390,16 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
                 </div>
               </div>
               <div>
-                <p className="text-sm font-medium text-text-primary mb-2">Timer per question</p>
+                <p className="mono text-[10px] font-semibold text-text-muted uppercase tracking-[0.12em] mb-2">Timer per question</p>
                 <div className="flex gap-2">
                   {TIMERS.map(({ value, label }) => (
                     <button
                       key={label}
                       onClick={() => setTimer(value)}
-                      className={`flex-1 py-1.5 rounded-md text-sm font-mono font-medium transition-all ${
+                      className={`flex-1 py-2 rounded-md mono text-[13px] font-bold tabular-nums transition-all border ${
                         timer === value
-                          ? 'bg-green-500 text-bg'
-                          : 'bg-surface-3 text-text-secondary hover:text-text-primary'
+                          ? 'bg-orange text-white border-orange'
+                          : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                       }`}
                     >
                       {label}
@@ -386,37 +413,49 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
 
         {/* ── 6. Battle info cards ──────────────────────────────────────── */}
         {mode === 'bot' && (
-          <div className="card border-bronze-600/30 bg-bronze-500/5 text-xs text-text-secondary space-y-1">
-            <p className="font-medium text-text-primary mb-1">Bot Battle rules</p>
-            <p>• King-level rules — no hints or skips</p>
-            <p>• Bot and player answer simultaneously</p>
-            <p>• XP awarded regardless of outcome</p>
-            <p>• Timer & opponent chosen on next screen</p>
+          <div className="card border-bronze-600/40 bg-bronze-500/5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-bronze-500" />
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-bronze-500">
+              <span className="w-[14px] h-[1.5px] rounded-full bg-bronze-500" />
+              Bot Battle rules
+            </div>
+            <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
+              <li>• King-level rules — no hints or skips</li>
+              <li>• Bot and player answer simultaneously</li>
+              <li>• XP awarded regardless of outcome</li>
+              <li>• Timer & opponent chosen on next screen</li>
+            </ul>
           </div>
         )}
         {mode === 'peer' && (
-          <div className="card border-green-700/30 bg-green-500/5 text-xs text-text-secondary space-y-1">
-            <p className="font-medium text-text-primary mb-1">Peer Battle rules</p>
-            <p>• Host a room or join with a 6-digit code</p>
-            <p>• Both players answer independently</p>
-            <p>• Up to 2 draw requests per player</p>
-            <p>• 3rd screen leave = auto-defeat</p>
+          <div className="card border-orange/30 bg-orange-soft relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[14px] h-[1.5px] rounded-full bg-orange" />
+              Peer Battle rules
+            </div>
+            <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
+              <li>• Host a room or join with a 6-digit code</li>
+              <li>• Both players answer independently</li>
+              <li>• Up to 2 draw requests per player</li>
+              <li>• 3rd screen leave = auto-defeat</li>
+            </ul>
           </div>
         )}
 
         {/* ── 7. CTA ────────────────────────────────────────────────────── */}
         <button
           onClick={handleStart}
-          className={`w-full h-12 text-base font-semibold rounded-md transition-all active:scale-95 ${
+          className={`w-full h-12 text-sm font-semibold rounded-md transition-all active:scale-95 border ${
             mode === 'peer'
-              ? 'bg-green-500 text-bg hover:bg-green-400'
+              ? 'bg-orange text-white border-orange hover:bg-orange-deep'
               : mode === 'bot'
-              ? 'bg-bronze-500 text-bg hover:bg-bronze-400'
+              ? 'bg-bronze-500 text-bg border-bronze-500 hover:bg-bronze-400'
               : difficulty === 'rogue'
-              ? 'bg-silver-500 text-bg hover:bg-silver-400'
+              ? 'bg-silver-500 text-bg border-silver-500 hover:bg-silver-400'
               : difficulty === 'king'
-              ? 'bg-gold-500 text-bg hover:bg-gold-400'
-              : 'btn-primary'
+              ? 'bg-yellow text-bg border-yellow hover:bg-yellow/90'
+              : 'btn-primary border-orange'
           }`}
         >
           {mode === 'bot'   ? 'Choose Your Opponent →'
@@ -424,7 +463,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
           : `Start ${IQ_MODES.find((m) => m.id === mode)?.label}`}
         </button>
 
-        <div className="h-2" />
+       </div>
       </div>
     </PageWrapper>
   )
