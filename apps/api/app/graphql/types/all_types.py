@@ -75,6 +75,21 @@ class WeeklyReportType:
 
 
 @strawberry.type
+class SuggestedAnswerType:
+    text: str
+    is_correct: bool
+
+
+@strawberry.type
+class SuggestedQuestionType:
+    answers: list[SuggestedAnswerType]
+    explanation: str
+    hint: str
+    tags: list[str]
+    difficulty: str
+
+
+@strawberry.type
 class QuestionType:
     id: strawberry.ID
     state_code: str

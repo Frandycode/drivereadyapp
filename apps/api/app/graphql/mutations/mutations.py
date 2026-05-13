@@ -51,6 +51,10 @@ from app.ai.prompts.exam_coaching import (
     SYSTEM_PROMPT as EXAM_SYSTEM_PROMPT,
     build_user_prompt as build_exam_user_prompt,
 )
+from app.ai.prompts.suggest_question import (
+    SYSTEM_PROMPT as SUGGEST_SYSTEM_PROMPT,
+    build_user_prompt as build_suggest_user_prompt,
+)
 from app.ai.prompts.tutor import (
     SYSTEM_PROMPT as TUTOR_SYSTEM_PROMPT,
     fetch_relevant_lessons,
@@ -101,6 +105,8 @@ from app.graphql.types.all_types import (
     ExamChapterStatInput,
     ExplanationType,
     FlashcardDeckType,
+    SuggestedAnswerType,
+    SuggestedQuestionType,
     WeeklyReportType,
     AcceptLegalInput,
     LegalVersionsType,
@@ -1643,6 +1649,70 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def suggest_question_distractors(
+        self,
+        info: Info,
+        question_text: str,
+        chapter_number: int,
+        state_code: str = "ok",
+    ) -> SuggestedQuestionType:
+        """Admin tool: given a question stem + chapter, return LLM-proposed
+        correct answer, distractors, explanation, hint, tags, difficulty."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user or user.role != "admin":
+            raise _gql_error("Admin required", "FORBIDDEN")
+
+        chapter = (await db.execute(
+            select(Chapter).where(
+                Chapter.state_code == state_code,
+                Chapter.number == chapter_number,
+            )
+        )).scalar_one_or_none()
+        chapter_title = chapter.title if chapter else ""
+
+        messages = [
+            {"role": "system", "content": SUGGEST_SYSTEM_PROMPT},
+            {"role": "user", "content": build_suggest_user_prompt(
+                question_text=question_text,
+                chapter_title=chapter_title,
+                chapter_number=chapter_number,
+            )},
+        ]
+
+        try:
+            result = await chat(messages, temperature=0.5, max_tokens=800)
+            await ai_log(
+                db=db, user_id=str(user.id), route="suggest_question",
+                cached=False, result=result,
+            )
+            raw = result.content.strip()
+            if raw.startswith("```"):
+                raw = raw.strip("`").lstrip()
+                if raw.lower().startswith("json"):
+                    raw = raw[4:].lstrip()
+            parsed = json.loads(raw)
+        except (AIModelError, json.JSONDecodeError) as e:
+            await ai_log(
+                db=db, user_id=str(user.id), route="suggest_question",
+                cached=False, error=str(e),
+            )
+            await db.commit()
+            raise _gql_error(f"AI suggestion failed: {e}", "AI_ERROR")
+
+        await db.commit()
+        return SuggestedQuestionType(
+            answers=[
+                SuggestedAnswerType(text=a.get("text", ""), is_correct=bool(a.get("is_correct")))
+                for a in parsed.get("answers", [])
+            ],
+            explanation=parsed.get("explanation", ""),
+            hint=parsed.get("hint", ""),
+            tags=[str(t) for t in parsed.get("tags", [])],
+            difficulty=parsed.get("difficulty", "pawn"),
+        )
 
     @strawberry.mutation
     async def get_exam_coaching(
