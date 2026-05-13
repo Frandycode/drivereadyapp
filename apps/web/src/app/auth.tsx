@@ -17,6 +17,10 @@ import { setAuthToken } from '@driveready/api-client'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
 import { Check, X, AlertTriangle, Clock, Eye, EyeOff } from 'lucide-react'
+import { FiMail, FiLock, FiUser, FiPhone, FiCalendar, FiArrowRight } from 'react-icons/fi'
+import { AuthLayout } from '@/app/auth/AuthLayout'
+import { AuthModeToggle } from '@/app/auth/AuthModeToggle'
+import { AuthField } from '@/app/auth/AuthField'
 
 const HCAPTCHA_SITE_KEY =
   import.meta.env.VITE_HCAPTCHA_SITE_KEY ?? '10000000-ffff-ffff-ffff-000000000001'
@@ -730,244 +734,263 @@ export function AuthPage() {
 
   const currentYear = new Date().getFullYear()
 
+  // map between AuthModeToggle ('signin'/'signup') and internal ('login'/'register')
+  const toggleMode: 'signin' | 'signup' = mode === 'login' ? 'signin' : 'signup'
+
   return (
-    <div className="min-h-dvh bg-bg flex flex-col items-center justify-center px-4 py-8">
-      {/* Logo */}
-      <div className="mb-8 text-center flex flex-col items-center gap-3">
-        <AppLogo height={110} />
-        <p className="text-text-secondary text-sm">Learn it. Know it. Drive it.</p>
+    <AuthLayout>
+      <AuthModeToggle
+        mode={toggleMode}
+        onChange={(m) => { setMode(m === 'signin' ? 'login' : 'register'); setError('') }}
+      />
+
+      <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.08s' }}>
+        <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-1.5">
+          {mode === 'login' ? 'Welcome back' : 'Create your account'}
+        </h2>
+        <p className="text-sm text-text-secondary font-light">
+          {mode === 'login' ? (
+            <>
+              New here?{' '}
+              <button
+                type="button"
+                onClick={() => { setMode('register'); setError('') }}
+                className="text-orange font-medium hover:underline"
+              >
+                Create a free account →
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{' '}
+              <button
+                type="button"
+                onClick={() => { setMode('login'); setError('') }}
+                className="text-orange font-medium hover:underline"
+              >
+                Sign in →
+              </button>
+            </>
+          )}
+        </p>
       </div>
 
-      {/* Card */}
-      <div className="w-full max-w-sm card-elevated">
-        {/* Tab switcher */}
-        <div className="flex bg-surface rounded-md p-1 mb-6">
-          {(['login', 'register'] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => { setMode(m); setError('') }}
-              className={`flex-1 py-2 rounded text-sm font-medium capitalize transition-all duration-150 ${
-                mode === m
-                  ? 'bg-green-500 text-bg'
-                  : 'text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              {m === 'login' ? 'Sign In' : 'Sign Up'}
-            </button>
-          ))}
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-1">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-
-          {/* ── Date of birth (register only) ── */}
-          {mode === 'register' && (
-            <div>
-              <label className="block text-sm text-text-secondary mb-1.5">
-                Date of Birth
-              </label>
-              <div className="flex gap-2">
+        {/* Date of birth (register only) */}
+        {mode === 'register' && (
+          <div className="mb-4 animate-fade-up">
+            <div className="text-[12px] font-medium text-text-secondary tracking-[0.04em] mb-2">
+              Date of birth
+            </div>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">
+                  <FiCalendar size={16} />
+                </span>
                 <select
-                  className={`input flex-1 ${borderClass('dobMonth')}`}
+                  className={`w-full bg-white/[0.05] border rounded-md py-3 pl-11 pr-4 text-sm text-white outline-none transition-colors ${
+                    fieldValidity('dobMonth') === 'valid'
+                      ? 'border-correct/55'
+                      : (touched.dobMonth || submitAttempted) && fieldValidity('dobMonth') === 'empty'
+                        ? 'border-wrong/60'
+                        : 'border-white/10 focus:border-orange/55'
+                  }`}
                   value={dobMonth}
                   onChange={(e) => { setDobMonth(e.target.value); setError('') }}
                   onBlur={() => markTouched('dobMonth')}
                   required
                 >
-                  <option value="">Month</option>
+                  <option value="" className="bg-navy">Month</option>
                   {MONTHS.map((m, i) => (
-                    <option key={m} value={String(i + 1)}>{m}</option>
+                    <option key={m} value={String(i + 1)} className="bg-navy">{m}</option>
                   ))}
                 </select>
-                <input
-                  className={`input w-24 ${borderClass('dobYear')}`}
-                  type="number"
-                  placeholder="Year"
-                  min={currentYear - 120}
-                  max={currentYear}
-                  value={dobYear}
-                  onChange={(e) => { setDobYear(e.target.value); setError('') }}
-                  onBlur={() => markTouched('dobYear')}
-                  required
-                />
               </div>
-
-              {/* Age gate feedback */}
-              {dobComplete && ageGroup === 'under13' && (
-                <div className="mt-3 flex items-start gap-2 bg-wrong/10 border border-wrong/30 rounded-lg px-3 py-2.5">
-                  <AlertTriangle size={15} className="text-wrong mt-0.5 shrink-0" />
-                  <p className="text-wrong text-xs leading-relaxed">
-                    DriveReady is not available for users under 13. Please visit with a parent or guardian.
-                  </p>
-                </div>
-              )}
-
-              {dobComplete && ageGroup === 'minor' && (
-                <p className="mt-2 text-xs text-yellow-400">
-                  Users under 18 require parental consent to create an account.
-                </p>
-              )}
+              <AuthField
+                className="w-28"
+                type="number"
+                placeholder="Year"
+                min={currentYear - 120}
+                max={currentYear}
+                value={dobYear}
+                onChange={(e) => { setDobYear(e.target.value); setError('') }}
+                onBlur={() => markTouched('dobYear')}
+                validity={(touched.dobYear || submitAttempted) ? fieldValidity('dobYear') : null}
+                required
+              />
             </div>
-          )}
 
-          {/* ── Fields hidden for under-13 ── */}
-          {(mode === 'login' || ageGroup !== 'under13') && (
-            <>
-              {mode === 'register' && (
-                <div>
-                  <label className="block text-sm text-text-secondary mb-1.5">
-                    Display Name
-                  </label>
-                  <input
-                    className={`input ${borderClass('displayName')}`}
-                    type="text"
-                    placeholder="Your name"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    onBlur={() => markTouched('displayName')}
-                    required
-                    minLength={2}
-                    maxLength={50}
-                  />
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm text-text-secondary mb-1.5">Email</label>
-                <input
-                  className={`input ${borderClass('email')}`}
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={() => markTouched('email')}
-                  required
-                />
-              </div>
-
-              {mode === 'register' && (
-                <div>
-                  <label className="block text-sm text-text-secondary mb-1.5">Phone Number</label>
-                  <input
-                    className={`input ${borderClass('phoneNumber')}`}
-                    type="tel"
-                    placeholder="+1 555 123 4567"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    onBlur={() => markTouched('phoneNumber')}
-                    required
-                    autoComplete="tel"
-                  />
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm text-text-secondary mb-1.5">Password</label>
-                <div className="relative">
-                  <input
-                    className={`input pr-10 ${borderClass('password')}`}
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder={mode === 'register' ? 'Create a strong password' : '••••••••'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onBlur={() => markTouched('password')}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-                {mode === 'register' && password.length > 0 && (
-                  <ul className="mt-2 space-y-1">
-                    {RULES.map((rule) => {
-                      const ok = rule.test(password)
-                      return (
-                        <li key={rule.label} className={`flex items-center gap-1.5 text-xs ${ok ? 'text-green-500' : 'text-text-secondary'}`}>
-                          {ok
-                            ? <Check size={11} strokeWidth={3} />
-                            : <X size={11} strokeWidth={3} className="text-wrong" />
-                          }
-                          {rule.label}
-                        </li>
-                      )
-                    })}
-                  </ul>
-                )}
-              </div>
-
-              {/* ── Parent email (minors only) ── */}
-              {mode === 'register' && ageGroup === 'minor' && (
-                <div>
-                  <label className="block text-sm text-text-secondary mb-1.5">
-                    Parent / Guardian Email
-                  </label>
-                  <input
-                    className={`input ${borderClass('parentEmail')}`}
-                    type="email"
-                    placeholder="parent@example.com"
-                    value={parentEmail}
-                    onChange={(e) => setParentEmail(e.target.value)}
-                    onBlur={() => markTouched('parentEmail')}
-                    required
-                  />
-                  <p className="mt-1.5 text-xs text-text-secondary">
-                    We'll send a consent request to this address.
-                  </p>
-                </div>
-              )}
-
-              {error && (
-                <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2">
-                  {error}
+            {dobComplete && ageGroup === 'under13' && (
+              <div className="mt-3 flex items-start gap-2 bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2.5">
+                <AlertTriangle size={15} className="text-wrong mt-0.5 shrink-0" />
+                <p className="text-wrong text-xs leading-relaxed">
+                  DriveReady is not available for users under 13. Please visit with a parent or guardian.
                 </p>
-              )}
+              </div>
+            )}
+            {dobComplete && ageGroup === 'minor' && (
+              <p className="mt-2 text-xs text-yellow">
+                Users under 18 require parental consent to create an account.
+              </p>
+            )}
+          </div>
+        )}
 
-              {mode === 'login' && (
-                <div className="text-right -mt-1">
+        {(mode === 'login' || ageGroup !== 'under13') && (
+          <>
+            {mode === 'register' && (
+              <AuthField
+                label="Display name"
+                LeadingIcon={FiUser}
+                type="text"
+                placeholder="Your name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                onBlur={() => markTouched('displayName')}
+                validity={(touched.displayName || submitAttempted) ? fieldValidity('displayName') : null}
+                required
+                minLength={2}
+                maxLength={50}
+              />
+            )}
+
+            <AuthField
+              label="Email address"
+              LeadingIcon={FiMail}
+              type="email"
+              placeholder="you@email.com"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => markTouched('email')}
+              validity={mode === 'register' && (touched.email || submitAttempted) ? fieldValidity('email') : null}
+              required
+            />
+
+            {mode === 'register' && (
+              <AuthField
+                label="Phone number"
+                LeadingIcon={FiPhone}
+                type="tel"
+                placeholder="+1 555 123 4567"
+                autoComplete="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                onBlur={() => markTouched('phoneNumber')}
+                validity={(touched.phoneNumber || submitAttempted) ? fieldValidity('phoneNumber') : null}
+                required
+              />
+            )}
+
+            <AuthField
+              label="Password"
+              labelRight={
+                mode === 'login' && (
                   <button
                     type="button"
                     onClick={() => { setScreen('forgot-password'); setResetEmail(email) }}
-                    className="text-xs text-text-secondary hover:text-green-500 transition-colors"
+                    className="text-[12px] text-orange font-medium hover:opacity-75 transition-opacity"
                   >
                     Forgot password?
                   </button>
-                </div>
+                )
+              }
+              LeadingIcon={FiLock}
+              type={showPassword ? 'text' : 'password'}
+              placeholder={mode === 'register' ? 'At least 8 characters' : '••••••••'}
+              autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => markTouched('password')}
+              validity={mode === 'register' && (touched.password || submitAttempted) ? fieldValidity('password') : null}
+              required
+              suffix={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="text-white/40 hover:text-white/70 transition-colors p-0.5"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              }
+            />
+
+            {mode === 'register' && password.length > 0 && (
+              <ul className="mt-1 mb-3 space-y-1">
+                {RULES.map((rule) => {
+                  const ok = rule.test(password)
+                  return (
+                    <li key={rule.label} className={`flex items-center gap-1.5 text-[11px] ${ok ? 'text-correct' : 'text-text-secondary'}`}>
+                      {ok ? <Check size={11} strokeWidth={3} /> : <X size={11} strokeWidth={3} className="text-wrong" />}
+                      {rule.label}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+
+            {mode === 'register' && ageGroup === 'minor' && (
+              <AuthField
+                label="Parent / guardian email"
+                LeadingIcon={FiMail}
+                type="email"
+                placeholder="parent@example.com"
+                value={parentEmail}
+                onChange={(e) => setParentEmail(e.target.value)}
+                onBlur={() => markTouched('parentEmail')}
+                validity={(touched.parentEmail || submitAttempted) ? fieldValidity('parentEmail') : null}
+                required
+                error="We'll send a consent request to this address."
+              />
+            )}
+
+            {error && (
+              <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-3">
+                {error}
+              </p>
+            )}
+
+            <div className="flex justify-center mb-4">
+              <HCaptcha
+                ref={hcaptchaRef}
+                sitekey={HCAPTCHA_SITE_KEY}
+                theme="dark"
+                onVerify={setCaptchaToken}
+                onExpire={() => setCaptchaToken(null)}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed animate-fade-up"
+              style={{ animationDelay: '0.3s' }}
+            >
+              {loading ? 'Please wait...' : (
+                <>
+                  {mode === 'login' ? 'Sign In' : 'Create Account'}
+                  <FiArrowRight size={16} />
+                </>
               )}
+            </button>
+          </>
+        )}
+      </form>
 
-              <div className="flex justify-center">
-                <HCaptcha
-                  ref={hcaptchaRef}
-                  sitekey={HCAPTCHA_SITE_KEY}
-                  theme="dark"
-                  onVerify={setCaptchaToken}
-                  onExpire={() => setCaptchaToken(null)}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary w-full h-11 text-base"
-              >
-                {loading
-                  ? 'Please wait...'
-                  : mode === 'login' ? 'Sign In' : 'Create Account'
-                }
-              </button>
-            </>
-          )}
-
-        </form>
+      {/* Tagline pill */}
+      <div className="flex items-center justify-center mt-8 animate-fade-up" style={{ animationDelay: '0.48s' }}>
+        <div className="inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-2 text-[11px] text-text-muted">
+          <span className="font-medium"><strong className="text-yellow font-semibold">All 50 states</strong></span>
+          <span className="mx-1">·</span>
+          <span className="font-medium"><strong className="text-yellow font-semibold">AI-powered</strong></span>
+          <span className="mx-1">·</span>
+          <span className="font-medium"><strong className="text-yellow font-semibold">Free</strong> to start</span>
+        </div>
       </div>
 
-      <p className="mt-6 text-text-secondary text-xs">
-        All 50 states · AI-powered · Free to start
-      </p>
-    </div>
+    </AuthLayout>
   )
 }
