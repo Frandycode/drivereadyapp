@@ -11,6 +11,7 @@
  */
 
 import { FiArrowRight, FiZap, FiShield, FiCheck, FiX } from 'react-icons/fi'
+import { BsDiamondFill } from 'react-icons/bs'
 import { Footer } from '@/components/layout/Footer'
 
 interface LandingPageProps {
@@ -23,7 +24,50 @@ export function LandingPage({ onSignIn, onStartFree }: LandingPageProps) {
     <div className="min-h-dvh bg-navy-deep">
       <TopBar onSignIn={onSignIn} onStartFree={onStartFree} />
       <Hero onSignIn={onSignIn} onStartFree={onStartFree} />
+      <TrustMarquee />
       <Footer />
+    </div>
+  )
+}
+
+// ── Trust marquee ─────────────────────────────────────────────────────────────
+
+const TRUST_ITEMS: { strong: string; rest: string }[] = [
+  { strong: 'Aligned with',     rest: 'Oklahoma DPS' },
+  { strong: '900+',             rest: 'questions' },
+  { strong: '5',                rest: 'study modes' },
+  { strong: 'AI-curated',       rest: 'weak-spot review' },
+  { strong: 'Offline',          rest: 'ready' },
+  { strong: 'No ads,',          rest: 'ever' },
+]
+
+function TrustMarquee() {
+  // Render the row twice for a seamless loop
+  const row = (key: string) =>
+    TRUST_ITEMS.map((item, i) => (
+      <span key={`${key}-${i}`} className="inline-flex items-center gap-2 px-7 text-[12px] text-text-secondary whitespace-nowrap">
+        <BsDiamondFill size={9} className="text-orange shrink-0" />
+        <strong className="text-white font-semibold">{item.strong}</strong>
+        <span>{item.rest}</span>
+      </span>
+    ))
+
+  return (
+    <div className="relative overflow-hidden border-y border-yellow-rim/20 bg-navy-deep/80 backdrop-blur-sm py-3.5">
+      <div className="flex w-max animate-marquee">
+        {row('a')}
+        {row('b')}
+      </div>
+
+      {/* Edge fades */}
+      <div
+        className="absolute inset-y-0 left-0 w-16 pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, #010E33 0%, transparent 100%)' }}
+      />
+      <div
+        className="absolute inset-y-0 right-0 w-16 pointer-events-none"
+        style={{ background: 'linear-gradient(270deg, #010E33 0%, transparent 100%)' }}
+      />
     </div>
   )
 }
