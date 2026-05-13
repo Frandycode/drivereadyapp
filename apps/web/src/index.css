@@ -2,161 +2,260 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── CSS Custom Properties (design tokens) ──────────────────────────────────── */
-:root {
-  --color-bg:         #0A0F0D;
-  --color-surface:    #111A14;
-  --color-surface-2:  #1A2B1F;
-  --color-surface-3:  #243D29;
-  --color-border:     #243D29;
-  --color-green-500:  #22C55E;
-  --color-gold-500:   #F59E0B;
-  --color-text:       #F0FDF4;
-  --color-text-2:     #86EFAC;
+/* ════════════════════════════════════════════════════════════════════════════
+   DRIVEREADY — Tricolor design tokens (Navy / Orange / Yellow)
+   Blueprint grid texture · DM Sans body · Syne display · JetBrains mono
+═════════════════════════════════════════════════════════════════════════════ */
 
-  /* Light mode overrides (applied when .light is on <html>) */
-  &.light {
-    --color-bg:         #F0FDF4;
-    --color-surface:    #FFFFFF;
-    --color-surface-2:  #DCFCE7;
-    --color-surface-3:  #BBF7D0;
-    --color-border:     #BBF7D0;
-    --color-text:       #14532D;
-    --color-text-2:     #166534;
-  }
+:root {
+  /* Core navy palette */
+  --navy:        #021A54;
+  --navy-deep:   #010E33;
+  --navy-card:   #071E5C;
+  --navy-lift:   #0C2470;
+  --navy-rim:    rgba(255, 255, 255, 0.08);
+  --navy-rim2:   rgba(255, 255, 255, 0.13);
+
+  /* Orange (primary action) */
+  --orange:      #F45B26;
+  --orange-deep: #e04d1c;
+  --orange-soft: rgba(244, 91, 38, 0.15);
+  --orange-glow: rgba(244, 91, 38, 0.08);
+
+  /* Yellow (highlight) */
+  --yellow:      #F8DE22;
+  --yellow-soft: rgba(248, 222, 34, 0.12);
+  --yellow-rim:  rgba(248, 222, 34, 0.22);
+
+  /* Semantic */
+  --green:       #22C55E;
+  --green-soft:  rgba(34, 197, 94, 0.14);
+  --red:         #EF4444;
+  --red-soft:    rgba(239, 68, 68, 0.12);
+  --indigo:      #818CF8;
+  --indigo-soft: rgba(129, 140, 248, 0.14);
+  --sky:         #38BDF8;
+  --sky-soft:    rgba(56, 189, 248, 0.14);
+
+  /* Text on navy */
+  --text-pri:    rgba(255, 255, 255, 0.95);
+  --text-sec:    rgba(255, 255, 255, 0.55);
+  --text-muted:  rgba(255, 255, 255, 0.32);
+  --text-faint:  rgba(255, 255, 255, 0.18);
+
+  /* Layout */
+  --pad-x:       clamp(16px, 4vw, 40px);
+  --pad-y:       clamp(40px, 6vw, 72px);
+  --tab-h:       64px;
+
+  /* Blueprint grid line */
+  --grid-line:   rgba(248, 222, 34, 0.04);
+
+  /* Token aliases used by older components */
+  --color-bg:        var(--navy-deep);
+  --color-surface:   var(--navy);
+  --color-surface-2: var(--navy-card);
+  --color-surface-3: var(--navy-lift);
+  --color-border:    var(--navy-rim);
+  --color-text:      var(--text-pri);
+  --color-text-2:    var(--text-sec);
 }
 
-/* ── Base resets ────────────────────────────────────────────────────────────── */
+/* Light theme — Arctic Blaze (portdrop theme #7). Filled in Phase I. */
+:root[data-theme='light'] {
+  --navy-deep: #f5f7fa;
+  --navy:      #ffffff;
+  --navy-card: #ffffff;
+  --navy-lift: #edf1fb;
+  --navy-rim:  #dde3ee;
+  --navy-rim2: #c8d1e3;
+
+  --text-pri:   #021A54;
+  --text-sec:   #4a5b85;
+  --text-muted: #9aa8c4;
+  --text-faint: #c8d1e3;
+
+  --grid-line:  rgba(2, 26, 84, 0.04);
+
+  --color-bg:        var(--navy-deep);
+  --color-surface:   var(--navy);
+  --color-surface-2: var(--navy-card);
+  --color-surface-3: var(--navy-lift);
+  --color-border:    var(--navy-rim);
+  --color-text:      var(--text-pri);
+  --color-text-2:    var(--text-sec);
+}
+
+/* ── Base resets ───────────────────────────────────────────────────────────── */
 @layer base {
-  * {
+  *, *::before, *::after {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
   }
 
   html {
-    font-family: 'DM Sans', sans-serif;
-    background-color: #0A0F0D;
-    color: #F0FDF4;
+    font-family: 'DM Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
     margin: 0;
-    min-height: 100dvh;           /* dynamic viewport height — handles mobile bars */
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--navy-deep);
+    color: var(--text-pri);
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-x: hidden;
   }
 
-  /* Scrollbar styling */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #243D29; border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: #22C55E; }
+  /* iOS zoom-on-focus prevention */
+  input, button, textarea, select { font-size: 16px; }
 
-  /* Remove input autofill yellow */
+  /* Scrollbar — orange thumb */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(244, 91, 38, 0.30);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(244, 91, 38, 0.55); }
+
+  /* Autofill — kill yellow */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px #1A2B1F inset;
-    -webkit-text-fill-color: #F0FDF4;
+    -webkit-box-shadow: 0 0 0 1000px var(--navy-card) inset;
+    -webkit-text-fill-color: var(--text-pri);
+    caret-color: var(--text-pri);
   }
 
-  /* Reduced motion — disable all animations */
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
 
-/* ── Utility classes ────────────────────────────────────────────────────────── */
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
 @layer utilities {
-  /* 3D card flip utilities */
-  .perspective-1200 { perspective: 1200px; }
-  .transform-style-3d { transform-style: preserve-3d; }
-  .backface-hidden { backface-visibility: hidden; }
-  .rotate-y-180 { transform: rotateY(180deg); }
+  .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .display { font-family: 'Syne', sans-serif; }
 
-  /* Safe area insets for notched phones */
+  .hide-sm { display: initial; }
+  .show-sm { display: none; }
+  @media (max-width: 768px) {
+    .hide-sm { display: none !important; }
+    .show-sm { display: initial; }
+  }
+
+  /* Blueprint grid background */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* 3D card flip utilities (kept for flashcards) */
+  .perspective-1200   { perspective: 1200px; }
+  .transform-style-3d { transform-style: preserve-3d; }
+  .backface-hidden    { backface-visibility: hidden; }
+  .rotate-y-180       { transform: rotateY(180deg); }
+
+  /* Safe areas */
   .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
   .pt-safe { padding-top: env(safe-area-inset-top); }
 
-  /* Glass card effect */
+  /* Glass blur */
   .glass {
-    background: rgba(17, 26, 20, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(1, 14, 51, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
 }
 
-/* ── Component base styles ──────────────────────────────────────────────────── */
+/* ── Component primitives ──────────────────────────────────────────────────── */
 @layer components {
-  /* Standard card */
+  /* Cards */
   .card {
-    @apply bg-surface border border-border rounded-lg p-4;
+    @apply bg-surface-2 border border-border rounded-lg p-5
+           transition-[border-color,background,transform] duration-200
+           relative overflow-hidden;
   }
-
-  /* Elevated card (modals, dropdowns) */
   .card-elevated {
-    @apply bg-surface-2 border border-border rounded-xl p-4;
+    @apply bg-surface-2 border border-border rounded-xl p-5;
   }
+  .card-hover:hover     { background: var(--navy-lift); border-color: rgba(244, 91, 38, 0.30); }
+  .card-lift:hover      { transform: translateY(-2px); border-color: rgba(244, 91, 38, 0.35); }
 
-  /* Primary button */
+  /* Buttons — primary is now orange */
   .btn-primary {
-    @apply bg-green-500 text-bg font-body font-medium rounded-md px-4 py-2
-           hover:bg-green-400 active:scale-95 transition-all duration-100
+    @apply bg-orange text-white font-body font-medium rounded-md px-5 py-2.5
+           hover:bg-orange-deep active:scale-95 transition-all duration-100
            disabled:opacity-40 disabled:cursor-not-allowed;
   }
-
-  /* Secondary button */
+  .btn-yellow {
+    @apply bg-yellow text-navy-deep font-body font-bold rounded-md px-5 py-2.5
+           hover:bg-yellow-400 active:scale-95 transition-all duration-100
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-navy {
+    @apply bg-navy-deep text-white font-body font-medium rounded-md px-5 py-2.5
+           hover:bg-navy active:scale-95 transition-all duration-100
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
   .btn-secondary {
     @apply bg-surface-2 text-text-primary font-body font-medium rounded-md px-4 py-2
            border border-border hover:bg-surface-3 active:scale-95 transition-all duration-100
            disabled:opacity-40 disabled:cursor-not-allowed;
   }
-
-  /* Ghost button */
   .btn-ghost {
-    @apply bg-transparent text-green-400 font-body font-medium rounded-md px-4 py-2
-           border border-green-700 hover:bg-surface-2 active:scale-95 transition-all duration-100;
+    @apply bg-transparent text-text-secondary font-body font-medium rounded-md px-4 py-2
+           hover:text-white hover:bg-surface-2 active:scale-95 transition-all duration-100;
   }
-
-  /* Gold button (XP / game actions) */
   .btn-gold {
-    @apply bg-gold-500 text-bg font-body font-medium rounded-md px-4 py-2
-           hover:bg-gold-400 active:scale-95 transition-all duration-100;
+    @apply bg-yellow text-navy-deep font-body font-bold rounded-md px-5 py-2.5
+           hover:bg-yellow-400 active:scale-95 transition-all duration-100;
   }
 
-  /* Form input */
+  /* Input */
   .input {
     @apply w-full h-11 bg-surface-2 border border-border rounded-md px-3
            text-text-primary placeholder:text-text-secondary
-           focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/30
+           focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange/30
            transition-colors duration-150;
   }
 
-  /* Bottom nav item */
+  /* Mobile bottom nav item */
   .nav-item {
     @apply flex flex-col items-center gap-1 px-3 py-2 rounded-md
            text-text-secondary hover:text-text-primary transition-colors duration-150
            cursor-pointer select-none;
   }
+  .nav-item.active { @apply text-orange; }
 
-  .nav-item.active {
-    @apply text-green-500;
-  }
-
-  /* Section header */
-  .section-title {
-    @apply font-display text-xl font-bold text-text-primary;
-  }
-
-  /* Streak chip */
+  /* Streak chip (stays yellow per design) */
   .streak-chip {
     @apply inline-flex items-center gap-1.5 px-3 py-1 bg-surface-2
-           border border-gold-600 rounded-full text-gold-500 text-sm font-medium;
+           border border-yellow/40 rounded-full text-yellow text-sm font-medium;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply font-display text-xl font-bold text-white;
+  }
+
+  /* Pill button variants used in top nav */
+  .pill-btn {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md
+           text-sm font-medium transition-all duration-150 whitespace-nowrap;
   }
 }
