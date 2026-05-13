@@ -37,6 +37,7 @@ import { ProfilePage } from '@/app/profile/ProfilePage'
 import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
 import { SettingsPage } from '@/app/settings/SettingsPage'
+import { OnboardingTutorialSheet } from '@/app/settings/OnboardingTutorialSheet'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
 import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 
@@ -177,6 +178,7 @@ export default function App() {
   const [path, setPath]           = useState(window.location.pathname)
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
   const [tokenReady, setTokenReady] = useState(false)
+  const [tutorialOpen, setTutorialOpen] = useState(false)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
@@ -421,7 +423,7 @@ export default function App() {
     settings: (
       <SettingsPage
         onNavigate={navigate}
-        onOpenTutorial={() => {/* wired in H.S4 */}}
+        onOpenTutorial={() => setTutorialOpen(true)}
         onSignOut={() => {/* wired in H.S5 */}}
         onDeleteAccount={() => {/* wired in H.S7 */}}
       />
@@ -441,6 +443,7 @@ export default function App() {
         <FloatingBBT onClick={() => setAppScreen({ screen: 'bot-select' })} />
       )}
       <BottomNav activePath={activeNavPath} onNavigate={navigate} />
+      <OnboardingTutorialSheet open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
     </div>
   )
 }
