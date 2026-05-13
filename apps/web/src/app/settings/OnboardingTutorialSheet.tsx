@@ -17,11 +17,11 @@ import {
   FiZap,
   FiArrowRight,
   FiCheck,
-  FiSparkles,
   FiTarget,
   FiAward,
 } from 'react-icons/fi'
 import { GiRobotGolem } from 'react-icons/gi'
+import { RiSparklingFill } from 'react-icons/ri'
 import { BottomSheet } from '@/components/ui/BottomSheet'
 import type { IconType } from 'react-icons'
 
@@ -62,7 +62,7 @@ const STEPS: Step[] = [
     accent: 'yellow',
   },
   {
-    Icon: FiSparkles,
+    Icon: RiSparklingFill,
     title: 'Ask DriveReady anything',
     body:
       'Tap "Ask DriveReady" on the home page to chat about any traffic rule, road sign, or test concept. Scoped to driving — no off-topic detours.',
