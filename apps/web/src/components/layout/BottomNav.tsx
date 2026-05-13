@@ -10,15 +10,15 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { Home, BookOpen, Layers, Zap, User } from 'lucide-react'
 import { clsx } from 'clsx'
+import { FiHome, FiBookOpen, FiLayers, FiZap, FiUser } from 'react-icons/fi'
 
 const NAV_ITEMS = [
-  { id: 'home',      label: 'Home',      Icon: Home,     path: '/' },
-  { id: 'learn',     label: 'Learn',     Icon: BookOpen, path: '/learn' },
-  { id: 'study',     label: 'Study',     Icon: Layers,   path: '/study' },
-  { id: 'challenge', label: 'Challenge', Icon: Zap,      path: '/challenge' },
-  { id: 'profile',   label: 'Profile',   Icon: User,     path: '/profile' },
+  { id: 'home',      label: 'Home',      Icon: FiHome,     path: '/' },
+  { id: 'learn',     label: 'Learn',     Icon: FiBookOpen, path: '/learn' },
+  { id: 'study',     label: 'Study',     Icon: FiLayers,   path: '/study' },
+  { id: 'challenge', label: 'Challenge', Icon: FiZap,      path: '/challenge' },
+  { id: 'profile',   label: 'Profile',   Icon: FiUser,     path: '/profile' },
 ]
 
 interface BottomNavProps {
@@ -28,32 +28,40 @@ interface BottomNavProps {
 
 export function BottomNav({ activePath, onNavigate }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border pb-safe">
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+    <nav
+      aria-label="Primary"
+      className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border pb-safe"
+    >
+      <div className="grid grid-cols-5 h-16 max-w-lg mx-auto">
         {NAV_ITEMS.map(({ id, label, Icon, path }) => {
-          const isActive = activePath === path || (path !== '/' && activePath.startsWith(path))
+          const isActive =
+            activePath === path || (path !== '/' && activePath.startsWith(path))
           return (
             <button
               key={id}
               onClick={() => onNavigate(path)}
               className={clsx(
-                'nav-item flex-1',
-                isActive && 'active'
+                'relative flex flex-col items-center justify-center gap-1 transition-colors duration-150',
+                isActive ? 'text-white' : 'text-text-muted hover:text-white',
               )}
               aria-label={label}
               aria-current={isActive ? 'page' : undefined}
             >
+              {isActive && (
+                <span
+                  className="absolute top-0 left-[30%] right-[30%] h-0.5 bg-orange rounded-b-sm"
+                  aria-hidden="true"
+                />
+              )}
               <Icon
                 size={22}
-                strokeWidth={isActive ? 2.5 : 1.75}
-                className="transition-all duration-150"
+                strokeWidth={isActive ? 2.2 : 1.8}
+                className={clsx(
+                  'transition-colors duration-150',
+                  isActive ? 'text-orange' : 'text-current',
+                )}
               />
-              <span className={clsx(
-                'text-xs transition-all duration-150',
-                isActive ? 'font-medium text-green-500' : 'text-text-secondary'
-              )}>
-                {label}
-              </span>
+              <span className="text-[10px] font-medium">{label}</span>
             </button>
           )
         })}
