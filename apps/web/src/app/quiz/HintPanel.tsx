@@ -10,19 +10,45 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { X, Lightbulb } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useMutation, gql } from '@apollo/client'
+import { X, Lightbulb, Sparkles } from 'lucide-react'
+
+const GET_ADAPTIVE_HINT = gql`
+  mutation GetAdaptiveHint($questionId: ID!, $attempt: Int!, $wrongAnswerIds: [ID!]!) {
+    getAdaptiveHint(questionId: $questionId, attempt: $attempt, wrongAnswerIds: $wrongAnswerIds)
+  }
+`
 
 interface HintPanelProps {
   hint: string | null
   difficulty: 'pawn' | 'rogue' | 'king'
   onClose: () => void
+  questionId?: string
+  attempt?: number
+  wrongAnswerIds?: string[]
 }
 
-export function HintPanel({ hint, difficulty, onClose }: HintPanelProps) {
+export function HintPanel({ hint, difficulty, onClose, questionId, attempt = 1, wrongAnswerIds = [] }: HintPanelProps) {
   const label =
     difficulty === 'pawn'
       ? 'Hint — Pawn Mode (unlimited hints)'
       : 'Hint — Rogue Mode'
+
+  const [adaptiveHint, setAdaptiveHint] = useState<string | null>(null)
+  const [getHint, { loading }] = useMutation(GET_ADAPTIVE_HINT)
+
+  useEffect(() => {
+    if (!questionId) return
+    getHint({ variables: { questionId, attempt, wrongAnswerIds } })
+      .then((r) => {
+        const text = r.data?.getAdaptiveHint
+        if (text) setAdaptiveHint(text)
+      })
+      .catch(() => {})
+  }, [questionId])
+
+  const displayedHint = adaptiveHint ?? hint
 
   return (
     <>
@@ -54,9 +80,20 @@ export function HintPanel({ hint, difficulty, onClose }: HintPanelProps) {
 
           {/* Hint content */}
           <div className="bg-gold-500/5 border border-gold-600/30 rounded-lg p-4">
-            <p className="text-text-primary text-sm leading-relaxed">
-              {hint ?? 'Think carefully about the specific rules and regulations covered in this chapter.'}
-            </p>
+            {loading && !displayedHint ? (
+              <p className="text-text-secondary text-sm italic">Thinking of a hint…</p>
+            ) : (
+              <>
+                <p className="text-text-primary text-sm leading-relaxed">
+                  {displayedHint ?? 'Think carefully about the specific rules and regulations covered in this chapter.'}
+                </p>
+                {adaptiveHint && (
+                  <p className="mt-2 text-xs text-green-500 flex items-center gap-1">
+                    <Sparkles size={10} /> Personalized
+                  </p>
+                )}
+              </>
+            )}
           </div>
 
           <button

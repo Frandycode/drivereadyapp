@@ -398,6 +398,9 @@ export function QuizSession({ config, onExit, onQuizComplete }: { config: QuizCo
           hint={current.hintText ?? null}
           difficulty={config.difficulty}
           onClose={() => setShowHint(false)}
+          questionId={current.id}
+          attempt={1}
+          wrongAnswerIds={[]}
         />
       )}
     </div>
