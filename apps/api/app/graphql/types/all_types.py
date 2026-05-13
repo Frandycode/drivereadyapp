@@ -340,6 +340,14 @@ class AcceptLegalInput:
 
 
 @strawberry.input
+class ExamChapterStatInput:
+    chapter: int
+    title: str
+    correct: int
+    total: int
+
+
+@strawberry.input
 class VerifyOtpInput:
     code: str
 

@@ -47,6 +47,10 @@ from app.ai.prompts.adaptive_hint import (
     SYSTEM_PROMPT as HINT_SYSTEM_PROMPT,
     build_user_prompt as build_hint_user_prompt,
 )
+from app.ai.prompts.exam_coaching import (
+    SYSTEM_PROMPT as EXAM_SYSTEM_PROMPT,
+    build_user_prompt as build_exam_user_prompt,
+)
 from app.ai.prompts.tutor import (
     SYSTEM_PROMPT as TUTOR_SYSTEM_PROMPT,
     fetch_relevant_lessons,
@@ -94,6 +98,7 @@ from app.graphql.types.all_types import (
     ChatThreadType,
     CompleteSignupInput,
     CreateDeckInput,
+    ExamChapterStatInput,
     ExplanationType,
     FlashcardDeckType,
     WeeklyReportType,
@@ -1638,6 +1643,50 @@ class Mutation:
 
         await db.commit()
         return BotMoveType(selected_answer_ids=selected_answer_ids, reasoning=reasoning)
+
+    @strawberry.mutation
+    async def get_exam_coaching(
+        self,
+        info: Info,
+        overall_correct: int,
+        overall_total: int,
+        chapters: list[ExamChapterStatInput],
+    ) -> str:
+        """Post-exam coaching from the LLM based on per-chapter performance."""
+        db: AsyncSession = info.context["db"]
+        user: User | None = info.context.get("user")
+        if not user:
+            raise _gql_error("Authentication required", "UNAUTHENTICATED")
+
+        chapter_dicts = [
+            {"chapter": c.chapter, "title": c.title, "correct": c.correct, "total": c.total}
+            for c in chapters
+        ]
+        messages = [
+            {"role": "system", "content": EXAM_SYSTEM_PROMPT},
+            {"role": "user", "content": build_exam_user_prompt(
+                overall_correct=overall_correct,
+                overall_total=overall_total,
+                chapters=chapter_dicts,
+            )},
+        ]
+
+        coaching = "Solid effort. Review the chapters where you missed the most and try the chapter pop quiz to lock in the rules."
+        try:
+            result = await chat(messages, temperature=0.5, max_tokens=250)
+            await ai_log(
+                db=db, user_id=str(user.id), route="exam_coaching",
+                cached=False, result=result,
+            )
+            coaching = result.content.strip()
+        except AIModelError as e:
+            await ai_log(
+                db=db, user_id=str(user.id), route="exam_coaching",
+                cached=False, error=str(e),
+            )
+
+        await db.commit()
+        return coaching
 
     @strawberry.mutation
     async def get_adaptive_hint(

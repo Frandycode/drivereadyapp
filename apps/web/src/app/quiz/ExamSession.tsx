@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import { clsx } from 'clsx'
 import { X, Clock, CheckCircle, XCircle, AlertTriangle, RotateCcw, Home } from 'lucide-react'
 import { useUserStore } from '@/stores'
@@ -28,6 +28,12 @@ const GET_EXAM = gql`
     chapters(stateCode: $stateCode) {
       number title
     }
+  }
+`
+
+const GET_EXAM_COACHING = gql`
+  mutation GetExamCoaching($overallCorrect: Int!, $overallTotal: Int!, $chapters: [ExamChapterStatInput!]!) {
+    getExamCoaching(overallCorrect: $overallCorrect, overallTotal: $overallTotal, chapters: $chapters)
   }
 `
 
@@ -82,9 +88,32 @@ function ExamResults({
   const passed  = correct >= EXAM_PASS
   const pct     = Math.round((correct / EXAM_TOTAL) * 100)
 
+  const [coaching, setCoaching] = useState<string | null>(null)
+  const [getCoaching, { loading: coachingLoading }] = useMutation(GET_EXAM_COACHING)
+
   // Award XP once on mount
   useEffect(() => {
     addXP(passed ? 200 : 25)
+  }, [])
+
+  // Request LLM coaching once we have stats
+  useEffect(() => {
+    const chapterPayload = Object.entries(
+      records.reduce<Record<number, { correct: number; total: number }>>((acc, r) => {
+        if (!acc[r.chapter]) acc[r.chapter] = { correct: 0, total: 0 }
+        acc[r.chapter].total++
+        if (r.isCorrect) acc[r.chapter].correct++
+        return acc
+      }, {})
+    ).map(([num, s]) => ({
+      chapter: Number(num),
+      title: chapterTitles[Number(num)] ?? '',
+      correct: s.correct,
+      total: s.total,
+    }))
+    getCoaching({ variables: { overallCorrect: correct, overallTotal: EXAM_TOTAL, chapters: chapterPayload } })
+      .then((r) => { if (r.data?.getExamCoaching) setCoaching(r.data.getExamCoaching) })
+      .catch(() => {})
   }, [])
 
   // Per-chapter breakdown
@@ -164,6 +193,18 @@ function ExamResults({
             </div>
           )}
         </div>
+
+        {/* AI coaching */}
+        {(coaching || coachingLoading) && (
+          <div className="card-elevated border border-green-500/30">
+            <p className="text-xs text-green-500 font-medium uppercase tracking-wider mb-2">AI Coach</p>
+            {coachingLoading && !coaching ? (
+              <p className="text-sm text-text-secondary italic">Reviewing your exam…</p>
+            ) : (
+              <p className="text-sm text-text-primary leading-relaxed">{coaching}</p>
+            )}
+          </div>
+        )}
 
         {/* Per-chapter breakdown */}
         <section>
