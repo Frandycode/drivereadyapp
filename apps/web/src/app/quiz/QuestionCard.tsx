@@ -63,82 +63,87 @@ export function QuestionCard({ question, selectedIds, revealed, onSelect }: Ques
   }
 
   return (
-    <div className="px-4 max-w-content mx-auto w-full">
-      {/* Multiple answer notice */}
+    <div className="px-4 max-w-[760px] mx-auto w-full">
+      {/* Multiple-answer notice */}
       {isMultiple && (
-        <div className="mb-3 px-3 py-2 rounded-md bg-gold-500/10 border border-gold-600/30">
-          <p className="text-xs text-gold-500 font-medium">
-            Select all {question.correctCount} correct answers
-          </p>
+        <div className="mb-3 inline-flex items-center gap-2 bg-yellow-soft border border-yellow-rim rounded-full px-3.5 py-1 text-[11px] font-medium tracking-[0.06em] text-yellow uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-yellow animate-pulse-soft" />
+          Select all {question.correctCount} correct answers
         </div>
       )}
 
-      {/* Question text */}
-      <div className="card-elevated mb-4">
-        <p className="text-text-primary text-base font-medium leading-relaxed">
+      {/* Quiz card */}
+      <div className="relative overflow-hidden bg-surface-2 border border-border rounded-xl px-6 sm:px-9 py-7 sm:py-9">
+        {/* Tricolor stripe at top */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{
+            background: 'linear-gradient(90deg, #F8DE22 0%, #F45B26 100%)',
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-orange mb-4 flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange" />
+          Question
+        </div>
+
+        <h2 className="display font-bold text-[clamp(22px,2.8vw,28px)] leading-[1.3] tracking-[-0.5px] text-white mb-7">
           {question.questionText}
-        </p>
-      </div>
+        </h2>
 
-      {/* Answer options */}
-      <div className="space-y-2">
-        {shuffledAnswers.map((answer) => {
-          const state = getAnswerState(answer)
-          const isSelected = selectedIds.includes(answer.id)
+        {/* Options */}
+        <div className="flex flex-col gap-2.5">
+          {shuffledAnswers.map((answer, idx) => {
+            const state      = getAnswerState(answer)
+            const isSelected = selectedIds.includes(answer.id)
+            const letter     = String.fromCharCode(65 + idx)
 
-          return (
-            <button
-              key={answer.id}
-              onClick={() => !revealed && onSelect(answer.id)}
-              disabled={revealed}
-              className={clsx(
-                'w-full text-left rounded-lg border px-4 py-3 transition-all duration-150',
-                'flex items-center gap-3',
-                // Idle states
-                !revealed && !isSelected && 'bg-surface border-border hover:border-green-700 hover:bg-surface-2 active:scale-[0.99]',
-                !revealed && isSelected  && 'bg-green-500/10 border-green-500',
-                // Revealed states
-                revealed && state === 'correct' && 'bg-green-500/15 border-green-500',
-                revealed && state === 'wrong'   && 'bg-red-500/10 border-red-600',
-                revealed && state === 'missed'  && 'bg-gold-500/10 border-gold-600 animate-pulse',
-                revealed && state === 'idle'    && 'bg-surface border-border opacity-50',
-              )}
-            >
-              {/* Selection indicator */}
-              <div className={clsx(
-                'flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all',
-                !revealed && isSelected  && 'bg-green-500 border-green-500',
-                !revealed && !isSelected && 'border-border',
-                revealed && state === 'correct' && 'bg-green-500 border-green-500',
-                revealed && state === 'wrong'   && 'bg-red-500 border-red-500',
-                revealed && state === 'missed'  && 'bg-gold-500 border-gold-500',
-                revealed && state === 'idle'    && 'border-border',
-              )}>
-                {revealed && state === 'correct' && <CheckCircle size={12} className="text-bg" />}
-                {revealed && state === 'wrong'   && <XCircle size={12} className="text-bg" />}
-                {revealed && state === 'missed'  && <CheckCircle size={12} className="text-bg" />}
-                {!revealed && isSelected         && <div className="w-2 h-2 rounded-full bg-bg" />}
-              </div>
+            const wrapClass = clsx(
+              'group flex items-center gap-3.5 px-4 sm:px-5 py-3.5 sm:py-4 rounded-md border transition-all duration-150 text-left text-[14px]',
+              !revealed && !isSelected && 'bg-white/[0.03] border-strong text-text-primary hover:bg-orange/[0.06] hover:border-orange/30',
+              !revealed && isSelected  && 'bg-orange/[0.12] border-orange text-white',
+              revealed && state === 'correct' && 'bg-green-soft border-correct text-correct',
+              revealed && state === 'wrong'   && 'bg-wrong/10 border-wrong/60 text-wrong',
+              revealed && state === 'missed'  && 'bg-yellow-soft border-yellow text-yellow animate-pulse-soft',
+              revealed && state === 'idle'    && 'bg-white/[0.03] border-strong opacity-50',
+            )
 
-              <span className={clsx(
-                'text-sm leading-snug flex-1',
-                revealed && state === 'correct' && 'text-green-400 font-medium',
-                revealed && state === 'wrong'   && 'text-red-400',
-                revealed && state === 'missed'  && 'text-gold-500 font-medium',
-                (!revealed || state === 'idle')  && 'text-text-primary',
-              )}>
-                {answer.text}
-              </span>
-            </button>
-          )
-        })}
+            const chipClass = clsx(
+              'w-7 h-7 rounded-md flex-shrink-0 flex items-center justify-center mono text-[12px] font-bold transition-all',
+              !revealed && !isSelected && 'bg-white/[0.06] text-text-muted group-hover:bg-orange/20 group-hover:text-orange',
+              !revealed && isSelected  && 'bg-orange text-white',
+              revealed && state === 'correct' && 'bg-correct text-bg',
+              revealed && state === 'wrong'   && 'bg-wrong text-bg',
+              revealed && state === 'missed'  && 'bg-yellow text-bg',
+              revealed && state === 'idle'    && 'bg-white/[0.06] text-text-muted',
+            )
+
+            return (
+              <button
+                key={answer.id}
+                onClick={() => !revealed && onSelect(answer.id)}
+                disabled={revealed}
+                className={wrapClass}
+              >
+                <span className={chipClass}>
+                  {revealed && state === 'correct' ? <CheckCircle size={13} strokeWidth={3} /> :
+                   revealed && state === 'wrong'   ? <XCircle size={13} strokeWidth={3} /> :
+                   revealed && state === 'missed'  ? <CheckCircle size={13} strokeWidth={3} /> :
+                   letter}
+                </span>
+                <span className="flex-1 leading-snug">{answer.text}</span>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Explanation — shown after reveal */}
       {revealed && (
         <>
-          <div className="mt-4 px-4 py-3 rounded-lg bg-surface-2 border border-border">
-            <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-1">
+          <div className="mt-4 px-4 py-3 rounded-md bg-surface-2 border border-border">
+            <p className="mono text-[10px] text-text-muted font-semibold uppercase tracking-[0.12em] mb-1.5">
               Explanation
             </p>
             <p className="text-sm text-text-primary leading-relaxed">
