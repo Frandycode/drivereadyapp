@@ -67,10 +67,10 @@ export const BOTS: Record<BotId, BotConfig> = {
     thinkMinMs: 2000,
     thinkMaxMs: 4000,
     avatar: GiRobotGolem,
-    avatarClass: 'text-gold-500',
+    avatarClass: 'text-yellow',
     difficulty: 'King',
     xpReward: 80,
-    color: 'border-gold-600 bg-gold-500/5',
+    color: 'border-yellow-rim bg-yellow-soft',
   },
 }
 
@@ -104,61 +104,72 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
   const bot = BOTS[selectedBot]
 
   const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <button onClick={onBack} className="p-1 -ml-1 text-text-secondary hover:text-text-primary transition-colors">
+    <div className="px-4 pt-4 pb-3 max-w-[760px] mx-auto flex items-center gap-3">
+      <button
+        onClick={onBack}
+        className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+        aria-label="Back"
+      >
         <ArrowLeft size={20} />
       </button>
-      <h1 className="font-display text-lg font-bold text-text-primary">Bot Battle</h1>
+      <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-bronze-500">
+        <span className="w-[18px] h-[1.5px] rounded-full bg-bronze-500" />
+        Bot Battle setup
+      </div>
     </div>
   )
 
   return (
-    <PageWrapper header={header}>
-      <div className="space-y-6 mt-1">
+    <PageWrapper header={header} className="!max-w-dashboard !px-0">
+      <div className="bg-navy-deep blueprint-grid">
+       <div className="max-w-[760px] mx-auto px-4 sm:px-8 py-8 pb-12 space-y-6">
 
         {/* Bot selector */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Choose your opponent
-          </h2>
+          </div>
           <div className="space-y-3">
             {(Object.values(BOTS) as BotConfig[]).map((b) => (
               <button
                 key={b.id}
                 onClick={() => setSelectedBot(b.id)}
-                className={`w-full text-left rounded-xl border-2 p-4 transition-all duration-150 ${
-                  selectedBot === b.id ? b.color : 'border-border bg-surface hover:border-green-700'
+                className={`w-full text-left rounded-lg border-2 p-4 transition-all duration-150 relative overflow-hidden ${
+                  selectedBot === b.id ? b.color : 'border-border bg-surface hover:border-orange/40'
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 flex items-center justify-center bg-surface-2 rounded-xl flex-shrink-0">
+                  <div className="w-14 h-14 flex items-center justify-center bg-surface-2 border border-white/[0.06] rounded-md flex-shrink-0">
                     <b.avatar size={36} className={b.avatarClass} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <p className="font-display font-bold text-text-primary">{b.name}</p>
-                      <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="display font-bold text-white text-base tracking-[-0.2px]">{b.name}</p>
+                      <span className={`inline-flex items-center mono text-[10px] tracking-[0.08em] uppercase px-2 py-0.5 rounded-md border font-semibold ${
                         b.id === 'rusty' ? 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40' :
                         b.id === 'dash'  ? 'text-silver-400 bg-silver-500/10 border-silver-600/40' :
-                                           'text-gold-500 bg-gold-500/10 border-gold-600/40'
+                                           'text-yellow bg-yellow-soft border-yellow-rim'
                       }`}>
                         {b.difficulty}
                       </span>
                     </div>
-                    <p className="text-xs text-text-secondary">{b.tagline}</p>
-                    <div className="mt-2 flex items-center gap-3">
-                      <div className="flex-1 h-1.5 bg-surface-3 rounded-full overflow-hidden">
+                    <p className="text-[13px] text-text-secondary mb-2 leading-relaxed">{b.tagline}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full ${
-                            b.accuracy < 50 ? 'bg-green-500' :
-                            b.accuracy < 80 ? 'bg-gold-500' : 'bg-red-500'
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            b.accuracy < 50 ? 'bg-correct' :
+                            b.accuracy < 80 ? 'bg-yellow' : 'bg-orange'
                           }`}
                           style={{ width: `${b.accuracy}%` }}
                         />
                       </div>
-                      <span className="text-xs font-mono text-text-secondary">{b.accuracy}%</span>
-                      <Zap size={12} className="text-gold-500" />
-                      <span className="text-xs text-gold-500 font-medium">+{b.xpReward} XP</span>
+                      <span className="mono text-[11px] font-bold tabular-nums text-text-secondary">{b.accuracy}%</span>
+                      <div className="inline-flex items-center gap-1 mono text-[11px] font-bold text-yellow">
+                        <Zap size={11} />
+                        +{b.xpReward}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -169,18 +180,19 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
 
         {/* Question count */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
             Questions
-          </h2>
+          </div>
           <div className="flex gap-2 flex-wrap">
             {QUESTION_COUNTS.map((n) => (
               <button
                 key={n}
                 onClick={() => setQuestionCount(n)}
-                className={`flex-1 min-w-[48px] py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                className={`flex-1 min-w-[48px] py-2 rounded-md mono text-sm font-bold tabular-nums transition-all border ${
                   questionCount === n
-                    ? 'bg-green-500 text-bg'
-                    : 'bg-surface-2 border border-border text-text-secondary hover:text-text-primary'
+                    ? 'bg-orange text-white border-orange'
+                    : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                 }`}
               >
                 {n}
@@ -191,49 +203,55 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
 
         {/* Timer */}
         <section>
-          <h2 className="text-xs font-medium text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-2">
-            <Clock size={12} />
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <Clock size={11} />
             Timer per question
-          </h2>
+          </div>
           <div className="flex gap-2">
             {TIMERS.map(({ value, label }) => (
               <button
                 key={label}
                 onClick={() => setTimer(value)}
-                className={`flex-1 py-2 rounded-md text-sm font-mono font-medium transition-all ${
+                className={`flex-1 py-2 rounded-md mono text-[13px] font-bold tabular-nums transition-all border ${
                   timer === value
-                    ? 'bg-green-500 text-bg'
-                    : 'bg-surface-2 border border-border text-text-secondary hover:text-text-primary'
+                    ? 'bg-orange text-white border-orange'
+                    : 'bg-white/[0.04] border-border text-text-secondary hover:text-white hover:border-orange/40'
                 }`}
               >
                 {label}
               </button>
             ))}
           </div>
-          <p className="text-xs text-text-secondary mt-2 flex items-center gap-1.5">
-            <AlertTriangle size={12} className="text-gold-500 flex-shrink-0" />
+          <p className="text-[12px] text-text-secondary mt-2 flex items-center gap-1.5">
+            <AlertTriangle size={11} className="text-yellow flex-shrink-0" />
             If time runs out before you answer, the question is marked wrong.
           </p>
         </section>
 
         {/* Rules */}
-        <div className="card border-border bg-surface-2 text-xs text-text-secondary space-y-1">
-          <p className="font-medium text-text-primary mb-1">Battle rules</p>
-          <p>• No hints or skips — King-level rules for all bot battles</p>
-          <p>• Questions randomly mixed from all modes</p>
-          <p>• Bot and player answer simultaneously</p>
-          <p>• XP awarded regardless of outcome</p>
+        <div className="card relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-bronze-500" />
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-bronze-500">
+            <span className="w-[14px] h-[1.5px] rounded-full bg-bronze-500" />
+            Battle rules
+          </div>
+          <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
+            <li>• No hints or skips — King-level rules for all bot battles</li>
+            <li>• Questions randomly mixed from all modes</li>
+            <li>• Bot and player answer simultaneously</li>
+            <li>• XP awarded regardless of outcome</li>
+          </ul>
         </div>
 
         {/* Start */}
         <button
           onClick={() => onStart({ bot, questionCount, timerSeconds: timer, stateCode })}
-          className="btn-primary w-full h-12 text-base font-semibold"
+          className="btn-primary w-full h-12 text-sm font-semibold"
         >
           Battle {bot.name}!
         </button>
 
-        <div className="h-2" />
+       </div>
       </div>
     </PageWrapper>
   )
