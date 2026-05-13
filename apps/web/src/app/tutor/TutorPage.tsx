@@ -85,19 +85,33 @@ export function TutorPage() {
   }
 
   const header = (
-    <div className="px-4 py-3 flex items-center gap-3">
-      <Sparkles size={18} className="text-green-500" />
-      <h1 className="font-display text-base font-bold text-text-primary">Ask DriveReady</h1>
+    <div className="px-4 pt-4 pb-3 flex items-center gap-3 max-w-[760px] mx-auto">
+      <div className="w-8 h-8 rounded-md bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
+        <Sparkles size={15} className="text-orange" />
+      </div>
+      <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+        <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+        AI tutor
+      </div>
     </div>
   )
 
   return (
     <PageWrapper header={header}>
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-1 space-y-3 pb-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-1 space-y-2.5 pb-4">
         {messages.length === 0 && (
-          <div className="text-center text-text-secondary text-sm py-8 px-4">
-            <Sparkles size={24} className="mx-auto mb-2 text-green-500/50" />
-            Ask me anything about driving rules, road signs, or the OK permit exam.
+          <div className="text-center py-10 px-4">
+            <div className="w-12 h-12 rounded-md bg-orange-soft border border-orange/30 flex items-center justify-center mx-auto mb-4">
+              <Sparkles size={22} className="text-orange" />
+            </div>
+            <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+              Ask anything
+            </div>
+            <p className="display text-white font-bold text-base mb-1.5 tracking-[-0.2px]">
+              Driving rules, road signs, permit prep.
+            </p>
+            <p className="text-[13px] text-text-secondary">I’m here when you need a second read.</p>
           </div>
         )}
         {messages.map((m) => (
@@ -105,22 +119,22 @@ export function TutorPage() {
             key={m.id}
             className={
               m.role === 'user'
-                ? 'ml-auto max-w-[80%] bg-green-500 text-bg rounded-lg px-3 py-2 text-sm'
-                : 'mr-auto max-w-[85%] bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm text-text-primary'
+                ? 'ml-auto max-w-[80%] bg-orange text-white rounded-md px-3 py-2 text-[14px] leading-relaxed'
+                : 'mr-auto max-w-[85%] bg-surface-2 border border-border rounded-md px-3 py-2 text-[14px] leading-relaxed text-text-primary'
             }
           >
             {m.content}
           </div>
         ))}
         {sending && (
-          <div className="mr-auto bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm text-text-secondary italic">
+          <div className="mr-auto bg-surface-2 border border-border rounded-md px-3 py-2 text-[13px] text-text-secondary italic animate-pulse">
             Thinking…
           </div>
         )}
       </div>
 
       {error && (
-        <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-2">
+        <p className="text-wrong text-[13px] bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-2">
           {error}
         </p>
       )}
@@ -137,7 +151,7 @@ export function TutorPage() {
         <button
           onClick={handleSend}
           disabled={!threadId || sending || !draft.trim()}
-          className="btn-primary px-4 disabled:opacity-40"
+          className="btn-primary px-4 h-11 disabled:opacity-40"
           aria-label="Send"
         >
           <Send size={16} />
