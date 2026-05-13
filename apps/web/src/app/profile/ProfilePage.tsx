@@ -12,7 +12,9 @@
 
 import { useState } from 'react'
 import { useMutation, useQuery, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Zap, Flame, Shield, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon } from 'lucide-react'
+import { LogOut, User, Mail, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon } from 'lucide-react'
+import { PageWrapper } from '@/components/layout/PageWrapper'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'
 import { clearAuthToken } from '@driveready/api-client'
 
@@ -252,49 +254,72 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
 
   if (!user) return null
 
+  const firstName = (user.displayName ?? '').split(' ')[0] || 'there'
+
   return (
-    <div className="min-h-dvh bg-bg pb-24">
-      <div className="px-4 pt-12 pb-6 max-w-lg mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="font-display text-2xl font-bold text-text-primary">Profile</h1>
+    <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
+      <PageHeader
+        eyebrow="Account · profile"
+        title={
+          <>
+            Hey, <em className="not-italic text-orange">{firstName}.</em>
+          </>
+        }
+        sub="Email, phone, family link, password — your account in one place."
+        stats={[
+          { label: 'XP',     value: user.xpTotal.toLocaleString(), tone: 'gold' },
+          { label: 'Streak', value: user.streakDays,               tone: 'orange' },
+          { label: 'Level',  value: user.level,                    tone: 'green' },
+        ]}
+        slab="orange"
+      />
+
+      <div className="bg-navy blueprint-grid">
+        <div className="max-w-[760px] mx-auto px-4 sm:px-8 py-8 pb-14 space-y-4">
+
+        {/* Avatar + name + Settings */}
+        <div className="flex items-center gap-4 bg-surface border border-border rounded-lg p-4 relative overflow-hidden">
+          <div
+            className="absolute top-0 left-0 right-0 h-[2px]"
+            style={{
+              background:
+                'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+            }}
+          />
+          <div className="w-14 h-14 rounded-md bg-orange-soft border border-orange/30 flex items-center justify-center shrink-0">
+            <User size={26} className="text-orange" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="display font-bold text-base text-white truncate">{user.displayName}</p>
+            <div className="flex items-center gap-1 text-text-secondary text-[13px] mt-0.5">
+              <Mail size={12} />
+              <span className="truncate">{user.email}</span>
+              {user.emailVerified && <CheckCircle size={12} className="text-correct shrink-0" />}
+            </div>
+          </div>
           {onNavigate && (
             <button
               onClick={() => onNavigate('/settings')}
-              className="p-2 rounded-md text-text-secondary hover:text-white hover:bg-surface-2 transition-colors"
+              className="p-2 rounded-md text-text-secondary hover:text-white hover:bg-white/[0.04] transition-colors flex-shrink-0"
               aria-label="Settings"
               title="Settings"
             >
-              <SettingsIcon size={20} />
+              <SettingsIcon size={18} />
             </button>
           )}
         </div>
 
-        {/* Avatar + name */}
-        <div className="flex items-center gap-4 bg-surface border border-border rounded-2xl p-4 mb-4">
-          <div className="w-14 h-14 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center shrink-0">
-            <User size={26} className="text-green-500" />
-          </div>
-          <div className="min-w-0">
-            <p className="font-semibold text-text-primary truncate">{user.displayName}</p>
-            <div className="flex items-center gap-1 text-text-secondary text-sm mt-0.5">
-              <Mail size={13} />
-              <span className="truncate">{user.email}</span>
-              {user.emailVerified && <CheckCircle size={12} className="text-green-500 shrink-0" />}
-            </div>
-          </div>
-        </div>
-
         {/* Email change */}
-        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <Mail size={15} className="text-text-secondary" />
-              <span className="text-sm font-medium text-text-primary">Email Address</span>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <Mail size={11} />
+              Email address
             </div>
             {emailStep === 'idle' && (
               <button
                 onClick={() => { setEmailStep('enter-email'); setEmailError('') }}
-                className="text-xs text-green-500 hover:text-green-400 transition-colors"
+                className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-orange hover:text-yellow transition-colors"
               >
                 Change
               </button>
@@ -302,7 +327,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
           </div>
 
           {emailStep === 'idle' && (
-            <p className="text-sm text-text-secondary truncate">{user.email}</p>
+            <p className="text-[14px] text-text-secondary truncate">{user.email}</p>
           )}
 
           {emailStep === 'enter-email' && (
@@ -336,7 +361,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
 
           {emailStep === 'enter-code' && (
             <div className="mt-3 space-y-3">
-              <p className="text-xs text-text-secondary">Enter the 6-digit code sent to {newEmail}</p>
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted">Enter the 6-digit code sent to {newEmail}</p>
               <div className="flex gap-2">
                 {emailDigits.map((digit, i) => (
                   <input
@@ -349,7 +374,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
                     onChange={(e) => handleEmailDigit(i, e.target.value)}
                     onKeyDown={(e) => handleEmailKeyDown(i, e)}
                     onFocus={(e) => e.target.select()}
-                    className="w-10 h-12 text-center text-lg font-bold font-mono rounded-lg border-2 bg-bg text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
+                    className="w-10 h-12 text-center mono text-lg font-bold tabular-nums rounded-md border-2 bg-bg text-white focus:outline-none focus:border-orange transition-colors border-border"
                   />
                 ))}
               </div>
@@ -373,57 +398,32 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
           )}
 
           {emailStep === 'done' && (
-            <p className="mt-2 text-sm text-green-500">Email updated to {newEmail}.</p>
+            <p className="mt-2 text-[13px] text-correct">Email updated to {newEmail}.</p>
           )}
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="bg-surface border border-border rounded-xl p-3 text-center">
-            <div className="flex items-center justify-center gap-1 text-yellow-400 mb-1">
-              <Zap size={15} />
-              <span className="text-xs font-medium uppercase tracking-wide">XP</span>
-            </div>
-            <p className="font-display text-xl font-bold text-text-primary">{user.xpTotal.toLocaleString()}</p>
-          </div>
-          <div className="bg-surface border border-border rounded-xl p-3 text-center">
-            <div className="flex items-center justify-center gap-1 text-orange-400 mb-1">
-              <Flame size={15} />
-              <span className="text-xs font-medium uppercase tracking-wide">Streak</span>
-            </div>
-            <p className="font-display text-xl font-bold text-text-primary">{user.streakDays}</p>
-          </div>
-          <div className="bg-surface border border-border rounded-xl p-3 text-center">
-            <div className="flex items-center justify-center gap-1 text-green-400 mb-1">
-              <Shield size={15} />
-              <span className="text-xs font-medium uppercase tracking-wide">Level</span>
-            </div>
-            <p className="font-display text-xl font-bold text-text-primary">{user.level}</p>
-          </div>
-        </div>
-
         {/* Phone verification */}
-        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <Phone size={15} className="text-text-secondary" />
-              <span className="text-sm font-medium text-text-primary">Phone Number</span>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <Phone size={11} />
+              Phone number
             </div>
             {user.phoneVerified && (
-              <span className="flex items-center gap-1 text-xs text-green-500">
-                <CheckCircle size={12} /> Verified
+              <span className="inline-flex items-center gap-1 mono text-[10px] tracking-[0.1em] uppercase font-semibold text-correct">
+                <CheckCircle size={11} /> Verified
               </span>
             )}
           </div>
 
           {user.phoneVerified ? (
-            <p className="text-sm text-text-secondary">{user.phoneNumber}</p>
+            <p className="text-[14px] text-text-secondary">{user.phoneNumber}</p>
           ) : phoneStep === 'idle' ? (
             <button
               onClick={() => setPhoneStep('enter-number')}
-              className="mt-2 text-sm text-green-500 hover:text-green-400 transition-colors"
+              className="mt-1 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-orange hover:text-yellow transition-colors"
             >
-              Add &amp; verify phone number
+              + Add &amp; verify phone number
             </button>
           ) : phoneStep === 'enter-number' ? (
             <div className="mt-3 space-y-3">
@@ -455,7 +455,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
             </div>
           ) : phoneStep === 'enter-code' ? (
             <div className="mt-3 space-y-3">
-              <p className="text-xs text-text-secondary">Enter the code sent to {phoneNumber}</p>
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted">Enter the code sent to {phoneNumber}</p>
               <div className="flex gap-2">
                 {phoneDigits.map((digit, i) => (
                   <input
@@ -468,7 +468,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
                     onChange={(e) => handlePhoneDigit(i, e.target.value)}
                     onKeyDown={(e) => handlePhoneKeyDown(i, e)}
                     onFocus={(e) => e.target.select()}
-                    className="w-10 h-12 text-center text-lg font-bold font-mono rounded-lg border-2 bg-bg text-text-primary focus:outline-none focus:border-green-500 transition-colors border-border"
+                    className="w-10 h-12 text-center mono text-lg font-bold tabular-nums rounded-md border-2 bg-bg text-white focus:outline-none focus:border-orange transition-colors border-border"
                   />
                 ))}
               </div>
@@ -490,26 +490,26 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
               </div>
             </div>
           ) : (
-            <p className="mt-2 text-sm text-green-500">Phone verified successfully!</p>
+            <p className="mt-2 text-[13px] text-correct">Phone verified successfully!</p>
           )}
         </div>
 
         {/* Parent linking — learner generates invite code */}
-        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Users size={15} className="text-text-secondary" />
-            <span className="text-sm font-medium text-text-primary">Family Link</span>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <Users size={11} />
+            Family link
           </div>
 
           {/* Active parent links */}
           {(parentLinksData?.myParentLinks ?? [])
             .filter((l: { status: string }) => l.status === 'active')
             .map((l: { id: string; status: string }) => (
-              <div key={l.id} className="flex items-center justify-between py-2 border-b border-border last:border-0 mb-2">
-                <span className="text-sm text-text-secondary">Parent linked</span>
+              <div key={l.id} className="flex items-center justify-between py-2 border-b border-white/[0.06] last:border-0 mb-2">
+                <span className="text-[13px] text-text-secondary">Parent linked</span>
                 <button
                   onClick={() => handleRevokeLink(l.id)}
-                  className="text-xs text-red-400 hover:text-red-300 transition-colors"
+                  className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-wrong/80 hover:text-wrong transition-colors"
                 >
                   Remove
                 </button>
@@ -519,22 +519,23 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
           {/* Invite code */}
           {linkCode ? (
             <div className="space-y-2">
-              <p className="text-xs text-text-secondary">Share this code with your parent. It expires in 24 hours.</p>
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted">Share this code with your parent. It expires in 24 hours.</p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-bg border border-border rounded-lg px-4 py-2 text-center">
-                  <span className="font-mono text-2xl font-bold tracking-[0.3em] text-green-400">{linkCode}</span>
+                <div className="flex-1 bg-bg border border-orange/30 rounded-md px-4 py-2 text-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-orange" />
+                  <span className="mono text-2xl font-bold tracking-[0.3em] text-orange tabular-nums">{linkCode}</span>
                 </div>
                 <button
                   onClick={handleCopyCode}
-                  className="p-2 rounded-lg border border-border text-text-secondary hover:text-text-primary transition-colors"
+                  className="p-2 rounded-md border border-border text-text-secondary hover:text-white hover:border-orange/40 transition-colors"
                   title="Copy code"
                 >
-                  {linkCopyDone ? <CheckCircle size={18} className="text-green-500" /> : <Copy size={18} />}
+                  {linkCopyDone ? <CheckCircle size={18} className="text-correct" /> : <Copy size={18} />}
                 </button>
                 <button
                   onClick={handleGenerateLinkCode}
                   disabled={generating}
-                  className="p-2 rounded-lg border border-border text-text-secondary hover:text-text-primary transition-colors"
+                  className="p-2 rounded-md border border-border text-text-secondary hover:text-white hover:border-orange/40 transition-colors"
                   title="Generate new code"
                 >
                   <RefreshCw size={18} className={generating ? 'animate-spin' : ''} />
@@ -545,24 +546,26 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
             <button
               onClick={handleGenerateLinkCode}
               disabled={generating}
-              className="text-sm text-green-500 hover:text-green-400 transition-colors"
+              className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-orange hover:text-yellow transition-colors"
             >
-              {generating ? 'Generating...' : '+ Generate parent invite code'}
+              {generating ? 'Generating…' : '+ Generate parent invite code'}
             </button>
           )}
         </div>
 
         {/* Change password */}
-        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+        <div className="bg-surface border border-border rounded-lg p-4">
           <button
             onClick={() => { setShowChangePw((v) => !v); setPwError(''); setPwSuccess(false) }}
             className="w-full flex items-center justify-between"
           >
-            <div className="flex items-center gap-2">
-              <Lock size={15} className="text-text-secondary" />
-              <span className="text-sm font-medium text-text-primary">Change Password</span>
+            <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+              <Lock size={11} />
+              Change password
             </div>
-            <span className="text-xs text-text-secondary">{showChangePw ? 'Cancel' : 'Update'}</span>
+            <span className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary">
+              {showChangePw ? 'Cancel' : 'Update'}
+            </span>
           </button>
 
           {showChangePw && (
@@ -589,38 +592,41 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
                 onChange={(e) => setConfirmPw(e.target.value)}
               />
               {pwError   && <p className="text-wrong text-xs">{pwError}</p>}
-              {pwSuccess && <p className="text-green-500 text-xs">Password updated.</p>}
+              {pwSuccess && <p className="text-correct text-xs">Password updated.</p>}
               <button
                 onClick={handleChangePassword}
                 disabled={!currentPw || !newPw || !confirmPw || changingPw}
-                className="btn-primary w-full h-10 text-sm"
+                className="btn-primary w-full h-11 text-sm font-semibold"
               >
-                {changingPw ? 'Updating...' : 'Update Password'}
+                {changingPw ? 'Updating…' : 'Update password'}
               </button>
             </div>
           )}
         </div>
 
         {/* Delete account */}
-        <div className="bg-surface border border-border rounded-2xl p-4 mb-4">
+        <div className="bg-surface border border-wrong/30 rounded-lg p-4 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-wrong" />
           <button
             onClick={() => { setShowDelete((v) => !v); setDeleteError('') }}
-            className="w-full flex items-center justify-between"
+            className="w-full flex items-center justify-between mt-1"
           >
-            <div className="flex items-center gap-2">
-              <Trash2 size={15} className="text-red-400" />
-              <span className="text-sm font-medium text-red-400">Delete Account</span>
+            <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-wrong">
+              <Trash2 size={11} />
+              Delete account
             </div>
-            <span className="text-xs text-text-secondary">{showDelete ? 'Cancel' : 'Manage'}</span>
+            <span className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary">
+              {showDelete ? 'Cancel' : 'Manage'}
+            </span>
           </button>
 
           {showDelete && (
             <div className="mt-4 space-y-3">
-              <p className="text-xs text-text-secondary leading-relaxed">
+              <p className="text-[12px] text-text-secondary leading-relaxed">
                 This permanently deletes your account and all study data. Enter your password to confirm.
               </p>
               <input
-                className="input border-red-500/40"
+                className="input border-wrong/40"
                 type="password"
                 placeholder="Your password"
                 value={deletePw}
@@ -630,9 +636,9 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
               <button
                 onClick={handleDeleteAccount}
                 disabled={!deletePw || deleting}
-                className="w-full h-10 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium"
+                className="w-full h-11 rounded-md bg-wrong/15 border border-wrong/40 text-wrong hover:bg-wrong hover:text-white active:scale-95 transition-all text-sm font-semibold"
               >
-                {deleting ? 'Deleting...' : 'Permanently Delete My Account'}
+                {deleting ? 'Deleting…' : 'Permanently delete my account'}
               </button>
             </div>
           )}
@@ -641,12 +647,14 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 h-12 rounded-xl border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors font-medium"
+          className="w-full flex items-center justify-center gap-2 h-12 rounded-md border border-wrong/40 text-wrong hover:bg-wrong/10 hover:text-white transition-all text-sm font-semibold"
         >
-          <LogOut size={18} />
+          <LogOut size={16} />
           Log out
         </button>
+
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   )
 }
