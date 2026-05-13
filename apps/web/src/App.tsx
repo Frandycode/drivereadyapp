@@ -38,6 +38,7 @@ import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
 import { SettingsPage } from '@/app/settings/SettingsPage'
 import { OnboardingTutorialSheet } from '@/app/settings/OnboardingTutorialSheet'
+import { DeleteAccountSheet } from '@/app/settings/DeleteAccountSheet'
 import { clearAuthToken } from '@driveready/api-client'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
 import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
@@ -180,6 +181,7 @@ export default function App() {
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
   const [tokenReady, setTokenReady] = useState(false)
   const [tutorialOpen, setTutorialOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen]     = useState(false)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
@@ -429,7 +431,7 @@ export default function App() {
           clearAuthToken()
           clearUser()
         }}
-        onDeleteAccount={() => setAppScreen({ screen: 'settings' })}
+        onDeleteAccount={() => setDeleteOpen(true)}
       />
     ),
   }
@@ -448,6 +450,14 @@ export default function App() {
       )}
       <BottomNav activePath={activeNavPath} onNavigate={navigate} />
       <OnboardingTutorialSheet open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
+      <DeleteAccountSheet
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onDeleted={() => {
+          clearAuthToken()
+          clearUser()
+        }}
+      />
     </div>
   )
 }
