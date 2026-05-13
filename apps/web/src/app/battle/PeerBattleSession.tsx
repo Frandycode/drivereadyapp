@@ -524,7 +524,8 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   const current     = questions[qIndex]
   const correctIds  = current ? new Set(current.answers.filter((a) => a.isCorrect).map((a) => a.id)) : new Set<string>()
   const timerPct    = timerSeconds ? (timeLeft ?? 0) / timerSeconds : 1
-  const timerColor  = timerPct > 0.5 ? 'text-green-500' : timerPct > 0.2 ? 'text-yellow-400' : 'text-red-400'
+  const timerColor  = timerPct > 0.5 ? 'text-correct' : timerPct > 0.2 ? 'text-yellow' : 'text-orange'
+  const timerBar    = timerPct > 0.5 ? 'bg-correct'   : timerPct > 0.2 ? 'bg-yellow'   : 'bg-orange'
 
   // ── Guest cinematic loading screen (UPDATE-05) ────────────────────────────
 
@@ -537,19 +538,32 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         : `Ch. ${chapterIds.join(' · Ch. ')}`
 
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-8 px-6 text-center">
-        <div className="w-20 h-20 rounded-full border-4 border-green-500 border-t-transparent animate-spin" />
+      <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col items-center justify-center gap-7 px-6 text-center relative overflow-hidden">
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{
+            background:
+              'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+          }}
+        />
+        <div className="w-20 h-20 rounded-full border-4 border-orange border-t-transparent animate-spin" />
         <div>
-          <h2 className="font-display text-2xl font-bold text-text-primary mb-2">Get Ready!</h2>
-          <p className="text-text-secondary text-sm">{chapterLabel}</p>
+          <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Peer Battle
+          </div>
+          <h2 className="display font-extrabold text-[clamp(28px,4vw,40px)] leading-[1.05] tracking-[-1px] text-white mb-2">
+            Get ready.
+          </h2>
+          <p className="mono text-[11px] tracking-[0.1em] uppercase text-yellow font-semibold">{chapterLabel}</p>
         </div>
         <div className="space-y-1.5">
-          <p className="text-xs text-text-secondary">Your opponent has chosen the questions</p>
-          <p className="text-xs text-text-secondary">Battle starts shortly...</p>
+          <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted">Your opponent has chosen the questions</p>
+          <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted">Battle starts shortly…</p>
         </div>
         <button
           onClick={() => setCinematicDone(true)}
-          className="text-xs text-text-secondary/50 hover:text-text-secondary underline"
+          className="mono text-[11px] tracking-[0.1em] uppercase text-text-muted hover:text-white underline font-semibold transition-colors"
         >
           Skip
         </button>
@@ -582,40 +596,74 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
   if (phase === 'complete') {
     const iconMap: Record<string, React.ReactNode> = {
-      win:  <GiLaurelsTrophy size={72} className="text-gold-500" />,
-      lose: <IoSad size={72} className="text-red-400" />,
-      tie:  <FaHandshake size={72} className="text-info" />,
+      win:  <GiLaurelsTrophy size={64} className="text-yellow" />,
+      lose: <IoSad size={64} className="text-wrong" />,
+      tie:  <FaHandshake size={64} className="text-info" />,
     }
     const labelMap: Record<string, string> = {
-      win:  'You Won!',
-      lose: 'You Lost',
-      tie:  "It's a Tie",
+      win:  'You won!',
+      lose: 'You lost',
+      tie:  "It's a tie",
     }
-    const icon  = iconMap[winner ?? '']  ?? <GiLaurelsTrophy size={72} className="text-text-secondary" />
+    const toneMap: Record<string, string> = {
+      win:  'text-yellow',
+      lose: 'text-wrong',
+      tie:  'text-white',
+    }
+    const stripeMap: Record<string, string> = {
+      win:  '#22C55E',
+      lose: '#EF4444',
+      tie:  '#F8DE22',
+    }
+    const icon  = iconMap[winner ?? '']  ?? <GiLaurelsTrophy size={64} className="text-text-secondary" />
     const label = labelMap[winner ?? ''] ?? 'Battle Over'
+    const tone  = toneMap[winner ?? '']  ?? 'text-white'
+    const stripe = stripeMap[winner ?? ''] ?? '#F8DE22'
 
     return (
-      <div className="min-h-dvh bg-bg flex flex-col items-center justify-center gap-6 px-6">
-        <div>{icon}</div>
-        <h2 className="font-display text-3xl font-bold text-text-primary">{label}</h2>
+      <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col items-center justify-center gap-6 px-6 relative overflow-hidden">
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{
+            background:
+              'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+          }}
+        />
+        <div className="animate-fade-up">{icon}</div>
 
-        <div className="flex items-center gap-8">
-          <div className="text-center">
-            <p className="text-xs text-text-secondary mb-1">You</p>
-            <p className="font-mono text-4xl font-bold text-green-500">{myScore}</p>
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Peer Battle result
           </div>
-          <span className="text-2xl text-text-secondary font-bold">vs</span>
-          <div className="text-center">
-            <p className="text-xs text-text-secondary mb-1">Opponent</p>
-            <p className="font-mono text-4xl font-bold text-red-400">{theirScore}</p>
+          <h2 className={`display font-extrabold text-[clamp(32px,5vw,48px)] leading-[1.02] tracking-[-1px] ${tone}`}>
+            {label}
+          </h2>
+        </div>
+
+        <div className="w-full max-w-sm card relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: stripe }} />
+          <div className="flex items-center justify-around pt-1">
+            <div className="text-center">
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted mb-1">You</p>
+              <p className={`mono font-bold text-[44px] tabular-nums leading-none ${
+                winner === 'win' ? 'text-correct' : winner === 'tie' ? 'text-yellow' : 'text-white'
+              }`}>{myScore}</p>
+            </div>
+            <div className="mono font-bold text-[15px] tracking-[0.2em] uppercase text-text-muted">vs</div>
+            <div className="text-center">
+              <p className="mono text-[10px] tracking-[0.1em] uppercase text-text-muted mb-1">Opponent</p>
+              <p className={`mono font-bold text-[44px] tabular-nums leading-none ${
+                winner === 'lose' ? 'text-wrong' : 'text-text-secondary'
+              }`}>{theirScore}</p>
+            </div>
+          </div>
+          <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-center mono text-[10px] tracking-[0.08em] uppercase text-text-muted">
+            {questions.length} question{questions.length !== 1 ? 's' : ''}
           </div>
         </div>
 
-        <p className="text-sm text-text-secondary">
-          {questions.length} question{questions.length !== 1 ? 's' : ''}
-        </p>
-
-        <button onClick={onExit} className="btn-primary w-full max-w-xs h-12 text-base font-semibold">
+        <button onClick={onExit} className="btn-primary w-full max-w-xs h-12 text-sm font-semibold">
           Back to Challenge
         </button>
       </div>
@@ -626,21 +674,25 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
   if (phase === 'waiting') {
     return (
-      <div className="min-h-dvh bg-bg flex flex-col">
-        <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
-          <div className="flex items-center justify-between max-w-content mx-auto">
-            <span className="font-mono text-2xl font-bold text-green-500">{myScore}</span>
-            <span className="text-text-secondary text-sm">Questions done</span>
-            <span className="font-mono text-2xl font-bold text-red-400">{theirScore}</span>
+      <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
+        <div className="sticky top-0 z-40 glass border-b border-border">
+          <div className="flex items-center justify-between max-w-[760px] mx-auto px-4 pt-4 pb-3">
+            <span className="mono text-2xl font-bold text-correct tabular-nums">{myScore}</span>
+            <span className="mono text-[10px] tracking-[0.12em] uppercase font-semibold text-text-muted">Questions done</span>
+            <span className="mono text-2xl font-bold text-wrong tabular-nums">{theirScore}</span>
           </div>
         </div>
         <div className="flex-1 flex items-center justify-center flex-col gap-4 text-center px-6">
-          <div className="w-12 h-12 rounded-full border-4 border-green-500 border-t-transparent animate-spin" />
-          <p className="text-text-primary font-medium">Waiting for opponent to finish...</p>
-          <p className="text-text-secondary text-sm">Results will appear automatically</p>
+          <div className="w-12 h-12 rounded-full border-4 border-orange border-t-transparent animate-spin" />
+          <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Waiting for opponent
+          </div>
+          <p className="display font-bold text-xl text-white">Almost done.</p>
+          <p className="text-text-secondary text-sm">Results will appear automatically.</p>
           <button
             onClick={() => setExitConfirm(true)}
-            className="mt-4 text-sm text-text-secondary hover:text-text-primary underline"
+            className="mt-4 mono text-[11px] tracking-[0.1em] uppercase font-semibold text-wrong/70 hover:text-wrong underline transition-colors"
           >
             Forfeit
           </button>
@@ -653,8 +705,11 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
   if (phase === 'loading' || !current) {
     return (
-      <div className="min-h-dvh bg-bg flex items-center justify-center">
-        <p className="text-text-secondary text-sm animate-pulse">Loading battle...</p>
+      <div className="min-h-dvh bg-navy-deep blueprint-grid flex items-center justify-center">
+        <div className="flex items-center gap-3 text-text-secondary">
+          <span className="w-2 h-2 rounded-full bg-orange animate-pulse" />
+          <p className="mono text-[11px] tracking-[0.12em] uppercase font-semibold">Loading battle…</p>
+        </div>
       </div>
     )
   }
@@ -662,28 +717,32 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
   // ── Main battle UI ────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-dvh bg-bg flex flex-col">
+    <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3 max-w-content mx-auto">
-          <button onClick={handleExit} className="p-1 -ml-1 text-text-secondary hover:text-text-primary">
+      <div className="sticky top-0 z-40 glass border-b border-border">
+        <div className="flex items-center gap-3 max-w-[760px] mx-auto px-4 pt-4 pb-3">
+          <button
+            onClick={handleExit}
+            className="p-1 -ml-1 text-text-secondary hover:text-white transition-colors flex-shrink-0"
+            aria-label="Exit"
+          >
             <X size={20} />
           </button>
-          <AppLogo height={24} className="flex-shrink-0" />
+          <AppLogo height={22} className="flex-shrink-0" />
 
           {/* Score rail */}
           <div className="flex-1 flex items-center gap-2">
             {/* My side: avatar · score · answered indicator */}
             <div className="flex items-center gap-1">
-              <div className="w-5 h-5 rounded-full bg-green-500/20 border border-green-700 flex items-center justify-center flex-shrink-0">
-                <span className="text-[9px] font-bold text-green-400">{myInitial}</span>
+              <div className="w-5 h-5 rounded-md bg-green-soft border border-correct/40 flex items-center justify-center flex-shrink-0">
+                <span className="mono text-[9px] font-bold text-correct">{myInitial}</span>
               </div>
-              <span className="font-mono font-bold text-green-500 text-base">{myScore}</span>
+              <span className="mono font-bold text-correct text-base tabular-nums">{myScore}</span>
               <span className="w-4 flex items-center justify-center">
                 {myAnswered
-                  ? <CheckCircle size={13} className="text-green-500" />
-                  : <ThinkingDots colorClass="bg-green-500" />
+                  ? <CheckCircle size={13} className="text-correct" />
+                  : <ThinkingDots colorClass="bg-correct" />
                 }
               </span>
             </div>
@@ -692,7 +751,7 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
             <div className="flex-1 flex items-center gap-0.5">
               {questions.map((_, i) => (
                 <div key={i} className={`flex-1 h-1.5 rounded-full transition-all ${
-                  i < qIndex ? 'bg-green-700' : i === qIndex ? 'bg-green-500' : 'bg-surface-3'
+                  i < qIndex ? 'bg-correct/70' : i === qIndex ? 'bg-orange' : 'bg-white/[0.06]'
                 }`} />
               ))}
             </div>
@@ -701,21 +760,21 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
             <div className="flex items-center gap-1">
               <span className="w-4 flex items-center justify-center">
                 {opponentAnswered
-                  ? <CheckCircle size={13} className="text-red-400" />
-                  : <ThinkingDots colorClass="bg-red-400" />
+                  ? <CheckCircle size={13} className="text-wrong" />
+                  : <ThinkingDots colorClass="bg-wrong" />
                 }
               </span>
-              <span className="font-mono font-bold text-red-400 text-base">{theirScore}</span>
-              <div className="w-5 h-5 rounded-full bg-red-500/15 border border-red-800 flex items-center justify-center flex-shrink-0">
-                <span className="text-[9px] font-bold text-red-400">?</span>
+              <span className="mono font-bold text-wrong text-base tabular-nums">{theirScore}</span>
+              <div className="w-5 h-5 rounded-md bg-wrong/10 border border-wrong/40 flex items-center justify-center flex-shrink-0">
+                <span className="mono text-[9px] font-bold text-wrong">?</span>
               </div>
             </div>
           </div>
 
           {/* Opponent status */}
           {!opponentOnScreen && opponentAwayLeft !== null && (
-            <span className="flex items-center gap-1 text-xs text-yellow-400 font-mono">
-              <WifiOff size={13} />
+            <span className="flex items-center gap-1 mono text-[11px] font-bold text-yellow tabular-nums">
+              <WifiOff size={12} />
               {opponentAwayLeft}s
             </span>
           )}
@@ -723,17 +782,15 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
         {/* Per-question timer bar */}
         {timerSeconds && (
-          <div className="px-0 mt-2 max-w-content mx-auto">
-            <div className="flex items-center justify-between mb-1">
-              <span className={`text-xs font-mono font-bold ${timerColor} ${timerPct <= 0.1 ? 'animate-pulse' : ''}`}>
+          <div className="px-4 pb-3 max-w-[760px] mx-auto">
+            <div className="flex items-center justify-end mb-1">
+              <span className={`mono text-[11px] font-bold tabular-nums ${timerColor} ${timerPct <= 0.1 ? 'animate-pulse' : ''}`}>
                 <Clock size={10} className="inline mr-0.5" />{timeLeft}s
               </span>
             </div>
-            <div className="h-1 bg-surface-3 rounded-full overflow-hidden">
+            <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-1000 ${
-                  timerPct > 0.5 ? 'bg-green-500' : timerPct > 0.2 ? 'bg-yellow-400' : 'bg-red-500'
-                }`}
+                className={`h-full rounded-full transition-all duration-1000 ${timerBar}`}
                 style={{ width: `${timerPct * 100}%` }}
               />
             </div>
@@ -742,19 +799,30 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
       </div>
 
       {/* ── Question ────────────────────────────────────────────────────── */}
-      <div className="px-4 pt-6 max-w-content mx-auto w-full">
-        <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-3">
+      <div className="px-4 pt-6 max-w-[760px] mx-auto w-full">
+        <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+          <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
           Question {qIndex + 1} of {questions.length}
-        </p>
-        <div className="card-elevated mb-4">
-          <p className="text-text-primary text-base font-medium leading-relaxed">{current.questionText}</p>
+        </div>
+        <div className="card-elevated mb-4 relative overflow-hidden">
+          <div
+            className="absolute top-0 left-0 right-0 h-[3px]"
+            style={{
+              background:
+                'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+            }}
+          />
+          <p className="display text-white text-[clamp(15px,1.8vw,18px)] font-semibold leading-snug tracking-[-0.2px] pt-1">
+            {current.questionText}
+          </p>
         </div>
 
         {/* ── Answers ─────────────────────────────────────────────────── */}
         <div className="space-y-2">
-          {shuffledAnswers.map((answer) => {
+          {shuffledAnswers.map((answer, idx) => {
             const isSelected   = selectedIds.includes(answer.id)
             const isCorrectAns = correctIds.has(answer.id)
+            const letter       = String.fromCharCode(65 + idx)
 
             return (
               <button
@@ -762,30 +830,30 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
                 onClick={() => handleSelect(answer.id)}
                 disabled={revealed}
                 className={clsx(
-                  'w-full text-left rounded-lg border px-4 py-3 transition-all duration-150 flex items-center gap-3',
-                  !revealed && !isSelected  && 'bg-surface border-border hover:border-green-700 hover:bg-surface-2',
-                  !revealed && isSelected   && 'bg-green-500/10 border-green-500',
-                  revealed && isCorrectAns && isSelected  && 'bg-green-500/15 border-green-500',
-                  revealed && !isCorrectAns && isSelected && 'bg-red-500/10 border-red-600',
-                  revealed && isCorrectAns && !isSelected && 'bg-yellow-400/10 border-yellow-600',
+                  'w-full text-left rounded-md border px-4 py-3 transition-all duration-150 flex items-center gap-3',
+                  !revealed && !isSelected  && 'bg-surface border-border hover:border-orange/40 hover:bg-surface-2',
+                  !revealed && isSelected   && 'bg-orange-soft border-orange',
+                  revealed && isCorrectAns && isSelected  && 'bg-green-soft border-correct',
+                  revealed && !isCorrectAns && isSelected && 'bg-wrong/10 border-wrong',
+                  revealed && isCorrectAns && !isSelected && 'bg-yellow-soft border-yellow-rim',
                   revealed && !isCorrectAns && !isSelected && 'opacity-40 bg-surface border-border',
                 )}
               >
-                <div className={clsx(
-                  'w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center',
-                  !revealed && isSelected   && 'bg-green-500 border-green-500',
-                  !revealed && !isSelected  && 'border-border',
-                  revealed && isCorrectAns && isSelected  && 'bg-green-500 border-green-500',
-                  revealed && !isCorrectAns && isSelected && 'bg-red-500 border-red-500',
-                  revealed && isCorrectAns && !isSelected && 'bg-yellow-400 border-yellow-400',
-                  revealed && !isCorrectAns && !isSelected && 'border-border',
+                <span className={clsx(
+                  'w-6 h-6 rounded-md mono text-[11px] font-bold flex-shrink-0 flex items-center justify-center border',
+                  !revealed && isSelected   && 'bg-orange text-white border-orange',
+                  !revealed && !isSelected  && 'border-border text-text-muted',
+                  revealed && isCorrectAns && isSelected  && 'bg-correct text-bg border-correct',
+                  revealed && !isCorrectAns && isSelected && 'bg-wrong text-white border-wrong',
+                  revealed && isCorrectAns && !isSelected && 'bg-yellow text-bg border-yellow',
+                  revealed && !isCorrectAns && !isSelected && 'border-border text-text-muted',
                 )}>
-                  {revealed && isCorrectAns && isSelected  && <CheckCircle size={12} className="text-bg" />}
-                  {revealed && !isCorrectAns && isSelected && <XCircle size={12} className="text-bg" />}
-                  {revealed && isCorrectAns && !isSelected && <CheckCircle size={12} className="text-bg" />}
-                  {!revealed && isSelected                 && <div className="w-2 h-2 rounded-full bg-bg" />}
-                </div>
-                <span className="text-sm leading-snug flex-1 text-text-primary">{answer.text}</span>
+                  {revealed && isCorrectAns && isSelected   ? <CheckCircle size={13} strokeWidth={3} /> :
+                   revealed && !isCorrectAns && isSelected  ? <XCircle size={13} strokeWidth={3} /> :
+                   revealed && isCorrectAns && !isSelected  ? <CheckCircle size={13} strokeWidth={3} /> :
+                   letter}
+                </span>
+                <span className="text-[14px] leading-snug flex-1 text-white">{answer.text}</span>
               </button>
             )
           })}
@@ -793,36 +861,38 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
         {/* Explanation */}
         {revealed && (
-          <div className="mt-4 px-4 py-3 rounded-lg bg-surface-2 border border-border">
-            <p className="text-xs text-text-secondary font-medium uppercase tracking-wider mb-1">Explanation</p>
+          <div className="mt-4 px-4 py-3 rounded-md bg-surface-2 border border-border">
+            <p className="mono text-[10px] text-text-muted font-semibold uppercase tracking-[0.12em] mb-1.5">
+              Explanation
+            </p>
             <p className="text-sm text-text-primary leading-relaxed">{current.explanation}</p>
           </div>
         )}
       </div>
 
       {/* ── Bottom actions ───────────────────────────────────────────────── */}
-      <div className="mt-auto px-4 pb-8 pt-4 max-w-content mx-auto w-full space-y-3">
+      <div className="mt-auto px-4 pb-8 pt-4 max-w-[760px] mx-auto w-full space-y-3">
         {!revealed && (
           <>
             <button
               onClick={() => handleSubmit()}
               disabled={selectedIds.length === 0}
-              className="btn-primary w-full h-12 text-base font-semibold disabled:opacity-40"
+              className="btn-primary w-full h-12 text-sm font-semibold disabled:opacity-40"
             >
               Lock In Answer
             </button>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-4 justify-center">
               {drawsLeft > 0 && (
                 <button
                   onClick={handleRequestDraw}
-                  className="text-xs text-text-secondary hover:text-text-primary underline"
+                  className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary hover:text-yellow underline transition-colors"
                 >
                   Request Draw ({drawsLeft} left)
                 </button>
               )}
               <button
                 onClick={() => setExitConfirm(true)}
-                className="text-xs text-red-400/70 hover:text-red-400 underline"
+                className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-wrong/70 hover:text-wrong underline transition-colors"
               >
                 Forfeit
               </button>
@@ -831,8 +901,8 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         )}
         {revealed && (
           <div className="h-12 flex items-center justify-center">
-            <p className="text-sm text-text-secondary animate-pulse">
-              {qIndex + 1 >= questions.length ? 'Finishing...' : 'Next question in a moment...'}
+            <p className="mono text-[11px] tracking-[0.12em] uppercase font-semibold text-text-secondary animate-pulse">
+              {qIndex + 1 >= questions.length ? 'Finishing…' : 'Next question…'}
             </p>
           </div>
         )}
@@ -843,18 +913,28 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         <>
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
-              <p className="font-display text-lg font-bold text-text-primary">Draw Requested</p>
-              <p className="text-sm text-text-secondary">Waiting for opponent to respond...</p>
+            <div className="bg-surface border border-border rounded-lg p-6 w-full max-w-sm text-center space-y-4 relative overflow-hidden">
+              <div
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{
+                  background:
+                    'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+                }}
+              />
+              <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-yellow" />
+                Draw requested
+              </div>
+              <p className="mono text-[11px] tracking-[0.1em] uppercase text-text-muted">Waiting for opponent to respond…</p>
               <p className={clsx(
-                'font-mono text-4xl font-bold',
-                drawCountdown > 10 ? 'text-green-500' : drawCountdown > 5 ? 'text-yellow-400' : 'text-red-400'
+                'mono text-[44px] font-bold tabular-nums leading-none',
+                drawCountdown > 10 ? 'text-correct' : drawCountdown > 5 ? 'text-yellow' : 'text-orange'
               )}>
                 {drawCountdown}s
               </p>
               <button
                 onClick={() => { setPhase('active'); if (drawTimerRef.current) clearInterval(drawTimerRef.current) }}
-                className="text-xs text-text-secondary hover:text-text-primary underline"
+                className="mono text-[11px] tracking-[0.1em] uppercase font-semibold text-text-secondary hover:text-white underline transition-colors"
               >
                 Cancel and keep playing
               </button>
@@ -868,21 +948,32 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         <>
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
-              <p className="font-display text-lg font-bold text-text-primary">Opponent Requests a Draw</p>
-              <p className="text-sm text-text-secondary">
+            <div className="bg-surface border border-border rounded-lg p-6 w-full max-w-sm text-center space-y-4 relative overflow-hidden">
+              <div
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{
+                  background:
+                    'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+                }}
+              />
+              <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-yellow" />
+                Draw incoming
+              </div>
+              <p className="display font-bold text-base text-white">Opponent requests a draw.</p>
+              <p className="text-[13px] text-text-secondary">
                 Accept to end as a tie, or decline and keep playing.
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => handleRespondDraw(false)}
-                  className="flex-1 h-11 rounded-lg border border-border text-sm font-medium text-text-secondary hover:border-red-600 hover:text-red-400 transition-all"
+                  className="flex-1 h-10 rounded-md bg-white/[0.04] border border-border text-sm font-semibold text-text-secondary hover:border-wrong/40 hover:text-wrong transition-all"
                 >
                   Decline
                 </button>
                 <button
                   onClick={() => handleRespondDraw(true)}
-                  className="flex-1 h-11 rounded-lg bg-green-500 text-bg text-sm font-semibold hover:bg-green-400 transition-all"
+                  className="flex-1 h-10 rounded-md bg-correct/15 border border-correct/40 text-correct text-sm font-semibold hover:bg-correct hover:text-bg transition-all"
                 >
                   Accept Tie
                 </button>
@@ -897,22 +988,24 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         <>
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-red-800 rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
-              <p className="font-display text-lg font-bold text-red-400">Draw Declined</p>
-              <p className="text-sm text-text-secondary">
-                Forfeit now or return to the battle.
-              </p>
-              <p className="font-mono text-3xl font-bold text-red-400">{forfeitWarnLeft}s</p>
-              <div className="flex gap-3">
+            <div className="bg-surface border border-wrong/40 rounded-lg p-6 w-full max-w-sm text-center space-y-4 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-wrong" />
+              <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-wrong">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-wrong" />
+                Draw declined
+              </div>
+              <p className="text-[13px] text-text-secondary">Forfeit now or return to the battle.</p>
+              <p className="mono text-[36px] font-bold tabular-nums leading-none text-wrong">{forfeitWarnLeft}s</p>
+              <div className="flex gap-2">
                 <button
                   onClick={() => { setPhase('active'); if (forfeitTimerRef.current) clearInterval(forfeitTimerRef.current) }}
-                  className="flex-1 h-11 rounded-lg border border-border text-sm font-medium text-text-secondary hover:text-text-primary transition-all"
+                  className="flex-1 h-10 rounded-md bg-white/[0.04] border border-border text-sm font-semibold text-text-secondary hover:text-white transition-all"
                 >
-                  Return to Battle
+                  Return
                 </button>
                 <button
                   onClick={handleForfeit}
-                  className="flex-1 h-11 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-500 transition-all"
+                  className="flex-1 h-10 rounded-md bg-wrong/15 border border-wrong/40 text-wrong text-sm font-semibold hover:bg-wrong hover:text-white active:scale-95 transition-all"
                 >
                   Forfeit
                 </button>
@@ -927,10 +1020,20 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         <>
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-3">
-              <div className="w-10 h-10 rounded-full border-4 border-green-500 border-t-transparent animate-spin mx-auto" />
-              <p className="font-display font-bold text-text-primary">Reconnecting...</p>
-              <p className="text-sm text-text-secondary">Hang tight — restoring your connection</p>
+            <div className="bg-surface border border-border rounded-lg p-6 w-full max-w-sm text-center space-y-3 relative overflow-hidden">
+              <div
+                className="absolute top-0 left-0 right-0 h-[2px]"
+                style={{
+                  background:
+                    'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+                }}
+              />
+              <div className="w-10 h-10 rounded-full border-4 border-orange border-t-transparent animate-spin mx-auto" />
+              <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-orange" />
+                Reconnecting
+              </div>
+              <p className="text-[13px] text-text-secondary">Hang tight — restoring your connection.</p>
             </div>
           </div>
         </>
@@ -941,21 +1044,25 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
         <>
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setExitConfirm(false)} />
           <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
-            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm text-center space-y-4">
-              <p className="font-display text-lg font-bold text-text-primary">Forfeit Battle?</p>
-              <p className="text-sm text-text-secondary">
+            <div className="bg-surface border border-wrong/40 rounded-lg p-6 w-full max-w-sm text-center space-y-4 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-wrong" />
+              <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-wrong">
+                <span className="w-[14px] h-[1.5px] rounded-full bg-wrong" />
+                Forfeit?
+              </div>
+              <p className="text-[13px] text-text-secondary">
                 Leaving now counts as a forfeit. Your opponent wins.
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => setExitConfirm(false)}
-                  className="flex-1 h-11 rounded-lg border border-border text-sm font-medium text-text-secondary hover:text-text-primary transition-all"
+                  className="flex-1 h-10 rounded-md bg-white/[0.04] border border-border text-sm font-semibold text-text-secondary hover:text-white transition-all"
                 >
                   Stay
                 </button>
                 <button
                   onClick={handleForfeit}
-                  className="flex-1 h-11 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-500 transition-all"
+                  className="flex-1 h-10 rounded-md bg-wrong/15 border border-wrong/40 text-wrong text-sm font-semibold hover:bg-wrong hover:text-white active:scale-95 transition-all"
                 >
                   Forfeit
                 </button>
