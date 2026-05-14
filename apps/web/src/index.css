@@ -59,6 +59,9 @@
   --color-border:    var(--navy-rim);
   --color-text:      var(--text-pri);
   --color-text-2:    var(--text-sec);
+  --card-bg:         var(--navy-card);
+  --card-border:     var(--navy-rim);
+  --card-bg-hover:   var(--navy-lift);
 }
 
 /* Light theme — Arctic Blaze (portdrop theme #7). Filled in Phase I. */
@@ -84,6 +87,9 @@
   --color-border:    var(--navy-rim);
   --color-text:      var(--text-pri);
   --color-text-2:    var(--text-sec);
+  --card-bg:         var(--navy-card);
+  --card-border:     var(--navy-rim);
+  --card-bg-hover:   var(--navy-lift);
 }
 
 /* ── Base resets ───────────────────────────────────────────────────────────── */
@@ -186,21 +192,27 @@
 @layer components {
   /* Cards */
   .card {
-    @apply bg-surface-2 border border-border rounded-lg p-5
-           transition-[border-color,background,transform] duration-200
+    @apply rounded-lg p-5 transition-all
            relative overflow-hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
   }
   .card-elevated {
     @apply bg-surface-2 border border-border rounded-xl p-5;
   }
-  .card-hover:hover     { background: var(--navy-lift); border-color: rgba(244, 91, 38, 0.30); }
+  .card-hover:hover     { border-color: rgba(244,91,38,0.35); background: var(--card-bg-hover); }
   .card-lift:hover      { transform: translateY(-2px); border-color: rgba(244, 91, 38, 0.35); }
 
   /* Buttons — primary is now orange */
   .btn-primary {
-    @apply bg-orange text-white font-body font-medium rounded-md px-5 py-2.5
-           hover:bg-orange-deep active:scale-95 transition-all duration-100
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md text-[18px]
+           font-body font-medium text-white transition-all
            disabled:opacity-40 disabled:cursor-not-allowed;
+    background: #F45B26;
+  }
+  .btn-primary:hover {
+    background: #E04D1C;
+    transform: translateY(-1px);
   }
   .btn-yellow {
     @apply bg-yellow text-navy-deep font-body font-bold rounded-md px-5 py-2.5
@@ -258,4 +270,71 @@
     @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-md
            text-sm font-medium transition-all duration-150 whitespace-nowrap;
   }
+
+  /* Chips */
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[15px] font-medium tracking-[0.02em] border bg-white/[0.04] text-text-secondary;
+    border-color: rgba(245,240,230,0.08);
+  }
+  .chip-dot      { @apply w-[5px] h-[5px] rounded-full; }
+  .chip-orange   { background: rgba(244, 91, 38, 0.15); border-color: rgba(244, 91, 38, 0.30); color: #F45B26; }
+  .chip-yellow   { background: rgba(248, 222, 34, 0.12); border-color: rgba(248, 222, 34, 0.30); color: #F8DE22; }
+  .chip-green    { background: rgba(94, 114, 69, 0.18); border-color: rgba(94, 114, 69, 0.32); color: #c8d6a8; }
+  .chip-red      { background: rgba(150, 48, 36, 0.16); border-color: rgba(150, 48, 36, 0.32); color: #e6a89e; }
+  .chip-indigo   { background: rgba(58, 85, 130, 0.18); border-color: rgba(58, 85, 130, 0.32); color: #98b1d4; }
+  .chip-rose     { background: rgba(220, 90, 142, 0.14); border-color: rgba(220, 90, 142, 0.30); color: #f0a3c0; }
+
+  /* Progress bars */
+  .prog          { @apply h-[5px] rounded-[4px] overflow-hidden; background: rgba(245,240,230,0.06); }
+  .prog-fill     { @apply h-full rounded-[4px]; background: linear-gradient(90deg, #F45B26, #F8DE22); }
+  .prog-fill-green { @apply h-full rounded-[4px]; background: #5E7245; }
+  .prog-fill-red { @apply h-full rounded-[4px]; background: linear-gradient(90deg, #963024, #C75A3A); }
+  .prog-fill-gold{ @apply h-full rounded-[4px]; background: #F8DE22; }
+
+  /* Segmented control */
+  .segmented {
+    @apply inline-flex gap-[2px] p-[3px] rounded-md;
+    background: rgba(10,23,64,0.6);
+    border-color: rgba(245,240,230,0.08);
+    border-width: 1px;
+  }
+  .seg-btn       { @apply px-4 py-[7px] rounded-[8px] text-[17px] font-medium text-text-secondary hover:text-cream transition-colors whitespace-nowrap; }
+  .seg-btn-active{ @apply bg-orange text-white; }
+
+  /* Toggle */
+  .toggle        { @apply relative w-[38px] h-[22px] rounded-full transition-colors; background: rgba(245,240,230,0.13); }
+  .toggle::after { content: ''; @apply absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-cream transition-transform; background: #F5F0E6; }
+  .toggle-on     { background: #F45B26; }
+  .toggle-on::after { transform: translateX(16px); }
+
+  /* Card eyebrow micro-label */
+  .card-eyebrow  { @apply flex items-center gap-1.5 text-[13px] font-semibold uppercase tracking-[0.13em] text-text-muted mb-3.5; }
+  .ey-dot        { @apply w-[5px] h-[5px] rounded-full shrink-0; }
+
+  /* Page-tabs sub-nav */
+  .page-tabs {
+    @apply sticky z-30 px-[var(--pad-x)];
+    top: 64px;
+    background: rgba(14,17,48,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(245,240,230,0.08);
+  }
+  .page-tabs-inner { @apply max-w-[1200px] mx-auto flex gap-1 overflow-x-auto; scrollbar-width: none; }
+  .page-tabs-inner::-webkit-scrollbar { display: none; }
+  .pt-btn          { @apply inline-flex items-center gap-2 px-4 py-3.5 text-[18px] font-medium text-text-secondary relative whitespace-nowrap transition-colors; }
+  .pt-btn:hover    { color: #F5F0E6; }
+  .pt-btn-active   { color: #F5F0E6; }
+  .pt-btn-active::after { content: ''; @apply absolute -bottom-px left-4 right-4 h-0.5 rounded-full; background: #F45B26; }
+
+  .tier3-hover   { @apply transition-colors; }
+  .tier3-hover:hover { border-color: rgba(244,91,38,0.15); }
+
+  .font-display em { @apply text-orange not-italic; }
+}
+
+[id^="section-"] { scroll-margin-top: 132px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary:hover { transform: none; }
 }

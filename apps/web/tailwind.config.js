@@ -96,6 +96,8 @@ export default {
         hint:    '#818CF8',
         info:    '#38BDF8',
         growth:  '#F45B26',
+        cream:   '#F5F0E6',
+        sepia:   '#2A2520',
 
         // ── Text (white-on-navy default) ───────────────────────────────────
         text: {
