@@ -11,6 +11,27 @@ export default {
           DEFAULT: '#021A54',   // navy
           2: '#071E5C',         // navy-card
           3: '#0C2470',         // navy-lift
+          bgDark:    '#0E1130',
+          bgLight:   '#F5F0E6',
+          cardDark:  '#0A1740',
+          cardLight: '#FFFFFF',
+          borderDark:  'rgba(245,240,230,0.08)',
+          borderLight: 'rgba(2,26,84,0.10)',
+        },
+        // ─ Vintage slab palette — used for large fills (Principle 7) ─
+        variant: {
+          ember:    '#C75A3A',
+          solar:    '#D9B342',
+          cobalt:   '#3A5582',
+          cobaltLt: '#1E2D5C',
+          red:      '#963024',
+          chalk:    '#F5F0E6',
+          onyx:     '#2A2520',
+          green:    '#5E7245',
+          black:    '#1A1612',
+          flPink:   '#DC5A8E',
+          brown:    '#7A5E3F',
+          stripeMid:'#021A54',
         },
         border: {
           DEFAULT: 'rgba(255,255,255,0.08)',  // navy-rim
@@ -112,6 +133,7 @@ export default {
         'float':         'float 3s ease-in-out infinite',
         'shimmer':       'shimmer 2.4s linear infinite',
         'marquee':       'scrollMarquee 38s linear infinite',
+        'onyx-gloss':    'onyxGloss 16s ease-in-out infinite',
       },
 
       keyframes: {
@@ -155,6 +177,10 @@ export default {
           from: { transform: 'translateX(0)' },
           to:   { transform: 'translateX(-50%)' },
         },
+        onyxGloss: {
+          '0%, 100%': { opacity: '0.25' },
+          '50%':      { opacity: '0.35' },
+        },
       },
 
       spacing: {
@@ -170,6 +196,9 @@ export default {
       backgroundImage: {
         'brand-gradient': 'linear-gradient(90deg, #F8DE22 0%, #021A54 50%, #F45B26 100%)',
         'orange-yellow':  'linear-gradient(135deg, #F45B26 0%, #F8DE22 100%)',
+        'variant-sunrise':   'linear-gradient(135deg, #C75A3A 0%, #D9B342 100%)',
+        'variant-emberfall': 'linear-gradient(135deg, #C75A3A 0%, #2A2520 100%)',
+        'onyx-gloss':        'radial-gradient(ellipse at 75% 20%, rgba(58,58,74,0.35) 0%, rgba(42,37,32,0) 60%)',
       },
     },
   },
