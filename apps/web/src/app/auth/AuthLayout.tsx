@@ -103,7 +103,7 @@ function LeftBrandPanel() {
             Drive<em className="not-italic text-orange">Ready</em>
           </div>
           <div className="mono text-[9px] tracking-[0.12em] uppercase text-text-muted mt-0.5">
-            driveready-ok.com
+            drivereadyapp.com
           </div>
         </div>
       </div>

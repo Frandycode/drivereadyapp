@@ -94,7 +94,7 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
     setQueue([...questions])
     setQueueIndex(0)
     startSession({
-      variables: { input: { stateCode: config.stateCode, mode: 'bot_battle', difficulty: 'king', questionCount: questions.length, chapters: [] } },
+      variables: { input: { stateCode: config.stateCode, mode: 'bot_battle', difficulty: 'expert', questionCount: questions.length, chapters: [] } },
     }).then((r) => setSessionId(r.data?.startSession?.id ?? null))
   }, [data, retryKey])
 

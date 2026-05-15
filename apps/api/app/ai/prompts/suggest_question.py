@@ -24,7 +24,7 @@ Given a question stem + chapter context, propose:
 - a 1-2 sentence explanation
 - a one-sentence hint that nudges without revealing
 - 3-6 short tags (lowercase, no spaces)
-- difficulty: one of "pawn", "rogue", "king"
+- difficulty: one of "beginner", "pro", "expert"
 
 Output STRICT JSON only:
 {
@@ -37,7 +37,7 @@ Output STRICT JSON only:
   "explanation": "...",
   "hint": "...",
   "tags": ["...", "..."],
-  "difficulty": "pawn"
+  "difficulty": "beginner"
 }"""
 
 

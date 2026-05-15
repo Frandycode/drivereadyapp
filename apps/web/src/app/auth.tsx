@@ -131,8 +131,8 @@ type Screen =
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export function AuthPage() {
-  const [mode, setMode]               = useState<'login' | 'register'>('login')
+export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'register' }) {
+  const [mode, setMode]               = useState<'login' | 'register'>(initialMode)
   const [screen, setScreen]           = useState<Screen>('auth')
 
   // Form fields
@@ -949,17 +949,17 @@ export function AuthPage() {
             )}
 
             <div className="mb-5 animate-fade-up" style={{ animationDelay: '0.24s' }}>
-              <div className="flex items-center justify-between rounded-md border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors hover:border-orange/30 focus-within:border-orange/50 focus-within:bg-orange/[0.04]">
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className={`grid h-7 w-7 place-items-center rounded-md border ${captchaToken ? 'border-correct bg-correct text-bg' : 'border-white/20 bg-white/[0.04] text-text-muted'}`}>
+              <div className="flex items-center justify-between gap-2 rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 transition-colors hover:border-orange/30 focus-within:border-orange/50 focus-within:bg-orange/[0.04]">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className={`grid h-6 w-6 place-items-center rounded-md border ${captchaToken ? 'border-correct bg-correct text-bg' : 'border-white/20 bg-white/[0.04] text-text-muted'}`}>
                     <FiShield size={15} />
                   </span>
-                  <div>
-                    <p className="text-[13px] font-medium text-white">Security check</p>
-                    <p className="text-[10px] text-text-muted">Complete hCaptcha to continue</p>
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-medium text-white">Security check</p>
+                    <p className="text-[9px] text-text-muted hidden sm:block">Complete hCaptcha to continue</p>
                   </div>
                 </div>
-                <div className="scale-[0.78] origin-right sm:scale-[0.86]">
+                <div className="scale-[0.62] origin-right sm:scale-[0.72]">
                   <HCaptcha
                     ref={hcaptchaRef}
                     sitekey={HCAPTCHA_SITE_KEY}

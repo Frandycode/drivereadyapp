@@ -20,7 +20,7 @@ export type { Variant } from '@/lib/variants'
 export interface PageStat {
   label: string
   value: ReactNode
-  tone?: 'default' | 'gold' | 'orange' | 'green'
+  tone?: 'default' | 'gold' | 'orange' | 'green' | 'blue'
 }
 
 interface PageHeaderProps {
@@ -39,6 +39,7 @@ const TONE_CLASS: Record<NonNullable<PageStat['tone']>, string> = {
   gold:    'text-yellow',
   orange:  'text-orange',
   green:   'text-correct',
+  blue:    'text-info',
 }
 
 export function PageHeader({
@@ -128,7 +129,7 @@ export function PageHeader({
                   <div className={clsx('stat-balloon mono font-bold leading-none tabular-nums text-[clamp(31px,3.9vw,42px)]', TONE_CLASS[s.tone ?? 'default'])}>
                     {s.value}
                   </div>
-                  <div className="mono text-[14px] tracking-[0.1em] uppercase text-text-muted mt-1.5">
+                  <div className="mono text-[14px] tracking-[0.1em] uppercase text-cream/70 mt-1.5">
                     {s.label}
                   </div>
                 </div>

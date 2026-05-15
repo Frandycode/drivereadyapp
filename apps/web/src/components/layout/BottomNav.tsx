@@ -30,9 +30,9 @@ export function BottomNav({ activePath, onNavigate }: BottomNavProps) {
   return (
     <nav
       aria-label="Primary"
-      className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border pb-safe"
+      className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border pb-safe lg:hidden"
     >
-      <div className="grid grid-cols-5 h-16 max-w-lg mx-auto">
+      <div className="grid grid-cols-5 h-16 max-w-md mx-auto">
         {NAV_ITEMS.map(({ id, label, Icon, path }) => {
           const isActive =
             activePath === path || (path !== '/' && activePath.startsWith(path))

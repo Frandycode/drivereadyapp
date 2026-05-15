@@ -11,7 +11,7 @@
  */
 
 import { useQuery, gql } from '@apollo/client'
-import { FiCheck, FiLock } from 'react-icons/fi'
+import { FiBookOpen, FiBookmark, FiCheck, FiGrid, FiLock, FiTarget } from 'react-icons/fi'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'
@@ -78,6 +78,15 @@ export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
     const p = progressMap[ch.number]
     return p && p.lessonsCompleted > 0 && p.lessonsCompleted >= p.lessonsTotal
   }).length
+  const jumpTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+  const tabs = [
+    { id: 'section-chapters', label: 'Chapters', Icon: FiGrid },
+    { id: 'section-reader', label: 'Lesson Reader', Icon: FiBookOpen },
+    { id: 'section-popquiz', label: 'Pop Quiz', Icon: FiTarget },
+    { id: 'section-bookmarks', label: 'Bookmarks', Icon: FiBookmark },
+  ]
 
   const header = (
     <PageHeader
@@ -132,9 +141,21 @@ export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
 
       <div className="bg-navy blueprint-grid">
         <div className="max-w-dashboard mx-auto px-4 sm:px-10 py-10 sm:py-14">
+          <div className="page-tabs mb-8">
+            {tabs.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                onClick={() => jumpTo(id)}
+                className="tab-btn"
+              >
+                <Icon size={15} />
+                {label}
+              </button>
+            ))}
+          </div>
 
           {/* Section header */}
-          <div className="mb-8">
+          <div id="section-chapters" className="mb-8 scroll-mt-24">
             <div className="inline-flex items-center gap-2 mb-3 text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
               <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
               Chapters
@@ -156,7 +177,8 @@ export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
               const isStarted        = lessonsCompleted > 0
               const isComplete       = isStarted && lessonsTotal > 0 && lessonsCompleted >= lessonsTotal
               const prevProgress     = index > 0 ? progressMap[chapters[index - 1].number] : null
-              const isLocked         = index > 0 && !prevProgress && !isStarted
+              const prevComplete     = index === 0 || !!(prevProgress && prevProgress.lessonsTotal > 0 && prevProgress.lessonsCompleted >= prevProgress.lessonsTotal)
+              const isLocked         = index > 0 && !prevComplete && !isStarted
               const pct              = lessonsTotal > 0 ? Math.round((lessonsCompleted / lessonsTotal) * 100) : 0
 
               return (
@@ -174,6 +196,77 @@ export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
                 />
               )
             })}
+          </div>
+
+          <div id="section-reader" className="grid lg:grid-cols-[280px_1fr] gap-5 mt-10 scroll-mt-24">
+            <aside className="card p-0 overflow-hidden">
+              <div className="px-5 py-4 border-b border-white/[0.06]">
+                <div className="mono text-[10px] uppercase tracking-[0.12em] text-orange mb-1.5">
+                  Lesson Reader
+                </div>
+                <h3 className="display font-bold text-white">Today&apos;s lesson flow</h3>
+              </div>
+              <div className="divide-y divide-white/[0.06]">
+                {['Read the rule', 'Check the example', 'Try the checkpoint'].map((item, i) => (
+                  <div key={item} className="flex items-center gap-3 px-5 py-4">
+                    <span className="grid h-7 w-7 place-items-center rounded-md bg-orange-soft border border-orange/25 mono text-[11px] text-orange">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-text-secondary">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </aside>
+
+            <article className="card">
+              <div className="inline-flex items-center gap-2 rounded-full border border-yellow-rim/30 bg-yellow-soft px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-yellow mb-5">
+                Chapter preview
+              </div>
+              <h2 className="display font-extrabold text-[clamp(22px,2.4vw,30px)] leading-tight text-white tracking-[-0.5px] mb-3">
+                Learn in short sections, then prove the chapter is ready.
+              </h2>
+              <p className="text-text-secondary leading-relaxed max-w-[720px]">
+                Lessons stay compact for quick review. When the chapter is complete, the pop quiz checks the rules, signs, and judgment calls before the next chapter opens.
+              </p>
+              <div className="mt-6 grid sm:grid-cols-3 gap-3">
+                {['Plain-language rules', 'DMV-style examples', 'Missed-question review'].map((item) => (
+                  <div key={item} className="rounded-lg border border-white/[0.08] bg-white/[0.035] p-4 text-sm text-text-secondary">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          <div id="section-popquiz" className="grid lg:grid-cols-[1.1fr_0.9fr] gap-5 mt-5 scroll-mt-24">
+            <section className="card border-yellow-rim/25">
+              <div className="inline-flex items-center gap-2 mb-4 text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-yellow" />
+                Pop Quiz Checkpoint
+              </div>
+              <h2 className="display font-extrabold text-[clamp(22px,2.4vw,30px)] leading-tight text-white tracking-[-0.5px] mb-3">
+                End-of-lesson quizzes unlock what comes next.
+              </h2>
+              <p className="text-text-secondary leading-relaxed max-w-[680px]">
+                Each chapter ends with a 10-question checkpoint. Pass it to unlock the next chapter. Missed questions get routed into adaptive practice so the weak spots stay visible.
+              </p>
+            </section>
+
+            <section id="section-bookmarks" className="card scroll-mt-24">
+              <div className="inline-flex items-center gap-2 mb-4 text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+                <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+                Bookmarks
+              </div>
+              <h2 className="display font-bold text-lg text-white mb-3">Save anything that needs another pass.</h2>
+              <div className="space-y-2">
+                {['Signs to review', 'Rules you missed', 'Examples worth saving'].map((item) => (
+                  <div key={item} className="flex items-center gap-3 rounded-lg border border-white/[0.08] bg-white/[0.035] px-4 py-3">
+                    <FiBookmark className="text-orange" size={15} />
+                    <span className="text-sm text-text-secondary">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
 
         </div>

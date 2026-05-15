@@ -72,9 +72,9 @@ export function SessionHeader({
     return () => clearInterval(intervalRef.current!)
   }, [resetKey, timerSeconds])
 
-  // Hint/skip disabled when: king mode, allowance exhausted, OR question already answered/revealed
-  const canHint = !isRevealed && difficulty !== 'king' && (hintsLeft === null || hintsLeft > 0)
-  const canSkip = !isRevealed && difficulty !== 'king' && (skipsLeft === null || skipsLeft > 0)
+  // Hint/skip disabled when: Expert mode, allowance exhausted, OR question already answered/revealed
+  const canHint = !isRevealed && difficulty !== 'expert' && (hintsLeft === null || hintsLeft > 0)
+  const canSkip = !isRevealed && difficulty !== 'expert' && (skipsLeft === null || skipsLeft > 0)
 
   return (
     <div className="sticky top-0 z-40 glass border-b border-border">

@@ -34,7 +34,7 @@ export interface User {
   privacyVersionAccepted?: string
 }
 
-export type Difficulty = 'pawn' | 'rogue' | 'king'
+export type Difficulty = 'beginner' | 'pro' | 'expert'
 export type AssessmentMode = 'quiz' | 'puzzle' | 'flipper' | 'trivia'
 
 export interface AnswerRecord {
@@ -140,8 +140,8 @@ interface SessionStore {
 }
 
 function calcAllowance(difficulty: Difficulty, count: number): number {
-  if (difficulty === 'pawn') return 9999
-  if (difficulty === 'rogue') return Math.max(1, Math.floor(count / 5))
+  if (difficulty === 'beginner') return 9999
+  if (difficulty === 'pro') return Math.max(1, Math.floor(count / 5))
   return 0
 }
 

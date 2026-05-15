@@ -325,7 +325,7 @@ QUESTIONS = [
     # ── Chapter 1 — Getting Your License ──────────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the minimum age to apply for a learner's permit in Oklahoma?",
         "correct_count": 1,
         "explanation": "You must be at least 15½ years old to apply for an Oklahoma learner's permit.",
@@ -340,7 +340,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How many hours of supervised driving must a permit holder complete before applying for an intermediate license?",
         "correct_count": 1,
         "explanation": "Oklahoma requires 50 hours of supervised driving, including at least 10 hours at night.",
@@ -356,7 +356,7 @@ QUESTIONS = [
     # Chapter 2 — The Oklahoma Driver
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following best describes defensive driving?",
         "correct_count": 1,
         "explanation": "Defensive driving means anticipating hazards and being prepared to respond to mistakes made by other drivers — taking responsibility for your own safety.",
@@ -372,7 +372,7 @@ QUESTIONS = [
     # Chapter 3 — Your Vehicle
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law requires children under what age to be in a proper child safety seat?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires children under 8 years old to be secured in an appropriate child passenger restraint system.",
@@ -388,7 +388,7 @@ QUESTIONS = [
     # Chapter 4 — Signs
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a red octagonal sign indicate?",
         "correct_count": 1,
         "explanation": "A red octagon is always a STOP sign. You must come to a complete stop.",
@@ -403,7 +403,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "warning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A yellow diamond-shaped sign warns of what?",
         "correct_count": 1,
         "explanation": "Yellow diamond signs warn drivers of upcoming hazards or changing road conditions.",
@@ -418,7 +418,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What do double solid yellow center lines mean?",
         "correct_count": 1,
         "explanation": "Double solid yellow lines mean no passing is allowed in either direction. Neither driver may cross these lines to pass.",
@@ -434,7 +434,7 @@ QUESTIONS = [
     # Chapter 5 — Rules of the Road
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At an uncontrolled intersection, who has the right of way?",
         "correct_count": 1,
         "explanation": "At an uncontrolled intersection, the vehicle that arrives first has right of way. If arriving simultaneously, yield to the vehicle on the right.",
@@ -449,7 +449,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "turning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How far in advance must you signal before making a turn in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires you to signal at least 100 feet before turning to give other drivers adequate warning.",
@@ -465,7 +465,7 @@ QUESTIONS = [
     # Chapter 6 — Speed
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the standard speed limit in a residential area in Oklahoma unless otherwise posted?",
         "correct_count": 1,
         "explanation": "Oklahoma's default residential speed limit is 25 mph unless signs indicate otherwise.",
@@ -480,7 +480,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the speed limit in a school zone when children are present in Oklahoma?",
         "correct_count": 1,
         "explanation": "School zones in Oklahoma have a 25 mph limit when children are present or the flasher is active.",
@@ -496,7 +496,7 @@ QUESTIONS = [
     # Chapter 7 — Traffic Signals
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What must you do when approaching a flashing red traffic light?",
         "correct_count": 1,
         "explanation": "A flashing red light is treated the same as a stop sign — come to a complete stop, then proceed when safe.",
@@ -511,7 +511,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a flashing yellow traffic light mean?",
         "correct_count": 1,
         "explanation": "A flashing yellow light means slow down and proceed with caution — you do not need to stop.",
@@ -527,7 +527,7 @@ QUESTIONS = [
     # Chapter 8 — Passing
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which situation makes passing another vehicle illegal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing is illegal on hills, curves, intersections, and railroad crossings where visibility is limited.",
@@ -543,7 +543,7 @@ QUESTIONS = [
     # Chapter 9 — Alcohol
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the legal blood alcohol concentration (BAC) limit for drivers 21 and older in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma's legal BAC limit is 0.08% for drivers 21 and over.",
@@ -558,7 +558,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What happens if you refuse a chemical test under Oklahoma's implied consent law?",
         "correct_count": 1,
         "explanation": "Refusing a chemical test results in an automatic license suspension, even if you are not convicted of DUI.",
@@ -574,7 +574,7 @@ QUESTIONS = [
     # Chapter 10 — Sharing the Road
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When must you yield to pedestrians in Oklahoma?",
         "correct_count": 1,
         "explanation": "You must always yield to pedestrians in marked or unmarked crosswalks.",
@@ -589,7 +589,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When passing a cyclist on a road, how much space must you provide in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to give cyclists at least 3 feet of clearance when passing.",
@@ -605,7 +605,7 @@ QUESTIONS = [
     # Chapter 11 — Driving Conditions
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should you do if your vehicle begins to hydroplane?",
         "correct_count": 1,
         "explanation": "If hydroplaning occurs, ease off the accelerator and steer straight. Do not brake suddenly — this can cause a skid.",
@@ -620,7 +620,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which headlight setting should you use when driving in fog?",
         "correct_count": 1,
         "explanation": "Use low-beam headlights in fog. High beams reflect off fog particles and reduce visibility, making it harder to see.",
@@ -636,7 +636,7 @@ QUESTIONS = [
     # ── Chapter 1 — Getting Your License (additional) ─────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following documents is NOT required when applying for an Oklahoma learner's permit?",
         "correct_count": 1,
         "explanation": "A birth certificate, proof of Social Security number, and two proofs of Oklahoma residency are required. A high school diploma is not required.",
@@ -651,7 +651,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How long must an Oklahoma learner's permit holder hold the permit before applying for an intermediate license?",
         "correct_count": 1,
         "explanation": "A learner's permit must be held for at least 6 months before a teen can apply for an intermediate (Class D) license.",
@@ -666,7 +666,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's intermediate license restrictions, how many non-family passengers under 21 may a teen driver carry during the first 6 months?",
         "correct_count": 1,
         "explanation": "During the first 6 months of the intermediate license, teen drivers may carry only 1 non-family passenger under 21 years old.",
@@ -681,7 +681,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What are the nighttime driving restrictions for an Oklahoma intermediate license holder?",
         "correct_count": 1,
         "explanation": "Intermediate license holders may not drive between midnight and 5 a.m. unless accompanied by a licensed driver 21 or older, or driving for work or school.",
@@ -696,7 +696,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What vision standard must you meet to obtain an Oklahoma driver's license without corrective lenses?",
         "correct_count": 1,
         "explanation": "Oklahoma requires at least 20/60 vision in at least one eye to drive without corrective lenses. If corrective lenses are needed to meet this standard, a restriction is placed on the license.",
@@ -711,7 +711,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If an Oklahoma driver's license is suspended, what must the driver carry in addition to their suspended license when legally operating a vehicle?",
         "correct_count": 1,
         "explanation": "When driving on a restricted or hardship license during a suspension, the driver must carry the order granting the restricted license along with their suspended license.",
@@ -726,7 +726,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Within how many days must you notify the DPS of an address change after moving in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires you to notify the Department of Public Safety of your new address within 10 days of moving.",
@@ -741,7 +741,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the penalty for driving without a valid license in Oklahoma?",
         "correct_count": 1,
         "explanation": "Driving without a valid license in Oklahoma is a misdemeanor that can result in fines and possible jail time.",
@@ -756,7 +756,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At what age can an Oklahoma teen apply for a full, unrestricted Class D driver's license?",
         "correct_count": 1,
         "explanation": "An Oklahoma teen can apply for a full Class D license at age 17, provided they have held the intermediate license for at least 6 months without violations.",
@@ -771,7 +771,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What happens to an Oklahoma intermediate license if the teen is convicted of a moving violation during the first 6 months?",
         "correct_count": 1,
         "explanation": "A moving violation conviction during the first 6 months of the intermediate license resets the 6-month restriction period back to zero.",
@@ -786,7 +786,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Who must sign a minor's driver's license application in Oklahoma?",
         "correct_count": 1,
         "explanation": "A parent or legal guardian must sign the license application for any applicant under 18. This makes them jointly responsible for the teen's driving.",
@@ -801,7 +801,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a parent or guardian withdraws consent for a minor's Oklahoma license, what happens?",
         "correct_count": 1,
         "explanation": "When a parent or guardian files a written request to cancel consent, the DPS cancels the minor's license. The minor cannot drive until they turn 18 or consent is re-granted.",
@@ -818,7 +818,7 @@ QUESTIONS = [
     # ── Chapter 2 — The Oklahoma Driver (additional) ───────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "safety",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the recommended following distance behind the vehicle ahead under normal driving conditions?",
         "correct_count": 1,
         "explanation": "The 3-second rule: pick a fixed object ahead, when the vehicle in front passes it, count 3 seconds. If you reach the object before counting to 3, you are following too closely.",
@@ -833,7 +833,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Using a handheld cell phone while driving in Oklahoma is:",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits texting while driving and handheld phone use in school zones and construction zones. While general handheld use is not statewide-banned for all drivers, distracted driving is a primary cause of crashes and can result in citations.",
@@ -848,7 +848,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which symptom is a warning sign of driver fatigue?",
         "correct_count": 1,
         "explanation": "Frequent blinking or heavy eyelids, drifting from your lane, missing exits, and not remembering the last few miles are all warning signs of fatigue. The only cure is sleep.",
@@ -863,7 +863,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should you do if you feel drowsy while driving on a long trip?",
         "correct_count": 1,
         "explanation": "The only safe remedy for drowsy driving is sleep. Pull off the road safely and sleep. Opening a window, turning up the radio, or drinking coffee provides only temporary effects and does not make you safe to drive.",
@@ -878,7 +878,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Emotions such as anger or excitement can affect your driving by:",
         "correct_count": 1,
         "explanation": "Strong emotions reduce your ability to concentrate, increase risk-taking, and slow your reaction time. An emotionally agitated driver is a distracted driver.",
@@ -893,7 +893,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "safety",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How often should you check your mirrors while driving?",
         "correct_count": 1,
         "explanation": "You should glance in your mirrors every 5 to 8 seconds to stay aware of what's around you. Regular mirror checks help you identify changes in traffic before they become emergencies.",
@@ -908,7 +908,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which medication side effect most directly impairs safe driving?",
         "correct_count": 1,
         "explanation": "Drowsiness is the medication side effect most dangerous for driving. Many over-the-counter antihistamines, pain relievers, and prescription drugs list drowsiness as a side effect. Always read labels before driving.",
@@ -923,7 +923,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "safety",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the primary blind spot danger when driving?",
         "correct_count": 1,
         "explanation": "Blind spots are areas around your vehicle not visible in your mirrors. You must physically turn your head to check blind spots before changing lanes or merging. Mirrors alone are insufficient.",
@@ -938,7 +938,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a railroad crossing with no signals or gates, you should:",
         "correct_count": 1,
         "explanation": "At uncontrolled railroad crossings, you must slow down, look both ways, and listen for trains before crossing. Trains are always closer and faster than they appear.",
@@ -953,7 +953,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "safety",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the leading cause of teen driver fatalities in Oklahoma?",
         "correct_count": 1,
         "explanation": "Speed is consistently the leading factor in teen driver fatalities in Oklahoma. Teen drivers are more likely to underestimate the danger of speed and overestimate their ability to handle it.",
@@ -968,7 +968,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does it mean to be a 'responsible driver' under Oklahoma law?",
         "correct_count": 1,
         "explanation": "Being a responsible driver includes following all traffic laws, maintaining your vehicle, carrying required documents, and being financially responsible for any damage you cause.",
@@ -983,7 +983,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "safety",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the safest way to handle road rage directed at you by another driver?",
         "correct_count": 1,
         "explanation": "Avoid eye contact, do not respond to aggressive gestures, and put distance between your vehicle and the aggressive driver. If threatened, drive to a public place or police station.",
@@ -1000,7 +1000,7 @@ QUESTIONS = [
     # ── Chapter 3 — Your Vehicle (additional) ─────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law requires all front-seat passengers to wear a seatbelt. Who is responsible for ensuring passengers under 13 are buckled?",
         "correct_count": 1,
         "explanation": "The driver is legally responsible for ensuring all passengers under 13 years old are properly restrained, regardless of seating position.",
@@ -1015,7 +1015,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When are you required to turn on your headlights in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires headlights from 30 minutes after sunset to 30 minutes before sunrise, and any time visibility is less than 1,000 feet due to weather or conditions.",
@@ -1030,7 +1030,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does it mean when your vehicle's ABS (Anti-lock Braking System) activates?",
         "correct_count": 1,
         "explanation": "When ABS activates, you will feel a pulsing sensation in the brake pedal. You should maintain firm, steady pressure on the brakes — do not pump them. ABS does the pumping for you to prevent wheel lockup.",
@@ -1045,7 +1045,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Tires should be replaced when the tread depth reaches what minimum level?",
         "correct_count": 1,
         "explanation": "Tires must be replaced when tread depth reaches 2/32 of an inch (the level of the wear indicator bars built into the tire). A simple test: if Lincoln's head is fully visible on a penny inserted into the tread, the tire is worn out.",
@@ -1060,7 +1060,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Your vehicle's horn should be used:",
         "correct_count": 1,
         "explanation": "The horn should only be used as a safety warning — to alert other drivers or pedestrians of your presence to avoid a collision. Using the horn in frustration or anger is improper and illegal in some jurisdictions.",
@@ -1075,7 +1075,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should you check before every drive as part of a pre-trip inspection?",
         "correct_count": 1,
         "explanation": "Before every drive, check your mirrors, seats, and seatbelt; verify lights work; check tire condition visually; and confirm fuel level. These checks take under 2 minutes and prevent breakdowns and crashes.",
@@ -1090,7 +1090,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the danger of driving with an underinflated tire?",
         "correct_count": 1,
         "explanation": "Underinflated tires flex more than normal, generating heat that can cause a blowout. They also reduce fuel efficiency, cause uneven wear, and reduce vehicle handling and braking ability.",
@@ -1105,7 +1105,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law requires proof of insurance to be in your vehicle at all times. What is the minimum liability coverage required?",
         "correct_count": 1,
         "explanation": "Oklahoma minimum liability coverage is 25/50/25 — $25,000 for bodily injury per person, $50,000 per accident, and $25,000 for property damage.",
@@ -1120,7 +1120,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When should you use your vehicle's hazard lights?",
         "correct_count": 1,
         "explanation": "Hazard lights (four-way flashers) should be used when your vehicle is stopped or disabled on the roadway, posing a danger to other traffic. They should not be used while driving in rain or fog.",
@@ -1135,7 +1135,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If your rearview mirror only shows headlights at night, what should you do?",
         "correct_count": 1,
         "explanation": "Most rearview mirrors have a night/day switch or auto-dimming feature. Flip the tab on the bottom of the mirror to the night position to reduce glare from headlights behind you.",
@@ -1150,7 +1150,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How far from a fire hydrant must you park in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits parking within 15 feet of a fire hydrant. This ensures emergency responders can access the hydrant quickly without obstacles.",
@@ -1165,7 +1165,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a steadily lit red dashboard warning light (not oil or battery) typically indicate?",
         "correct_count": 1,
         "explanation": "A steady red warning light on the dashboard indicates a serious condition that requires immediate attention. You should pull over safely as soon as possible and do not continue driving until the issue is diagnosed.",
@@ -1182,7 +1182,7 @@ QUESTIONS = [
     # ── Chapter 4 — Traffic Signs, Signals & Pavement Markings (additional) ────
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What shape and color is a YIELD sign?",
         "correct_count": 1,
         "explanation": "A Yield sign is a downward-pointing equilateral triangle with a red border and white interior. It requires you to slow down and give the right of way to traffic already in the intersection or roadway.",
@@ -1197,7 +1197,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What shape is used exclusively for school zone warning signs?",
         "correct_count": 1,
         "explanation": "School advance warning signs use a pentagon (five-sided) shape with a fluorescent yellow-green color. This unique shape makes them instantly recognizable.",
@@ -1212,7 +1212,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a round yellow sign with an X and two Rs (RR) indicate?",
         "correct_count": 1,
         "explanation": "A round yellow sign with an X and 'RR' is a railroad advance warning sign. It warns that a railroad crossing is ahead and you should slow down and be prepared to stop.",
@@ -1227,7 +1227,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A sign with a white background, red circle, and red diagonal line through a symbol means:",
         "correct_count": 1,
         "explanation": "A white sign with a red circle and diagonal bar through a symbol means the action shown is prohibited. For example, a red circle with a bar through a U-turn symbol means no U-turns are permitted.",
@@ -1242,7 +1242,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a 'DO NOT ENTER' sign look like and what does it mean?",
         "correct_count": 1,
         "explanation": "A DO NOT ENTER sign is a red square with a white horizontal bar and the words 'DO NOT ENTER.' It means you may not enter the road ahead — typically a one-way road going the wrong direction.",
@@ -1257,7 +1257,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'WRONG WAY' sign tell you?",
         "correct_count": 1,
         "explanation": "A WRONG WAY sign means you have entered or are about to enter a road going against the flow of traffic. You must stop immediately and back up or turn around to avoid a head-on collision.",
@@ -1272,7 +1272,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "guide",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Green highway signs with white lettering are used to indicate:",
         "correct_count": 1,
         "explanation": "Green signs with white lettering are guide signs. They provide directional and distance information — highway exits, route numbers, city names, and mileage to destinations.",
@@ -1287,7 +1287,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "guide",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Blue signs along the highway indicate:",
         "correct_count": 1,
         "explanation": "Blue signs indicate motorist services — gas stations, food, lodging, hospitals, and rest areas at upcoming exits. They help drivers plan stops.",
@@ -1302,7 +1302,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "warning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Orange signs are used in:",
         "correct_count": 1,
         "explanation": "Orange signs are used exclusively in work zones to warn drivers of construction, maintenance activity, and changed road conditions. Speed limits in orange work zones carry doubled fines.",
@@ -1317,7 +1317,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A single broken white line between lanes of traffic traveling in the same direction means:",
         "correct_count": 1,
         "explanation": "A broken white line separates lanes traveling in the same direction. You may cross it to change lanes when it is safe to do so.",
@@ -1332,7 +1332,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A solid white line at the right edge of the road indicates:",
         "correct_count": 1,
         "explanation": "A solid white edge line marks the right boundary of the travel lane. It separates the travel lane from the shoulder and warns drivers not to drive on the shoulder except in emergencies.",
@@ -1347,7 +1347,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a yellow broken line on your side of the center mean on a two-lane road?",
         "correct_count": 1,
         "explanation": "A broken yellow line on your side means passing is permitted from your side of the road when it is safe to do so. The line on the other side determines whether oncoming traffic may pass.",
@@ -1362,7 +1362,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "warning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A triangular orange sign on the back of a slow-moving vehicle means:",
         "correct_count": 1,
         "explanation": "A fluorescent orange triangle (slow-moving vehicle emblem) on the back of a vehicle indicates it travels at 25 mph or less. Farm equipment, horse-drawn vehicles, and road machinery use this sign.",
@@ -1377,7 +1377,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a white rectangular sign with 'SPEED LIMIT 55' indicate?",
         "correct_count": 1,
         "explanation": "White rectangular signs with black lettering are regulatory signs. A speed limit sign tells you the maximum legal speed under ideal conditions. You may drive slower, but not faster.",
@@ -1392,7 +1392,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What do yellow diagonal lines painted in a gore area (where a ramp separates from the highway) indicate?",
         "correct_count": 1,
         "explanation": "Yellow diagonal lines in a gore area indicate a paved area that must not be driven on. The gore is the triangular area between the highway and an exit ramp — do not use it as a travel lane or shortcut.",
@@ -1409,7 +1409,7 @@ QUESTIONS = [
     # ── Chapter 5 — Rules of the Road (additional) ────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When may you turn right on a red light in Oklahoma?",
         "correct_count": 1,
         "explanation": "You may turn right on red after coming to a complete stop and yielding to all pedestrians and cross traffic. A sign saying 'NO TURN ON RED' prohibits this.",
@@ -1424,7 +1424,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At an intersection of two one-way streets, a left turn on red is:",
         "correct_count": 1,
         "explanation": "A left turn from a one-way street onto another one-way street on a red light is permitted in Oklahoma after a complete stop and yielding to all traffic and pedestrians.",
@@ -1439,7 +1439,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When an emergency vehicle with lights and siren activated approaches, you must:",
         "correct_count": 1,
         "explanation": "You must immediately pull over to the right edge of the road and stop until the emergency vehicle has passed. If you are in an intersection, clear the intersection first before pulling over.",
@@ -1454,7 +1454,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When must you stop for a school bus in Oklahoma?",
         "correct_count": 1,
         "explanation": "You must stop for a school bus with flashing red lights on any road where there is no median divider. On a divided highway with a physical barrier, only traffic behind the bus must stop.",
@@ -1469,7 +1469,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How close may you follow an emergency vehicle that is responding to a call?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits following within 500 feet of an emergency vehicle responding with lights and sirens. This keeps the emergency path clear and prevents accidents.",
@@ -1484,7 +1484,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is Oklahoma's 'Move Over' law?",
         "correct_count": 1,
         "explanation": "Oklahoma's Move Over law requires drivers to move one lane away from stopped emergency, maintenance, or tow trucks with lights activated on a multi-lane road. If a lane change isn't possible, slow to a safe speed.",
@@ -1499,7 +1499,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "turning",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When turning left from a two-lane road onto another two-lane road, you should end up in:",
         "correct_count": 1,
         "explanation": "When turning left, you should enter the nearest left lane of the road you are turning onto — the lane closest to the center line. You may then change lanes if needed once you have completed the turn.",
@@ -1514,7 +1514,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At a four-way stop where two vehicles arrive at the same time from opposite directions, who goes first?",
         "correct_count": 1,
         "explanation": "When two vehicles arrive simultaneously from opposite directions at a four-way stop, the vehicle going straight has the right of way over the vehicle turning left.",
@@ -1529,7 +1529,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "parking",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "It is illegal to park within how many feet of a stop sign in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits parking within 30 feet of a stop sign. Parking too close to a stop sign blocks visibility for drivers approaching the intersection.",
@@ -1544,7 +1544,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When entering a highway from a private driveway or alley, who has the right of way?",
         "correct_count": 1,
         "explanation": "Traffic already on the roadway has the right of way. A driver exiting a driveway or alley must yield to all pedestrians on the sidewalk and all vehicles on the road before entering.",
@@ -1559,7 +1559,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "parking",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When parking on a downhill slope with a curb, which direction should your front wheels be turned?",
         "correct_count": 1,
         "explanation": "When parking downhill with a curb, turn your front wheels toward the curb (to the right). If the vehicle rolls, the curb will stop it. Uphill with a curb — wheels away from curb. No curb — always turn wheels toward the edge of the road.",
@@ -1574,7 +1574,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A vehicle in a roundabout has the right of way over:",
         "correct_count": 1,
         "explanation": "Vehicles already inside a roundabout have the right of way over vehicles entering it. You must yield when entering a roundabout and wait for a gap in traffic before entering.",
@@ -1589,7 +1589,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When may you make a U-turn in Oklahoma?",
         "correct_count": 1,
         "explanation": "U-turns are legal only when they can be made safely without interfering with other traffic, and only where not prohibited by a sign or pavement marking. U-turns are prohibited in business districts and near hills or curves.",
@@ -1604,7 +1604,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When may you pass on the right side of another vehicle?",
         "correct_count": 1,
         "explanation": "Passing on the right is only legal when the vehicle ahead is making or about to make a left turn, and the road is wide enough to allow safe passing on the right without leaving the paved road.",
@@ -1619,7 +1619,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When yielding to a funeral procession, which of the following is correct?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a procession of vehicles accompanying a funeral has the right of way through intersections after the lead vehicle has lawfully entered. Other drivers must yield until the procession has passed.",
@@ -1636,7 +1636,7 @@ QUESTIONS = [
     # ── Chapter 6 — Speed Limits & Speed Management (additional) ──────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the maximum speed limit on most Oklahoma rural interstate highways?",
         "correct_count": 1,
         "explanation": "Most rural interstates in Oklahoma have a maximum speed limit of 75 mph. Some sections may post 80 mph where designated.",
@@ -1651,7 +1651,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the speed limit in an alley in Oklahoma?",
         "correct_count": 1,
         "explanation": "The speed limit in any alley in Oklahoma is 15 mph. Alleys are narrow and have limited visibility, requiring extra caution.",
@@ -1666,7 +1666,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'basic speed rule' means:",
         "correct_count": 1,
         "explanation": "The basic speed rule requires that you never drive faster than is safe for current conditions, regardless of the posted speed limit. In rain, fog, or heavy traffic, you must slow below the posted limit if conditions require it.",
@@ -1681,7 +1681,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the penalty for speeding in an active construction zone in Oklahoma?",
         "correct_count": 1,
         "explanation": "Fines for speeding violations in active work zones where workers are present are doubled in Oklahoma. This is intended to protect road workers from traffic-related injuries.",
@@ -1696,7 +1696,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit in a business district in Oklahoma unless otherwise posted?",
         "correct_count": 1,
         "explanation": "The default speed limit in Oklahoma business districts is 25 mph. Business districts typically have more pedestrian activity and vehicle conflicts.",
@@ -1711,7 +1711,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "You are driving 55 mph on a highway. The vehicle ahead slows suddenly. At 55 mph, approximately how many feet does it take to stop?",
         "correct_count": 1,
         "explanation": "At 55 mph, total stopping distance is approximately 300 feet — about the length of a football field. This includes reaction distance (~60 feet) plus braking distance (~240 feet). Many drivers underestimate this.",
@@ -1726,7 +1726,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When is it legal to drive faster than the posted speed limit in Oklahoma?",
         "correct_count": 1,
         "explanation": "It is never legal to drive faster than the posted speed limit in Oklahoma. The speed limit is the maximum allowed by law, not a suggestion.",
@@ -1741,7 +1741,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How many points are added to your Oklahoma driving record for driving 25 mph or more over the speed limit?",
         "correct_count": 1,
         "explanation": "Driving 25 mph or more over the speed limit in Oklahoma adds 4 points to your driving record. Accumulating too many points can result in license suspension.",
@@ -1756,7 +1756,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When driving at night, you should adjust your speed so that:",
         "correct_count": 1,
         "explanation": "At night, you should drive at a speed that lets you stop within the distance illuminated by your headlights — called 'overdriving your headlights.' Headlights typically illuminate 250–350 feet ahead.",
@@ -1771,7 +1771,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should you do if you are driving below the minimum speed on an interstate and blocking traffic?",
         "correct_count": 1,
         "explanation": "If you are driving significantly below the speed of traffic and blocking the flow, you should move to the right lane and continue at a safe pace, or exit the highway if your vehicle cannot safely maintain highway speeds.",
@@ -1786,7 +1786,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does rain affect your stopping distance compared to dry pavement?",
         "correct_count": 1,
         "explanation": "Wet roads reduce tire traction significantly. Stopping distance on wet pavement is roughly double what it is on dry pavement at the same speed. You should increase your following distance accordingly.",
@@ -1801,7 +1801,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "On an Oklahoma state highway (non-interstate, rural), the default speed limit is:",
         "correct_count": 1,
         "explanation": "On undivided rural state highways in Oklahoma, the default speed limit is 55 mph unless otherwise posted.",
@@ -1818,7 +1818,7 @@ QUESTIONS = [
     # ── Chapter 7 — Traffic Signals & Lights (additional) ─────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a steady green traffic light mean?",
         "correct_count": 1,
         "explanation": "A steady green light means you may proceed — but you must first yield to any vehicles or pedestrians still in the intersection. Green does not guarantee the intersection is clear.",
@@ -1833,7 +1833,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a steady yellow traffic light mean?",
         "correct_count": 1,
         "explanation": "A steady yellow light warns that the signal is about to turn red. You should stop if you can do so safely. If you are too close to stop safely, proceed through the intersection with caution.",
@@ -1848,7 +1848,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A green arrow signal means:",
         "correct_count": 1,
         "explanation": "A green arrow means you may move in the direction the arrow points. This is a protected turn — oncoming traffic and pedestrians are stopped by a red light. You still must yield to anyone who has lawfully entered the intersection.",
@@ -1863,7 +1863,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A red arrow signal means:",
         "correct_count": 1,
         "explanation": "A red arrow means you must stop and may not move in the direction the arrow points. Unlike a circular red light, you may NOT turn on red when a red arrow is displayed.",
@@ -1878,7 +1878,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When a traffic officer's signals conflict with a traffic light, you should:",
         "correct_count": 1,
         "explanation": "When a police officer is directing traffic, you must follow the officer's signals even if they conflict with the traffic light. Officer directions always override signal devices.",
@@ -1893,7 +1893,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If a traffic signal is not working (dark/blank), the intersection should be treated as:",
         "correct_count": 1,
         "explanation": "A dark or inoperative traffic signal must be treated as a four-way stop. All drivers must stop and take turns proceeding as they would at a four-way stop sign.",
@@ -1908,7 +1908,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the pedestrian 'DON'T WALK' flashing signal mean?",
         "correct_count": 1,
         "explanation": "A flashing DON'T WALK (or flashing orange hand) signal means pedestrians who have already started crossing may finish, but pedestrians who have not yet started should not begin crossing.",
@@ -1923,7 +1923,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "You are approaching a green light but a large truck is blocking the intersection ahead. You should:",
         "correct_count": 1,
         "explanation": "You should not enter an intersection unless you can completely clear it. Blocking an intersection — even on a green light — is illegal and creates gridlock. Wait behind the stop line until there is room to clear the entire intersection.",
@@ -1938,7 +1938,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At a railroad crossing with active flashing red lights and bells, but no gate, you must:",
         "correct_count": 1,
         "explanation": "When railroad crossing lights are flashing and bells are sounding, you must stop at least 15 feet from the nearest rail and wait until it is completely safe — even if no train is visible. The lights indicate a train is approaching.",
@@ -1953,7 +1953,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After a train passes a railroad crossing, you should wait before crossing because:",
         "correct_count": 1,
         "explanation": "A second train may be approaching on a parallel track or from the opposite direction. After one train passes, always check both directions before crossing — another train may be coming immediately.",
@@ -1968,7 +1968,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A flashing yellow arrow on a traffic signal means:",
         "correct_count": 1,
         "explanation": "A flashing yellow arrow means you may turn in the indicated direction after yielding to oncoming traffic and pedestrians. It is an unprotected turn — oncoming traffic does not have a red light.",
@@ -1983,7 +1983,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When turning left on a steady green light (not a green arrow), you must:",
         "correct_count": 1,
         "explanation": "On a steady green (circular) light, a left turn is permitted but you must yield to oncoming traffic and pedestrians. It is an unprotected left — unlike a green arrow which is protected.",
@@ -2000,7 +2000,7 @@ QUESTIONS = [
     # ── Chapter 8 — Passing & Lane Changes (additional) ───────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Before changing lanes, you should:",
         "correct_count": 1,
         "explanation": "Before changing lanes, check your mirrors, signal your intent, check your blind spot by turning your head, and then move smoothly if it is safe. The full sequence protects against vehicles in your blind spot.",
@@ -2015,7 +2015,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When is passing another vehicle prohibited in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing is prohibited: within 100 feet of an intersection, railroad crossing, bridge, or tunnel; on hills or curves where visibility is limited; and anywhere a solid yellow line is on your side.",
@@ -2030,7 +2030,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When being passed by another vehicle, you should:",
         "correct_count": 1,
         "explanation": "When being passed, maintain your speed or slow slightly to help the passing driver complete the maneuver safely. Do not speed up — this forces the passing driver to stay in the oncoming lane longer.",
@@ -2045,7 +2045,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After passing a vehicle, how do you know it is safe to return to your lane?",
         "correct_count": 1,
         "explanation": "You can return to the right lane when you can see both headlights of the passed vehicle in your rearview mirror. This ensures enough clearance for the lane change without cutting them off.",
@@ -2060,7 +2060,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "On a multi-lane highway, which lane should slower traffic use?",
         "correct_count": 1,
         "explanation": "Slower traffic should keep right. In Oklahoma, as in all states, the left lane is for passing and faster-moving traffic. Using the left lane for extended travel at slow speeds impedes traffic flow.",
@@ -2075,7 +2075,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How far in advance must you signal a lane change on an Oklahoma highway?",
         "correct_count": 1,
         "explanation": "Oklahoma requires you to signal at least 100 feet before changing lanes or turning. On highways at higher speeds, signaling even earlier gives other drivers more time to react.",
@@ -2090,7 +2090,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "You may never pass a vehicle on the left when:",
         "correct_count": 1,
         "explanation": "You may never pass on the left when approaching the crest of a hill or a curve where you cannot see clearly ahead. An oncoming vehicle could appear at any moment with no time to react.",
@@ -2105,7 +2105,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "You want to pass a bicyclist on a two-lane road with oncoming traffic approaching. You should:",
         "correct_count": 1,
         "explanation": "Wait behind the cyclist until oncoming traffic clears, then pass with at least 3 feet of clearance. Do not squeeze by with oncoming traffic present — the 3-foot rule still applies.",
@@ -2120,7 +2120,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Weaving in and out of traffic is dangerous because:",
         "correct_count": 1,
         "explanation": "Weaving dramatically increases crash risk because it requires multiple lane changes in quick succession, each with a blind spot risk, and it catches other drivers off guard who cannot anticipate your movement.",
@@ -2135,7 +2135,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which pavement marking tells you that you may NOT pass in either direction?",
         "correct_count": 1,
         "explanation": "Double solid yellow center lines mean no passing is permitted in either direction. Neither driver may cross these lines under any circumstances.",
@@ -2150,7 +2150,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "You are on a two-lane road and wish to pass. The oncoming lane is clear but you see a sign that says 'NO PASSING ZONE'. You should:",
         "correct_count": 1,
         "explanation": "A 'NO PASSING ZONE' sign means passing is prohibited regardless of whether the oncoming lane appears clear. The sign indicates a section of road where passing is too dangerous — obey the sign.",
@@ -2165,7 +2165,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When entering a freeway from an on-ramp, you should:",
         "correct_count": 1,
         "explanation": "Use the acceleration lane (on-ramp) to build speed matching highway traffic, signal, check mirrors and blind spot, and merge smoothly when a safe gap exists. Freeway traffic does not have to yield to merging vehicles.",
@@ -2182,7 +2182,7 @@ QUESTIONS = [
     # ── Chapter 9 — Alcohol, Drugs & Driving (additional) ────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the legal BAC limit for drivers under 21 in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma has a zero-tolerance policy for underage drinking and driving. Any BAC at or above 0.02% for a driver under 21 is illegal and results in license revocation.",
@@ -2197,7 +2197,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the BAC limit for commercial vehicle drivers in Oklahoma?",
         "correct_count": 1,
         "explanation": "Commercial driver's license (CDL) holders are subject to a stricter BAC limit of 0.04% — half the standard adult limit — because of the size and weight of the vehicles they operate.",
@@ -2212,7 +2212,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is the only way to sober up after drinking?",
         "correct_count": 1,
         "explanation": "Time is the only way to sober up. The liver processes alcohol at a fixed rate of about one standard drink per hour. Coffee, food, cold showers, and exercise do not speed this up.",
@@ -2227,7 +2227,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum license revocation period for a first DUI conviction in Oklahoma?",
         "correct_count": 1,
         "explanation": "A first DUI conviction in Oklahoma results in a license revocation of 180 days (6 months). Refusal of a chemical test under implied consent results in a 6-month revocation as well.",
@@ -2242,7 +2242,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which factors affect how quickly alcohol impairs a person?",
         "correct_count": 1,
         "explanation": "Body weight, the amount consumed, time span of drinking, food in the stomach, and gender all affect impairment rate. Lighter individuals and women typically reach higher BAC levels faster for the same amount of alcohol.",
@@ -2257,7 +2257,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Prescription drugs that cause drowsiness:",
         "correct_count": 1,
         "explanation": "Prescription drugs that cause drowsiness impair driving just as alcohol does. Driving while impaired by any substance — legal or not — is illegal in Oklahoma.",
@@ -2272,7 +2272,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does 'implied consent' mean in Oklahoma?",
         "correct_count": 1,
         "explanation": "By driving on Oklahoma roads, you have automatically given implied consent to a chemical test (blood, breath, or urine) if lawfully arrested for DUI. You may refuse, but refusal carries automatic consequences.",
@@ -2287,7 +2287,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "An ignition interlock device may be required after a DUI conviction. What does it do?",
         "correct_count": 1,
         "explanation": "An ignition interlock device requires the driver to provide a breath sample before the vehicle will start. If alcohol is detected above the programmed limit, the vehicle will not start.",
@@ -2302,7 +2302,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Marijuana use before driving in Oklahoma is:",
         "correct_count": 1,
         "explanation": "Despite medical marijuana being legal in Oklahoma, driving under the influence of marijuana is illegal. Marijuana impairs reaction time, coordination, and judgment — all essential for safe driving.",
@@ -2317,7 +2317,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is a sign of alcohol impairment that affects driving?",
         "correct_count": 1,
         "explanation": "Alcohol impairs judgment, slows reaction time, reduces coordination, impairs vision, and reduces the ability to process multiple things at once — all critical for safe driving.",
@@ -2332,7 +2332,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If you are involved in a crash and suspected of DUI, the officer may require:",
         "correct_count": 1,
         "explanation": "An officer may require a chemical test (blood, breath, or urine) if they have probable cause to believe you are impaired. Refusing the test triggers automatic license revocation under implied consent law.",
@@ -2347,7 +2347,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does eating food before drinking alcohol affect your BAC?",
         "correct_count": 1,
         "explanation": "Food in the stomach slows the absorption of alcohol into the bloodstream, resulting in a lower and slower peak BAC. However, food does not prevent impairment — it only delays and moderates it.",
@@ -2364,7 +2364,7 @@ QUESTIONS = [
     # ── Chapter 10 — Sharing the Road (additional) ────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should you do when you see a school bus with flashing yellow lights?",
         "correct_count": 1,
         "explanation": "Flashing yellow lights on a school bus mean it is preparing to stop. You should slow down and prepare to stop. The red lights and stop arm are about to activate.",
@@ -2379,7 +2379,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Large trucks have significant blind spots. Where are they located?",
         "correct_count": 1,
         "explanation": "Large trucks have blind spots directly in front, directly behind, and along both sides (especially the right side). If you cannot see the truck's mirrors, the driver cannot see you.",
@@ -2394,7 +2394,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Motorcycles are entitled to:",
         "correct_count": 1,
         "explanation": "Motorcycles are entitled to the full use of a traffic lane — the same as any other vehicle. A car may not share a lane with a motorcycle (lane splitting is illegal in Oklahoma).",
@@ -2409,7 +2409,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a pedestrian who is blind and using a white cane or guide dog, you must:",
         "correct_count": 1,
         "explanation": "When a blind pedestrian is crossing, you must come to a complete stop and remain stopped until they have completely crossed the street and reached the curb. Never pass a vehicle stopped for a blind pedestrian.",
@@ -2424,7 +2424,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum following distance recommended when driving behind a large truck?",
         "correct_count": 1,
         "explanation": "You should allow at least 4 seconds of following distance behind large trucks. Trucks take longer to stop, and their blind spots are large. More distance also improves your visibility of the road ahead.",
@@ -2439,7 +2439,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When must you stop for a stopped tow truck or utility vehicle with flashing lights on a multi-lane road in Oklahoma?",
         "correct_count": 1,
         "explanation": "Under Oklahoma's Move Over law, you must move one lane away from a stopped tow truck or utility vehicle with flashing lights. If moving over is not possible, slow down to a safe and reasonable speed.",
@@ -2454,7 +2454,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A slow-moving vehicle displaying an orange triangle emblem is traveling at approximately:",
         "correct_count": 1,
         "explanation": "The orange triangle slow-moving vehicle (SMV) emblem indicates the vehicle travels at 25 mph or slower. Farm equipment, horse-drawn vehicles, and road maintenance machines use this emblem.",
@@ -2469,7 +2469,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When sharing the road with a horse-drawn vehicle or horseback rider, you should:",
         "correct_count": 1,
         "explanation": "You should slow down, avoid sudden movements, and pass slowly and widely. Horses can be startled by engine noise and sudden movements, creating a dangerous situation for both the rider and surrounding vehicles.",
@@ -2484,7 +2484,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "In Oklahoma, pedestrians have the right of way:",
         "correct_count": 1,
         "explanation": "Pedestrians have the right of way in any marked crosswalk and in unmarked crosswalks at intersections. Drivers must always yield to pedestrians crossing legally.",
@@ -2499,7 +2499,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When driving near a construction work zone, which of the following is true?",
         "correct_count": 1,
         "explanation": "In active work zones, fines are doubled for speed violations, workers can step into the roadway unexpectedly, and road conditions may change rapidly. Extra caution and reduced speed are required.",
@@ -2514,7 +2514,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the primary danger of driving in a large truck's 'No Zone'?",
         "correct_count": 1,
         "explanation": "The 'No Zone' is the area around a large truck where the driver cannot see you in any mirror. If you are in a No Zone and the truck changes lanes or turns, the driver has no way of knowing you are there.",
@@ -2529,7 +2529,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Where should you walk if there is no sidewalk available?",
         "correct_count": 1,
         "explanation": "If no sidewalk is available, pedestrians should walk on the left side of the road facing oncoming traffic. This allows pedestrians to see approaching vehicles and take evasive action if needed.",
@@ -2546,7 +2546,7 @@ QUESTIONS = [
     # ── Chapter 11 — Driving Conditions (additional) ──────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What following distance should you use when driving in rain?",
         "correct_count": 1,
         "explanation": "In rain, you should at least double your normal following distance from 3 seconds to a minimum of 6 seconds. Wet roads significantly reduce traction and increase stopping distance.",
@@ -2561,7 +2561,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When driving on ice, your braking distance compared to dry pavement is:",
         "correct_count": 1,
         "explanation": "On ice, braking distance can be up to 10 times longer than on dry pavement. At 30 mph on ice, you may need 10 times the normal stopping distance. This is why extreme caution and very low speeds are essential.",
@@ -2576,7 +2576,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If your rear wheels begin to skid while driving, you should steer:",
         "correct_count": 1,
         "explanation": "In a rear-wheel skid, steer in the direction the rear of the vehicle is sliding (into the skid). Take your foot off the gas. Do not brake suddenly. This allows the vehicle to realign.",
@@ -2591,7 +2591,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "You must turn on your headlights when visibility drops below:",
         "correct_count": 1,
         "explanation": "Oklahoma requires headlights whenever visibility is less than 1,000 feet due to weather conditions. This applies in rain, fog, dust, or any other condition reducing visibility.",
@@ -2606,7 +2606,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should you do if you encounter a flooded road?",
         "correct_count": 1,
         "explanation": "Never attempt to drive through flooded roads. Just 6 inches of moving water can knock a person down; 12 inches can carry away a small vehicle. Oklahoma's 'Turn Around, Don't Drown' rule is the safest approach.",
@@ -2621,7 +2621,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'black ice' and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Black ice is a thin, nearly transparent layer of ice on the road surface. It is called 'black' because it takes on the color of the pavement and is nearly invisible to drivers. It provides almost no traction and is especially common on bridges and overpasses.",
@@ -2636,7 +2636,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At night, you should dim your high beams when an oncoming vehicle is within how many feet?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires you to dim high beams when an oncoming vehicle is within 500 feet. High beams can blind oncoming drivers, so switching to low beams is both a courtesy and a legal requirement.",
@@ -2651,7 +2651,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "You are following another vehicle at night. When should you switch from high beams to low beams?",
         "correct_count": 1,
         "explanation": "You must dim your high beams when following another vehicle within 300 feet. High beams reflect in the mirrors of the vehicle ahead and can blind that driver.",
@@ -2666,7 +2666,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "During a severe dust storm with near-zero visibility in Oklahoma, the safest action is:",
         "correct_count": 1,
         "explanation": "During a severe dust storm, pull completely off the road (not just the shoulder), turn off all lights (including hazards), and keep your foot off the brake pedal. Other drivers following lights may drive into you thinking you are in a travel lane.",
@@ -2681,7 +2681,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When is it most dangerous to drive in rain?",
         "correct_count": 1,
         "explanation": "The most dangerous time to drive in rain is the first 10–15 minutes of rainfall. Rainwater mixes with oil and dirt on the road surface to create an extremely slick film before it is washed away.",
@@ -2696,7 +2696,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Bridges and overpasses freeze before regular road surfaces because:",
         "correct_count": 1,
         "explanation": "Bridges and overpasses are exposed to cold air on all sides — above and below — while regular roads only lose heat from the top. This makes them freeze faster and stay frozen longer, even when roads appear clear.",
@@ -2711,7 +2711,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If your car's brakes get wet after driving through a puddle, you should:",
         "correct_count": 1,
         "explanation": "Wet brakes may be temporarily less effective. To dry them, drive slowly and apply light brake pressure for a short distance. This generates heat that dries the brake pads and rotors.",
@@ -2728,7 +2728,7 @@ QUESTIONS = [
     # ── Chapter 12 — Emergencies & Breakdowns (additional) ────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If your brakes fail while driving, what is the first thing you should do?",
         "correct_count": 1,
         "explanation": "Pump the brake pedal rapidly — this can build enough hydraulic pressure to slow the vehicle in some brake failure scenarios. If pumping fails, downshift to a lower gear, use the parking brake gradually, and steer to a safe stopping area.",
@@ -2743,7 +2743,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a front tire blows out at highway speed, you should:",
         "correct_count": 1,
         "explanation": "In a front tire blowout, grip the steering wheel firmly, ease off the gas, and steer straight. Do not brake suddenly — sudden braking with a blown front tire can cause a spin. Let the vehicle slow on its own, then brake gently.",
@@ -2758,7 +2758,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When must a crash be reported to police in Oklahoma?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a crash must be reported to police when it involves injury, death, or property damage over $500. The driver must report it immediately if an officer is not at the scene.",
@@ -2773,7 +2773,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What information should you exchange with the other driver after a crash?",
         "correct_count": 1,
         "explanation": "After a crash, exchange: name, address, driver's license number, vehicle registration, and insurance information with the other driver(s). Also get names of any witnesses if possible.",
@@ -2788,7 +2788,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If your vehicle catches fire while driving, you should:",
         "correct_count": 1,
         "explanation": "Pull over immediately, turn off the engine, and get everyone out of the vehicle. Move at least 100 feet away. Do not try to fight a vehicle fire yourself — call 911. Never open the hood if you suspect an engine fire.",
@@ -2803,7 +2803,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If your vehicle breaks down on a freeway, you should:",
         "correct_count": 1,
         "explanation": "Pull completely off the roadway onto the shoulder. Turn on hazard lights. Stay inside the vehicle (safer than standing outside) or exit on the passenger side away from traffic. Call for help and wait for assistance.",
@@ -2818,7 +2818,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Carbon monoxide poisoning is a risk in which driving situation?",
         "correct_count": 1,
         "explanation": "Running a vehicle engine in a closed garage, or having a clogged exhaust system, can fill the vehicle with carbon monoxide — a colorless, odorless, deadly gas. Symptoms include dizziness, headache, and confusion.",
@@ -2833,7 +2833,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the legal obligation of a driver involved in a hit-and-run crash in Oklahoma?",
         "correct_count": 1,
         "explanation": "Leaving the scene of an accident without stopping, giving your information, and rendering aid is a serious criminal offense in Oklahoma — a felony if injury or death is involved. You must stop, help, and report.",
@@ -2848,7 +2848,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If you experience a sudden medical emergency while driving, you should:",
         "correct_count": 1,
         "explanation": "If possible, safely pull the vehicle to the right and off the roadway. Turn on hazard lights. If you cannot safely pull over, slow the vehicle as much as possible. Do not attempt to continue driving — get the vehicle stopped.",
@@ -2863,7 +2863,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When should emergency flares or reflective triangles be placed around a disabled vehicle?",
         "correct_count": 1,
         "explanation": "Flares or reflective triangles should be placed behind a disabled vehicle on highways to warn approaching traffic. Place them approximately 100–300 feet behind the vehicle, with one near the vehicle itself.",
@@ -2880,7 +2880,7 @@ QUESTIONS = [
     # ── Chapter 12 — Emergencies (original)
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the first thing you should do after a crash in Oklahoma?",
         "correct_count": 1,
         "explanation": "The first step after a crash is to stop immediately at or near the scene. Leaving the scene of an accident is a serious crime in Oklahoma.",
@@ -2895,7 +2895,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If your accelerator sticks while driving, what is the correct action?",
         "correct_count": 1,
         "explanation": "If the accelerator sticks, shift to neutral to disconnect engine power, then brake firmly and steer to the shoulder. Do not turn off the engine while moving — you will lose power steering.",
@@ -2911,7 +2911,7 @@ QUESTIONS = [
     # ── Chapter 1 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the minimum age to obtain a Class D driver license in Oklahoma without any restrictions?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a Class D license with no restrictions may be issued at age 16, provided the applicant has completed the graduated licensing steps.",
@@ -2926,7 +2926,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which Oklahoma license class authorizes the holder to operate a motorcycle only?",
         "correct_count": 1,
         "explanation": "Class M is the motorcycle-only license in Oklahoma. Class D covers standard passenger vehicles; Class A and B cover commercial vehicles.",
@@ -2941,7 +2941,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What document is a REAL ID-compliant Oklahoma driver license marked with?",
         "correct_count": 1,
         "explanation": "A REAL ID-compliant Oklahoma credential is marked with a gold star in the upper right corner, indicating it meets federal identification standards.",
@@ -2956,7 +2956,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How many days does a new Oklahoma resident have to obtain an Oklahoma driver license after establishing residency?",
         "correct_count": 1,
         "explanation": "New Oklahoma residents must obtain an Oklahoma driver license within 30 days of establishing residency in the state.",
@@ -2971,7 +2971,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under the Oklahoma graduated license system, for how long must a learner permit holder practice before taking the driving test?",
         "correct_count": 1,
         "explanation": "Oklahoma requires a learner permit holder to practice for at least 6 months before being eligible to take the skills (road) test.",
@@ -2986,7 +2986,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the maximum number of points that can accumulate on an Oklahoma driving record before a license may be suspended?",
         "correct_count": 1,
         "explanation": "If 10 or more points accumulate within 5 years, the Oklahoma DPS may suspend the driver's license.",
@@ -3001,7 +3001,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What endorsement must an Oklahoma Class D license holder obtain to legally operate a motorcycle?",
         "correct_count": 1,
         "explanation": "An Oklahoma Class D license holder must add a motorcycle (M) endorsement or obtain a separate Class M license to legally ride a motorcycle.",
@@ -3016,7 +3016,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, a hardship license may be granted to a minor whose license is under suspension. Which of the following is a required condition?",
         "correct_count": 1,
         "explanation": "A hardship license in Oklahoma may be granted to allow a minor to drive to school or work when there is no other reasonable transportation. The minor must show genuine necessity and meet DPS requirements.",
@@ -3031,7 +3031,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How many points does Oklahoma assess for a conviction of reckless driving?",
         "correct_count": 1,
         "explanation": "Oklahoma assigns 4 points to a reckless driving conviction. Accumulating 10 or more points within 5 years can result in license suspension.",
@@ -3046,7 +3046,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following vehicles requires a Class A commercial driver license (CDL) in Oklahoma?",
         "correct_count": 1,
         "explanation": "A Class A CDL is required to operate any combination of vehicles with a gross combined weight rating (GCWR) of 26,001 lbs or more, provided the towed unit exceeds 10,000 lbs.",
@@ -3061,7 +3061,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At what age does an Oklahoma driver license expire for drivers under 21?",
         "correct_count": 1,
         "explanation": "Oklahoma driver licenses issued to drivers under age 21 expire on their 21st birthday, at which point they must renew to a standard adult license.",
@@ -3077,7 +3077,7 @@ QUESTIONS = [
     # ── Chapter 2 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the recommended hand position on a steering wheel for optimal control?",
         "correct_count": 1,
         "explanation": "The 9 o'clock and 3 o'clock hand position is recommended because it provides balanced control and keeps hands clear of the airbag deployment zone.",
@@ -3092,7 +3092,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the 'S' in the SIPDE driving strategy stand for?",
         "correct_count": 1,
         "explanation": "SIPDE stands for Scan, Identify, Predict, Decide, Execute. It is a systematic method for processing driving information to prevent hazards.",
@@ -3107,7 +3107,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is an example of aggressive driving?",
         "correct_count": 1,
         "explanation": "Tailgating (following too closely) is a common aggressive driving behavior. Road rage involves an intent to harm; aggressive driving is the unsafe behavior itself.",
@@ -3122,7 +3122,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the key difference between aggressive driving and road rage?",
         "correct_count": 1,
         "explanation": "Aggressive driving is a traffic offense involving unsafe behavior (e.g., speeding, tailgating). Road rage escalates to a criminal offense when a driver intends to harm another person.",
@@ -3137,7 +3137,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How far ahead should a driver scan the road in city driving?",
         "correct_count": 1,
         "explanation": "In city driving, drivers should scan at least 12 seconds ahead to identify hazards in time to react safely. On highways, 20–30 seconds ahead is recommended.",
@@ -3152,7 +3152,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which physical condition is most likely to impair driving ability even for a short trip?",
         "correct_count": 1,
         "explanation": "Even minor fatigue can impair reaction time and judgment as much as alcohol. Drowsy driving causes thousands of crashes each year.",
@@ -3167,7 +3167,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the normal field of vision for a driver looking straight ahead?",
         "correct_count": 1,
         "explanation": "A person with normal vision has approximately a 180-degree field of vision. The central 3 degrees provides sharp detail; peripheral vision detects motion at the edges.",
@@ -3182,7 +3182,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Before driving an unfamiliar vehicle, what should a driver adjust first?",
         "correct_count": 1,
         "explanation": "Before driving, adjust the seat, steering wheel, and all mirrors to ensure full visibility and comfortable vehicle control. This is especially important in an unfamiliar vehicle.",
@@ -3197,7 +3197,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver who uses a cell phone while driving (without a hands-free device) is how many times more likely to be involved in a crash?",
         "correct_count": 1,
         "explanation": "Studies show that drivers who use hand-held cell phones are approximately 4 times more likely to crash than undistracted drivers. Hands-free devices reduce but do not eliminate distraction.",
@@ -3212,7 +3212,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, what is the penalty for a first-offense distracted driving (texting while driving) conviction?",
         "correct_count": 1,
         "explanation": "Oklahoma's distracted driving law makes texting while driving illegal. A first offense is a misdemeanor with a fine of up to $100.",
@@ -3227,7 +3227,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following best describes 'target fixation' and why it is dangerous?",
         "correct_count": 1,
         "explanation": "Target fixation is the phenomenon where a driver unconsciously steers toward whatever they are staring at. It is especially dangerous in emergency situations where a driver focuses on a hazard and inadvertently steers into it.",
@@ -3242,7 +3242,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the recommended following distance in seconds that a driver should maintain under normal conditions?",
         "correct_count": 1,
         "explanation": "The 3-second rule is the minimum recommended following distance under ideal conditions. Increase to 4–6 seconds in rain or poor conditions, and more at night or in heavy traffic.",
@@ -3258,7 +3258,7 @@ QUESTIONS = [
     # ── Chapter 3 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When should windshield wipers be replaced?",
         "correct_count": 1,
         "explanation": "Wipers should be replaced when they streak, skip, or leave areas of the windshield un-cleared. Most manufacturers recommend replacement every 6–12 months.",
@@ -3273,7 +3273,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should a driver do when the oil pressure warning light illuminates while driving?",
         "correct_count": 1,
         "explanation": "If the oil pressure warning light comes on, the driver should pull off the road safely and shut off the engine immediately. Continuing to drive can cause severe engine damage within seconds.",
@@ -3288,7 +3288,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "In which direction should you turn your front wheels when parking uphill without a curb?",
         "correct_count": 1,
         "explanation": "When parking uphill without a curb, turn the front wheels to the right (toward the road edge). If the vehicle rolls, it will roll off the road rather than into traffic.",
@@ -3303,7 +3303,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a flashing temperature warning light or high reading on the temperature gauge indicate?",
         "correct_count": 1,
         "explanation": "A high temperature gauge reading means the engine is overheating. The driver should turn off the air conditioning, turn on the heater to draw heat away from the engine, and pull over safely to let the engine cool.",
@@ -3318,7 +3318,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "In which direction should you turn your front wheels when parking uphill next to a curb?",
         "correct_count": 1,
         "explanation": "When parking uphill with a curb, turn the front wheels to the left (away from the curb). If the vehicle rolls backward, the wheels will contact the curb and stop the vehicle.",
@@ -3333,7 +3333,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the maximum legal speed for a vehicle using a spare (compact/temporary) tire in Oklahoma?",
         "correct_count": 1,
         "explanation": "Compact (donut) spare tires are rated for temporary use only, typically limited to 50 mph. Exceeding this speed risks tire failure and loss of vehicle control.",
@@ -3348,7 +3348,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of crumple zones in modern vehicles?",
         "correct_count": 1,
         "explanation": "Crumple zones are engineered to deform in a controlled manner during a crash, absorbing kinetic energy and reducing the force transmitted to the passenger compartment.",
@@ -3363,7 +3363,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How far from a fire hydrant must a vehicle be parked in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law and standard traffic rules prohibit parking within 15 feet of a fire hydrant to ensure emergency access.",
@@ -3378,7 +3378,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a yellow-painted curb indicate?",
         "correct_count": 1,
         "explanation": "A yellow curb marks a no-parking zone but permits temporary stopping to load or unload passengers or freight, usually with a time limit.",
@@ -3393,7 +3393,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a red-painted curb indicate?",
         "correct_count": 1,
         "explanation": "A red curb means no stopping, standing, or parking at any time. It is typically used in fire lanes and emergency vehicle access zones.",
@@ -3408,7 +3408,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A tire's tread depth is legally considered worn out when it reaches what measurement?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires tires to be replaced when tread depth reaches 2/32 of an inch, which is the depth of the built-in tread wear indicators.",
@@ -3423,7 +3423,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How far from an intersection is parking prohibited under Oklahoma law?",
         "correct_count": 1,
         "explanation": "Parking within 20 feet of a crosswalk at an intersection (or 30 feet from a traffic signal) is prohibited in Oklahoma to maintain sight lines for all road users.",
@@ -3439,7 +3439,7 @@ QUESTIONS = [
     # ── Chapter 4 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What color are signs identifying national parks, forests, and recreational areas?",
         "correct_count": 1,
         "explanation": "Brown signs with white lettering identify national parks, state parks, forests, historical sites, and recreational areas to help travelers find points of interest.",
@@ -3454,7 +3454,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What shape is a low-clearance warning sign?",
         "correct_count": 1,
         "explanation": "Low-clearance signs are diamond-shaped (like most warning signs) and typically yellow with black text, warning drivers of overhead obstructions such as bridges or tunnels.",
@@ -3469,7 +3469,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A black-and-white rectangular sign with a single arrow pointing to the right, mounted on a one-way street, means what?",
         "correct_count": 1,
         "explanation": "A ONE WAY sign indicates that traffic must travel only in the direction the arrow points. Drivers must not enter from the opposite end.",
@@ -3484,7 +3484,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a shared center left-turn lane (marked with yellow lines and arrows) allow drivers to do?",
         "correct_count": 1,
         "explanation": "A two-way left-turn lane allows drivers traveling in both directions to use the lane to prepare for and execute a left turn. It is not a through-traffic or passing lane.",
@@ -3499,7 +3499,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "An advisory speed sign posted below a warning sign (e.g., below a curve warning) indicates what?",
         "correct_count": 1,
         "explanation": "Advisory speed signs are yellow and indicate the maximum safe speed for the specific condition ahead (e.g., a curve), not the legal speed limit. Exceeding this speed greatly increases crash risk.",
@@ -3514,7 +3514,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a white rectangular sign with black text reading 'WRONG WAY' indicate to a driver who sees it?",
         "correct_count": 1,
         "explanation": "A WRONG WAY sign means the driver is traveling against the legal direction of traffic. The driver must stop immediately and reverse or turn around to avoid a head-on collision.",
@@ -3529,7 +3529,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the difference between a regulatory sign and a warning sign in terms of legal obligation?",
         "correct_count": 1,
         "explanation": "Regulatory signs (white background, black or red text) have the force of law — violations can result in fines or arrest. Warning signs (yellow, diamond-shaped) advise caution but are not enforceable commands.",
@@ -3545,7 +3545,7 @@ QUESTIONS = [
     # ── Chapter 5 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is a safety zone and what must a driver do when approaching one?",
         "correct_count": 1,
         "explanation": "A safety zone is a marked space on the roadway set aside for pedestrians, such as an island for transit passengers. Drivers must not drive through a safety zone.",
@@ -3560,7 +3560,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What do pavement arrows inside a lane indicate to drivers?",
         "correct_count": 1,
         "explanation": "Pavement arrows indicate which direction(s) a driver in that lane may travel. They are regulatory markings and must be obeyed.",
@@ -3575,7 +3575,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does it mean to 'yield' the right of way?",
         "correct_count": 1,
         "explanation": "To yield means to slow down, stop if necessary, and let other road users who have the legal right of way proceed before you. It does not mean to stop unconditionally — only if needed.",
@@ -3590,7 +3590,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a yellow-painted curb indicate?",
         "correct_count": 1,
         "explanation": "A yellow curb denotes a no-parking zone but allows temporary stopping for loading or unloading passengers or freight, often with a posted time limit.",
@@ -3605,7 +3605,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When may a driver legally cross a double solid yellow center line?",
         "correct_count": 1,
         "explanation": "A double solid yellow center line means passing and crossing are prohibited for traffic in both directions. Drivers may only cross to enter or exit a driveway or property on the left side of the road.",
@@ -3620,7 +3620,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, who has the right of way at an intersection where there are no signs or signals and two vehicles arrive at the same time?",
         "correct_count": 1,
         "explanation": "When two vehicles reach an uncontrolled intersection simultaneously, the vehicle on the left must yield to the vehicle on the right (the right-hand rule).",
@@ -3635,7 +3635,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the purpose of a broken white center line on a two-lane road?",
         "correct_count": 1,
         "explanation": "A broken (dashed) white center line separates lanes of traffic moving in the same direction and indicates that lane changes are permitted when it is safe to do so.",
@@ -3650,7 +3650,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When must a driver yield to a pedestrian in a crosswalk even if the pedestrian does not have a walk signal?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to yield to pedestrians who are in or entering a crosswalk, regardless of signal phase. A pedestrian lawfully in a crosswalk has the right of way over all vehicles.",
@@ -3666,7 +3666,7 @@ QUESTIONS = [
     # ── Chapter 6 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the typical posted speed limit on an urban interstate highway in Oklahoma?",
         "correct_count": 1,
         "explanation": "Urban freeway (interstate) speed limits in Oklahoma are typically 70 mph on rural sections and 60–65 mph in urban/metro areas, though posted signs control.",
@@ -3681,7 +3681,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the statutory minimum speed on an Oklahoma freeway?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires that drivers travel at a speed that does not impede the normal flow of traffic. On freeways, driving unreasonably slowly — typically below 45 mph — when it impedes traffic can result in a citation.",
@@ -3696,7 +3696,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does doubling your speed affect the distance required to stop your vehicle?",
         "correct_count": 1,
         "explanation": "Braking distance increases with the square of speed. Doubling your speed quadruples the stopping distance, not merely doubles it.",
@@ -3711,7 +3711,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How many points does Oklahoma assess on a driving record for a conviction of speeding 1–10 mph over the posted limit?",
         "correct_count": 1,
         "explanation": "Oklahoma assesses 2 points for a speeding conviction of 1–10 mph over the limit. Points accumulate and can lead to suspension at 10 or more points within 5 years.",
@@ -3726,7 +3726,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How many points does Oklahoma assess on a driving record for a conviction of speeding 11–24 mph over the posted limit?",
         "correct_count": 1,
         "explanation": "Speeding 11–24 mph over the limit earns 4 points on an Oklahoma driving record. This is a significant increment that can bring a driver closer to suspension quickly.",
@@ -3741,7 +3741,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At 60 mph, approximately how far does a vehicle travel during a driver's typical reaction time before braking begins?",
         "correct_count": 1,
         "explanation": "At 60 mph a vehicle travels approximately 66 feet per second. With an average reaction time of 1.5 seconds, the vehicle travels roughly 100 feet before the brakes are applied.",
@@ -3756,7 +3756,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following best explains why speed increases the severity of a crash?",
         "correct_count": 1,
         "explanation": "Crash severity is related to kinetic energy, which increases with the square of speed (KE = ½mv²). Even a small increase in speed substantially increases the energy that must be absorbed in a collision.",
@@ -3771,7 +3771,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma's basic speed rule requires drivers to travel at what speed?",
         "correct_count": 1,
         "explanation": "Oklahoma's basic speed rule requires drivers to drive at a speed that is reasonable and prudent for existing conditions — including road, weather, and traffic conditions — regardless of the posted limit.",
@@ -3786,7 +3786,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the default (statutory) speed limit on a residential street in Oklahoma where no speed limit sign is posted?",
         "correct_count": 1,
         "explanation": "Oklahoma's default speed limit on residential streets and urban roads where no limit is posted is 25 mph.",
@@ -3801,7 +3801,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How many points are added to an Oklahoma driving record for a conviction of speeding 25 mph or more over the posted limit?",
         "correct_count": 1,
         "explanation": "Speeding 25 mph or more over the posted limit is assessed 6 points — the highest single-offense point total in the standard Oklahoma speeding schedule.",
@@ -3816,7 +3816,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the maximum speed limit on rural Oklahoma interstate highways?",
         "correct_count": 1,
         "explanation": "Oklahoma allows a maximum speed of 75 mph on rural interstates and turnpikes where that limit is posted. Some stretches may post 70 mph — always obey the posted sign.",
@@ -3832,7 +3832,7 @@ QUESTIONS = [
     # ── Chapter 7 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a red X displayed on an overhead lane control signal mean?",
         "correct_count": 1,
         "explanation": "A red X on an overhead lane control signal means the lane is closed. Drivers must immediately move out of that lane — it may be used for opposing traffic or have a hazard.",
@@ -3847,7 +3847,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a downward-pointing green arrow on an overhead lane control signal mean?",
         "correct_count": 1,
         "explanation": "A downward-pointing green arrow on an overhead lane control signal means the lane is open and available for use in your direction of travel.",
@@ -3862,7 +3862,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a pedestrian countdown timer at a crosswalk signal show?",
         "correct_count": 1,
         "explanation": "A pedestrian countdown timer shows the number of seconds remaining in the WALK or flashing DON'T WALK phase. Pedestrians should not begin crossing if the countdown has started unless they can complete the crossing in time.",
@@ -3877,7 +3877,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What hand and arm signal indicates a left turn?",
         "correct_count": 1,
         "explanation": "For a left turn, the driver extends the left arm horizontally straight out of the window. This is the standard hand signal used when the vehicle's turn signal is inoperative.",
@@ -3892,7 +3892,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What hand and arm signal indicates a right turn?",
         "correct_count": 1,
         "explanation": "For a right turn, extend the left arm out the window and bend it upward at a 90-degree angle. This signals an upcoming right turn when only the left window is accessible.",
@@ -3907,7 +3907,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What hand and arm signal indicates slowing down or stopping?",
         "correct_count": 1,
         "explanation": "To signal slowing or stopping, extend the left arm out the window and point it downward at roughly a 45-degree angle, palm facing backward.",
@@ -3922,7 +3922,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a traffic officer extends both arms outward horizontally, what does this signal to drivers approaching from the side?",
         "correct_count": 1,
         "explanation": "When a traffic officer extends both arms horizontally (facing side traffic), it signals STOP to the drivers facing those arms — traffic must stop. Drivers the officer faces front-and-back may proceed.",
@@ -3937,7 +3937,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At a green traffic light, are you legally required to proceed?",
         "correct_count": 1,
         "explanation": "A green light grants permission to proceed but does not require it. A driver must still yield to any vehicles, pedestrians, or cyclists already lawfully in the intersection before entering.",
@@ -3952,7 +3952,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A flashing yellow traffic signal requires drivers to do what?",
         "correct_count": 1,
         "explanation": "A flashing yellow signal means proceed with caution. Slow down, check for cross traffic, and proceed only when it is safe. It does not require a full stop.",
@@ -3967,7 +3967,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What must a driver do when approaching a flashing red traffic signal?",
         "correct_count": 1,
         "explanation": "A flashing red signal has the same legal requirement as a STOP sign. The driver must stop completely, yield to cross traffic and pedestrians, and then proceed when it is safe.",
@@ -3982,7 +3982,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What action must a driver take when the traffic signal is not working (dark/no power)?",
         "correct_count": 1,
         "explanation": "When a traffic signal is dark (no power), the intersection must be treated as a four-way stop. All drivers must stop, yield according to right-of-way rules, and proceed when safe.",
@@ -3998,7 +3998,7 @@ QUESTIONS = [
     # ── Chapter 8 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is 'drafting' and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Drafting is following very closely behind a large truck to reduce wind resistance. It is dangerous because the driver cannot see ahead and has no time to react if the truck brakes suddenly.",
@@ -4013,7 +4013,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is a zipper merge and when should drivers use it?",
         "correct_count": 1,
         "explanation": "A zipper merge means staying in a closing lane until the merge point, then alternating with vehicles in the open lane. This reduces overall backup length and is more efficient than early merging.",
@@ -4028,7 +4028,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Before passing another vehicle on a two-lane road, what must a driver first check?",
         "correct_count": 1,
         "explanation": "Before passing, the driver must check that the passing zone is clear of oncoming traffic for a safe distance, check mirrors and blind spots, and signal their intent.",
@@ -4043,7 +4043,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of a two-way left-turn center lane, and may it be used for passing?",
         "correct_count": 1,
         "explanation": "A two-way left-turn center lane is shared by both directions of traffic for making left turns only. It must never be used as a through-travel or passing lane.",
@@ -4058,7 +4058,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What speed may a driver legally exceed while passing another vehicle on a two-lane highway in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law does not permit exceeding the posted speed limit even while passing. The driver must complete the pass as quickly and safely as possible without violating the speed limit.",
@@ -4073,7 +4073,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law requires a driver to signal before changing lanes. How many feet in advance must the signal be activated?",
         "correct_count": 1,
         "explanation": "Oklahoma requires drivers to signal at least 100 feet before changing lanes or turning on city streets. On higher-speed roads, more distance is advisable.",
@@ -4088,7 +4088,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why should a driver avoid lingering alongside another vehicle while passing?",
         "correct_count": 1,
         "explanation": "Lingering in another vehicle's blind spot while passing is dangerous because the other driver may not see you and could change lanes or swerve into your path. Complete the pass quickly or drop back.",
@@ -4103,7 +4103,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following locations is passing always prohibited in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing is always prohibited within 100 feet of a railroad crossing, in an intersection, on a hill or curve where you cannot see oncoming traffic, and in school or work zones.",
@@ -4118,7 +4118,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under what circumstance is passing on the right legally permitted in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing on the right is permitted only when the overtaken vehicle is making or about to make a left turn, and the road is wide enough for two lanes of travel in that direction. It is never permitted on a road shoulder.",
@@ -4133,7 +4133,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After completing a pass, how should the driver return to the right lane?",
         "correct_count": 1,
         "explanation": "After passing, the driver should return to the right lane only when they can see the entire front of the passed vehicle in the rearview mirror, ensuring safe clearance before merging back.",
@@ -4148,7 +4148,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum clear sight distance required before beginning a pass on a two-lane road?",
         "correct_count": 1,
         "explanation": "Before passing, a driver needs sufficient sight distance to complete the entire maneuver — accelerating past, returning to the lane, and having a safety buffer. At 60 mph this can exceed 1,000 feet of clear road.",
@@ -4163,7 +4163,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver being passed by another vehicle should do which of the following?",
         "correct_count": 1,
         "explanation": "When being passed, the driver should maintain their speed or slow slightly to help the passing vehicle complete the maneuver safely and quickly. Do not speed up.",
@@ -4179,7 +4179,7 @@ QUESTIONS = [
     # ── Chapter 9 additions (to reach 25) ────────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What constitutes one standard alcoholic drink for purposes of BAC calculation?",
         "correct_count": 1,
         "explanation": "One standard drink contains approximately 0.6 oz (14 grams) of pure alcohol: a 12-oz regular beer (~5% ABV), a 5-oz glass of wine (~12% ABV), or a 1.5-oz shot of 80-proof spirits.",
@@ -4194,7 +4194,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "In Oklahoma, what BAC level is the legal limit for a driver 21 or older?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a BAC of 0.08% or higher is per se illegal for drivers age 21 and older. At or above this level, a driver is presumed to be impaired regardless of behavior.",
@@ -4209,7 +4209,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the difference between DUI and DWI under Oklahoma law?",
         "correct_count": 1,
         "explanation": "In Oklahoma, DUI (Driving Under the Influence) applies to a BAC of 0.08% or higher (or driving while impaired by drugs). DWI (Driving While Impaired) is a lesser offense for BAC 0.05%–0.079%, where impairment is evident but below the DUI threshold.",
@@ -4224,7 +4224,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's implied consent law, what happens if a driver refuses a chemical test (breath, blood, or urine) after a lawful arrest?",
         "correct_count": 1,
         "explanation": "Under Oklahoma's implied consent law, refusing a lawful chemical test results in an automatic administrative license revocation — 180 days for a first refusal, independent of criminal DUI proceedings.",
@@ -4239,7 +4239,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What are the three standard field sobriety tests approved by the National Highway Traffic Safety Administration (NHTSA)?",
         "correct_count": 1,
         "explanation": "NHTSA's three standardized field sobriety tests are the Horizontal Gaze Nystagmus (HGN), Walk-and-Turn, and One-Leg Stand. These are the tests Oklahoma officers use to determine impairment.",
@@ -4254,7 +4254,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is Oklahoma's open container law regarding alcohol in a vehicle?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits any open container of alcohol in the passenger area of a vehicle. An open container must be stored in the trunk or an area not accessible to the driver or passengers.",
@@ -4269,7 +4269,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, what is the BAC legal limit for a driver under age 21?",
         "correct_count": 1,
         "explanation": "Oklahoma enforces a zero-tolerance policy for drivers under 21. A BAC of 0.02% or higher is illegal for underage drivers — effectively zero since 0.02% can result from incidental exposure.",
@@ -4284,7 +4284,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What penalties apply when a driver under 21 is found with an open container of alcohol in a vehicle in Oklahoma?",
         "correct_count": 1,
         "explanation": "A minor found with an open container of alcohol in a vehicle faces misdemeanor charges, possible license suspension, fines, and may be required to attend a drug/alcohol program.",
@@ -4299,7 +4299,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the definition of a 'habitual offender' under Oklahoma DUI law and what license consequence follows?",
         "correct_count": 1,
         "explanation": "An Oklahoma habitual DUI offender is defined as a driver with two or more DUI convictions within 10 years. Consequences include longer revocation periods, mandatory ignition interlock device installation, and potentially permanent revocation.",
@@ -4314,7 +4314,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following best explains why coffee does NOT sober up a drunk driver?",
         "correct_count": 1,
         "explanation": "Only time allows the liver to metabolize alcohol. Caffeine may increase alertness but does not lower BAC or improve driving ability. A wide-awake drunk driver is still impaired.",
@@ -4329,7 +4329,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "In Oklahoma, how long is a driver's license revoked for a first DUI conviction?",
         "correct_count": 1,
         "explanation": "A first DUI conviction in Oklahoma results in a license revocation of 180 days. After the revocation period the driver may be required to install an ignition interlock device to regain full driving privileges.",
@@ -4345,7 +4345,7 @@ QUESTIONS = [
     # ── Chapter 10 additions (to reach 25) ───────────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which lane position within a lane should a motorcyclist use to maximize visibility to other drivers?",
         "correct_count": 1,
         "explanation": "Motorcyclists should ride in the left third of the lane to maximize visibility in mirrors and to avoid road-edge hazards. The position depends on conditions — the left third gives the most visibility to vehicles ahead.",
@@ -4360,7 +4360,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Does a moped operator in Oklahoma need a driver license?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a moped (engine 50cc or less, max 30 mph) requires the operator to hold a valid driver license. A moped does not require a motorcycle endorsement but does require registration.",
@@ -4375,7 +4375,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the greatest danger of following a large truck too closely?",
         "correct_count": 1,
         "explanation": "The greatest danger of following a large truck too closely is the underride hazard — if the car runs under the truck's trailer in a crash, the top of the car can be sheared off at occupant head level, causing severe or fatal injuries.",
@@ -4390,7 +4390,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Are electric scooters (e-scooters) subject to the same traffic laws as bicycles in Oklahoma?",
         "correct_count": 1,
         "explanation": "In Oklahoma, electric scooters are generally regulated similarly to bicycles. Riders must follow traffic laws, ride with the flow of traffic, and may use bike lanes where available. Local ordinances may add requirements.",
@@ -4405,7 +4405,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a bicyclist is riding in a bike lane and approaches an intersection with a green light, does the cyclist have the right of way over turning vehicles?",
         "correct_count": 1,
         "explanation": "A cyclist proceeding straight in a bike lane on a green light has the right of way over vehicles making right turns across the bike lane. Drivers turning right must yield to cyclists in the bike lane.",
@@ -4420,7 +4420,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Is parking in a designated bicycle lane legal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Parking in a bicycle lane is prohibited in Oklahoma. Bike lanes are reserved for bicycle travel, and vehicles blocking them force cyclists into traffic, creating a dangerous situation.",
@@ -4435,7 +4435,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When passing a motorcycle on a multi-lane road, how much clearance should a driver give?",
         "correct_count": 1,
         "explanation": "Motorcycles are entitled to the full width of a lane. When passing, treat the motorcycle as you would a car — change lanes completely to pass rather than squeezing by in the same lane.",
@@ -4450,7 +4450,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'No Zone' around large commercial trucks?",
         "correct_count": 1,
         "explanation": "No Zones are the large blind spots around commercial trucks: directly behind, directly in front, and to the left and right sides. If you cannot see the truck driver in their mirror, the driver cannot see you.",
@@ -4465,7 +4465,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At what minimum distance must a driver pass a cyclist when overtaking in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to leave at least 3 feet of clearance when passing a bicyclist. If 3 feet cannot be achieved safely, the driver must slow and wait until it is safe to pass.",
@@ -4480,7 +4480,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "May a motorcycle legally ride two abreast (side by side) in the same lane in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law permits two motorcycles to ride side by side in the same lane. However, more than two motorcycles abreast in a single lane is prohibited.",
@@ -4495,7 +4495,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do when an emergency vehicle with activated lights and siren approaches from behind?",
         "correct_count": 1,
         "explanation": "When an emergency vehicle approaches with lights and siren, the driver must pull to the right side of the road (or as far right as possible), come to a stop, and remain stopped until the emergency vehicle passes.",
@@ -4511,7 +4511,7 @@ QUESTIONS = [
     # ── Chapter 11 additions (to reach 25) ───────────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "During what time of day is sun glare most dangerous for drivers?",
         "correct_count": 1,
         "explanation": "Sun glare is most dangerous during the first hour after sunrise and the last hour before sunset, when the sun is near the horizon and directly in a driver's line of sight.",
@@ -4526,7 +4526,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If your engine begins to overheat while driving, which action should you take first to reduce engine temperature?",
         "correct_count": 1,
         "explanation": "If the temperature gauge rises while driving, turn off the air conditioning (which adds heat load to the engine) and turn on the heater at full blast. The heater draws heat from the coolant. If the temperature keeps rising, pull over safely.",
@@ -4541,7 +4541,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When should a driver use high-beam headlights at night?",
         "correct_count": 1,
         "explanation": "High beams should be used on open roads when no oncoming vehicles or vehicles ahead are within 500 feet. Drivers must dim to low beams within 500 feet of an oncoming vehicle and within 300 feet when following another vehicle.",
@@ -4556,7 +4556,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is aquaplaning (hydroplaning) and how should a driver respond if it occurs?",
         "correct_count": 1,
         "explanation": "Aquaplaning (hydroplaning) occurs when tires lose contact with the road surface and ride on a film of water. The driver should ease off the gas, avoid braking hard or steering sharply, and allow the vehicle to slow and regain traction.",
@@ -4571,7 +4571,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What causes trailer sway and how should a driver respond?",
         "correct_count": 1,
         "explanation": "Trailer sway is caused by speed, crosswinds, or uneven loading. The driver should ease off the accelerator — do NOT brake. Braking can worsen the sway. Allow the vehicle to slow naturally until sway stops.",
@@ -4586,7 +4586,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "In rainy conditions, how much greater is stopping distance compared to dry pavement?",
         "correct_count": 1,
         "explanation": "On wet pavement, stopping distances increase by roughly 50% compared to dry conditions. Drivers should increase following distance significantly in rain.",
@@ -4601,7 +4601,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How far in advance should a driver turn on headlights when visibility is reduced?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires headlights from 30 minutes after sunset to 30 minutes before sunrise, and whenever visibility is reduced to 500 feet or less (e.g., rain, fog). Headlights must also be on when wipers are in use.",
@@ -4616,7 +4616,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When driving in dense fog, which type of headlights is most effective?",
         "correct_count": 1,
         "explanation": "In fog, low-beam headlights (or dedicated fog lights) are most effective. High beams reflect off fog particles back to the driver, reducing visibility. Low beams direct light downward and forward below the fog.",
@@ -4631,7 +4631,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do when a dust storm is approaching and visibility drops to near zero?",
         "correct_count": 1,
         "explanation": "In a dust storm with near-zero visibility, the driver should pull completely off the road (not just onto the shoulder), turn off lights, and keep their foot off the brake so following drivers are not guided into their vehicle.",
@@ -4646,7 +4646,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When driving on ice, what technique should a driver use if the rear of the vehicle begins to slide (rear-wheel skid)?",
         "correct_count": 1,
         "explanation": "In a rear-wheel skid, steer in the direction the rear of the vehicle is sliding (steer into the skid) and ease off the gas. Do not brake. As the vehicle straightens, gently correct to avoid over-correcting.",
@@ -4661,7 +4661,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do when encountering a flooded road of unknown depth?",
         "correct_count": 1,
         "explanation": "Never drive into floodwater of unknown depth. Just 6 inches of water can cause a vehicle to lose control; 12 inches can float most cars. The principle 'Turn Around, Don't Drown' applies — find an alternate route.",
@@ -4677,7 +4677,7 @@ QUESTIONS = [
     # ── Chapter 12 additions (to reach 25) ───────────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "After a crash, if it is safe to do so, what is the first thing a driver should do?",
         "correct_count": 1,
         "explanation": "After a crash, the first priority (if safe) is to check for injuries and call 911. Do not move injured persons unless there is immediate danger (fire, etc.). Then move vehicles out of traffic if possible.",
@@ -4692,7 +4692,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When does an airbag typically deploy?",
         "correct_count": 1,
         "explanation": "Airbags deploy in milliseconds when sensors detect a frontal or side impact of sufficient severity (typically equivalent to hitting a wall at 8–14 mph). They are one-time devices and must be replaced after deployment.",
@@ -4707,7 +4707,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the safest action if your headlights suddenly fail while driving at night?",
         "correct_count": 1,
         "explanation": "If headlights fail at night, the driver should turn on hazard lights and the parking lights (which may still work), slow down gradually, pull off to the right, and stop safely off the roadway before attempting to diagnose the problem.",
@@ -4722,7 +4722,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should a driver do if power steering fails while driving?",
         "correct_count": 1,
         "explanation": "If power steering fails, steering is still possible but requires much greater physical effort. The driver should slow down gradually, avoid sharp turns, and steer to a safe stop.",
@@ -4737,7 +4737,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is brake fade and what causes it?",
         "correct_count": 1,
         "explanation": "Brake fade is a reduction in braking effectiveness caused by overheating of brake pads and rotors, typically from repeated heavy braking on long downhill grades. It is prevented by using engine braking (downshifting) instead of riding the brakes.",
@@ -4752,7 +4752,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If you are run off the road onto the right shoulder, how should you return to the roadway?",
         "correct_count": 1,
         "explanation": "If forced off the road, keep a firm grip on the wheel, ease off the accelerator, avoid heavy braking, and signal before steering gradually back onto the road when it is safe. Jerking the wheel back sharply can cause a rollover.",
@@ -4767,7 +4767,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should a driver do if smoke or fire appears from under the hood while driving?",
         "correct_count": 1,
         "explanation": "If you see smoke or fire from the engine, signal and pull off the road immediately, turn off the ignition, get all occupants away from the vehicle, and call 911. Do not open the hood if there is visible flame — oxygen can intensify the fire.",
@@ -4782,7 +4782,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, what must a driver who is involved in a crash with injury or death do?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires any driver involved in a crash resulting in injury or death to immediately stop, render reasonable assistance, and report the crash to police. Leaving the scene of an injury accident is a felony (hit and run).",
@@ -4797,7 +4797,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct technique for stopping a vehicle with anti-lock brakes (ABS) during an emergency?",
         "correct_count": 1,
         "explanation": "With ABS, the driver should apply firm, continuous pressure to the brake pedal — do not pump the brakes. ABS automatically modulates brake pressure to prevent wheel lock-up and allows the driver to steer during emergency braking.",
@@ -4812,7 +4812,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If your brakes fail completely while driving, which sequence of actions is correct?",
         "correct_count": 1,
         "explanation": "If brakes fail completely: (1) pump the pedal to try to build pressure, (2) downshift to use engine braking, (3) use the parking/emergency brake gradually, (4) steer toward an uphill grade or safe runaway ramp to stop. Sound horn and signal others.",
@@ -4827,7 +4827,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct procedure when driving through dense smoke on a highway?",
         "correct_count": 1,
         "explanation": "If you must drive through smoke, slow significantly, turn on headlights and hazard lights, increase following distance, and if visibility becomes dangerous, pull completely off the road and wait for conditions to improve.",
@@ -4842,7 +4842,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What Oklahoma statute covers the duty to render aid after a vehicle crash?",
         "correct_count": 1,
         "explanation": "Oklahoma's duty-to-render-aid law (47 O.S. § 10-104) requires any person involved in a crash resulting in injury to provide reasonable assistance, including calling for medical help. Failure to do so is a criminal offense.",
@@ -4857,7 +4857,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "You are parked on the side of a highway after a breakdown. What is the safest way to exit the vehicle?",
         "correct_count": 1,
         "explanation": "After parking on the right shoulder of a highway, passengers should exit through the right-side (passenger-side) doors away from traffic and move behind a barrier or as far from the road as possible. Never stand behind or in front of the vehicle.",
@@ -4873,7 +4873,7 @@ QUESTIONS = [
     # ── Chapter 1 · batch 3 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the minimum age to apply for an Oklahoma learner permit?",
         "correct_count": 1,
         "explanation": "Oklahoma applicants must be at least 15 years and 6 months old to apply for a learner (Class D intermediate) permit.",
@@ -4888,7 +4888,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How many hours of supervised driving must a learner permit holder log before taking the skills test in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma requires learner permit holders to complete at least 50 hours of supervised driving, including 10 hours at night, before taking the road skills test.",
@@ -4903,7 +4903,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is required to obtain a REAL ID-compliant Oklahoma driver license?",
         "correct_count": 1,
         "explanation": "To obtain a REAL ID-compliant license, applicants must provide proof of U.S. citizenship or lawful status, a Social Security number, and two proofs of Oklahoma residency.",
@@ -4918,7 +4918,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's graduated driver license (GDL) program, what nighttime driving restriction applies to drivers under 16 with an intermediate license?",
         "correct_count": 1,
         "explanation": "Drivers under 16 with an Oklahoma intermediate license may not drive between the hours of 10 PM and 5 AM unless accompanied by a licensed adult 21 or older.",
@@ -4933,7 +4933,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How many unrelated passengers under 18 may a driver under 17 carry during the first 6 months of holding an Oklahoma intermediate license?",
         "correct_count": 1,
         "explanation": "During the first 6 months of holding an intermediate license, a driver under 17 may not carry more than one unrelated passenger under age 18 unless a licensed adult 21 or older is present.",
@@ -4948,7 +4948,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How often must Oklahoma drivers between the ages of 21 and 64 renew their driver license?",
         "correct_count": 1,
         "explanation": "Oklahoma driver licenses for adults aged 21–64 are valid for 4 years and must be renewed every 4 years. Drivers 65 and older renew every 4 years as well, but may use vision screening requirements.",
@@ -4963,7 +4963,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which document issued by Oklahoma DPS serves as a state-issued photo ID for non-drivers?",
         "correct_count": 1,
         "explanation": "Oklahoma issues an Identification Card (ID card) through the Department of Public Safety for residents who do not drive. It can be REAL ID-compliant and is accepted as a government-issued photo ID.",
@@ -4978,7 +4978,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What happens to an Oklahoma driver license if the holder is convicted of a drug offense — even one unrelated to driving?",
         "correct_count": 1,
         "explanation": "Under Oklahoma law, a conviction for a drug offense — even one that did not involve a vehicle — can result in a mandatory driver license suspension for 6 months to 3 years depending on the offense.",
@@ -4993,7 +4993,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's point system, what voluntary action can a driver take to remove points from their record?",
         "correct_count": 1,
         "explanation": "Oklahoma allows drivers to complete a DPS-approved defensive driving course to remove 2 points from their driving record. This can be done once every 5 years.",
@@ -5008,7 +5008,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What Class B CDL authorizes a driver to operate in Oklahoma?",
         "correct_count": 1,
         "explanation": "A Class B CDL authorizes a driver to operate a single vehicle with a GVWR of 26,001 lbs or more, or any such vehicle towing a unit not exceeding 10,000 lbs. Examples include city buses, large dump trucks, and straight trucks.",
@@ -5024,7 +5024,7 @@ QUESTIONS = [
     # ── Chapter 2 · batch 3 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following best describes the 'E' in the SIPDE driving strategy?",
         "correct_count": 1,
         "explanation": "The 'E' in SIPDE stands for Execute — the final step where the driver carries out the decision made (e.g., braking, steering, accelerating) after Scanning, Identifying, Predicting, and Deciding.",
@@ -5039,7 +5039,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the primary purpose of checking mirrors every 5 to 8 seconds while driving?",
         "correct_count": 1,
         "explanation": "Regularly checking mirrors every 5–8 seconds keeps the driver aware of traffic conditions behind and to the sides, allowing for better decisions about lane changes, braking, and merging.",
@@ -5054,7 +5054,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is NOT a common cause of drowsy driving?",
         "correct_count": 1,
         "explanation": "Drowsy driving is caused by sleep deprivation, driving during natural sleep hours (midnight–6 AM), medications that cause sedation, or untreated sleep disorders. Drinking water does not cause drowsiness.",
@@ -5069,7 +5069,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver notices they are yawning repeatedly, drifting between lanes, and cannot remember the last few miles driven. What should they do?",
         "correct_count": 1,
         "explanation": "These are classic signs of severe drowsiness. The only safe remedy is to pull off the road at a safe location and sleep. Caffeine and opening windows provide only temporary relief and cannot substitute for sleep.",
@@ -5084,7 +5084,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which prescription medication side effect is most likely to impair driving ability?",
         "correct_count": 1,
         "explanation": "Sedation or drowsiness is the prescription drug side effect most dangerous to driving. Antihistamines, muscle relaxants, opioids, and some antidepressants can all cause sedation. Drivers should consult their doctor or pharmacist before driving while on new medications.",
@@ -5099,7 +5099,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the greatest risk of using a navigation app on a phone while driving, even at a red light?",
         "correct_count": 1,
         "explanation": "Even briefly looking at or interacting with a phone at a red light keeps the driver's cognitive attention off the driving environment. Studies show attention remains impaired for several seconds after putting the phone down, and conditions can change instantly at a green light.",
@@ -5114,7 +5114,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does carbon monoxide (CO) from a vehicle exhaust leak affect a driver?",
         "correct_count": 1,
         "explanation": "Carbon monoxide is odorless and colorless and impairs cognitive function and reaction time even at low concentrations, causing drowsiness, confusion, and eventually unconsciousness. A leaking exhaust system inside the passenger compartment is a serious driving hazard.",
@@ -5129,7 +5129,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'inattentional blindness' and how does it relate to distracted driving?",
         "correct_count": 1,
         "explanation": "Inattentional blindness is the failure to perceive visible objects or events when attention is focused elsewhere. A distracted driver can look directly at a stop sign, pedestrian, or motorcycle and fail to consciously register it, leading to crashes.",
@@ -5144,7 +5144,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's Move Over law, what must a driver do when approaching a stationary emergency vehicle with lights activated on the roadside?",
         "correct_count": 1,
         "explanation": "Oklahoma's Move Over law requires drivers to move over one lane away from a stopped emergency, maintenance, or tow vehicle with activated lights. If a lane change is not safely possible, the driver must slow to a speed that is safe and reasonable.",
@@ -5159,7 +5159,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does Oklahoma law require regarding seat belt use for all front-seat occupants?",
         "correct_count": 1,
         "explanation": "Oklahoma's mandatory seat belt law requires all front-seat occupants to wear a properly fastened seat belt. Children under 13 must be restrained in an appropriate child safety seat or booster regardless of seating position.",
@@ -5175,7 +5175,7 @@ QUESTIONS = [
     # ── Chapter 3 · batch 3 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the tire pressure monitoring system (TPMS) warning light indicate?",
         "correct_count": 1,
         "explanation": "The TPMS warning light (an exclamation mark inside a tire cross-section) illuminates when one or more tires are significantly underinflated — typically 25% or more below the recommended pressure. The driver should check and correct tire pressure immediately.",
@@ -5190,7 +5190,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a blue warning light on the dashboard typically indicate?",
         "correct_count": 1,
         "explanation": "A blue dashboard light nearly always indicates that the high-beam headlights are active. It is an informational indicator, not a warning.",
@@ -5205,7 +5205,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How should a driver check that brake lights are working without a second person?",
         "correct_count": 1,
         "explanation": "A driver can check brake lights alone by reversing close to a reflective surface (e.g., a garage door) and pressing the brake pedal while watching the reflection, or by using a camera or asking a bystander.",
@@ -5220,7 +5220,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the correct tire inflation pressure to use when inflating vehicle tires?",
         "correct_count": 1,
         "explanation": "Tires should be inflated to the pressure listed on the vehicle's door placard or owner's manual — NOT the maximum pressure printed on the tire sidewall. The sidewall figure is the maximum the tire can handle, not the recommended operating pressure.",
@@ -5235,7 +5235,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does the ABS (anti-lock braking system) warning light staying on after starting indicate?",
         "correct_count": 1,
         "explanation": "If the ABS warning light remains illuminated after the engine starts (and the self-test completes), it indicates a fault in the ABS system. The regular brakes still work, but the anti-lock function may be disabled. The vehicle should be inspected.",
@@ -5250,7 +5250,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "In which direction should a driver turn front wheels when parking downhill next to a curb?",
         "correct_count": 1,
         "explanation": "When parking downhill with a curb, turn the front wheels to the right (into the curb). If the vehicle rolls forward, the wheel contacts the curb and stops the car.",
@@ -5265,7 +5265,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a white-painted curb indicate?",
         "correct_count": 1,
         "explanation": "A white curb marks a passenger loading zone only. Drivers may stop briefly to pick up or drop off passengers but may not park or wait there.",
@@ -5280,7 +5280,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal minimum tread depth for front tires on a vehicle in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma (following federal and NHTSA guidelines) requires a minimum tread depth of 2/32 inch on all tires. Many safety experts recommend replacing tires at 4/32 inch for adequate wet-road performance.",
@@ -5295,7 +5295,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How far from a railroad crossing is parking prohibited in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits parking within 50 feet of a railroad crossing to ensure adequate sight lines for both drivers and train operators.",
@@ -5310,7 +5310,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the function of a vehicle's Electronic Stability Control (ESC) system?",
         "correct_count": 1,
         "explanation": "ESC automatically applies individual wheel brakes and may reduce engine power when sensors detect the vehicle is skidding or losing directional control, helping the driver maintain the intended path.",
@@ -5326,7 +5326,7 @@ QUESTIONS = [
     # ── Chapter 4 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What color and shape is used for a railroad crossing (crossbuck) sign?",
         "correct_count": 1,
         "explanation": "The crossbuck sign at railroad crossings is white with black letters and is X-shaped (two diagonal boards forming an X). It means yield to trains.",
@@ -5341,7 +5341,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a blue rectangular sign along the highway indicate?",
         "correct_count": 1,
         "explanation": "Blue signs provide motorist services information: fuel, food, lodging, hospitals, and rest areas. They guide drivers to services available at upcoming exits.",
@@ -5356,7 +5356,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a pentagon-shaped sign indicate?",
         "correct_count": 1,
         "explanation": "Pentagon-shaped signs (five sides, pointed at top) mark school zones and school crossings. Drivers must slow down and watch for children.",
@@ -5371,7 +5371,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a round (circular) yellow sign with a black X and two Rs (RR) indicate?",
         "correct_count": 1,
         "explanation": "A round yellow sign with a black X and 'RR' is an advance warning sign for a railroad crossing. It warns drivers that a railroad crossing is ahead, giving time to slow and prepare to yield to trains.",
@@ -5386,7 +5386,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a white sign with the text 'DO NOT PASS' indicate?",
         "correct_count": 1,
         "explanation": "A DO NOT PASS sign is a regulatory sign indicating the beginning of a no-passing zone. It has the same legal force as a solid yellow center line — passing is prohibited from that point.",
@@ -5401,7 +5401,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What information does a route marker sign (shield-shaped) provide?",
         "correct_count": 1,
         "explanation": "Route markers identify the highway number and type: U.S. routes use a shield, interstate routes use a blue-and-red shield, and state routes use their own shape. They help drivers confirm they are on the correct road.",
@@ -5416,7 +5416,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does orange coloring on road signs and equipment indicate?",
         "correct_count": 1,
         "explanation": "Orange is used exclusively for construction and maintenance work zone signs and equipment. It warns drivers of temporary conditions such as lane shifts, reduced speeds, or workers present.",
@@ -5431,7 +5431,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A 'YIELD AHEAD' sign is which type of sign and what shape is it?",
         "correct_count": 1,
         "explanation": "A YIELD AHEAD sign is a warning sign (diamond-shaped, yellow with black text) that warns drivers a yield sign is coming, giving them advance notice to prepare to slow and yield.",
@@ -5446,7 +5446,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a flashing yellow X on an overhead lane control signal indicate?",
         "correct_count": 1,
         "explanation": "A flashing yellow X on an overhead lane control signal means the lane may be used only for left turns. Drivers should prepare to turn left and must not travel through in that lane.",
@@ -5461,7 +5461,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does green coloring on road signs indicate?",
         "correct_count": 1,
         "explanation": "Green signs provide guidance information: directional guidance, distances to destinations, highway exits, and street names. They help drivers navigate without regulatory or warning implications.",
@@ -5477,7 +5477,7 @@ QUESTIONS = [
     # ── Chapter 5 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a solid white line along the right edge of the roadway (edge line) indicate?",
         "correct_count": 1,
         "explanation": "A solid white edge line marks the right boundary of the travel lane, separating the travel lane from the shoulder. Drivers should not cross it except in emergencies.",
@@ -5492,7 +5492,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Who has the right of way when a pedestrian is crossing at an unmarked crosswalk at an intersection?",
         "correct_count": 1,
         "explanation": "Oklahoma law gives pedestrians the right of way at all intersections, including those with unmarked crosswalks (the implied extension of sidewalks across an intersection). Drivers must yield.",
@@ -5507,7 +5507,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When must a driver use turn signals before turning or changing lanes in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to signal their intent to turn or change lanes at least 100 feet before the maneuver in urban areas. Signaling is required regardless of whether any other vehicles appear to be present.",
@@ -5522,7 +5522,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A solid yellow line on your side of the center divides means what about passing?",
         "correct_count": 1,
         "explanation": "A solid yellow line on your side of the road means passing is prohibited for your direction of traffic. The line on the other side governs whether opposing traffic may pass.",
@@ -5537,7 +5537,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the correct way to make a left turn from a two-way street onto another two-way street?",
         "correct_count": 1,
         "explanation": "When turning left from a two-way street, the driver must begin the turn from the lane nearest the center line (left lane), turn into the nearest lane of the cross street, and then adjust lanes if needed after completing the turn.",
@@ -5552,7 +5552,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When is it legal to make a right turn on red in Oklahoma?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a right turn on red is permitted after a complete stop and yielding to all pedestrians and cross traffic, unless a sign specifically prohibits it.",
@@ -5567,7 +5567,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct procedure for making a U-turn in Oklahoma?",
         "correct_count": 1,
         "explanation": "U-turns are permitted in Oklahoma where not prohibited by a sign, at intersections when the turn can be made safely without interfering with other traffic. They are prohibited in business districts except at intersections and where posted.",
@@ -5582,7 +5582,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At a four-way stop, if two vehicles arrive simultaneously from opposite directions, who has the right of way?",
         "correct_count": 1,
         "explanation": "At a four-way stop, when two vehicles arrive at the same time from opposite directions, the vehicle going straight has the right of way over the vehicle turning left. If both are going straight, they may proceed simultaneously if safe.",
@@ -5597,7 +5597,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When merging onto a highway, who bears the primary legal responsibility for yielding?",
         "correct_count": 1,
         "explanation": "The driver merging onto the highway bears the primary legal responsibility to yield to traffic already on the highway. Highway traffic does not have a legal obligation to slow or move over for merging vehicles (though it is courteous to do so).",
@@ -5612,7 +5612,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a double solid white line between lanes indicate?",
         "correct_count": 1,
         "explanation": "A double solid white line marks a lane boundary that drivers must not cross. It is commonly used to separate a turn-only lane from a through lane, or to protect a bike lane from vehicle encroachment.",
@@ -5628,7 +5628,7 @@ QUESTIONS = [
     # ── Chapter 6 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit in an Oklahoma school zone when children are present?",
         "correct_count": 1,
         "explanation": "Oklahoma school zone speed limits are typically 25 mph when the flasher is active or when children are present. Posted signs control the exact limit for each zone.",
@@ -5643,7 +5643,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit on Oklahoma unpaved (gravel) roads?",
         "correct_count": 1,
         "explanation": "Oklahoma's statutory speed limit on unpaved roads is 35 mph unless a lower limit is posted. Conditions often require even slower speeds for safe travel.",
@@ -5658,7 +5658,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the statutory speed limit on Oklahoma open highways (two-lane rural roads) where no speed limit is posted?",
         "correct_count": 1,
         "explanation": "On Oklahoma open two-lane rural highways where no speed limit is posted, the default statutory speed limit is 65 mph during the day and 55 mph at night.",
@@ -5673,7 +5673,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does 'overdriving your headlights' mean and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Overdriving headlights means traveling at a speed where the stopping distance exceeds the distance illuminated by the headlights. The driver cannot stop in time for objects outside their visible range, creating a serious crash risk at night.",
@@ -5688,7 +5688,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under what conditions should a driver travel significantly below the posted speed limit?",
         "correct_count": 1,
         "explanation": "Oklahoma's basic speed rule requires a speed that is reasonable for conditions. Drivers must reduce speed in rain, fog, ice, construction zones, heavy traffic, poor road surface, or whenever visibility is reduced — regardless of the posted limit.",
@@ -5703,7 +5703,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A vehicle's total stopping distance is made up of which two components?",
         "correct_count": 1,
         "explanation": "Total stopping distance = reaction distance (the distance traveled while the driver perceives the hazard and moves their foot to the brake) + braking distance (the distance traveled while the brakes slow the vehicle to a stop).",
@@ -5718,7 +5718,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why is speeding especially dangerous in curves?",
         "correct_count": 1,
         "explanation": "In a curve, centrifugal force pushes the vehicle outward. At excessive speed, friction between the tires and road cannot provide enough centripetal force to keep the vehicle on the curved path, causing the vehicle to slide off the road.",
@@ -5733,7 +5733,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the penalty for speeding in an Oklahoma active work zone?",
         "correct_count": 1,
         "explanation": "Oklahoma doubles fines for speeding violations in active work zones (where workers are present). A second conviction in a work zone results in a mandatory license suspension.",
@@ -5748,7 +5748,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At 30 mph, what is the approximate total stopping distance (reaction + braking) on dry pavement for a typical passenger vehicle?",
         "correct_count": 1,
         "explanation": "At 30 mph on dry pavement, a typical passenger vehicle has a reaction distance of about 33 feet (1.5-second reaction time) and a braking distance of about 45 feet, for a total stopping distance of roughly 75–80 feet.",
@@ -5763,7 +5763,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which factor has the greatest effect on a vehicle's stopping distance on wet roads compared to dry roads?",
         "correct_count": 1,
         "explanation": "Reduced tire-to-road friction (traction) is the primary reason stopping distances increase on wet roads. Water creates a lubricating film between the tire and pavement, reducing the braking force available.",
@@ -5779,7 +5779,7 @@ QUESTIONS = [
     # ── Chapter 7 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a solid green traffic light permit a driver to do?",
         "correct_count": 1,
         "explanation": "A solid green light permits a driver to proceed through the intersection or turn, but only after yielding to any vehicles, pedestrians, or cyclists already lawfully in the intersection.",
@@ -5794,7 +5794,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a solid yellow (amber) traffic light mean?",
         "correct_count": 1,
         "explanation": "A solid yellow light warns that the signal is about to turn red. Drivers who can safely stop should do so. Drivers already in the intersection or too close to stop safely may proceed with caution.",
@@ -5809,7 +5809,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a green arrow signal at a traffic light indicate?",
         "correct_count": 1,
         "explanation": "A green arrow provides a protected turn in the direction the arrow points. Oncoming traffic is held by a red signal, so drivers may turn without yielding to oncoming vehicles — but must still yield to pedestrians.",
@@ -5824,7 +5824,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is a 'protected-permissive' left-turn signal and what do drivers do during each phase?",
         "correct_count": 1,
         "explanation": "A protected-permissive left turn signal has two phases: a green arrow (protected — oncoming traffic stopped, turn freely) and a solid green (permissive — oncoming traffic moving, yield before turning left).",
@@ -5839,7 +5839,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A pedestrian signal shows a flashing orange hand. What does this mean for a pedestrian who has not yet started crossing?",
         "correct_count": 1,
         "explanation": "A flashing orange hand (flashing DON'T WALK) means pedestrians should not begin crossing. Pedestrians already in the crosswalk should complete crossing if they cannot safely return. The countdown timer shows remaining time.",
@@ -5854,7 +5854,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a traffic officer faces you with one arm raised, what does this signal mean?",
         "correct_count": 1,
         "explanation": "When a traffic officer faces you and raises one arm (palm toward you), it signals STOP for traffic coming from your direction. You must stop and remain stopped until the officer signals otherwise.",
@@ -5869,7 +5869,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What must a driver do when approaching a school bus that is stopped with flashing red lights and an extended stop arm?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires all drivers on both sides of an undivided road to stop at least 20 feet from a school bus displaying flashing red lights and a stop arm. On a divided highway, only traffic behind the bus must stop; opposing traffic on the other side of a raised median may proceed.",
@@ -5884,7 +5884,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal penalty in Oklahoma for illegally passing a stopped school bus?",
         "correct_count": 1,
         "explanation": "Illegally passing a stopped school bus in Oklahoma is a misdemeanor with a fine of up to $1,000 for the first offense. Subsequent offenses carry higher fines and possible license suspension.",
@@ -5899,7 +5899,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a red arrow signal at a traffic light mean?",
         "correct_count": 1,
         "explanation": "A red arrow means a driver must stop and may not turn in the direction of the arrow until the signal changes. Unlike a circular red (where right turns on red may be permitted), a red arrow prohibits all turns in that direction.",
@@ -5914,7 +5914,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When may a driver legally make a left turn on a red light in Oklahoma?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a left turn on red is permitted only when turning from a one-way street onto another one-way street, after a complete stop and yielding to all pedestrians and cross traffic, unless a sign prohibits it.",
@@ -5930,7 +5930,7 @@ QUESTIONS = [
     # ── Chapter 8 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Before changing lanes on a multi-lane road, what three checks should a driver make?",
         "correct_count": 1,
         "explanation": "Before changing lanes, a driver should: (1) check mirrors for following and adjacent traffic, (2) signal intent, and (3) check the blind spot by briefly turning their head to look over the shoulder in the direction of the lane change.",
@@ -5945,7 +5945,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Where are a large truck's largest blind spots located?",
         "correct_count": 1,
         "explanation": "Large trucks have four major blind spots: directly in front (about 20 feet), directly behind (about 30 feet), on the left side (one lane wide), and on the right side (two lanes wide, the largest blind spot).",
@@ -5960,7 +5960,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When is it safest to pass a vehicle on a two-lane road?",
         "correct_count": 1,
         "explanation": "Passing on a two-lane road is safest on a straight, level section of road with a broken (dashed) center line, adequate sight distance, no oncoming traffic, and in a legal passing zone.",
@@ -5975,7 +5975,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How far before a no-passing zone must a driver already have completed a pass or abandoned the attempt?",
         "correct_count": 1,
         "explanation": "A driver must return to the right lane and complete the pass before the beginning of a no-passing zone. Starting a pass near the zone line and still being in the oncoming lane when entering the zone is a violation.",
@@ -5990,7 +5990,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does 'lane discipline' mean on a multi-lane highway?",
         "correct_count": 1,
         "explanation": "Lane discipline means keeping right except to pass: slower traffic stays right, faster traffic uses left lanes to pass and then returns right. Camping in the left lane and impeding traffic is illegal in Oklahoma.",
@@ -6005,7 +6005,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should a driver do when they realize a pass cannot be safely completed?",
         "correct_count": 1,
         "explanation": "If a driver begins to pass and realizes it cannot be completed safely (e.g., oncoming traffic appears), they should immediately signal and return to the right lane behind the passed vehicle and reduce speed.",
@@ -6020,7 +6020,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why is passing prohibited within 100 feet of a railroad crossing in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing within 100 feet of a railroad crossing is prohibited because the driver needs to be fully alert and in the correct lane to stop safely for trains. Being in the wrong lane during a pass would make an emergency stop impossible.",
@@ -6035,7 +6035,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Is it legal in Oklahoma to pass on a two-lane road when the center line is a combination of a solid yellow line next to a broken yellow line, and you are beside the broken yellow line?",
         "correct_count": 1,
         "explanation": "A combination center marking (solid + broken yellow) means passing is permitted only for the driver beside the broken line. The driver beside the solid line may not pass. If you are beside the broken line, passing is legal when safe.",
@@ -6050,7 +6050,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum distance a driver should be clear of an intersection before initiating a pass on a two-lane road?",
         "correct_count": 1,
         "explanation": "Passing within or immediately before an intersection is prohibited in Oklahoma. The driver should wait until they are well clear of the intersection before beginning a pass to maintain safe sight distance.",
@@ -6065,7 +6065,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "In Oklahoma, what is the consequence for a driver who fails to yield when being overtaken and causes a crash?",
         "correct_count": 1,
         "explanation": "A driver who speeds up or otherwise fails to yield when being lawfully overtaken — causing a crash — can be cited for failure to yield to a passing vehicle and may face civil liability for damages caused by the crash.",
@@ -6081,7 +6081,7 @@ QUESTIONS = [
     # ── Chapter 9 · batch 2 (questions 26-35) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following statements about alcohol and driving is true?",
         "correct_count": 1,
         "explanation": "Even one drink can impair driving ability. Alcohol affects judgment and coordination before a driver feels drunk. There is no safe number of drinks that guarantees safe driving.",
@@ -6096,7 +6096,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which part of driving ability is FIRST affected as BAC rises?",
         "correct_count": 1,
         "explanation": "Judgment and risk assessment are the first abilities impaired by alcohol, even at low BAC levels. A driver may feel confident while their ability to judge distances, speed, and risk is already impaired.",
@@ -6111,7 +6111,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Approximately how long does it take the body to eliminate one standard drink's worth of alcohol?",
         "correct_count": 1,
         "explanation": "The liver metabolizes approximately one standard drink per hour. No method — coffee, exercise, cold water — speeds this process. Only time reduces BAC.",
@@ -6126,7 +6126,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the BAC level at which most people begin to show measurable impairment of judgment and coordination?",
         "correct_count": 1,
         "explanation": "Research shows measurable impairment of judgment and fine motor coordination begins around BAC 0.04%–0.05%, well below the legal limit of 0.08%. Oklahoma's DWI threshold begins at 0.05%.",
@@ -6141,7 +6141,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which factor most significantly affects how quickly alcohol impairs a driver?",
         "correct_count": 1,
         "explanation": "Body weight and the presence of food in the stomach are key factors. Drinking on an empty stomach allows alcohol to be absorbed much faster than drinking with a meal. Gender, medications, and tolerance also play roles.",
@@ -6156,7 +6156,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is an ignition interlock device (IID) and when may a court order one installed?",
         "correct_count": 1,
         "explanation": "An IID is a breath-testing device wired to the ignition that prevents the vehicle from starting if the driver has a BAC above a set threshold (usually 0.02%). Oklahoma courts may order IID installation as a condition of license reinstatement after a DUI conviction.",
@@ -6171,7 +6171,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does alcohol affect a driver's ability to see at night?",
         "correct_count": 1,
         "explanation": "Alcohol reduces the sensitivity of the eyes to light (increasing the glare recovery time from oncoming headlights) and narrows peripheral vision, both of which are especially dangerous during night driving.",
@@ -6186,7 +6186,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's DUI law, what additional offense may a driver face if a passenger under 18 is in the vehicle during a DUI arrest?",
         "correct_count": 1,
         "explanation": "In Oklahoma, driving under the influence with a minor in the vehicle is a separate, aggravated offense that carries enhanced criminal penalties on top of the DUI charge — including mandatory jail time.",
@@ -6201,7 +6201,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal consequence in Oklahoma for a second DUI conviction within 10 years?",
         "correct_count": 1,
         "explanation": "A second DUI conviction within 10 years in Oklahoma is a felony. Penalties include imprisonment of 1–5 years, fines up to $2,500, and a driver license revocation of 1 year or more with mandatory IID installation.",
@@ -6216,7 +6216,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's implied consent law, who is covered — only licensed drivers or all persons operating a vehicle?",
         "correct_count": 1,
         "explanation": "Oklahoma's implied consent law applies to any person who operates a motor vehicle on a public road, regardless of whether they hold a valid license. Operating a vehicle in Oklahoma implies consent to chemical testing.",
@@ -6232,7 +6232,7 @@ QUESTIONS = [
     # ── Chapter 10 · batch 2 (questions 26-35) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which direction must bicyclists travel on a public road in Oklahoma?",
         "correct_count": 1,
         "explanation": "Bicyclists must ride in the same direction as vehicle traffic (with the flow), not against it. Riding against traffic is illegal and dramatically increases crash risk.",
@@ -6247,7 +6247,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does Oklahoma law require motorcyclists to wear?",
         "correct_count": 1,
         "explanation": "Oklahoma requires all motorcycle riders and passengers to wear a helmet that meets DOT (Department of Transportation) safety standards. Eye protection is also required unless the motorcycle has a windshield.",
@@ -6262,7 +6262,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should a driver do when following a bicycle on a narrow road with no passing opportunity?",
         "correct_count": 1,
         "explanation": "When following a bicyclist and no safe passing opportunity exists, the driver should maintain a safe following distance and wait patiently until there is enough room to pass with at least 3 feet of clearance.",
@@ -6277,7 +6277,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the leading cause of motorcycle fatalities in multi-vehicle crashes?",
         "correct_count": 1,
         "explanation": "The most common cause of motorcycle fatalities in multi-vehicle crashes is other drivers failing to see the motorcycle and turning left in front of it at intersections. Motorcycles' smaller profile makes them harder to detect.",
@@ -6292,7 +6292,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How wide a berth should a driver leave when passing a horse-drawn vehicle or a rider on horseback?",
         "correct_count": 1,
         "explanation": "Drivers should slow significantly and pass horse-drawn vehicles or horses with as much room as safely possible — ideally the full width of the opposing lane — to avoid startling the animal. Horses can react unpredictably to engine noise and sudden movements.",
@@ -6307,7 +6307,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'Move Over' law applies to which types of vehicles stopped on the roadside?",
         "correct_count": 1,
         "explanation": "Oklahoma's Move Over law requires drivers to move over or slow down when approaching any stopped emergency vehicle, law enforcement vehicle, maintenance vehicle, tow truck, or utility vehicle with activated lights.",
@@ -6322,7 +6322,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is lane splitting, and is it legal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Lane splitting is riding a motorcycle between lanes of slow-moving or stopped traffic. Lane splitting is illegal in Oklahoma — motorcycles must remain within a single lane like other vehicles.",
@@ -6337,7 +6337,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the proper following distance a driver should maintain behind a large commercial truck on the highway?",
         "correct_count": 1,
         "explanation": "Drivers should maintain at least 4 seconds of following distance behind large trucks — more than the standard 3 seconds used for passenger vehicles — because trucks need more stopping distance and their large body blocks the driver's view of the road ahead.",
@@ -6352,7 +6352,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do if a tire blows out on a large commercial truck ahead of them, sending debris into the roadway?",
         "correct_count": 1,
         "explanation": "If a truck ahead blows a tire and debris enters the roadway, the driver should brake in a controlled manner, steer smoothly around the debris if possible, and avoid sudden swerving which can cause loss of control.",
@@ -6367,7 +6367,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What special hazard do large trucks present when making wide right turns at intersections?",
         "correct_count": 1,
         "explanation": "Large trucks must swing wide (sometimes into adjacent lanes) to complete a right turn. Drivers who position themselves beside or just behind a turning truck risk being struck or forced onto the curb as the truck completes its arc. Never cut in on the right of a turning truck.",
@@ -6383,7 +6383,7 @@ QUESTIONS = [
     # ── Chapter 11 · batch 2 (questions 26-35) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Why should a driver increase following distance during rain?",
         "correct_count": 1,
         "explanation": "Rain reduces tire traction and increases stopping distances by approximately 50%. Increasing following distance gives the driver more time and space to stop safely if the vehicle ahead brakes suddenly.",
@@ -6398,7 +6398,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the first thing a driver should do if caught in a tornado warning with no shelter nearby?",
         "correct_count": 1,
         "explanation": "If caught in a tornado with no shelter, leave the vehicle and seek shelter in a sturdy building. If no building is available, go to a low-lying ditch or culvert away from trees and vehicles, lying flat. Never shelter under a highway overpass — tornado winds accelerate there.",
@@ -6413,7 +6413,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does cold weather affect a vehicle's tire pressure?",
         "correct_count": 1,
         "explanation": "Tire pressure decreases by approximately 1 PSI for every 10°F drop in temperature. Underinflated tires in cold weather reduce handling, increase stopping distances, and can cause premature wear. Drivers should check and adjust tire pressure in winter.",
@@ -6428,7 +6428,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why are bridges and overpasses especially dangerous in freezing temperatures?",
         "correct_count": 1,
         "explanation": "Bridges and overpasses freeze before regular road surfaces because they are exposed to cold air from both above and below, with no ground warmth beneath them. Ice can form on a bridge even when adjacent roads are dry.",
@@ -6443,7 +6443,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does 'black ice' refer to and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Black ice is a thin, transparent layer of ice on the road surface that appears the same color as the pavement — making it nearly invisible. It is particularly dangerous because drivers cannot see it and do not anticipate the sudden loss of traction.",
@@ -6458,7 +6458,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When driving in heavy rain, why should a driver turn OFF cruise control?",
         "correct_count": 1,
         "explanation": "Cruise control should be disabled in rain because if the vehicle begins to hydroplane, cruise control may accelerate the vehicle to maintain set speed, making the hydroplane worse and preventing the driver from safely reducing speed.",
@@ -6473,7 +6473,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct technique for steering out of a front-wheel skid?",
         "correct_count": 1,
         "explanation": "In a front-wheel (understeer) skid, the front tires lose grip and the vehicle pushes straight rather than turning. The driver should ease off the gas and the brake, which transfers weight forward and restores front-tire traction, then gently steer in the desired direction.",
@@ -6488,7 +6488,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At what outside temperature does frost or ice begin to form on road surfaces?",
         "correct_count": 1,
         "explanation": "Ice can form on road surfaces at temperatures at or below 32°F (0°C). However, bridge decks and shaded areas can freeze even when air temperatures are slightly above 32°F because pavement temperatures can be colder than air temperature.",
@@ -6503,7 +6503,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When should a driver use hazard lights (four-way flashers) in Oklahoma?",
         "correct_count": 1,
         "explanation": "Hazard lights are used when a vehicle is stopped or moving slowly and presents a hazard to other drivers — such as during a breakdown, when stopped in or near a travel lane, or in extremely low visibility conditions. They should not be used as a substitute for proper signaling while driving normally.",
@@ -6518,7 +6518,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How should a driver handle a situation where wildlife (deer) unexpectedly enters the roadway ahead?",
         "correct_count": 1,
         "explanation": "When wildlife enters the roadway, brake firmly and stay in your lane. Do not swerve sharply — swerving can cause a rollover or put the vehicle into oncoming traffic, which is often more dangerous than striking the animal. Flash headlights to try to scare the animal off the road.",
@@ -6534,7 +6534,7 @@ QUESTIONS = [
     # ── Chapter 12 · batch 2 (questions 26-35) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the purpose of placing reflective triangles or flares behind a disabled vehicle?",
         "correct_count": 1,
         "explanation": "Reflective triangles or flares warn approaching drivers of the disabled vehicle ahead, giving them time to change lanes or slow down and reducing the risk of a secondary crash.",
@@ -6549,7 +6549,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If a tire blows out while driving at highway speed, what should the driver do first?",
         "correct_count": 1,
         "explanation": "In a tire blowout, the driver should grip the steering wheel firmly, ease off the accelerator, and steer straight. Do not brake hard — sudden braking can cause a spin. Allow the vehicle to slow naturally before steering to the shoulder.",
@@ -6564,7 +6564,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What information must drivers exchange after a crash in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers involved in a crash to exchange: name, address, driver license number, vehicle registration, and insurance information. Failing to provide this information is a misdemeanor.",
@@ -6579,7 +6579,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When using a fire extinguisher on a small vehicle engine fire, at what distance should you aim?",
         "correct_count": 1,
         "explanation": "Fire extinguishers should be aimed at the base of the flames from a safe distance (typically 6–8 feet for a typical vehicle extinguisher), sweeping side to side. Aiming at the flames above the base is ineffective.",
@@ -6594,7 +6594,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a driver do if the vehicle becomes submerged in water?",
         "correct_count": 1,
         "explanation": "If a vehicle enters deep water: (1) Do not panic — the vehicle will float briefly. (2) Unbuckle the seat belt. (3) Open or break a window (power windows may fail — use a tool or kick). (4) Wait for pressure to equalize before opening the door if possible, then escape.",
@@ -6609,7 +6609,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How should a driver signal for help after a breakdown on a highway with no cell service?",
         "correct_count": 1,
         "explanation": "Without cell service, a driver should turn on hazard lights, raise the hood, and tie a white cloth or flag to the door handle or antenna as a universal distress signal. Remain near the vehicle but as far from traffic as possible.",
@@ -6624,7 +6624,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, when must a crash be reported to law enforcement?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a crash must be reported to law enforcement if it results in injury, death, or property damage exceeding $300. A written report must be filed with the DPS within 10 days if police do not investigate the crash.",
@@ -6639,7 +6639,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'secondary crash' hazard and how can it be prevented?",
         "correct_count": 1,
         "explanation": "A secondary crash is a subsequent collision involving drivers distracted by or failing to avoid the original crash scene. It is prevented by moving vehicles off the road when possible, placing warning devices well in advance, and rubbernecking-free passage by other drivers.",
@@ -6654,7 +6654,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do if they witness a crash but are not involved?",
         "correct_count": 1,
         "explanation": "A driver who witnesses a crash should safely pull over, call 911 immediately, and if trained in first aid, offer assistance without moving injured persons. Providing an accurate account of the crash to law enforcement is helpful. Do not disturb the scene unnecessarily.",
@@ -6669,7 +6669,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct action if the gas pedal becomes mechanically stuck while driving and shifting to neutral does not resolve it?",
         "correct_count": 1,
         "explanation": "If the accelerator is stuck and shifting to neutral does not resolve it, apply steady firm brake pressure (do not pump on non-ABS vehicles), steer to the shoulder, and once stopped safely, turn off the ignition. Do not turn off the engine at speed — power steering and brakes will be lost.",
@@ -6685,7 +6685,7 @@ QUESTIONS = [
     # ── Chapter 1 · batch 4 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What vision test requirement must an Oklahoma applicant meet to obtain a driver license?",
         "correct_count": 1,
         "explanation": "Oklahoma requires a minimum visual acuity of 20/60 in at least one eye (with or without corrective lenses) to qualify for a standard driver license. If corrective lenses are required, a restriction is placed on the license.",
@@ -6700,7 +6700,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If an Oklahoma driver changes their address, how many days do they have to notify the DPS?",
         "correct_count": 1,
         "explanation": "Oklahoma drivers must notify the Department of Public Safety of an address change within 10 days of moving. Failure to do so can result in missed renewal notices and potential legal issues.",
@@ -6715,7 +6715,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's GDL program, what restriction applies to cell phone use for drivers under 18?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits drivers under 18 from using a cell phone — handheld or hands-free — while driving. This is a stricter ban than for adult drivers, who are prohibited from handheld use only.",
@@ -6730,7 +6730,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does an Oklahoma 'Restricted license' notation mean?",
         "correct_count": 1,
         "explanation": "A restricted license in Oklahoma limits when or how a driver may operate a vehicle — for example, requiring corrective lenses, daylight-only driving, or a specific vehicle type. Driving outside the restriction is a violation.",
@@ -6745,7 +6745,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is a 'provisional license' in Oklahoma's graduated driver licensing system?",
         "correct_count": 1,
         "explanation": "An Oklahoma provisional (intermediate) license is issued after a learner permit and 6 months of supervised driving. It allows unsupervised driving but carries nighttime and passenger restrictions until the driver turns 18 or meets full license requirements.",
@@ -6760,7 +6760,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If an Oklahoma driver is convicted of vehicular homicide, what license consequence follows?",
         "correct_count": 1,
         "explanation": "A conviction for vehicular homicide (negligently causing the death of another while driving) in Oklahoma results in mandatory license revocation. The revocation period and reinstatement conditions depend on the specific charge and prior record.",
@@ -6775,7 +6775,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, what is the consequence for driving with a suspended license?",
         "correct_count": 1,
         "explanation": "Driving with a suspended license in Oklahoma is a misdemeanor on a first offense, punishable by fines and possible jail time. Repeat offenses or driving with a revoked license carry heavier penalties including mandatory imprisonment.",
@@ -6790,7 +6790,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma allows drivers to renew a license online. Which condition disqualifies a driver from online renewal?",
         "correct_count": 1,
         "explanation": "Oklahoma permits online renewal for most drivers, but it is not available if the driver needs to update their vision test, has changed their name, requires a new photo, or the license has been expired for too long.",
@@ -6805,7 +6805,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What points does Oklahoma assess for a leaving-the-scene-of-an-accident (hit and run) conviction?",
         "correct_count": 1,
         "explanation": "Oklahoma assesses 6 points for a hit-and-run (leaving the scene of an accident) conviction — the maximum under the standard points schedule — in addition to the criminal penalties for the offense.",
@@ -6820,7 +6820,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which of the following CDL endorsements is required to transport hazardous materials?",
         "correct_count": 1,
         "explanation": "The H endorsement (Hazardous Materials) is required to transport materials classified as hazardous. Applicants must pass a TSA background check and a special knowledge test in addition to standard CDL requirements.",
@@ -6836,7 +6836,7 @@ QUESTIONS = [
     # ── Chapter 2 · batch 4 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the correct hand position when recovering from a skid using hand-over-hand steering?",
         "correct_count": 1,
         "explanation": "Hand-over-hand steering is used for sharp turns and skid recovery. The driver alternates hands over the top of the wheel to rotate it quickly while maintaining control. After the skid is corrected, return to 9-and-3 position.",
@@ -6851,7 +6851,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is a common sign that a driver is experiencing highway hypnosis?",
         "correct_count": 1,
         "explanation": "Highway hypnosis is a trance-like state caused by long monotonous driving. Signs include inability to recall the last several miles driven, eyelids feeling heavy, and 'zoning out'. It is just as dangerous as falling asleep at the wheel.",
@@ -6866,7 +6866,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the 'push-pull' steering technique and when is it preferred?",
         "correct_count": 1,
         "explanation": "Push-pull steering involves pushing the wheel up with one hand while the other pulls it down from below, without crossing the hands. It is preferred for gentle curves and normal lane keeping because it maintains a stable hand position.",
@@ -6881,7 +6881,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does Oklahoma law say about wearing earbuds or headphones while driving?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits driving while wearing headphones, earphones, or earbuds in both ears simultaneously. One earbud may be used (e.g., for a hands-free call), but both ears must not be covered as this prevents hearing sirens and horns.",
@@ -6896,7 +6896,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why is driving between midnight and 6 AM statistically the most dangerous time period?",
         "correct_count": 1,
         "explanation": "Midnight to 6 AM is when the human body's circadian rhythm causes maximum sleepiness. Combined with reduced traffic (leading to less stimulation), more impaired drivers on the road, and lower visibility, this window has disproportionately high crash rates.",
@@ -6911,7 +6911,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does Oklahoma's 'Safety Belt Use' law state about rear-seat passengers?",
         "correct_count": 1,
         "explanation": "Oklahoma's primary seat belt law requires all front-seat occupants to buckle up. Rear-seat passengers 13 and older are covered by a secondary enforcement law. Children under 13 must be properly restrained in all seating positions.",
@@ -6926,7 +6926,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'secondary enforcement' in the context of Oklahoma's seat belt law?",
         "correct_count": 1,
         "explanation": "Secondary enforcement means a law enforcement officer cannot stop a vehicle solely because an occupant is not wearing a seat belt. The officer may cite for the seat belt violation only after stopping the vehicle for another infraction.",
@@ -6941,7 +6941,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the proper child restraint requirement for a child under age 2 in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law (and pediatric safety guidelines) require children under age 2 to be secured in a rear-facing child safety seat in the back seat. Rear-facing seats provide the best protection for infants and toddlers in frontal crashes.",
@@ -6956,7 +6956,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'cognitive distraction' and how does it differ from visual or manual distraction?",
         "correct_count": 1,
         "explanation": "Cognitive distraction occurs when the driver's mental attention is diverted from driving — such as in a hands-free conversation — even though eyes and hands may remain on the road. It reduces the driver's ability to process traffic information despite appearing engaged.",
@@ -6971,7 +6971,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does emotional distress (anger, grief, excitement) affect driving performance?",
         "correct_count": 1,
         "explanation": "Strong emotions trigger physiological responses (elevated heart rate, tunnel vision, impaired judgment) that reduce driving performance. An emotionally distressed driver may take more risks, react more aggressively, or fail to perceive hazards correctly.",
@@ -6987,7 +6987,7 @@ QUESTIONS = [
     # ── Chapter 3 · batch 4 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the battery warning light on the dashboard indicate?",
         "correct_count": 1,
         "explanation": "The battery warning light indicates the vehicle's charging system is not functioning properly — the alternator may not be charging the battery. The driver should reduce electrical load and get to a service facility as soon as possible before the battery dies.",
@@ -7002,7 +7002,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the legal requirement for turn signals (directional lights) in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma requires all vehicles manufactured after 1953 to have functioning turn signals (directional lights). They must be used at least 100 feet before turning or changing lanes on public roads.",
@@ -7017,7 +7017,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of a vehicle's differential?",
         "correct_count": 1,
         "explanation": "The differential allows the drive wheels to rotate at different speeds when cornering — the outside wheel travels a longer arc than the inside wheel and must spin faster. Without a differential, tires would scrub and the vehicle would be difficult to steer in turns.",
@@ -7032,7 +7032,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At what mileage interval do most vehicle manufacturers recommend a tire rotation?",
         "correct_count": 1,
         "explanation": "Most manufacturers recommend rotating tires every 5,000–7,500 miles (often coinciding with oil changes) to equalize wear across all four tires and extend overall tire life.",
@@ -7047,7 +7047,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the function of a vehicle's catalytic converter?",
         "correct_count": 1,
         "explanation": "A catalytic converter reduces harmful exhaust emissions (carbon monoxide, hydrocarbons, and nitrogen oxides) by converting them into less harmful gases through a chemical reaction. It is part of the vehicle's emissions control system.",
@@ -7062,7 +7062,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum number of headlights required on a motor vehicle in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma requires motor vehicles to have at least two working headlights, one on each side of the front of the vehicle. The headlights must be on from 30 minutes after sunset to 30 minutes before sunrise.",
@@ -7077,7 +7077,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How far ahead must a vehicle's headlights illuminate the road in low-beam mode to meet Oklahoma standards?",
         "correct_count": 1,
         "explanation": "Oklahoma requires low-beam headlights to illuminate the road at least 150 feet ahead. High-beam headlights must illuminate at least 350 feet ahead. A driver should not exceed a speed that prevents stopping within the lit distance.",
@@ -7092,7 +7092,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What Oklahoma law governs the maximum sound level of a vehicle's horn?",
         "correct_count": 1,
         "explanation": "Oklahoma requires vehicle horns to be audible from at least 200 feet but does not specify a maximum decibel limit. The horn must function properly and be used only when reasonably necessary for safety — not as a greeting or in anger.",
@@ -7107,7 +7107,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is required by Oklahoma law regarding a vehicle's exhaust system?",
         "correct_count": 1,
         "explanation": "Oklahoma requires that vehicle exhaust systems be maintained in good working condition, preventing excess noise (muffler required) and preventing exhaust gases from leaking into the passenger compartment — which is a CO poisoning risk.",
@@ -7122,7 +7122,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Which Oklahoma vehicle equipment law applies to tinted windows?",
         "correct_count": 1,
         "explanation": "Oklahoma restricts window tinting: front side windows must allow at least 25% of light to pass through (25% VLT); the windshield may have a non-reflective tint strip on the top 5 inches. Rear windows may have any tint if the vehicle has outside mirrors on both sides.",
@@ -7138,7 +7138,7 @@ QUESTIONS = [
     # ── Chapter 4 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What shape is an Oklahoma school crossing sign?",
         "correct_count": 1,
         "explanation": "School crossing signs are pentagon-shaped (five-sided, with the point at the top) and are yellow-green with black symbols. They warn drivers that children may be crossing the road ahead.",
@@ -7153,7 +7153,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does an upside-down triangle (point facing downward) sign mean?",
         "correct_count": 1,
         "explanation": "An inverted (upside-down) triangle is the international shape for a YIELD sign — red border with white interior. Drivers must slow and yield the right of way to cross traffic.",
@@ -7168,7 +7168,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A diamond-shaped sign with a truck on a steep incline means what?",
         "correct_count": 1,
         "explanation": "A truck-on-grade warning sign warns that a steep downhill grade is ahead. Truck drivers should select a low gear before descending to avoid brake fade; all drivers should prepare for slow-moving trucks.",
@@ -7183,7 +7183,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'Divided Highway Begins' sign look like and what does it tell drivers?",
         "correct_count": 1,
         "explanation": "A 'Divided Highway Begins' sign shows two arrows diverging around a center divider. It warns drivers that a divided highway (with a median or barrier) is ahead and they should keep right of the divider.",
@@ -7198,7 +7198,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'Divided Highway Ends' sign indicate?",
         "correct_count": 1,
         "explanation": "A 'Divided Highway Ends' sign warns that the median or divider is ending. Drivers must be alert for oncoming traffic that will no longer be separated by a barrier — the road transitions to two-way undivided traffic.",
@@ -7213,7 +7213,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a 'No Turn on Red' sign mean and under what condition may it be overridden?",
         "correct_count": 1,
         "explanation": "A 'No Turn on Red' sign prohibits turning on a red light in the indicated direction. It cannot be overridden — the driver must wait for a green signal. It supersedes the general right-on-red permission.",
@@ -7228,7 +7228,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a 'Keep Right Except to Pass' sign require drivers to do?",
         "correct_count": 1,
         "explanation": "'Keep Right Except to Pass' is a regulatory sign requiring drivers to use right lanes for normal travel and move to the left only to pass slower vehicles, then return to the right. Camping in the left lane when not passing violates this sign.",
@@ -7243,7 +7243,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A fluorescent yellow-green diamond sign with a bicycle symbol means what?",
         "correct_count": 1,
         "explanation": "A fluorescent yellow-green diamond sign with a bicycle symbol is a bicycle crossing warning sign. It alerts drivers that bicyclists may be crossing or entering the roadway ahead.",
@@ -7258,7 +7258,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What do the numbers on an interstate highway sign (e.g., I-40) indicate about its direction?",
         "correct_count": 1,
         "explanation": "Interstate highways with even numbers (I-40, I-80) run generally east-west; odd numbers (I-35, I-75) run generally north-south. Three-digit interstates (I-244) are spur or loop routes around a city.",
@@ -7273,7 +7273,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What warning sign is used to alert drivers to a sudden drop-off or edge on the roadway?",
         "correct_count": 1,
         "explanation": "A 'Pavement Ends' or 'Shoulder Drop-Off' warning sign (diamond-shaped, yellow with black text/graphic) alerts drivers that the pavement edge drops abruptly, where a vehicle running off the edge could lose control or become stuck.",
@@ -7289,7 +7289,7 @@ QUESTIONS = [
     # ── Chapter 5 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a yield sign, what must a driver do?",
         "correct_count": 1,
         "explanation": "At a yield sign, the driver must slow down and be prepared to stop, letting cross traffic or pedestrians who have the right of way go first. A complete stop is required only if traffic makes it necessary.",
@@ -7304,7 +7304,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the correct lane for making a right turn from a multi-lane road in Oklahoma?",
         "correct_count": 1,
         "explanation": "Right turns must be made from the rightmost lane (closest to the right edge of the road). The driver should signal, move into that lane, and complete the turn into the nearest right-lane of the cross street.",
@@ -7319,7 +7319,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does 'prima facie' speed limit mean in Oklahoma traffic law?",
         "correct_count": 1,
         "explanation": "A prima facie speed limit is a presumed-to-be-safe speed limit that can be rebutted in court. A driver traveling at or below the limit is presumed to be driving safely, but exceeding it creates a rebuttable presumption of violating the basic speed rule.",
@@ -7334,7 +7334,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How must a driver handle an emergency vehicle approaching from the opposite direction on a two-lane undivided road?",
         "correct_count": 1,
         "explanation": "On a two-lane undivided road, drivers in both directions must pull to the right and stop when an emergency vehicle approaches, regardless of which direction it is coming from.",
@@ -7349,7 +7349,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "In Oklahoma, which vehicle has the right of way when entering a traffic circle (roundabout)?",
         "correct_count": 1,
         "explanation": "In a roundabout, vehicles already inside the circle have the right of way. Entering vehicles must yield to circulating traffic. Drivers should enter only when there is a safe gap, and should not stop inside the circle.",
@@ -7364,7 +7364,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma law gives funeral processions certain rights of way. What must other drivers do?",
         "correct_count": 1,
         "explanation": "Oklahoma law gives funeral processions the right to proceed through intersections as a unit. Other drivers must yield to the procession and must not cut through it. Vehicles in the procession should use headlights and follow closely.",
@@ -7379,7 +7379,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is Oklahoma's law regarding driving on a sidewalk?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits driving a motor vehicle on a sidewalk, pathway, or bicycle path except where a driveway crosses it. Pedestrians and cyclists on sidewalks have the absolute right of way.",
@@ -7394,7 +7394,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does Oklahoma law require when two vehicles on different roadways arrive at an uncontrolled T-intersection simultaneously?",
         "correct_count": 1,
         "explanation": "At a T-intersection (where one road ends), the driver on the road that ends (the terminating road) must yield to traffic on the through road, regardless of the right-hand rule.",
@@ -7409,7 +7409,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "In Oklahoma, is a driver required to stop for a pedestrian who is on the opposite half of a multi-lane road?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to stop for pedestrians in the same half of the roadway as the driver's vehicle. If a pedestrian is still on the opposite half, drivers in the nearer half should stop, but drivers on the far side are not technically required to stop until the pedestrian reaches their half.",
@@ -7424,7 +7424,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does 'right of way' legally mean, and can a driver ever legally demand it?",
         "correct_count": 1,
         "explanation": "Right of way is the legal right to proceed first in a given situation. However, no driver can demand or force their right of way — Oklahoma law requires drivers to yield when necessary to prevent a crash, even if they technically have the right of way.",
@@ -7440,7 +7440,7 @@ QUESTIONS = [
     # ── Chapter 6 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the posted speed limit in most Oklahoma hospital zones?",
         "correct_count": 1,
         "explanation": "Hospital zones in Oklahoma are typically posted at 25 mph when patients and pedestrians may be present. Posted signs control the exact limit.",
@@ -7455,7 +7455,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Why does the Oklahoma driver manual recommend a speed reduction of one-third on wet roads?",
         "correct_count": 1,
         "explanation": "Wet roads reduce tire traction significantly. Reducing speed by one-third (e.g., from 60 mph to 40 mph) helps compensate for the longer stopping distances and reduced cornering grip caused by reduced friction.",
@@ -7470,7 +7470,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the speed limit on an Oklahoma turnpike where no specific limit is posted?",
         "correct_count": 1,
         "explanation": "On Oklahoma Turnpike Authority roads where no specific speed limit is posted, the statutory limit is 70 mph unless a specific higher limit (up to 75 mph) is posted. Always comply with posted signs.",
@@ -7485,7 +7485,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver is traveling at 30 mph and increases to 60 mph. By how much does the braking distance increase?",
         "correct_count": 1,
         "explanation": "Braking distance increases with the square of speed. Doubling from 30 to 60 mph (2×) squares the braking distance — it increases by a factor of 4 (four times as long). At 30 mph braking distance is ~45 ft; at 60 mph it is ~180 ft.",
@@ -7500,7 +7500,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why is it dangerous to speed while towing a trailer?",
         "correct_count": 1,
         "explanation": "Towing a trailer increases the total vehicle weight, which increases braking distance. It also raises the risk of trailer sway at higher speeds and reduces the driver's ability to maneuver safely. Trailer sway becomes uncontrollable faster at higher speeds.",
@@ -7515,7 +7515,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is cited for speeding 30 mph over the limit in an Oklahoma work zone with workers present. What is the minimum fine?",
         "correct_count": 1,
         "explanation": "Speeding in an Oklahoma active work zone doubles the standard fine. At 25+ mph over the limit the base fine is $200; doubled in a work zone it is at least $400. Additionally, a second work zone speeding conviction can result in license suspension.",
@@ -7530,7 +7530,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'speed variance' and why does it contribute to crashes?",
         "correct_count": 1,
         "explanation": "Speed variance is the difference between the speed of one vehicle and the average speed of surrounding traffic. Studies show crash risk rises both at very high and very low speeds relative to surrounding traffic — vehicles traveling significantly slower or faster than the traffic stream are more likely to be involved in crashes.",
@@ -7545,7 +7545,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the Oklahoma statute that establishes the basic speed rule?",
         "correct_count": 1,
         "explanation": "Oklahoma's basic speed rule is codified in 47 O.S. § 11-801, which requires every driver to operate at a speed that is 'reasonable and prudent' for existing conditions, regardless of posted limits.",
@@ -7560,7 +7560,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does load (cargo weight) affect a vehicle's stopping distance?",
         "correct_count": 1,
         "explanation": "A heavier load increases stopping distance because braking force must overcome more inertia. The same brake force applied to a heavier vehicle produces less deceleration. This is why loaded trucks need significantly more stopping distance than empty ones.",
@@ -7575,7 +7575,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At night on an open highway with low beams, what maximum speed allows a driver to stop within the illuminated distance?",
         "correct_count": 1,
         "explanation": "Low beams illuminate about 150 feet ahead. At 45 mph, total stopping distance (reaction + braking) is approximately 135–150 feet. Traveling faster than 45 mph on low beams means overdriving headlights — the driver cannot stop within the lit distance.",
@@ -7591,7 +7591,7 @@ QUESTIONS = [
     # ── Chapter 7 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At an intersection, a driver faces a solid red light but wants to make a left turn. What must they do?",
         "correct_count": 1,
         "explanation": "On a solid red light, turning left is prohibited except when turning from a one-way street onto another one-way street after a complete stop and yielding. Otherwise, the driver must stop and wait for a green signal.",
@@ -7606,7 +7606,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a 'Walk' pedestrian signal (illuminated walking figure) tell a pedestrian?",
         "correct_count": 1,
         "explanation": "A steady 'Walk' signal (white walking figure) indicates it is safe to begin crossing. Pedestrians should still watch for turning vehicles that may cross the crosswalk path.",
@@ -7621,7 +7621,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a yellow arrow signal at a traffic light indicate?",
         "correct_count": 1,
         "explanation": "A yellow arrow means the protected turn phase for that direction is ending and will be followed by either a red arrow or a green ball. Drivers should prepare to stop unless they cannot safely do so.",
@@ -7636,7 +7636,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a traffic officer faces you and waves their arm from side to side, what does this signal mean?",
         "correct_count": 1,
         "explanation": "A traffic officer waving an arm side to side (beckoning motion) signals drivers to proceed past the officer. It means 'come ahead' or 'move forward.'",
@@ -7651,7 +7651,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How long before a turn must a driver activate a turn signal on a highway (55 mph or above) in Oklahoma?",
         "correct_count": 1,
         "explanation": "On roads with a speed limit of 55 mph or higher, Oklahoma requires a turn signal to be activated at least 300 feet before the turn. On lower-speed roads, the minimum is 100 feet.",
@@ -7666,7 +7666,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the difference between a 'permissive' and a 'protected' left-turn phase?",
         "correct_count": 1,
         "explanation": "A protected left-turn phase (green arrow) means oncoming traffic is held by a red signal — the turning driver may proceed without yielding. A permissive phase (solid green circle) means oncoming traffic is moving — the driver must yield before turning left.",
@@ -7681,7 +7681,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What should a driver do when approaching a railroad crossing where the lights are flashing and the gate is down?",
         "correct_count": 1,
         "explanation": "When railroad crossing lights flash and the gate is down, drivers must stop at least 15 feet from the nearest rail and remain stopped until the gate fully rises and lights stop flashing. Never attempt to go around a lowered gate.",
@@ -7696,7 +7696,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a lane control signal with a yellow X mean, and who may use that lane?",
         "correct_count": 1,
         "explanation": "A flashing yellow X on an overhead lane control signal designates that lane for left turns only. Only drivers preparing to turn left may use it; straight-through travel is not permitted in that lane.",
@@ -7711,7 +7711,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After a stopped school bus resumes movement, when may drivers who stopped behind it proceed?",
         "correct_count": 1,
         "explanation": "Drivers must remain stopped until the school bus's red flashing lights and stop arm are deactivated, the stop arm is retracted, and the bus begins moving. Even then, drivers should watch for children who may still be near the road.",
@@ -7726,7 +7726,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a solid white 'DON'T WALK' (standing person) pedestrian signal mean?",
         "correct_count": 1,
         "explanation": "A steady (non-flashing) DON'T WALK signal means pedestrians must not begin or continue crossing. Anyone who has already crossed may be in the intersection, and drivers should be alert, but new pedestrians may not enter.",
@@ -7742,7 +7742,7 @@ QUESTIONS = [
     # ── Chapter 8 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the first thing a driver should do before beginning a pass on a two-lane road?",
         "correct_count": 1,
         "explanation": "Before passing, the driver must first confirm the pass is legal — check for a passing zone (broken center line), no signs prohibiting passing, and sufficient clear sight distance. Then check mirrors and blind spots, signal, and accelerate.",
@@ -7757,7 +7757,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "After returning to the right lane following a pass, what should a driver do with their turn signal?",
         "correct_count": 1,
         "explanation": "After completing a pass and returning to the right lane, the driver should cancel the turn signal (if it does not cancel automatically) to avoid confusing following drivers about their next intended move.",
@@ -7772,7 +7772,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the 'point of no return' during a passing maneuver?",
         "correct_count": 1,
         "explanation": "The point of no return is the moment during a pass when the driver has committed far enough into the oncoming lane that aborting (dropping back) is more dangerous than completing the pass. Beyond this point, the driver must accelerate and complete the pass.",
@@ -7787,7 +7787,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which of the following makes a passing maneuver on a two-lane road more dangerous?",
         "correct_count": 1,
         "explanation": "Passing on a curve is extremely dangerous because the driver cannot see oncoming traffic hidden by the curve until it is too late to abort the pass. Passes on curves are always prohibited.",
@@ -7802,7 +7802,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "On a three-lane road with a center lane designated for two-way left turns, may a driver use that center lane to pass?",
         "correct_count": 1,
         "explanation": "No. The center two-way left-turn lane is exclusively for left-turn preparation. Using it to pass or as a travel lane is illegal and dangerous because opposing traffic may also be using it to queue for a left turn.",
@@ -7817,7 +7817,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal obligation of a driver being overtaken when the passer sounds the horn?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires the driver being overtaken, upon hearing the passing vehicle's horn, to move to the right and allow safe passage. Speeding up or blocking the pass is a violation.",
@@ -7832,7 +7832,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, may a driver pass a vehicle that is stopped for a pedestrian in a crosswalk?",
         "correct_count": 1,
         "explanation": "No. Oklahoma law prohibits passing a vehicle that has stopped at a crosswalk to allow a pedestrian to cross. Doing so would expose the pedestrian to being struck.",
@@ -7847,7 +7847,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does Oklahoma law say about passing within 100 feet of a tunnel or bridge?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits passing within 100 feet of a tunnel, bridge, or railroad crossing because sight distance is severely limited — a driver cannot see far enough ahead to safely complete a pass.",
@@ -7862,7 +7862,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If a driver is being passed and senses the passer may not make it back safely, what is the correct response?",
         "correct_count": 1,
         "explanation": "If the overtaking vehicle appears unable to complete the pass safely, the driver being passed should reduce speed to create a safe gap for the passer to move back into the right lane. Slowing makes room — speeding up forces a collision.",
@@ -7877,7 +7877,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does wet pavement change the dynamics of a passing maneuver?",
         "correct_count": 1,
         "explanation": "On wet pavement, acceleration takes longer (less tire grip), braking distances are longer, and vehicles may hydroplane. A pass that is safe on dry pavement may be dangerous on wet pavement because the driver cannot accelerate or abort as quickly.",
@@ -7893,7 +7893,7 @@ QUESTIONS = [
     # ── Chapter 9 · batch 3 (questions 36-45) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is the most reliable way to determine if it is safe to drive after drinking?",
         "correct_count": 1,
         "explanation": "The only reliable way is to use a calibrated personal breathalyzer or wait sufficient time for the alcohol to metabolize. Feeling sober, performing coordination tests, or drinking coffee do not reliably indicate BAC.",
@@ -7908,7 +7908,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What effect does alcohol have on a driver's peripheral vision?",
         "correct_count": 1,
         "explanation": "Alcohol narrows the field of vision — reducing peripheral vision. This 'tunnel vision' effect means a driver may miss hazards at the edges of their visual field, such as pedestrians stepping off a curb or vehicles approaching from the side.",
@@ -7923,7 +7923,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'Express Consent' law applies to what type of chemical test?",
         "correct_count": 1,
         "explanation": "Oklahoma uses both 'implied consent' (for chemical tests after a DUI arrest) and 'express consent' provisions. The express consent law specifically covers preliminary breath tests (PBTs) administered roadside before arrest, which are used to establish probable cause.",
@@ -7938,7 +7938,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does prescription medication interact with alcohol to affect driving?",
         "correct_count": 1,
         "explanation": "Many medications — including antihistamines, sleep aids, and some pain relievers — have a synergistic (multiplying) effect with alcohol, increasing impairment far beyond what either substance alone would cause. Even small amounts of alcohol combined with some medications can severely impair driving.",
@@ -7953,7 +7953,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is 'drug recognition evaluation' (DRE) and when does Oklahoma law enforcement use it?",
         "correct_count": 1,
         "explanation": "A Drug Recognition Evaluation is a 12-step protocol performed by a specially trained officer to identify impairment caused by drugs other than alcohol. It is used when a driver appears impaired but has a low or zero BAC, suggesting drug impairment.",
@@ -7968,7 +7968,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma DUI law, what is the administrative license suspension for a first DUI conviction (not a refusal)?",
         "correct_count": 1,
         "explanation": "A first DUI conviction in Oklahoma (BAC ≥ 0.08%) results in an administrative license revocation of 180 days. This is separate from — and in addition to — any criminal penalties.",
@@ -7983,7 +7983,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Can a driver be charged with DUI in Oklahoma for operating a vehicle under the influence of a legal prescription drug?",
         "correct_count": 1,
         "explanation": "Yes. Oklahoma's DUI law applies to impairment by any substance — including legally prescribed medications. If a prescription drug impairs the driver's ability to safely operate a vehicle, the driver can be charged with DUI.",
@@ -7998,7 +7998,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the Oklahoma 'Interlock Fund' and who must pay into it?",
         "correct_count": 1,
         "explanation": "The Oklahoma Impaired Driver Accountability Program (IDAP) requires DUI offenders who choose a modified license during revocation to install an ignition interlock device. A portion of the fees paid by offenders goes into a state fund that subsidizes IID installation for low-income offenders.",
@@ -8013,7 +8013,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum jail time for a first DUI conviction in Oklahoma?",
         "correct_count": 1,
         "explanation": "A first DUI conviction in Oklahoma carries a minimum of 10 days in jail (or 240 hours of community service in lieu of jail on some first offenses) and a fine up to $1,000, plus costs and fees.",
@@ -8028,7 +8028,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'per se DUI' in Oklahoma and why does it matter?",
         "correct_count": 1,
         "explanation": "Per se DUI means that having a BAC at or above the legal limit (0.08%) is itself sufficient for a DUI conviction — the prosecution does not need to prove the driver was actually impaired. The BAC measurement alone establishes the offense.",
@@ -8044,7 +8044,7 @@ QUESTIONS = [
     # ── Chapter 10 · batch 3 (questions 36-45) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the proper hand signal for a bicyclist intending to stop?",
         "correct_count": 1,
         "explanation": "A bicyclist signals a stop by extending the left arm downward at about a 45-degree angle, palm facing backward — the same signal used by motor vehicle drivers.",
@@ -8059,7 +8059,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At what age is a child required by Oklahoma law to ride in a booster seat?",
         "correct_count": 1,
         "explanation": "Oklahoma requires children who are at least 4 years old but under 8 years old (and under 4'9\" tall) to use a belt-positioning booster seat. Children under 4 must use a forward- or rear-facing child safety seat.",
@@ -8074,7 +8074,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the minimum following distance recommended behind a motorcycle?",
         "correct_count": 1,
         "explanation": "Drivers should maintain at least a 3-second following distance behind motorcycles — the same as for other vehicles. However, motorcycles can stop more quickly than cars, so a 4-second gap is often safer to allow adequate reaction time.",
@@ -8089,7 +8089,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Where should a driver position their vehicle when turning left across a bike lane?",
         "correct_count": 1,
         "explanation": "When turning left across a bike lane, a driver should signal well in advance, yield to any cyclists in the bike lane, and then move across the bike lane to complete the turn. The driver must not block the bike lane while waiting to turn.",
@@ -8104,7 +8104,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "In Oklahoma, what is the maximum speed limit for mopeds on public roads?",
         "correct_count": 1,
         "explanation": "Oklahoma defines a moped as a motorized vehicle with a motor of 50cc or less that cannot exceed 30 mph on level ground. Mopeds are not permitted on roads with speed limits above 45 mph.",
@@ -8119,7 +8119,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'door zone' hazard and how should a driver and cyclist handle it?",
         "correct_count": 1,
         "explanation": "The 'door zone' is the area beside parked cars where an opening car door can strike a passing cyclist. Drivers should check mirrors before opening doors; cyclists should ride 3–4 feet from parked cars to stay outside the door zone.",
@@ -8134,7 +8134,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma law requires drivers to treat farm equipment on public roads in what manner?",
         "correct_count": 1,
         "explanation": "Farm equipment (tractors, combines) traveling on public roads is legally permitted and must be treated with the same respect as any slow-moving vehicle. Drivers should follow at a safe distance, wait for a safe passing opportunity, and pass with care — farm equipment has limited sight and braking capability.",
@@ -8149,7 +8149,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does the SMV (Slow Moving Vehicle) emblem look like and what does it mean?",
         "correct_count": 1,
         "explanation": "The SMV emblem is a fluorescent orange-red triangle with a dark red reflective border. It must be displayed on vehicles and equipment traveling below 25 mph on public roads, such as farm tractors and horse-drawn vehicles, to warn faster-moving traffic.",
@@ -8164,7 +8164,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When a driver encounters a blind person using a white cane crossing a road, what does Oklahoma law require?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires all vehicles to stop and yield the right of way to a blind person using a white cane or guide dog at any point of crossing. This applies at all locations, not just crosswalks.",
@@ -8179,7 +8179,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'dooring' and who is legally responsible when it causes a cyclist crash?",
         "correct_count": 1,
         "explanation": "Dooring is when an occupant of a parked vehicle opens a door into the path of a passing cyclist, causing a crash. In Oklahoma, the person opening the door is responsible — vehicle occupants must check for cyclists before opening a door into traffic.",
@@ -8195,7 +8195,7 @@ QUESTIONS = [
     # ── Chapter 11 · batch 3 (questions 36-45) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the safest action when visibility drops to near zero in heavy fog?",
         "correct_count": 1,
         "explanation": "In near-zero visibility fog, the safest action is to pull completely off the road (not just the shoulder), turn off all lights, and wait for conditions to improve. Parking on the shoulder with lights on can lead following drivers into the parked vehicle.",
@@ -8210,7 +8210,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does 'oversteering' mean and when does it occur?",
         "correct_count": 1,
         "explanation": "Oversteering occurs when a driver turns the wheel more than needed for a given situation, causing the rear of the vehicle to slide outward (oversteer). It is common on slippery surfaces when trying to recover from a slide.",
@@ -8225,7 +8225,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is 'night blindness' and how does it affect driving?",
         "correct_count": 1,
         "explanation": "Night blindness (nyctalopia) is a condition where the eyes adapt poorly to low light, making it difficult to see at night or in dim conditions. Drivers with night blindness should have their vision checked and may require corrective lenses or be restricted to daytime driving.",
@@ -8240,7 +8240,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How should a driver handle driving through standing water of known depth (less than 6 inches)?",
         "correct_count": 1,
         "explanation": "If water depth is known to be shallow (under 6 inches), drive through slowly (below 5 mph) in the center of the road where depth is lowest, keep a light foot on the brake to dry the pads afterward, and test brakes after clearing the water.",
@@ -8255,7 +8255,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What driving adjustment should be made when driving into direct sunlight (sun glare)?",
         "correct_count": 1,
         "explanation": "When driving into direct sun glare, reduce speed, increase following distance, use a sun visor or sunglasses, and if glare is severe, briefly stop in a safe location. Glare can temporarily blind a driver — leaving more space gives more time to react.",
@@ -8270,7 +8270,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'road spray' and how does it affect driving on wet highways?",
         "correct_count": 1,
         "explanation": "Road spray is the mist thrown up by vehicle tires on wet pavement. At highway speeds, spray from surrounding vehicles — especially trucks — can momentarily eliminate forward visibility. Increasing following distance and using windshield wipers on high speed helps manage it.",
@@ -8285,7 +8285,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'vehicle dynamics' and why does it matter more in adverse conditions?",
         "correct_count": 1,
         "explanation": "Vehicle dynamics refers to how a vehicle responds to steering, braking, and acceleration — including weight transfer, traction limits, and suspension behavior. In adverse conditions (wet, ice, high speed), vehicles reach their dynamic limits faster, making precise inputs critical to maintaining control.",
@@ -8300,7 +8300,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why should a driver avoid using the parking brake as the primary way to stop on ice?",
         "correct_count": 1,
         "explanation": "On ice, applying the parking brake locks the rear wheels instantly, causing the rear of the vehicle to swing sideways (spin out). The parking brake should only be used gradually as a last resort on icy surfaces — regular brakes with ABS are far safer.",
@@ -8315,7 +8315,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does altitude affect vehicle performance and why should Oklahoma drivers heading to mountainous areas know this?",
         "correct_count": 1,
         "explanation": "At higher altitudes, thinner air reduces engine power output (especially in non-turbocharged engines) and increases braking distances since the vehicle accelerates more slowly but also takes longer to slow down on steep grades. Drivers should use engine braking on mountain descents.",
@@ -8330,7 +8330,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the danger of using cruise control on a road with intermittent ice patches?",
         "correct_count": 1,
         "explanation": "On roads with intermittent ice patches, cruise control is dangerous because when a tire hits ice and loses traction, the system may accelerate the wheel to maintain set speed — worsening the skid. Cruise control should never be used in any icy or potentially icy conditions.",
@@ -8346,7 +8346,7 @@ QUESTIONS = [
     # ── Chapter 12 · batch 3 (questions 36-45) ───────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the first step a driver should take when they realize they are driving the wrong way on a one-way street?",
         "correct_count": 1,
         "explanation": "As soon as a driver realizes they are going the wrong way, they should turn on hazard lights, slow down, pull to the right safely, stop, and then reverse or turn around when it is safe — not attempt to quickly drive through to the next exit.",
@@ -8361,7 +8361,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the safest position to be in relative to an airbag when seated in a vehicle?",
         "correct_count": 1,
         "explanation": "Drivers and front passengers should sit at least 10 inches from the steering wheel or dashboard airbag. Sitting too close increases injury risk from the deploying airbag (which expands at up to 200 mph). Seat belts must always be worn — airbags supplement belts, not replace them.",
@@ -8376,7 +8376,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should a driver do if their vehicle starts to roll over?",
         "correct_count": 1,
         "explanation": "If a rollover begins, the driver should hold the steering wheel firmly, keep feet on the floor, and brace for impact. Seat belts are critical — they keep occupants inside the vehicle where the survival space (roll cage) can protect them. Trying to jump out is fatal.",
@@ -8391,7 +8391,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When is it appropriate to move vehicles involved in a crash before police arrive?",
         "correct_count": 1,
         "explanation": "Oklahoma allows drivers to move vehicles off the roadway if they can be moved safely and no one was injured, to prevent further crashes. Documenting the scene with photos before moving is highly recommended. If injuries occurred, vehicles should remain in place.",
@@ -8406,7 +8406,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a driver's door is jammed after a crash, what is the safest way to exit the vehicle?",
         "correct_count": 1,
         "explanation": "If the driver's door is jammed, the driver should attempt to exit through the passenger door, a rear door, or a window. If none of these are accessible and fire or flooding is imminent, breaking a side window (not the windshield — it is laminated) with a sharp object is the next option.",
@@ -8421,7 +8421,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal duty of a driver who witnesses a crash but was not involved — under Oklahoma's Good Samaritan Act?",
         "correct_count": 1,
         "explanation": "Oklahoma's Good Samaritan Act protects individuals who voluntarily and in good faith provide emergency care at a crash scene from civil liability, as long as they do not act with gross negligence. The act encourages bystanders to render aid without fear of lawsuit.",
@@ -8436,7 +8436,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct technique for extricating a vehicle that is stuck in mud or snow without a tow truck?",
         "correct_count": 1,
         "explanation": "When stuck in mud or snow, rock the vehicle by alternating between drive and reverse to gain momentum. Avoid spinning the tires — it digs deeper. Adding traction (sand, gravel, floor mats) under the drive wheels and reducing tire pressure slightly can also help.",
@@ -8451,7 +8451,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'compassion fatigue' in the context of first responders at crash scenes, and why does it matter for drivers?",
         "correct_count": 1,
         "explanation": "Compassion fatigue is the emotional and physical exhaustion that affects first responders repeatedly exposed to trauma. For drivers, it is a reminder that slowing to gawk (rubbernecking) at crash scenes adds to responder stress, causes secondary crashes, and delays help reaching victims.",
@@ -8466,7 +8466,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct method for using flares to warn of a disabled vehicle on a highway?",
         "correct_count": 1,
         "explanation": "Flares should be placed: one at the vehicle's rear, one 100 feet behind, and one 200 feet behind (or 300 feet on a high-speed road). On a curve, the first flare should be placed before the curve so approaching drivers see it in time to slow. Never use flares near a fuel spill.",
@@ -8481,7 +8481,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What precaution must a driver take before lifting the hood to inspect a smoking or overheated engine?",
         "correct_count": 1,
         "explanation": "Before lifting the hood of a smoking or overheated engine, the driver must turn off the ignition and wait for the engine to cool — at least 30 minutes. Opening the hood too soon can release scalding steam. Never open the radiator cap on a hot engine — pressurized coolant can cause severe burns.",
@@ -8497,7 +8497,7 @@ QUESTIONS = [
     # ── Chapter 1 · batch 5 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What must an Oklahoma driver do when their name changes (e.g., after marriage)?",
         "correct_count": 1,
         "explanation": "Oklahoma drivers must update their driver license within 30 days of a legal name change by visiting a DPS licensing office in person with proof of the name change (e.g., marriage certificate or court order).",
@@ -8512,7 +8512,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If an Oklahoma driver license is lost or stolen, what should the driver do?",
         "correct_count": 1,
         "explanation": "If a license is lost or stolen, the driver should promptly apply for a duplicate license at a DPS licensing office. A fee is charged for the duplicate. The driver should also report a stolen license to law enforcement.",
@@ -8527,7 +8527,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is an SR-22 and when might an Oklahoma driver be required to file one?",
         "correct_count": 1,
         "explanation": "An SR-22 is a certificate of financial responsibility (proof of insurance) filed by an insurer with the DPS on behalf of a driver. It is required after certain serious violations — DUI, driving uninsured, or license suspension — to prove the driver carries the state minimum insurance.",
@@ -8542,7 +8542,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When moving to Oklahoma from another state, what must a new resident do with their out-of-state driver license?",
         "correct_count": 1,
         "explanation": "New Oklahoma residents must surrender their out-of-state license when they obtain an Oklahoma license. They cannot legally hold driver licenses from two states simultaneously. The knowledge test may be waived for valid out-of-state license holders.",
@@ -8557,7 +8557,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How many points does Oklahoma assess for a conviction of following too closely (tailgating)?",
         "correct_count": 1,
         "explanation": "Oklahoma assesses 2 points for a conviction of following too closely. Points accumulate on the driving record and can lead to suspension if 10 or more points are accumulated within a 5-year period.",
@@ -8572,7 +8572,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under federal and Oklahoma law, what disqualifies a CDL holder from operating a commercial vehicle?",
         "correct_count": 1,
         "explanation": "A CDL holder is disqualified from operating a commercial vehicle for offenses including: DUI in any vehicle (commercial or personal), leaving the scene of an accident, using a vehicle to commit a felony, or a second serious traffic violation within 3 years.",
@@ -8587,7 +8587,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the minimum amount of liability insurance required to register and drive a vehicle in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma requires minimum liability insurance of 25/50/25: $25,000 per person for bodily injury, $50,000 per accident for bodily injury, and $25,000 per accident for property damage.",
@@ -8602,7 +8602,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What medical conditions must an Oklahoma driver report to the DPS?",
         "correct_count": 1,
         "explanation": "Oklahoma requires drivers to report medical conditions that may impair their ability to drive safely — such as seizure disorders, vision impairment below the legal standard, dementia, or other neurological conditions. DPS may then require a medical evaluation before allowing the driver to continue.",
@@ -8617,7 +8617,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What must a CDL applicant provide that a standard license applicant does not?",
         "correct_count": 1,
         "explanation": "CDL applicants must provide a current DOT (Department of Transportation) medical examiner's certificate proving they meet the physical fitness standards required for commercial driving, in addition to the standard license requirements.",
@@ -8632,7 +8632,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the consequence in Oklahoma for driving with expired vehicle registration?",
         "correct_count": 1,
         "explanation": "Driving with expired vehicle registration in Oklahoma is a misdemeanor. The vehicle may be subject to impoundment, and the driver faces a fine. Registration must be renewed annually through the county tag agency.",
@@ -8648,7 +8648,7 @@ QUESTIONS = [
     # ── Chapter 2 · batch 5 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the purpose of a 'space cushion' while driving?",
         "correct_count": 1,
         "explanation": "A space cushion is a buffer of open space maintained around the vehicle on all sides. It gives the driver time and room to react and maneuver in response to hazards without making contact with other vehicles or objects.",
@@ -8663,7 +8663,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When is it legal to use a vehicle horn in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law permits horn use when reasonably necessary to ensure safe operation — such as warning pedestrians or other drivers of danger. Using the horn to express anger, greet someone, or celebrate is not permitted.",
@@ -8678,7 +8678,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does 'communicating with other drivers' mean in the context of safe driving?",
         "correct_count": 1,
         "explanation": "Communicating with other drivers means using signals, lights, and horn in a timely manner to convey your intentions — such as turn signals before turning, hazard lights when stopped, and eye contact at intersections — so others can anticipate your movements.",
@@ -8693,7 +8693,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does aging typically affect a driver's ability?",
         "correct_count": 1,
         "explanation": "As drivers age, reaction time slows, night vision decreases, peripheral vision narrows, and flexibility (for checking blind spots) diminishes. Older drivers can compensate by driving slower, avoiding night or high-traffic driving, and getting regular vision checks.",
@@ -8708,7 +8708,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What should a driver do to manage a large following vehicle (tailgater) without becoming confrontational?",
         "correct_count": 1,
         "explanation": "If someone is tailgating, the safest response is to gradually slow down and increase the gap ahead, allowing the tailgater more room to see and stop — or to change lanes and let them pass. Do not brake-check a tailgater.",
@@ -8723,7 +8723,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the recommended response when another driver exhibits road rage behavior toward you?",
         "correct_count": 1,
         "explanation": "When targeted by a road rage driver, do not engage, make eye contact, or respond with gestures. Put distance between your vehicle and theirs. If followed, drive to a police station or a crowded public place — never go home.",
@@ -8738,7 +8738,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'velocity blindness' and at what speeds does it begin to affect drivers?",
         "correct_count": 1,
         "explanation": "Velocity blindness (tunnel vision due to speed) is the narrowing of peripheral vision that occurs as speed increases. At 60 mph, peripheral vision begins to narrow noticeably; at 70+ mph, only the road directly ahead is in sharp focus, significantly reducing hazard detection.",
@@ -8753,7 +8753,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under what circumstances may a driver legally use a handheld cell phone while driving in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits handheld cell phone use while driving for all drivers. The only exception is reporting an emergency — calling 911 while driving is permitted. Hands-free use is allowed for adults (drivers 18 and older); those under 18 are prohibited from all cell phone use.",
@@ -8768,7 +8768,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does 'Smith System' driving teach and how many keys does it have?",
         "correct_count": 1,
         "explanation": "The Smith System is a defensive driving method with 5 keys: (1) Aim High in Steering — look 15 seconds ahead; (2) Get the Big Picture — scan widely; (3) Keep Your Eyes Moving — check mirrors every 5–8 seconds; (4) Leave Yourself an Out — maintain space; (5) Make Sure They See You — communicate.",
@@ -8783,7 +8783,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver_responsibility",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'risk compensation' behavior in driving, and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Risk compensation is the tendency for drivers to take more risks when they feel safer — for example, driving faster because they are wearing a seat belt, or following more closely because they have ABS. It can cancel out the safety benefits of protective equipment.",
@@ -8799,7 +8799,7 @@ QUESTIONS = [
     # ── Chapter 3 · batch 5 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does cloudy or brownish brake fluid indicate?",
         "correct_count": 1,
         "explanation": "Cloudy or brownish brake fluid indicates moisture contamination. Brake fluid absorbs water over time, which lowers its boiling point and can cause brake fade under heavy use. Contaminated fluid should be flushed and replaced.",
@@ -8814,7 +8814,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Where should a driver check the engine coolant level in a modern vehicle?",
         "correct_count": 1,
         "explanation": "In modern vehicles, coolant level is checked at the transparent overflow/coolant reservoir (not the radiator cap directly) when the engine is cold. The reservoir has MIN and MAX markings; level should be between them.",
@@ -8829,7 +8829,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What Oklahoma law governs securing cargo in or on a vehicle?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires that all cargo be secured so that it cannot fall, shift, or blow off the vehicle. Unsecured cargo that falls and causes injury or property damage can result in criminal charges and civil liability for the driver.",
@@ -8844,7 +8844,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the function of a vehicle's power steering fluid and what happens when it is low?",
         "correct_count": 1,
         "explanation": "Power steering fluid provides the hydraulic pressure that makes steering lighter and easier. When fluid is low, the driver notices stiff or heavy steering, especially at low speeds and while parking. Low fluid can also indicate a leak that should be inspected.",
@@ -8859,7 +8859,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does Oklahoma law require regarding windshield cracks or damage?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires that a vehicle's windshield not impair the driver's view. Cracks or chips in the driver's line of sight are a safety hazard and may result in a vehicle inspection failure. Cracks that extend across the windshield or are in the driver's primary view zone require repair or replacement.",
@@ -8874,7 +8874,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does it mean for a vehicle to have a 'unibody' construction versus a 'body-on-frame' design?",
         "correct_count": 1,
         "explanation": "Unibody (monocoque) construction integrates the body and frame into a single structure, making the vehicle lighter and more rigid. Body-on-frame places a separate body on a distinct ladder frame — typical of trucks and SUVs. Unibody vehicles tend to have more predictable crumple zone behavior in crashes.",
@@ -8889,7 +8889,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is a 'safety chain' and when is it required when towing a trailer in Oklahoma?",
         "correct_count": 1,
         "explanation": "A safety chain is a secondary connection between a trailer and the towing vehicle that prevents the trailer from separating completely if the hitch fails. Oklahoma requires safety chains on all trailers towed on public roads, crossed under the tongue to catch it if it drops.",
@@ -8904,7 +8904,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the purpose of a vehicle's cabin air filter and how often should it be replaced?",
         "correct_count": 1,
         "explanation": "The cabin air filter cleans the air entering the vehicle's HVAC system, removing dust, pollen, and pollutants. A clogged filter reduces airflow from the vents and can cause increased defrost times. Most manufacturers recommend replacement every 12,000–15,000 miles or once a year.",
@@ -8919,7 +8919,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct way to check engine oil level?",
         "correct_count": 1,
         "explanation": "To check oil: park on level ground, turn off the engine and wait a few minutes for oil to drain back into the pan, pull the dipstick, wipe it clean, reinsert fully, then pull again. The oil level should be between the MIN and MAX marks. Also note oil color — very dark oil may need changing.",
@@ -8934,7 +8934,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle_equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What Oklahoma law applies to the use of studded snow tires?",
         "correct_count": 1,
         "explanation": "Oklahoma permits the use of studded snow tires only between November 1 and April 1. Using studded tires outside this window is prohibited because the metal studs damage dry pavement.",
@@ -8950,7 +8950,7 @@ QUESTIONS = [
     # ── Chapter 4 · batch 4 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a white rectangular sign with a black 'SPEED LIMIT' header and a number indicate?",
         "correct_count": 1,
         "explanation": "A white rectangular sign with 'SPEED LIMIT' and a number is a regulatory speed limit sign. It shows the maximum legal speed for that road segment under normal conditions. Exceeding this speed is a violation regardless of road conditions.",
@@ -8965,7 +8965,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a yellow diamond sign with a curved arrow indicate?",
         "correct_count": 1,
         "explanation": "A diamond-shaped yellow sign with a curved arrow warns of a curve ahead. The sharpness and direction of the arrow reflect the nature of the curve. Drivers should reduce speed before entering the curve.",
@@ -8980,7 +8980,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of a 'STOP AHEAD' warning sign?",
         "correct_count": 1,
         "explanation": "A 'STOP AHEAD' warning sign (diamond-shaped, yellow with black text and a stop sign symbol) gives advance notice that a stop sign is ahead, allowing drivers at high speeds time to begin slowing before reaching the stop sign.",
@@ -8995,7 +8995,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'NO U-TURN' sign look like and what does it mean?",
         "correct_count": 1,
         "explanation": "A NO U-TURN sign is a white rectangle with a U-turn arrow crossed by a red circle and diagonal slash. It is a regulatory sign — U-turns are prohibited at that location under any circumstances.",
@@ -9010,7 +9010,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What do chevron (>) alignment guide signs indicate on a sharp curve?",
         "correct_count": 1,
         "explanation": "Chevron alignment signs (black arrows on yellow background mounted on the outside of a curve) guide drivers through sharp curves by showing the direction and severity of the turn. They are placed so the path of the curve is visible at night.",
@@ -9025,7 +9025,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does an HOV (High Occupancy Vehicle) sign specify, and what is the minimum occupancy in Oklahoma?",
         "correct_count": 1,
         "explanation": "HOV lane signs specify that the lane is reserved for vehicles with a minimum number of occupants (typically 2+) during posted hours. Oklahoma's HOV lanes (where they exist) require a minimum of 2 occupants. The exact requirement is posted on accompanying signs.",
@@ -9040,7 +9040,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does a 'SIGNAL AHEAD' warning sign tell a driver?",
         "correct_count": 1,
         "explanation": "A SIGNAL AHEAD sign (diamond-shaped yellow) warns that a traffic signal is ahead, particularly where the signal might not be visible until close. Drivers should be prepared to stop and should not treat it as a guarantee they will get a green light.",
@@ -9055,7 +9055,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the difference between a 'LANE ENDS' sign and a 'MERGE' sign?",
         "correct_count": 1,
         "explanation": "A LANE ENDS sign warns that the current lane ends ahead and the driver must merge into an adjacent lane (shown by arrows converging). A MERGE sign warns that another lane of traffic will be merging into the driver's lane from the side. In both cases, drivers must adjust position cooperatively.",
@@ -9070,7 +9070,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the shape and color of a 'WRONG WAY' sign and where is it typically found?",
         "correct_count": 1,
         "explanation": "A WRONG WAY sign is rectangular with a red background and white text. It is placed at the entry point of one-way streets or highway exit ramps to stop drivers who have entered from the wrong direction.",
@@ -9085,7 +9085,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A work zone flagger holds a sign. When the red STOP side faces the driver, what must the driver do?",
         "correct_count": 1,
         "explanation": "When a flagger shows the red STOP side of their paddle sign, the driver must stop completely and remain stopped until the flagger rotates the sign to the green SLOW side. Failing to obey a flagger is a traffic violation.",
@@ -9101,7 +9101,7 @@ QUESTIONS = [
     # ── Chapter 5 · batch 4 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is an HOV lane and who may legally use it in Oklahoma?",
         "correct_count": 1,
         "explanation": "An HOV (High Occupancy Vehicle) lane is a lane reserved for vehicles carrying a minimum number of occupants (usually 2+) during posted hours. Single-occupant vehicles violate HOV restrictions and may be cited. Emergency vehicles, motorcycles, and certain alternatively fueled vehicles may also qualify.",
@@ -9116,7 +9116,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How close to a bus stop may a vehicle legally park in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits parking within 20 feet of a bus stop (in front of the stop zone). This ensures buses can pull to the curb to pick up and drop off passengers safely.",
@@ -9131,7 +9131,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is 'jaywalking' and is it illegal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Jaywalking is crossing a street at a point other than a marked or unmarked crosswalk at an intersection, or crossing against a signal. It is illegal in Oklahoma — pedestrians must use crosswalks and obey signals when available.",
@@ -9146,7 +9146,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does Oklahoma law say about parking in a designated handicapped (ADA) parking space without proper authorization?",
         "correct_count": 1,
         "explanation": "Parking in an ADA-designated handicapped space without a valid placard or license plate is a misdemeanor in Oklahoma. Fines can be up to $150 for a first offense and escalate for repeat violations. The space must be kept clear for those with mobility disabilities.",
@@ -9161,7 +9161,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How close to a private driveway is parking prohibited in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma prohibits parking in front of a private driveway. No specific distance is required — the vehicle must not block any portion of the driveway entrance so the property owner can enter and exit.",
@@ -9176,7 +9176,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Must bicyclists obey traffic signals and stop signs in Oklahoma?",
         "correct_count": 1,
         "explanation": "Yes. Oklahoma law requires bicyclists to obey all traffic signals, stop signs, and traffic laws — the same as motor vehicle operators. A bicyclist who runs a red light or a stop sign can be cited.",
@@ -9191,7 +9191,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is a 'bike box' (advanced stop line) and how must drivers treat it?",
         "correct_count": 1,
         "explanation": "A bike box is a green-painted box at the front of an intersection stop line, giving cyclists space to position ahead of motor vehicles. Drivers must stop behind the bike box line — not within it — when the light is red.",
@@ -9206,7 +9206,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, when a driver enters an intersection on a green light but traffic is backed up and they cannot clear the intersection before the light turns red, what should they do?",
         "correct_count": 1,
         "explanation": "Oklahoma law (and common traffic law) prohibits 'blocking the box' — entering an intersection when you cannot clear it before the light changes. A driver should wait at the stop line until there is sufficient space to completely clear the intersection.",
@@ -9221,7 +9221,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the correct way to share a lane with a public transit bus that is pulling back into traffic after a stop?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to yield to transit buses re-entering traffic from a designated bus stop area when the bus signals its intent to merge. This law recognizes that buses are large and need extra space and cooperation to re-enter safely.",
@@ -9236,7 +9236,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic_laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'negligent driving' under Oklahoma law and how does it differ from reckless driving?",
         "correct_count": 1,
         "explanation": "Negligent driving is operating a vehicle without the care a reasonable person would use, causing or risking harm — such as not watching for pedestrians. Reckless driving involves a willful disregard for safety at a higher level of culpability. Reckless driving carries heavier penalties (4 points); negligent driving typically 2 points.",
@@ -9252,7 +9252,7 @@ QUESTIONS = [
     # ── Chapter 6 · batch 4 (questions 46-55) ────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the speed limit in an Oklahoma alley?",
         "correct_count": 1,
         "explanation": "The statutory speed limit in an alley in Oklahoma is 15 mph. Alleys are narrow, with limited visibility and often pedestrian activity, requiring very slow speed.",
@@ -9267,7 +9267,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Are radar detectors legal for passenger vehicle drivers in Oklahoma?",
         "correct_count": 1,
         "explanation": "Radar detectors are legal for use in passenger vehicles in Oklahoma. However, they are prohibited in commercial vehicles (those over 10,000 lbs GVWR) under federal law (49 CFR 392.71).",
@@ -9282,7 +9282,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does it mean when speed enforcement uses the 'pacing' method?",
         "correct_count": 1,
         "explanation": "In the pacing method, a law enforcement officer follows a vehicle at the same speed for a measured distance, then checks their own calibrated speedometer to establish the vehicle's speed. This method is commonly used where radar or LIDAR is not practical.",
@@ -9297,7 +9297,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What speed limit applies in an Oklahoma school zone when the flashing yellow light is NOT active?",
         "correct_count": 1,
         "explanation": "When the school zone flashing beacon is not active, the posted school zone speed limit (typically 25 mph) does not apply — the standard road speed limit applies. However, drivers should remain alert for children at all times.",
@@ -9312,7 +9312,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does LIDAR speed enforcement measure, and how does it differ from radar?",
         "correct_count": 1,
         "explanation": "LIDAR (Light Detection and Ranging) uses laser pulses to measure the speed of a specific vehicle with precision. Unlike radar (which sends out broad radio waves covering a wide area), LIDAR targets a single vehicle, making it harder to detect with a standard radar detector.",
@@ -9327,7 +9327,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the speed limit for vehicles towing a trailer on Oklahoma highways?",
         "correct_count": 1,
         "explanation": "Vehicles towing a trailer in Oklahoma are subject to the same posted speed limits as other vehicles. However, trailer manufacturers often recommend lower speeds (typically 55 mph maximum for many trailers), and Oklahoma's basic speed rule requires driving at a speed that is safe for conditions — including the added weight and sway risk of a trailer.",
@@ -9342,7 +9342,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is a 'speed trap' under Oklahoma law?",
         "correct_count": 1,
         "explanation": "Oklahoma law (47 O.S. § 11-809) defines a speed trap as a section of road where a speed limit is set at an unreasonably low level compared to the actual road conditions, used primarily to generate fine revenue rather than promote safety. Evidence gathered in a speed trap may be inadmissible.",
@@ -9357,7 +9357,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does rain reduce the effectiveness of brakes and by approximately what percentage?",
         "correct_count": 1,
         "explanation": "Rain reduces braking effectiveness because water on brake drums or discs reduces friction. Drum brakes can lose up to 30–40% of their effectiveness when wet. Disc brakes recover faster. After driving through standing water, lightly applying the brakes helps dry them.",
@@ -9372,7 +9372,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does 'prima facie' mean in relation to Oklahoma's posted speed limits, and how can a driver rebut the presumption?",
         "correct_count": 1,
         "explanation": "Prima facie means 'on its face' — the posted limit is presumed the safe maximum. A driver exceeding the limit is presumed to be in violation. The driver can rebut this in court by showing conditions (e.g., clear road, no traffic, good weather) made the higher speed safe — though this defense rarely succeeds.",
@@ -9387,7 +9387,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At what speed does a vehicle's fuel efficiency typically peak, and what happens beyond that speed?",
         "correct_count": 1,
         "explanation": "Most vehicles achieve peak fuel efficiency between 45–55 mph. Above 55 mph, aerodynamic drag increases rapidly (it increases with the square of speed), causing fuel consumption to rise significantly. Driving at 70 mph can use 15–20% more fuel than at 55 mph.",
@@ -9403,7 +9403,7 @@ QUESTIONS = [
     # ── Chapter 7 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At a railroad crossing with no gates or signals, you must stop when you are within how many feet of the nearest rail if a train is approaching?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires stopping not less than 15 feet and not more than 50 feet from the nearest rail when a train is approaching an uncontrolled crossing.",
@@ -9418,7 +9418,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When you see a pedestrian 'WALK' signal change to a flashing 'DON'T WALK', what should a pedestrian already in the crosswalk do?",
         "correct_count": 1,
         "explanation": "A flashing DON'T WALK means pedestrians who have already started crossing should proceed to complete the crossing. Pedestrians who have not yet stepped off the curb should not start.",
@@ -9433,7 +9433,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At a four-way stop, two cars arrive simultaneously from opposite directions. Car A intends to go straight; Car B intends to turn left. Who has the right-of-way?",
         "correct_count": 1,
         "explanation": "When two vehicles arrive simultaneously from opposite directions, the vehicle going straight has the right-of-way over the vehicle turning left.",
@@ -9448,7 +9448,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A vehicle is approaching an intersection with a green light when an emergency vehicle with lights and siren appears from a side street. What must the driver do?",
         "correct_count": 1,
         "explanation": "Even with a green light, drivers must yield to emergency vehicles. You must pull over to the nearest edge of the road and stop until the emergency vehicle passes.",
@@ -9463,7 +9463,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which of the following actions is legal when making a right turn at a red light in Oklahoma?",
         "correct_count": 1,
         "explanation": "A right turn on red is permitted after a complete stop, yielding to all pedestrians and vehicles that have the right-of-way, unless a sign specifically prohibits it.",
@@ -9478,7 +9478,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At a partially-controlled intersection (stop sign on one approach only), a driver on the stop-sign approach wants to turn left. Who has priority?",
         "correct_count": 1,
         "explanation": "Vehicles on the uncontrolled (through) road have the absolute right-of-way. The driver with the stop sign must yield before turning left.",
@@ -9493,7 +9493,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is waiting to turn left at an intersection. Oncoming traffic has a green light. When is it safe to complete the left turn?",
         "correct_count": 1,
         "explanation": "You must wait for a gap in oncoming traffic large enough to complete the turn safely. Never cut across oncoming traffic assuming they will slow down.",
@@ -9508,7 +9508,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a flashing yellow traffic signal mean?",
         "correct_count": 1,
         "explanation": "A flashing yellow light means slow down and proceed with caution. You are not required to stop unless cross traffic is present.",
@@ -9523,7 +9523,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When approaching a roundabout, who has the right-of-way?",
         "correct_count": 1,
         "explanation": "Vehicles already circulating inside the roundabout have the right-of-way. Entering vehicles must yield to traffic already in the roundabout.",
@@ -9538,7 +9538,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver stopped at a red light intends to turn right. A bicycle lane runs along the right edge of the road. What must the driver do before turning?",
         "correct_count": 1,
         "explanation": "Before merging into the bicycle lane to turn right, the driver must check for cyclists and yield to any bicycle in or approaching the bike lane. You must not cut across an active bike lane.",
@@ -9554,7 +9554,7 @@ QUESTIONS = [
     # ── Chapter 8 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Convex (wide-angle) mirrors mounted on the passenger side of a vehicle are useful because they:",
         "correct_count": 1,
         "explanation": "Convex mirrors give a wider field of view than flat mirrors, helping reduce blind spots. However, objects in convex mirrors appear farther away than they actually are.",
@@ -9569,7 +9569,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When exiting a multi-lane highway, what is the correct procedure?",
         "correct_count": 1,
         "explanation": "Signal early, then move into the far-right lane well before the exit. Reduce speed after entering the exit ramp, not before.",
@@ -9584,7 +9584,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "On a three-lane highway, which lane is generally considered the 'travel lane' for non-passing traffic?",
         "correct_count": 1,
         "explanation": "On a three-lane highway, the right lane is the normal travel lane. The center and left lanes are for passing. Return to the right lane after passing.",
@@ -9599,7 +9599,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "You want to pass a slow-moving vehicle on a two-lane road. The road curves ahead and you cannot see oncoming traffic. What should you do?",
         "correct_count": 1,
         "explanation": "If you cannot see at least 500 feet ahead (the Oklahoma minimum sight distance for passing), you must not attempt to pass. Blind curves and hills are no-passing zones.",
@@ -9614,7 +9614,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the minimum following distance recommended when driving behind a large truck at highway speeds?",
         "correct_count": 1,
         "explanation": "Because large trucks have larger blind spots and longer stopping distances, you should maintain at least a 4-second following gap (some sources cite 6 seconds for trucks). Critically, if you cannot see the truck's mirrors, the driver cannot see you.",
@@ -9629,7 +9629,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver checks the mirror and blind spot before changing lanes and sees no vehicles. Mid-lane-change, another car appears. What most likely caused this?",
         "correct_count": 1,
         "explanation": "The other vehicle was likely in the first driver's blind spot when the mirror check was made, then moved into view during the lane change. This illustrates why continuous visual scanning — not just a one-time check — is essential.",
@@ -9644,7 +9644,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "On a freeway with an on-ramp merging from the right, what is the preferred action for freeway drivers in the right lane?",
         "correct_count": 1,
         "explanation": "When safe and legal, freeway drivers should move to the left lane to give merging vehicles room. If a lane change is not possible, they should adjust speed to create a gap.",
@@ -9659,7 +9659,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma's 'Move Over' law requires drivers approaching a stationary emergency or utility vehicle with lights activated to:",
         "correct_count": 1,
         "explanation": "Oklahoma's Move Over law requires drivers to move one lane away from the stationary vehicle if it is safe to do so. If a lane change is not possible, you must slow to a safe and reasonable speed.",
@@ -9674,7 +9674,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which factor most dramatically increases the danger of a lane change at high speed?",
         "correct_count": 1,
         "explanation": "At higher speeds, the closing speed with a vehicle in the target lane is much greater, the blind spot exists for a shorter time window, and reaction time covers more distance — all increasing crash risk exponentially.",
@@ -9689,7 +9689,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is on a two-lane road behind a bicyclist. The road has a solid yellow center line. What is the best legal option for passing?",
         "correct_count": 1,
         "explanation": "Oklahoma requires at least 3 feet of clearance when passing a bicyclist. You may cross a solid yellow line to pass a bicycle if it can be done safely. Waiting for a passing zone is safest but not legally required when a cyclist is involved.",
@@ -9705,7 +9705,7 @@ QUESTIONS = [
     # ── Chapter 9 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law classifies driving under the influence of marijuana (even medical marijuana) as:",
         "correct_count": 1,
         "explanation": "Oklahoma's DUI law applies to any impairing substance, including marijuana — medical or recreational. Being a legal cardholder does not authorize impaired driving.",
@@ -9720,7 +9720,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Prescription opioid pain relievers can impair driving primarily by causing:",
         "correct_count": 1,
         "explanation": "Opioids cause drowsiness, slowed reaction time, and impaired judgment — all of which degrade safe driving ability. Oklahoma's impaired driving law covers prescription drugs when they impair the driver.",
@@ -9735,7 +9735,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which of the following best describes how alcohol affects risk perception while driving?",
         "correct_count": 1,
         "explanation": "Alcohol decreases the brain's ability to accurately assess risk, leading drivers to underestimate danger and overestimate their own abilities — a combination that increases crash likelihood.",
@@ -9750,7 +9750,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a driver is arrested for DUI and their first conviction occurs, how long is their license revoked in Oklahoma?",
         "correct_count": 1,
         "explanation": "A first DUI conviction in Oklahoma results in a 180-day license revocation. Subsequent offenses carry longer revocation periods.",
@@ -9765,7 +9765,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's implied consent law, a driver suspected of DUI who refuses a chemical test faces:",
         "correct_count": 1,
         "explanation": "Refusing a chemical test triggers an automatic license revocation under Oklahoma's implied consent law — separate from and in addition to any criminal DUI penalties. The revocation period is generally longer than for a failed test.",
@@ -9780,7 +9780,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver has a BAC of 0.05%. Which statement most accurately describes their legal and safety status in Oklahoma?",
         "correct_count": 1,
         "explanation": "At 0.05% BAC a driver is below Oklahoma's per se DUI threshold of 0.08%, but impairment begins well below that level. A driver can still be charged with DWI (driving while impaired) or DUID if impairment is demonstrated.",
@@ -9795,7 +9795,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'drug recognition evaluation' (DRE) and why is it relevant to impaired-driving enforcement in Oklahoma?",
         "correct_count": 1,
         "explanation": "A DRE is a standardized 12-step evaluation performed by a specially trained officer to detect drug impairment when a breathalyzer shows low or no alcohol. DRE evidence is admissible in Oklahoma DUI prosecutions.",
@@ -9810,7 +9810,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is the most reliable way to sober up after drinking alcohol?",
         "correct_count": 1,
         "explanation": "Only time allows the liver to metabolize alcohol. Coffee, food, cold water, and exercise do not speed elimination of alcohol from the blood.",
@@ -9825,7 +9825,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'zero tolerance' law for drivers under 21 sets the legal BAC limit at:",
         "correct_count": 1,
         "explanation": "Oklahoma has zero tolerance for underage drinking and driving. Any detectable BAC — 0.02% or higher (to account for instrument error) — results in license revocation for drivers under 21.",
@@ -9840,7 +9840,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "An ignition interlock device (IID) required after a DUI conviction works by:",
         "correct_count": 1,
         "explanation": "An IID requires the driver to provide a breath sample before the vehicle will start. If the sample exceeds the programmed BAC threshold (typically 0.02%), the vehicle will not start. Random rolling retests may also be required.",
@@ -9856,7 +9856,7 @@ QUESTIONS = [
     # ── Chapter 10 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A slow-moving vehicle (SMV) emblem is a fluorescent orange triangle with a red border. Which vehicles are required to display it in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires the orange SMV triangle on any vehicle designed to travel at 25 mph or less, including farm equipment and horse-drawn vehicles, when operated on public roads.",
@@ -9871,7 +9871,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Under Oklahoma law, agricultural equipment traveling on a public road during daylight must display:",
         "correct_count": 1,
         "explanation": "Agricultural equipment on public roads must display the SMV emblem at the rear and have working lights or reflectors if operated at night or in low visibility. During the day, the SMV emblem is the primary requirement.",
@@ -9886,7 +9886,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When approaching a funeral procession on a public road, other drivers must:",
         "correct_count": 1,
         "explanation": "In Oklahoma, drivers must not interrupt a funeral procession. Lead vehicles have the right-of-way through intersections; following vehicles in the procession may continue through a red light after the lead vehicle enters legally.",
@@ -9901,7 +9901,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How much clearance must Oklahoma drivers give when passing a bicycle on the road?",
         "correct_count": 1,
         "explanation": "Oklahoma's 3-foot passing law requires drivers to leave at least 3 feet of lateral clearance when overtaking a bicyclist. Failing to do so is a traffic violation.",
@@ -9916,7 +9916,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver sees a pedestrian with a white cane at a crosswalk. What does the white cane indicate, and what must the driver do?",
         "correct_count": 1,
         "explanation": "A white cane indicates the pedestrian is blind or visually impaired. Oklahoma law requires drivers to yield completely to a blind pedestrian using a white cane or guide dog, even if they are not yet in the crosswalk.",
@@ -9931,7 +9931,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "On a narrow two-lane road, a driver encounters an oversize farm implement taking up both lanes. What is the safest and most legally correct response?",
         "correct_count": 1,
         "explanation": "The driver must slow down and wait for a safe opportunity for the implement to clear the road or pull partially off. Do not attempt to pass an oversize implement on a narrow road — it is hazardous and the implement has the road.",
@@ -9946,7 +9946,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the greatest hazard presented by large trucks making wide right turns?",
         "correct_count": 1,
         "explanation": "Large trucks must swing left before turning right to accommodate the trailer's off-tracking. Drivers in the right lane may mistakenly try to pass on the right, placing themselves in the truck's path.",
@@ -9961,7 +9961,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When a school bus is stopped with red lights flashing and the stop arm extended on a divided highway, vehicles traveling in the OPPOSITE direction must:",
         "correct_count": 1,
         "explanation": "On a divided highway (with a median or physical barrier), vehicles in the opposite direction are NOT required to stop for a school bus. Only vehicles traveling in the same direction must stop.",
@@ -9976,7 +9976,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A motorcyclist is lane-splitting (riding between lanes of slow or stopped traffic). Is this legal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Lane splitting is illegal in Oklahoma. Motorcyclists must remain within a single lane and are entitled to the full lane width.",
@@ -9991,7 +9991,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why should drivers avoid traveling in a large truck's 'no-zone' (blind spot) for extended periods?",
         "correct_count": 1,
         "explanation": "Trucks have four large blind spots (no-zones): directly in front, directly behind, and on each side. A truck driver cannot see vehicles in these zones and may change lanes or maneuver without knowing the other vehicle is there.",
@@ -10007,7 +10007,7 @@ QUESTIONS = [
     # ── Chapter 11 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "During heavy rain, your windshield fogs up on the inside. What is the most effective way to clear it quickly?",
         "correct_count": 1,
         "explanation": "The rear and front defrosters push warm, dry air across the glass to evaporate moisture. Turning on the air conditioning (A/C) also helps dehumidify cabin air, clearing the fog faster.",
@@ -10022,7 +10022,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "On dry pavement at 60 mph, a vehicle needs roughly 300 feet to stop. On wet pavement at the same speed, stopping distance increases by approximately:",
         "correct_count": 1,
         "explanation": "Wet pavement reduces tire-road friction by 30–40%, increasing stopping distance by a similar proportion. At 60 mph the total stopping distance can increase to 400 feet or more — roughly a third longer.",
@@ -10037,7 +10037,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When driving in fog, you should use:",
         "correct_count": 1,
         "explanation": "In fog, low-beam headlights (or dedicated fog lights) are correct. High beams reflect off the water droplets back into your eyes, actually reducing visibility.",
@@ -10052,7 +10052,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Black ice is most commonly found in which road locations?",
         "correct_count": 1,
         "explanation": "Black ice forms most often on bridges, overpasses, and shaded spots because these surfaces cool faster than road surfaces backed by warmer ground. It is thin and nearly transparent, making it nearly invisible.",
@@ -10067,7 +10067,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If your vehicle begins to skid on ice, you should:",
         "correct_count": 1,
         "explanation": "To correct a skid, steer in the direction the rear of the car is sliding (counter-steer) and ease off the accelerator. Do not brake suddenly — this worsens the skid.",
@@ -10082,7 +10082,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "During a severe thunderstorm with limited visibility, what is the correct action if you must pull off the road?",
         "correct_count": 1,
         "explanation": "Pull as far off the road as possible, turn on hazard lights, and remain in the vehicle. Stopping on the shoulder with only parking lights on risks rear-end crashes. Hazard lights are visible to approaching drivers.",
@@ -10097,7 +10097,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why does driving at night on an unlit rural road require a longer following distance compared to daytime driving?",
         "correct_count": 1,
         "explanation": "At night, headlight range limits how far ahead you can see. If a hazard appears at the edge of your headlight beam, you have very little time to react — especially at highway speed. A longer following distance compensates for this reduced detection range.",
@@ -10112,7 +10112,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When should you turn on your headlights in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma requires headlights from 30 minutes after sunset to 30 minutes before sunrise, and whenever visibility is 1,000 feet or less (e.g., rain, fog, or dust). The 'lights on when wipers on' rule is widely recommended for safety.",
@@ -10127,7 +10127,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Hydroplaning occurs when a vehicle's tires ride on a film of water rather than the road surface. The risk of hydroplaning increases as:",
         "correct_count": 1,
         "explanation": "Hydroplaning risk increases with speed, lower tire tread depth, and heavier rainfall. Even a small amount of water can cause loss of steering control at higher speeds when tires cannot displace water fast enough.",
@@ -10142,7 +10142,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "On a snow-covered road, which drivetrain configuration provides the best overall traction during acceleration, braking, and cornering?",
         "correct_count": 1,
         "explanation": "All-wheel drive (AWD) or four-wheel drive (4WD) improves traction during acceleration by powering all wheels. However, no drivetrain eliminates the need for proper winter tires and reduced speed — stopping distance remains the same regardless of drivetrain.",
@@ -10158,7 +10158,7 @@ QUESTIONS = [
     # ── Chapter 12 · Round 4 (45 → 55) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If your vehicle catches fire while driving, what is the correct sequence of actions?",
         "correct_count": 1,
         "explanation": "Safely pull off the road, turn off the engine, get all occupants out immediately, and move at least 100 feet away. Never open the hood if you see flames — fresh air feeds the fire. Call 911 from a safe distance.",
@@ -10173,7 +10173,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "After a crash in Oklahoma, what information must drivers exchange with the other party?",
         "correct_count": 1,
         "explanation": "Drivers involved in a crash must exchange name, address, vehicle registration number, and insurance information. Refusing to provide this information is a criminal offense.",
@@ -10188,7 +10188,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When calling 911 to report a crash, what information should you provide first?",
         "correct_count": 1,
         "explanation": "The first and most critical information for 911 is your exact location, so responders can be dispatched immediately. Then describe the nature of the emergency, number of injured, and any hazards.",
@@ -10203,7 +10203,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma law, a driver who leaves the scene of a crash involving injury or death is guilty of:",
         "correct_count": 1,
         "explanation": "Leaving the scene of a crash involving injury or death is a felony in Oklahoma — often called 'hit and run.' Leaving a property-damage-only crash is a misdemeanor.",
@@ -10218,7 +10218,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma requires drivers to report a crash to the police when property damage exceeds:",
         "correct_count": 1,
         "explanation": "Oklahoma law requires a crash report when property damage to any one person's property exceeds $500, or when there is injury or death. The report must be filed within 10 days.",
@@ -10233,7 +10233,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver sees a crash ahead where a vehicle has rolled over and is blocking the road. No emergency services have arrived. What is the safest action?",
         "correct_count": 1,
         "explanation": "Pull over safely, turn on hazard lights, and call 911 immediately. Do not move an injured person unless there is immediate danger (fire, water) — improper movement can worsen spinal injuries. Warn approaching traffic if safe to do so.",
@@ -10248,7 +10248,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If a driver's accelerator pedal sticks and the vehicle begins to accelerate uncontrollably, what is the correct response?",
         "correct_count": 1,
         "explanation": "Shift to neutral immediately (breaking the engine-wheel connection), steer to safety, then brake to a stop. Do not turn off the ignition while moving — this disables power steering and brakes. After stopping safely, shift to park and turn off the engine.",
@@ -10263,7 +10263,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When your vehicle has a blowout at highway speed, you should first:",
         "correct_count": 1,
         "explanation": "Grip the wheel firmly and maintain your current direction. Do not brake suddenly — sudden braking after a blowout can cause a spin. Gradually ease off the accelerator and let the vehicle slow naturally before steering to the shoulder.",
@@ -10278,7 +10278,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver's headlights fail completely at night on a rural highway. What should the driver do?",
         "correct_count": 1,
         "explanation": "Activate hazard lights immediately to remain visible, slow down gradually, pull as far off the road as possible, and call for assistance. Do not attempt to drive without functioning headlights — it is illegal and extremely dangerous.",
@@ -10293,7 +10293,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver's vehicle stalls on active railroad tracks. No train is visible. What is the priority action?",
         "correct_count": 1,
         "explanation": "Get all occupants out immediately and move away from the tracks at a 45-degree angle in the direction from which a train would come. This keeps you out of the path of flying debris if the train strikes the car. Then call 911 and the railroad emergency number if posted.",
@@ -10309,7 +10309,7 @@ QUESTIONS = [
     # ── Chapter 1 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "In Oklahoma, what is the minimum age to apply for a Class D learner's permit?",
         "correct_count": 1,
         "explanation": "Oklahoma permits applicants as young as 15½ (15 years and 6 months) to apply for a learner's permit, provided they pass the vision and knowledge tests.",
@@ -10324,7 +10324,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma's graduated licensing system requires a Level 1 (learner) permit holder under 18 to be accompanied by a licensed driver who is at least how old?",
         "correct_count": 1,
         "explanation": "The supervising driver must be at least 21 years old and hold a valid Oklahoma driver license. They must occupy the front passenger seat at all times.",
@@ -10339,7 +10339,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How long must a Level 1 (learner) permit holder in Oklahoma hold the permit before progressing to a Level 2 license?",
         "correct_count": 1,
         "explanation": "Oklahoma's GDL system requires a Level 1 learner to hold the permit for at least 6 months and accumulate at least 40 hours of supervised driving (10 of which must be at night) before advancing.",
@@ -10354,7 +10354,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An Oklahoma Level 2 (intermediate) license holder under 18 is restricted from driving between:",
         "correct_count": 1,
         "explanation": "Level 2 license holders under 18 may not drive between 11 p.m. and 5 a.m. unless accompanied by a licensed parent, guardian, or driving instructor — or traveling to/from work, school, or a religious activity.",
@@ -10369,7 +10369,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A 17-year-old with an Oklahoma Level 2 license receives a speeding citation. Under GDL, what additional consequence may result?",
         "correct_count": 1,
         "explanation": "Under Oklahoma's GDL system, a conviction for a moving violation while holding a Level 2 license can trigger a 6-month extension of the Level 2 restrictions, delaying the full Class D license.",
@@ -10384,7 +10384,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "To obtain a standard (non-CDL) Oklahoma driver license, applicants must pass which three tests?",
         "correct_count": 1,
         "explanation": "Applicants must pass a vision screening, a written knowledge test (or pass an approved driver education course), and a road skills (behind-the-wheel) test.",
@@ -10399,7 +10399,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is Oklahoma's 'point system' used for regarding driver licenses?",
         "correct_count": 1,
         "explanation": "Oklahoma's point system assigns demerit points to convictions for traffic violations. Accumulating too many points in a specified period can result in license suspension or mandatory driver improvement action.",
@@ -10414,7 +10414,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At how many points accumulated within a 12-month period will Oklahoma DPS suspend a driver's license?",
         "correct_count": 1,
         "explanation": "Oklahoma DPS will suspend a license when a driver accumulates 10 or more points within a 12-month period. Points are reduced by half for every year of violation-free driving.",
@@ -10429,7 +10429,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An Oklahoma resident who moves to another state and obtains that state's license must surrender their Oklahoma license within:",
         "correct_count": 1,
         "explanation": "Oklahoma law requires surrendering the Oklahoma license when obtaining a license in another state. No grace period is granted — you may not hold valid licenses from two states simultaneously.",
@@ -10444,7 +10444,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver's Oklahoma license is about to expire. Which statement about late renewal is correct?",
         "correct_count": 1,
         "explanation": "Driving with an expired license in Oklahoma is a misdemeanor. Licenses may be renewed up to 1 year after expiration without retaking the written or road tests, but the driver must not operate a vehicle on an expired license.",
@@ -10460,7 +10460,7 @@ QUESTIONS = [
     # ── Chapter 2 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does 'defensive driving' primarily mean?",
         "correct_count": 1,
         "explanation": "Defensive driving means anticipating hazards and the mistakes of other road users, and adjusting your driving to prevent crashes — even when others are at fault.",
@@ -10475,7 +10475,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which of the following is a common sign of drowsy driving?",
         "correct_count": 1,
         "explanation": "Missing an exit or turn, drifting between lanes, and heavy eyelids are classic drowsy-driving signs. Microsleeps (2–3 seconds) can occur without the driver noticing.",
@@ -10490,7 +10490,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does emotional stress (anger, grief, anxiety) affect driving performance?",
         "correct_count": 1,
         "explanation": "Strong emotions narrow attention, slow decision-making, and can cause aggressive or inattentive behavior. A stressed driver is functionally impaired even without alcohol or drugs.",
@@ -10505,7 +10505,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A friend offers you a 'just one drink' before you drive home. Research shows that even one drink affects driving by:",
         "correct_count": 1,
         "explanation": "Even a single standard drink reduces divided-attention ability and slows reaction time. The effects are measurable at BAC levels below the legal limit, particularly for complex driving tasks.",
@@ -10520,7 +10520,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the recommended action when you feel too drowsy to drive safely but still have a long distance to cover?",
         "correct_count": 1,
         "explanation": "Pull over safely and take a short nap (15–20 minutes) before consuming caffeine. Caffeine alone does not restore full alertness and takes 20–30 minutes to take effect. Opening windows and turning up music are not effective substitutes for sleep.",
@@ -10535,7 +10535,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does the term 'inattentional blindness' mean in a driving context?",
         "correct_count": 1,
         "explanation": "Inattentional blindness occurs when a driver's attention is focused on one task (e.g., a conversation) and they fail to consciously perceive an object or hazard that is clearly visible — such as a motorcycle or a red light.",
@@ -10550,7 +10550,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Scanning the road ahead — looking 10 to 15 seconds (about a city block) ahead — helps drivers primarily because:",
         "correct_count": 1,
         "explanation": "Looking 10–15 seconds ahead gives you time to identify and respond to hazards before they become emergencies. It also reduces unnecessary braking and keeps traffic flow smoother.",
@@ -10565,7 +10565,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver on a long trip decides to eat a meal while driving to save time. This is dangerous primarily because:",
         "correct_count": 1,
         "explanation": "Eating while driving is a manual, visual, and cognitive distraction. It requires at least one hand off the wheel, eyes away from the road for brief moments, and mental attention to the food — all reducing crash reaction capability.",
@@ -10580,7 +10580,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Research consistently shows that hands-free phone calls while driving are nearly as dangerous as handheld calls primarily because:",
         "correct_count": 1,
         "explanation": "Both types of calls cause cognitive distraction — the conversation itself competes for the brain's attention, reducing situational awareness. The physical act of holding the phone is a secondary factor.",
@@ -10595,7 +10595,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driver-attitude",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'target fixation' in a driving context and why is it dangerous?",
         "correct_count": 1,
         "explanation": "Target fixation is the tendency to steer toward whatever you are staring at. Drivers who fixate on a hazard (pothole, pedestrian, deer) may unintentionally steer toward it instead of around it.",
@@ -10611,7 +10611,7 @@ QUESTIONS = [
     # ── Chapter 3 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law requires vehicles to have functioning turn signals. How far in advance of a turn must the signal be activated on a highway?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires signaling at least 100 feet before a turn or lane change on a non-highway road, and at least 300 feet on a highway (speeds above 45 mph).",
@@ -10626,7 +10626,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A vehicle's windshield wipers must be in what condition to pass Oklahoma's safety inspection?",
         "correct_count": 1,
         "explanation": "Wipers must clear the windshield effectively without streaking, chattering, or leaving large uncleared areas. Worn, cracked, or damaged wiper blades are an inspection failure.",
@@ -10641,7 +10641,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of a vehicle's differential, and why does it matter for safe cornering?",
         "correct_count": 1,
         "explanation": "The differential allows the outer and inner wheels to rotate at different speeds while cornering. Without it, tires would skip or lose traction in turns because the outer wheel travels farther than the inner wheel.",
@@ -10656,7 +10656,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "The tire pressure monitoring system (TPMS) warning light (an exclamation point inside a flat tire icon) means:",
         "correct_count": 1,
         "explanation": "TPMS warns when one or more tires are significantly underinflated (typically 25% or more below the recommended pressure). Underinflated tires overheat, wear unevenly, and reduce fuel efficiency and handling.",
@@ -10671,7 +10671,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law requires headlights to project a high beam visible at least how far?",
         "correct_count": 1,
         "explanation": "Oklahoma's vehicle code requires high beams to be visible at a distance of at least 350 feet and low beams at least 150 feet ahead.",
@@ -10686,7 +10686,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does ABS (anti-lock braking system) actually do when it activates?",
         "correct_count": 1,
         "explanation": "ABS rapidly pulses brake pressure (up to 20 times per second) to prevent wheels from locking. This maintains steering control during hard braking so the driver can steer around an obstacle while stopping.",
@@ -10701,7 +10701,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How often do most automakers recommend replacing engine air filters?",
         "correct_count": 1,
         "explanation": "Most manufacturers recommend replacing the engine air filter every 15,000–30,000 miles, though dusty driving conditions (common in rural Oklahoma) shorten this interval. A clogged air filter reduces engine power and fuel economy.",
@@ -10716,7 +10716,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'brake fade' and under what driving conditions is it most likely to occur?",
         "correct_count": 1,
         "explanation": "Brake fade is the loss of braking effectiveness caused by overheating brake pads and rotors. It occurs most commonly during prolonged downhill braking or repeated hard stops in a short time, when heat builds up faster than it dissipates.",
@@ -10731,7 +10731,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma requires vehicles to have a functioning horn that is audible at what minimum distance?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires a vehicle's horn to be audible at a minimum of 200 feet under normal conditions. The horn must not be a whistle or bell — it must be an approved electric or pneumatic horn.",
@@ -10746,7 +10746,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver notices the 'traction control' (TC) warning light stays on continuously while driving on a dry road. This most likely indicates:",
         "correct_count": 1,
         "explanation": "A continuously illuminated traction control light (not just briefly flashing during wheel slip) typically indicates a fault in the TC system — often shared hardware with the ABS. It should be diagnosed promptly because TC failure may also affect ABS.",
@@ -10762,7 +10762,7 @@ QUESTIONS = [
     # ── Chapter 4 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A sign with a green background and white lettering on an interstate highway indicates:",
         "correct_count": 1,
         "explanation": "Green-background signs are guide signs that provide directional information: distances to cities, highway numbers, and exit information. They are always informational, never regulatory.",
@@ -10777,7 +10777,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A brown-background sign on a highway indicates:",
         "correct_count": 1,
         "explanation": "Brown-background signs in the U.S. highway system designate recreational and cultural interest areas: national parks, state parks, historic sites, scenic areas, and similar destinations.",
@@ -10792,7 +10792,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An orange-background sign on a highway means:",
         "correct_count": 1,
         "explanation": "Orange is the standard background color for construction and maintenance work-zone signs. Drivers must slow down and follow any posted reduced speed limits in work zones.",
@@ -10807,7 +10807,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a blue-background sign on a highway indicate?",
         "correct_count": 1,
         "explanation": "Blue signs provide information about motorist services: gas stations, food, lodging, hospitals, and similar facilities at the upcoming exit.",
@@ -10822,7 +10822,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A 'KEEP RIGHT' sign (white rectangular, black text and arrow) placed in a median or island means:",
         "correct_count": 1,
         "explanation": "KEEP RIGHT signs are regulatory signs placed at median islands, obstructions, and traffic dividers. They direct drivers to pass to the right of the marked object.",
@@ -10837,7 +10837,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A diamond-shaped yellow sign shows a truck going over a hill with wavy lines beneath it. What does this warn?",
         "correct_count": 1,
         "explanation": "This sign warns of a bump or uneven grade ahead — an abrupt rise or dip in the road surface. Drivers should slow down to avoid bottoming out or losing control.",
@@ -10852,7 +10852,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A circular sign with a yellow background and black 'RR' crossed by an 'X' means:",
         "correct_count": 1,
         "explanation": "The circular yellow sign with 'RR' and an X (railroad crossing advance warning sign) warns drivers that railroad tracks cross the road ahead. It is always placed in advance of the crossing itself.",
@@ -10867,7 +10867,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A 'PEDESTRIAN CROSSING' sign (yellow diamond with a walking-person symbol) is what type of sign?",
         "correct_count": 1,
         "explanation": "The pedestrian crossing sign is a warning sign (yellow diamond) that alerts drivers to a location where pedestrians frequently cross. It is not a regulatory sign — it does not grant automatic right-of-way.",
@@ -10882,7 +10882,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'DIVIDED HIGHWAY BEGINS' sign tell drivers?",
         "correct_count": 1,
         "explanation": "This sign warns that the road ahead transitions to a divided highway with a median (physical or painted). Drivers must bear right and stay on the right side of the divider.",
@@ -10897,7 +10897,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver sees a white rectangular sign reading 'SPEED LIMIT 55' followed immediately by a yellow rectangular sign reading 'ADVISED SPEED 35'. What do these two signs mean together?",
         "correct_count": 1,
         "explanation": "The white SPEED LIMIT sign is regulatory — 55 mph is the maximum legal speed. The yellow ADVISED SPEED sign is advisory — 35 mph is the recommended safe speed for an upcoming curve or feature. Driving faster than 35 may be unsafe even though it is not illegal unless conditions demand it.",
@@ -10913,7 +10913,7 @@ QUESTIONS = [
     # ── Chapter 5 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law prohibits parking within how many feet of a fire hydrant?",
         "correct_count": 1,
         "explanation": "Oklahoma law (47 O.S. § 11-1003) prohibits stopping or parking within 15 feet of a fire hydrant to ensure fire department access.",
@@ -10928,7 +10928,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "It is illegal to park within how many feet of a railroad crossing in Oklahoma?",
         "correct_count": 1,
         "explanation": "Parking within 50 feet of the nearest rail at a railroad crossing is prohibited in Oklahoma. This ensures emergency vehicles and trains have clear sightlines and access.",
@@ -10943,7 +10943,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When must drivers yield to a pedestrian who has already entered a crosswalk, even at a marked intersection?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to yield to pedestrians already in a marked or unmarked crosswalk. Once a pedestrian has stepped off the curb and is within the crosswalk, all approaching vehicles in that half of the road must stop.",
@@ -10958,7 +10958,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'basic speed rule' states that a driver shall not drive at a speed:",
         "correct_count": 1,
         "explanation": "The basic speed rule (47 O.S. § 11-801) requires drivers to drive at a speed that is reasonable and prudent for existing conditions — even if that speed is below the posted limit. Weather, traffic, visibility, and road condition all factor in.",
@@ -10973,7 +10973,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver is approaching a school bus that has stopped with red lights flashing and the stop arm extended on a two-lane road. Traffic in both directions must:",
         "correct_count": 1,
         "explanation": "On a two-lane road with no median, all traffic in both directions must stop and remain stopped until the red lights stop flashing and the stop arm retracts, or the bus resumes motion.",
@@ -10988,7 +10988,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma law, what constitutes 'reckless driving'?",
         "correct_count": 1,
         "explanation": "Oklahoma defines reckless driving (47 O.S. § 11-901) as operating a vehicle carelessly or wantonly in disregard for the safety of persons or property. It carries criminal penalties and differs from negligent driving by requiring a 'conscious disregard' for safety.",
@@ -11003,7 +11003,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the difference between a 'yield' sign and a 'merge' situation on a highway on-ramp?",
         "correct_count": 1,
         "explanation": "A YIELD sign requires the driver to give the right-of-way to cross traffic. A merge situation (no sign) means both drivers are expected to cooperate to combine traffic flows. On a highway on-ramp with a 'Yield' sign, the entering driver must yield to freeway traffic.",
@@ -11018,7 +11018,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law requires drivers to dim high beams when within how many feet of an oncoming vehicle?",
         "correct_count": 1,
         "explanation": "Oklahoma requires switching from high to low beams when within 500 feet of an oncoming vehicle, and within 300 feet when following another vehicle.",
@@ -11033,7 +11033,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "It is illegal to make a U-turn at which of the following locations in Oklahoma?",
         "correct_count": 1,
         "explanation": "U-turns are prohibited on curves, hills with limited visibility, within intersections in business districts, and wherever a 'No U-Turn' sign is posted. They are also illegal near railroad crossings.",
@@ -11048,7 +11048,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma's 'open container' law prohibits which of the following in a motor vehicle on a public road?",
         "correct_count": 1,
         "explanation": "Oklahoma's open container law (47 O.S. § 11-906.2) prohibits any person in a motor vehicle on a public road from possessing an open container of alcoholic beverage — whether the vehicle is moving or parked.",
@@ -11064,7 +11064,7 @@ QUESTIONS = [
     # ── Chapter 6 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit in an Oklahoma business district where no speed limit is posted?",
         "correct_count": 1,
         "explanation": "In a business district — defined as an area with commercial buildings lining the road — the default (prima facie) speed limit in Oklahoma is 25 mph when no sign is posted.",
@@ -11079,7 +11079,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit in an Oklahoma residential district where no speed limit is posted?",
         "correct_count": 1,
         "explanation": "Oklahoma's prima facie speed limit in a residential district (streets with dwellings lining the road) is 25 mph unless a different limit is posted.",
@@ -11094,7 +11094,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the maximum speed limit on Oklahoma interstate highways where no limit is posted?",
         "correct_count": 1,
         "explanation": "Oklahoma's default maximum speed limit on interstate highways is 70 mph for passenger cars. Some sections are posted at 75 or 80 mph, but 70 mph is the statewide default where no sign is present.",
@@ -11109,7 +11109,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's work-zone speed laws double fines for speeding when workers are present. What is the additional consequence for a second work-zone speeding conviction?",
         "correct_count": 1,
         "explanation": "A second conviction for speeding in a work zone in Oklahoma can result in a 90-day license suspension in addition to doubled fines. This reflects Oklahoma's strict stance on protecting highway workers.",
@@ -11124,7 +11124,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "On a rural two-lane Oklahoma highway with no posted speed limit, what is the default maximum speed for a passenger car during daytime?",
         "correct_count": 1,
         "explanation": "On Oklahoma rural two-lane highways outside municipalities with no posted speed, the prima facie limit for passenger cars is 65 mph during daytime. At night the limit drops to 55 mph.",
@@ -11139,7 +11139,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma statute allows municipalities to set their own speed limits on streets within city limits. What is the minimum process required to make a new city speed limit enforceable?",
         "correct_count": 1,
         "explanation": "Under Oklahoma law, a municipality must conduct an engineering and traffic investigation, then post appropriate signs. A speed limit that is not properly posted is generally not enforceable in court.",
@@ -11154,7 +11154,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "The term 'critical speed' in vehicle dynamics refers to the speed at which:",
         "correct_count": 1,
         "explanation": "Critical speed is the maximum speed at which a vehicle can navigate a curve without losing traction (skidding or rolling over). Above critical speed, centrifugal tendency exceeds available tire grip. It is determined by curve radius, road banking, and tire friction coefficient.",
@@ -11169,7 +11169,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Driving too slowly on a highway can be dangerous because:",
         "correct_count": 1,
         "explanation": "Drivers traveling well below the flow of traffic create speed differentials that force others to brake, swerve, or overtake. These maneuvers increase crash risk. Oklahoma allows officers to cite drivers for impeding traffic (47 O.S. § 11-804).",
@@ -11184,7 +11184,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a driver is charged with speeding but claims the posted speed limit sign was obscured by vegetation, how does Oklahoma's prima facie speed law affect the defense?",
         "correct_count": 1,
         "explanation": "Oklahoma's prima facie speed limits apply regardless of signage for the standard categories (business, residential, school, rural). A driver is presumed to know these limits. However, a non-prima-facie special limit (e.g., 45 mph on a specific road) does require proper posting to be enforceable.",
@@ -11199,7 +11199,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma's 'absolute speed limit' and 'prima facie speed limit' differ in how they are enforced. Which of the following correctly distinguishes them?",
         "correct_count": 1,
         "explanation": "An absolute speed limit (e.g., interstate maximum) cannot legally be exceeded regardless of conditions — no defense is possible. A prima facie limit creates a rebuttable presumption: driving above it is presumed unlawful, but a driver may present evidence that their actual speed was reasonable for conditions.",
@@ -11215,7 +11215,7 @@ QUESTIONS = [
     # ── Chapter 1 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How many questions are on Oklahoma's written knowledge test, and what is the minimum number of correct answers required to pass?",
         "correct_count": 1,
         "explanation": "The Oklahoma written knowledge test consists of 50 questions. An applicant must answer at least 40 questions correctly (80%) to pass.",
@@ -11230,7 +11230,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Under Oklahoma's implied consent law, what do ALL drivers automatically agree to simply by operating a vehicle on public roads?",
         "correct_count": 1,
         "explanation": "Implied consent means that driving on Oklahoma roads is treated as automatic consent to chemical testing (breath, blood, or urine) to determine BAC if lawfully arrested for DUI. Refusing the test triggers an automatic license revocation.",
@@ -11245,7 +11245,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An Oklahoma driver is convicted of a traffic violation in another state. How does the Driver License Compact affect their Oklahoma record?",
         "correct_count": 1,
         "explanation": "Under the Driver License Compact (an agreement among most states), out-of-state convictions are reported to Oklahoma's DPS and assessed points on the Oklahoma record as if the violation had occurred in Oklahoma.",
@@ -11260,7 +11260,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the legal difference between a driver license suspension and a driver license revocation in Oklahoma?",
         "correct_count": 1,
         "explanation": "A suspension is temporary — after the suspension period and any fees are paid, the original license may be reinstated. A revocation permanently cancels the license; the driver must reapply, pay fees, and may be required to pass knowledge and skills tests again.",
@@ -11275,7 +11275,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's GDL intermediate license, which of the following circumstances provides a legal exception allowing a driver under 18 to drive past the nighttime curfew?",
         "correct_count": 1,
         "explanation": "Oklahoma's GDL curfew has recognized exceptions, including travel directly to or from a job (employment), school activities, and religious events. Driving with a licensed supervising adult in the vehicle also overrides the curfew restriction.",
@@ -11290,7 +11290,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "After an Oklahoma driver's license is suspended and the suspension period ends, what must the driver do before legally driving again?",
         "correct_count": 1,
         "explanation": "Once a suspension period ends, the license is NOT automatically restored. The driver must pay a reinstatement fee to DPS and satisfy any other conditions (such as filing an SR-22) before the license becomes valid again.",
@@ -11305,7 +11305,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma DPS determines that a driver's medical condition (recurring seizures) affects safe driving. What authority does DPS have in this situation?",
         "correct_count": 1,
         "explanation": "DPS has authority to restrict, suspend, or revoke a driver's license when a medical condition poses a safety risk. The driver may be required to submit a physician's certification that the condition is controlled before the license is reinstated or unrestricted.",
@@ -11320,7 +11320,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An ignition interlock device (IID) required by Oklahoma following a DUI conviction does which of the following?",
         "correct_count": 1,
         "explanation": "An IID is a breath-testing device wired into the vehicle's ignition. The driver must blow a breath sample before the engine will start; if the measured BAC exceeds the programmed limit, the vehicle will not start. The device may also prompt random re-tests while driving.",
@@ -11335,7 +11335,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is an Oklahoma non-driver identification card, and who may obtain one?",
         "correct_count": 1,
         "explanation": "An Oklahoma non-driver ID is a state-issued photo identification card available to any Oklahoma resident who does not hold — or does not want — a driver license. It is used for identification purposes and is issued through DPS at the same offices as driver licenses.",
@@ -11350,7 +11350,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 1, "category": "licensing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When an Oklahoma resident on active military duty is stationed overseas and their Oklahoma driver license expires during deployment, what does Oklahoma law provide?",
         "correct_count": 1,
         "explanation": "Oklahoma law extends the validity of a driver license for active-duty military personnel deployed overseas. The license remains valid for the duration of overseas service plus a grace period after the service member returns, preventing the license from expiring during deployment.",
@@ -11366,7 +11366,7 @@ QUESTIONS = [
     # ── Chapter 2 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 2, "category": "driving-strategy",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the 'I' in the SIPDE driving strategy stand for?",
         "correct_count": 1,
         "explanation": "In the SIPDE process, 'I' stands for Identify. After searching the environment, the driver identifies specific hazards or potential conflicts that require attention or a change in action.",
@@ -11381,7 +11381,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "driving-strategy",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does the 'P' in the SIPDE driving strategy stand for?",
         "correct_count": 1,
         "explanation": "In SIPDE, 'P' stands for Predict. After identifying a hazard, the driver predicts what the hazard might do next — for example, anticipating that a child on a sidewalk might run into the street.",
@@ -11396,7 +11396,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "fatigue",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Research shows that driving after being awake for 18 to 20 hours produces impairment roughly equivalent to a BAC of approximately:",
         "correct_count": 1,
         "explanation": "Studies comparing sleep deprivation and alcohol impairment show that 18–20 hours without sleep produces driving impairment similar to a BAC of 0.08% — the legal limit. This makes drowsy driving as dangerous as drunk driving.",
@@ -11411,7 +11411,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "scanning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the recommended scanning order when approaching an intersection with no signal or sign?",
         "correct_count": 1,
         "explanation": "The recommended technique is to look left first (the direction from which traffic comes nearest to you), then right (slightly farther away), then left again before proceeding. This ensures the most immediate threat — traffic from the left — is checked twice.",
@@ -11426,7 +11426,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "blind-spots",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why is it dangerous to travel in another vehicle's blind spot (the zone beside and slightly behind the other vehicle)?",
         "correct_count": 1,
         "explanation": "In their blind spot, you are invisible to the other driver in their mirrors. If they change lanes or drift, they will not see you and may collide with your vehicle without warning.",
@@ -11441,7 +11441,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "stopping-distance",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "At 60 mph on a dry road, a driver's total stopping distance (perception + reaction + braking) is approximately:",
         "correct_count": 1,
         "explanation": "At 60 mph, a vehicle travels about 88 feet per second. Perception and reaction together take roughly 1.5 seconds (~132 ft), and braking on dry pavement requires approximately 180 feet, giving a total stopping distance of about 300 feet.",
@@ -11456,7 +11456,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "defensive-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver consistently adjusts speed and following distance ahead of developing situations rather than reacting after they occur. This habit is best described as:",
         "correct_count": 1,
         "explanation": "This describes proactive or predictive defensive driving — anticipating hazards and adjusting before they become emergencies. It contrasts with reactive driving, where a driver responds only after a situation has already developed.",
@@ -11471,7 +11471,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "road-rage",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Another driver cuts you off and is now driving aggressively and tailgating. What is the safest response?",
         "correct_count": 1,
         "explanation": "The safest response to road rage directed at you is to avoid eye contact, do not gesture or react, safely increase distance from the aggressive driver, and if necessary, pull into a public place or contact law enforcement.",
@@ -11486,7 +11486,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "distraction",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is 'selective attention' in a driving context, and why does it increase crash risk?",
         "correct_count": 1,
         "explanation": "Selective attention (also called inattentional blindness in some contexts) refers to the brain's tendency to focus on one stimulus while filtering out others. A driver absorbed in a phone call may fail to consciously perceive a cyclist or pedestrian directly in their path, even though the eyes are open.",
@@ -11501,7 +11501,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 2, "category": "scanning",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "The '12-second rule' recommended for highway driving means a driver should:",
         "correct_count": 1,
         "explanation": "The 12-second rule means scanning 12 seconds ahead — approximately 1,000 feet at highway speeds. This gives the driver enough time to identify, predict, and respond to hazards before they become emergencies.",
@@ -11517,7 +11517,7 @@ QUESTIONS = [
     # ── Chapter 3 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "How should outside (side) mirrors be properly adjusted to maximize the area visible to the driver?",
         "correct_count": 1,
         "explanation": "Side mirrors should be adjusted so only a sliver of the vehicle's side is visible at the inner edge. This maximizes the view of the lane beside the car and the area behind, reducing (but not eliminating) blind spots.",
@@ -11532,7 +11532,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A small arrow next to the fuel pump symbol on most modern vehicle dashboards indicates what?",
         "correct_count": 1,
         "explanation": "The arrow next to the fuel gauge's pump icon points to the side of the vehicle where the fuel filler cap is located. This helps drivers remember which side to pull up to the pump.",
@@ -11547,7 +11547,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Beyond the nighttime rule, Oklahoma law also requires headlights to be turned on during which daytime condition?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires headlights any time visibility is reduced to less than 1,000 feet due to rain, fog, smoke, dust, or other conditions — even during daylight hours. Headlights must also be on whenever windshield wipers are in continuous use.",
@@ -11562,7 +11562,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a vehicle's power steering suddenly fails while driving, the driver should:",
         "correct_count": 1,
         "explanation": "When power steering fails, the steering wheel still works mechanically — it just requires much greater physical effort. The driver should steer carefully using increased force, slow down gradually, and seek a safe place to stop and have the vehicle inspected.",
@@ -11577,7 +11577,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the primary purpose of a vehicle's emergency (parking) brake in everyday driving?",
         "correct_count": 1,
         "explanation": "The parking brake (emergency brake) is designed to hold the vehicle stationary when parked, especially on slopes. It mechanically engages the rear brakes independently of the main hydraulic system, preventing the vehicle from rolling.",
@@ -11592,7 +11592,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "The red brake warning light illuminates on the dashboard while the engine is running and the parking brake is fully released. This most likely indicates:",
         "correct_count": 1,
         "explanation": "A red brake warning light (with parking brake released) signals a hydraulic brake system problem — most commonly low brake fluid level or a brake circuit failure. This is a serious safety concern requiring immediate, careful deceleration and service.",
@@ -11607,7 +11607,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Why are parking lights (clearance/side marker lights) NOT a legal substitute for headlights in low-visibility conditions?",
         "correct_count": 1,
         "explanation": "Parking lights are dim marker lights not designed to illuminate the road ahead. They do not provide enough light for drivers to see the road or for other drivers to detect the vehicle at a safe distance. Oklahoma law requires full headlights when visibility is reduced.",
@@ -11622,7 +11622,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A steering wheel vibrates noticeably at highway speeds (above 55 mph) but is smooth at lower speeds. This most likely indicates:",
         "correct_count": 1,
         "explanation": "Vibration that appears at highway speeds but not at low speeds is a classic symptom of wheel imbalance (uneven weight distribution around the wheel/tire assembly). A tire that is out of round or has a flat spot produces a similar speed-dependent vibration.",
@@ -11637,7 +11637,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A vehicle's 'CHECK ENGINE' or 'SERVICE ENGINE SOON' light illuminates solid (not flashing) while driving. The appropriate action is:",
         "correct_count": 1,
         "explanation": "A solid (non-flashing) check engine light means the onboard diagnostic system has detected an emissions or engine management issue. It is not an immediate emergency — the driver can continue driving but should have the vehicle scanned and serviced soon. A flashing check engine light indicates a more serious misfire requiring immediate attention.",
@@ -11652,7 +11652,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 3, "category": "vehicle-equipment",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver inflates tires to the maximum pressure printed on the tire sidewall instead of the pressure on the door jamb sticker. What is the likely result?",
         "correct_count": 1,
         "explanation": "The sidewall pressure is the tire's maximum rated pressure — not the recommended operating pressure. Overinflation (inflating to the maximum) causes the center of the tread to bow out and wear faster, reduces the tire's contact patch (lowering traction), and makes the ride harsher and more prone to impact damage.",
@@ -11668,7 +11668,7 @@ QUESTIONS = [
     # ── Chapter 4 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a white rectangular 'ONE WAY' sign with a black arrow indicate?",
         "correct_count": 1,
         "explanation": "A white 'ONE WAY' sign indicates that traffic on that street or road travels in one direction only — the direction shown by the arrow. Entering from the opposite end or crossing into opposing traffic is illegal.",
@@ -11683,7 +11683,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What color are pavement markings that separate lanes of traffic traveling in the SAME direction?",
         "correct_count": 1,
         "explanation": "White pavement markings separate lanes traveling in the same direction. Yellow markings separate lanes traveling in opposite directions. Knowing this distinction helps drivers understand lane organization at a glance.",
@@ -11698,7 +11698,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A work zone flagger faces an approaching driver with the SLOW side of the paddle sign facing toward them. What must the driver do?",
         "correct_count": 1,
         "explanation": "A flagger displaying the SLOW paddle requires the driver to reduce speed and proceed carefully through the work zone at the reduced speed indicated by the flagger or posted work-zone signs. The flagger has the same authority as a traffic control device.",
@@ -11713,7 +11713,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of 'rumble strips' — raised or grooved patterns placed along the edge of a highway?",
         "correct_count": 1,
         "explanation": "Rumble strips are designed to alert drowsy or distracted drivers who are drifting off the travel lane. When a tire rolls over them, they create noise and vibration that startles the driver back to attention before leaving the road.",
@@ -11728,7 +11728,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "An interstate highway is labeled 'I-35.' What does the odd number tell drivers about the highway's general orientation?",
         "correct_count": 1,
         "explanation": "The federal numbering system assigns odd numbers to interstates that run north-south and even numbers to interstates that run east-west. I-35 runs north-south through the central United States (including Oklahoma). Knowing this helps drivers orient themselves without a map.",
@@ -11743,7 +11743,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A white rectangular sign reading 'NO PARKING' is what type of traffic sign?",
         "correct_count": 1,
         "explanation": "A 'NO PARKING' sign is a regulatory sign. Regulatory signs (typically white with black or red text) inform drivers of laws they must obey — violations can result in fines or towing.",
@@ -11758,7 +11758,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A flashing green overhead lane control signal above a highway lane means:",
         "correct_count": 1,
         "explanation": "On highways with variable lane controls, a flashing or steady green arrow above a lane means the lane is open and available for use in the indicated direction. A red X means the lane is closed.",
@@ -11773,7 +11773,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A white rectangular sign reads 'SLOWER TRAFFIC KEEP RIGHT.' What does this sign require drivers to do?",
         "correct_count": 1,
         "explanation": "This sign requires vehicles traveling slower than the normal flow of traffic to use the right lane. It does not set a specific speed — it regulates lane position based on relative speed. Slow vehicles blocking the left lane are required to move right.",
@@ -11788,7 +11788,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "markings",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver sees alternating yellow and white diagonal lines painted inside a triangle near a lane merge. What do these pavement markings indicate?",
         "correct_count": 1,
         "explanation": "Diagonal yellow-and-white striped markings in a triangular or gore area indicate a section of road surface that is off-limits to vehicles. Drivers must not drive over or into these painted areas — they are used to channelize traffic at lane merges, exits, and islands.",
@@ -11803,7 +11803,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "signs",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a brown-background sign on an Oklahoma highway indicate?",
         "correct_count": 1,
         "explanation": "Brown highway signs are used to indicate recreational areas, parks, historic sites, and cultural attractions. Seeing a brown sign alerts drivers to a nearby point of interest such as a state park, national monument, or museum.",
@@ -11819,7 +11819,7 @@ QUESTIONS = [
     # ── Chapter 5 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 5, "category": "right-of-way",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Two vehicles arrive at a four-way stop simultaneously from perpendicular directions (at 90° to each other). Who has the right of way?",
         "correct_count": 1,
         "explanation": "At a four-way stop, when two vehicles arrive simultaneously from directions that are perpendicular (at 90°), the vehicle on the LEFT must yield to the vehicle on the RIGHT. This is the 'yield to the right' rule.",
@@ -11834,7 +11834,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "school-bus",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A school bus on a divided highway (separated by a raised or depressed median) displays alternating flashing red lights and the stop arm is extended. Which vehicles are required to stop?",
         "correct_count": 1,
         "explanation": "On a road divided by a physical median (raised curb or depressed median strip), only vehicles traveling in the same direction as the school bus must stop. Vehicles on the opposite side of the median are not required to stop. On an undivided road, ALL vehicles in both directions must stop.",
@@ -11849,7 +11849,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right-of-way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At a T-intersection (where one road ends into another), who has the right of way?",
         "correct_count": 1,
         "explanation": "At a T-intersection, traffic on the through road (the road that continues straight) has the right of way. Drivers approaching from the terminating road (the dead end that feeds into the through road) must yield.",
@@ -11864,7 +11864,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-laws",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law prohibits 'blocking the box' at intersections. What does this mean?",
         "correct_count": 1,
         "explanation": "Blocking the box means entering an intersection when there is not enough clear space on the far side to allow your vehicle to completely exit the intersection before the signal changes. This gridlocks cross-traffic and is illegal.",
@@ -11879,7 +11879,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "pedestrians",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When must a driver yield to a pedestrian who is blind or visually impaired and carrying a white cane?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires drivers to yield the right of way — including coming to a complete stop if necessary — whenever a blind or visually impaired pedestrian carrying a white cane is crossing or about to cross a roadway, whether at a marked crosswalk or not.",
@@ -11894,7 +11894,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "turning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When making a right turn, a driver should approach and execute the turn from which lane position?",
         "correct_count": 1,
         "explanation": "To make a right turn, drivers should position their vehicle in the right-most lane before the turn and stay as close to the right curb or edge as practicable throughout the turn. Swinging wide into the center of the road before a right turn is a common error that creates collision risks.",
@@ -11909,7 +11909,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a steady red arrow traffic signal mean for drivers wishing to turn in that direction?",
         "correct_count": 1,
         "explanation": "A steady red arrow means drivers must stop and may not turn in the direction of the arrow. Unlike a solid red ball (which may allow a turn on red after stopping), a red arrow prohibits the turn unless a sign specifically permits a turn on red arrow.",
@@ -11924,7 +11924,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "traffic-signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is a 'protected left turn' signal phase, and what does it allow drivers to do?",
         "correct_count": 1,
         "explanation": "A protected left turn is indicated by a green left-turn arrow. During this phase, drivers in the left-turn lane may turn without conflicting with oncoming traffic, which is simultaneously held at a red light. It is 'protected' because no oncoming traffic is permitted.",
@@ -11939,7 +11939,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right-of-way",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver wants to make an unprotected left turn across two lanes of oncoming traffic. A driver in the near lane stops and waves the turning driver through, but the far lane is obscured. What should the driver do?",
         "correct_count": 1,
         "explanation": "Accepting a gesture from one vehicle does not make it legally safe to proceed when visibility of other lanes is blocked. The far lane may have traffic that cannot stop in time. The driver must wait until all lanes are clearly visible and clear before turning.",
@@ -11954,7 +11954,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right-of-way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law requires drivers to yield to funeral processions. Which of the following correctly describes the rule for intersections?",
         "correct_count": 1,
         "explanation": "In Oklahoma, a driver must yield the right of way to a vehicle that is part of a properly escorted funeral procession. Procession vehicles have the right to proceed through intersections together, even if a signal changes to red after the procession began to pass through.",
@@ -11970,7 +11970,7 @@ QUESTIONS = [
     # ── Chapter 6 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the default speed limit in an alley in Oklahoma unless otherwise posted?",
         "correct_count": 1,
         "explanation": "Oklahoma law sets the default speed limit in alleys at 15 mph. Because alleys are narrow, have limited visibility, and may contain pedestrians or vehicles backing out unexpectedly, the low limit is designed to keep movement slow and safe.",
@@ -11985,7 +11985,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the maximum posted speed limit on most Oklahoma two-lane rural highways outside of cities, unless otherwise marked?",
         "correct_count": 1,
         "explanation": "The maximum speed limit on most Oklahoma two-lane rural highways (not interstates) is 65 mph unless a lower limit is posted. Interstate highways may be posted up to 75 mph in rural areas.",
@@ -12000,7 +12000,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-management",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "'Driving too fast for conditions' means a driver may be cited even if traveling below the posted speed limit. Which situation best illustrates this?",
         "correct_count": 1,
         "explanation": "Oklahoma's basic speed rule requires drivers to travel at a speed safe for current conditions — regardless of the posted limit. Driving 60 mph in a 65 mph zone during a dense fog, for example, can be cited as too fast for conditions if that speed was unsafe.",
@@ -12015,7 +12015,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a speed limit sign is missing or knocked down, what speed limit applies on a residential street in Oklahoma?",
         "correct_count": 1,
         "explanation": "When a speed limit sign is absent, Oklahoma's statutory (prima facie) speed limits apply by road type. On a residential street, the statutory limit is 25 mph — even without a posted sign.",
@@ -12030,7 +12030,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-management",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does 'safe speed for conditions' mean when driving in dense fog?",
         "correct_count": 1,
         "explanation": "In fog, safe speed means driving slowly enough that you can stop within the distance you can see ahead. If visibility is 100 feet, you must be able to stop within 100 feet. This often means traveling well below the posted limit.",
@@ -12045,7 +12045,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-management",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is hydroplaning and at approximately what speed can it begin to occur on wet roads?",
         "correct_count": 1,
         "explanation": "Hydroplaning occurs when a vehicle's tires ride on top of a layer of water faster than the tire can displace it, causing loss of steering and braking contact with the road. It can begin at speeds as low as 35 mph on wet roads, especially with worn or underinflated tires.",
@@ -12060,7 +12060,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law sets a minimum speed requirement on its interstate highways primarily to:",
         "correct_count": 1,
         "explanation": "Driving too slowly on an interstate impedes traffic flow and increases the risk of rear-end collisions. Oklahoma requires drivers to maintain at least the posted minimum speed (typically 45 mph on interstates) unless weather or traffic conditions make it unsafe to do so.",
@@ -12075,7 +12075,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-management",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's basic speed rule, a driver traveling at 62 mph in a 65 mph zone is cited after a crash. Which principle makes this citation possible?",
         "correct_count": 1,
         "explanation": "Oklahoma's basic speed rule holds that a driver must travel at a speed that is reasonable and prudent for current conditions — even if that speed is below the posted limit. In a crash, traveling at 62 mph in hazardous conditions (heavy rain, construction zone congestion) can be found to be too fast for conditions.",
@@ -12090,7 +12090,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-limits",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Speeding fines in Oklahoma work zones are doubled when workers are present. What is the primary legal reason for this enhanced penalty?",
         "correct_count": 1,
         "explanation": "Oklahoma law doubles fines for speeding in work zones when workers are present because the presence of workers on or near the roadway dramatically increases the risk of injury or death from a speeding vehicle. Enhanced penalties serve as a deterrent to protect road crews.",
@@ -12105,7 +12105,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed-management",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is following another vehicle at a 2-second following distance at 70 mph. Why is this distance insufficient, and what following distance is recommended at highway speeds?",
         "correct_count": 1,
         "explanation": "At 70 mph, a vehicle travels about 103 feet per second. A 2-second gap gives only about 206 feet — not enough time to perceive a hazard, react, and brake safely. At highway speeds, a minimum 4-second following distance is recommended; in poor conditions, even more.",
@@ -12121,7 +12121,7 @@ QUESTIONS = [
     # ── Chapter 7 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a flashing red traffic signal require a driver to do?",
         "correct_count": 1,
         "explanation": "A flashing red light has the same meaning as a STOP sign. The driver must stop completely, yield to cross traffic and pedestrians, and then proceed when safe.",
@@ -12136,7 +12136,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a traffic signal is completely dark (no lights working) at an intersection, what rule applies in Oklahoma?",
         "correct_count": 1,
         "explanation": "When a traffic signal is completely non-functional, Oklahoma law requires drivers to treat the intersection as an all-way stop — each vehicle must stop and yield as if there were a stop sign on all approaches.",
@@ -12151,7 +12151,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A protected-permissive left-turn signal shows a green arrow, then changes to a circular green. What does the circular green allow?",
         "correct_count": 1,
         "explanation": "The green arrow phase is 'protected' — oncoming traffic is stopped. When it changes to a circular green, the phase becomes 'permissive' — the driver may still turn left but must yield to oncoming traffic and pedestrians.",
@@ -12166,7 +12166,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At an uncontrolled T-intersection (no signs or signals), who has the right-of-way?",
         "correct_count": 1,
         "explanation": "At an uncontrolled T-intersection, the driver on the through road (the continuing street) has the right-of-way over the driver approaching from the dead-end street.",
@@ -12181,7 +12181,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is in the intersection waiting to turn left when the light turns red. What should the driver do?",
         "correct_count": 1,
         "explanation": "When already in the intersection waiting to complete a left turn, the driver should complete the turn when safe — even after the signal turns red. Stopping in the intersection would block traffic. This is a normal and legal part of left-turn execution.",
@@ -12196,7 +12196,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the purpose of a 'stop line' (wide white line painted across the lane before an intersection)?",
         "correct_count": 1,
         "explanation": "A stop line marks where a vehicle must stop at a stop sign or red light. The front of the vehicle must not pass the stop line until the driver is legally permitted to proceed.",
@@ -12211,7 +12211,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What does 'clearing an intersection' before a yellow light turns red mean legally in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law (and most states) allows a vehicle that is already in the intersection on a green or yellow to complete the maneuver. A driver who entered on a green and is crossing when it turns red has not run the red light.",
@@ -12226,7 +12226,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A driver on a one-way street wants to turn left onto another one-way street (traffic flows left). Where should the driver position their vehicle before turning?",
         "correct_count": 1,
         "explanation": "When turning left from a one-way street onto another one-way street, the driver should be in the leftmost lane. They must turn into the leftmost available lane of the cross street.",
@@ -12241,7 +12241,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which road marking indicates a no-passing zone on a two-lane road from the perspective of the driver nearest to the solid line?",
         "correct_count": 1,
         "explanation": "A solid yellow line on YOUR side of the center means no passing from your direction. The driver nearest the solid line may not pass. If both lines are solid (double solid yellow), neither direction may pass.",
@@ -12256,7 +12256,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "intersections",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'point of no return' concept at a signalized intersection?",
         "correct_count": 1,
         "explanation": "The point of no return is the location where stopping safely before the stop line becomes impossible given the vehicle's speed and distance. Past this point, the driver must proceed through the intersection even if the light turns yellow or red.",
@@ -12272,7 +12272,7 @@ QUESTIONS = [
     # ── Chapter 8 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a solid white line painted between lanes on a highway indicate?",
         "correct_count": 1,
         "explanation": "Solid white lines between lanes discourage lane changes. Unlike dashed white lines (which allow lane changes), solid white lines indicate the driver should stay in their lane — common near intersections and exit ramps.",
@@ -12287,7 +12287,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When is it legal to pass on the right on a multi-lane highway?",
         "correct_count": 1,
         "explanation": "On a roadway with two or more lanes moving in the same direction, passing on the right is legal if the vehicle ahead is making or about to make a left turn, or when there is sufficient road width. It is never legal to drive off the pavement to pass on the right.",
@@ -12302,7 +12302,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the minimum distance you must signal before making a lane change on a city street in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires signaling at least 100 feet before making a lane change or turn on a non-highway road. On a highway (speeds above 45 mph), 300 feet of signaling is required.",
@@ -12317,7 +12317,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "On a two-lane road, the broken yellow center line indicates:",
         "correct_count": 1,
         "explanation": "A broken (dashed) yellow center line means passing is permitted from either direction when it is safe to do so. Drivers may cross into the oncoming lane to pass a slower vehicle if sight distance and traffic allow.",
@@ -12332,7 +12332,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A vehicle wants to pass another on a two-lane road. Oklahoma law requires what minimum sight distance ahead before beginning the pass?",
         "correct_count": 1,
         "explanation": "Oklahoma law (47 O.S. § 11-309) requires a driver to be able to see clearly for at least 500 feet ahead before initiating a pass on a two-lane road.",
@@ -12347,7 +12347,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "After completing a pass on a two-lane road, when may the passing driver return to the right lane?",
         "correct_count": 1,
         "explanation": "After passing, return to the right lane only when you can see the passed vehicle in your rearview mirror AND there is sufficient space to return without forcing the other driver to brake.",
@@ -12362,7 +12362,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "In which situation is passing another vehicle always prohibited in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing is absolutely prohibited at railroad crossings, on hills and curves with limited visibility, within 100 feet of an intersection, bridge, or tunnel, and in school zones.",
@@ -12377,7 +12377,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why is it dangerous to change lanes while in an intersection or crosswalk area?",
         "correct_count": 1,
         "explanation": "Lane changes in intersections increase exposure to crossing pedestrians, cyclists, and vehicles from multiple directions — all at once. The driver's attention is divided between the lane change maneuver and intersection hazards, dramatically increasing crash risk.",
@@ -12392,7 +12392,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does a 'gore area' (the triangular pavement section between a highway lane and an exit ramp) indicate to drivers?",
         "correct_count": 1,
         "explanation": "The gore area is the striped or painted triangular section between the through lane and the exit ramp. Drivers must not drive in the gore area — it is off-limits. You must commit to either the exit or the through lane before reaching the gore.",
@@ -12407,7 +12407,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "When merging onto a highway from an on-ramp, drivers must reach approximately what speed before merging?",
         "correct_count": 1,
         "explanation": "Drivers should use the acceleration lane to reach the speed of highway traffic before merging. Merging at a speed significantly below traffic flow forces other drivers to brake, increasing rear-end crash risk.",
@@ -12423,7 +12423,7 @@ QUESTIONS = [
     # ── Chapter 9 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does it mean when a person is 'buzzed' (slightly impaired by alcohol) but still drives?",
         "correct_count": 1,
         "explanation": "'Buzzed driving is drunk driving.' Even a slight buzz impairs judgment, divided attention, and reaction time measurably. Research shows buzzed drivers cause a significant percentage of fatal crashes.",
@@ -12438,7 +12438,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which factor most affects how quickly alcohol raises a person's BAC?",
         "correct_count": 1,
         "explanation": "Body weight and the amount of alcohol consumed per hour are the primary drivers of BAC, but the rate of consumption is the single biggest controllable factor. Drinking quickly on an empty stomach raises BAC fastest.",
@@ -12453,7 +12453,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does alcohol primarily cause impaired vision while driving?",
         "correct_count": 1,
         "explanation": "Alcohol reduces peripheral (side) vision, slows the eye's ability to focus (especially at night), reduces depth perception, and slows pupil response to light changes — all critical for safe driving.",
@@ -12468,7 +12468,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "An Oklahoma driver charged with APC (Actual Physical Control of a vehicle while impaired) is sitting in a parked car with the engine running. Why can this be charged as a DUI offense?",
         "correct_count": 1,
         "explanation": "Oklahoma's APC law holds that a person in actual physical control of a vehicle (engine running, in the driver's seat) is considered to be operating it for DUI purposes, even if the car is not moving.",
@@ -12483,7 +12483,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the legal blood alcohol content (BAC) threshold for a DUI per se charge for a commercial driver (CDL holder) in Oklahoma?",
         "correct_count": 1,
         "explanation": "CDL holders face a lower BAC threshold of 0.04% for a DUI per se charge, even when operating a personal (non-commercial) vehicle. This is half the 0.08% limit for standard license holders.",
@@ -12498,7 +12498,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which of the following is NOT a way to avoid driving while impaired?",
         "correct_count": 1,
         "explanation": "Eating food slows alcohol absorption slightly but does not make an impaired person safe to drive. Safe alternatives include designating a driver, using a rideshare service, calling a friend, or staying where you are.",
@@ -12513,7 +12513,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A first-time DUI offender in Oklahoma with a BAC of 0.08%–0.14% faces which maximum jail sentence?",
         "correct_count": 1,
         "explanation": "A first DUI offense in Oklahoma (BAC 0.08%–0.14%) carries up to 1 year in the county jail and a fine up to $1,000. Higher BAC or aggravating factors increase the penalties.",
@@ -12528,7 +12528,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Which over-the-counter medication can cause drowsiness and impair driving ability?",
         "correct_count": 1,
         "explanation": "First-generation antihistamines (e.g., diphenhydramine found in Benadryl and many sleep aids) cause significant drowsiness. Studies show they impair driving comparably to a BAC of 0.10%.",
@@ -12543,7 +12543,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma's 'aggravated DUI' charge applies when the driver's BAC is at or above:",
         "correct_count": 1,
         "explanation": "Oklahoma defines aggravated DUI as driving with a BAC of 0.15% or higher. This triggers enhanced penalties including longer license revocation and mandatory substance abuse treatment.",
@@ -12558,7 +12558,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "impaired-driving",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is convicted of a second DUI in Oklahoma within 10 years of the first. How is the second offense classified?",
         "correct_count": 1,
         "explanation": "A second DUI within 10 years in Oklahoma is classified as a felony, with penalties including 1–5 years in state prison. This is a significant escalation from the first-offense misdemeanor.",
@@ -12574,7 +12574,7 @@ QUESTIONS = [
     # ── Chapter 10 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Motorcycles are entitled to the full width of a traffic lane. What does this mean for other drivers?",
         "correct_count": 1,
         "explanation": "A motorcycle legally occupies a full lane. Other drivers may not squeeze past a motorcyclist in the same lane or crowd them toward the edge. Lane-sharing (two vehicles side-by-side in one lane) is illegal unless the motorcycle is lane-splitting, which is also illegal in Oklahoma.",
@@ -12589,7 +12589,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the greatest cause of car-motorcycle crashes at intersections?",
         "correct_count": 1,
         "explanation": "The most common car-motorcycle crash at intersections occurs when a car turns left in front of an oncoming motorcycle. The driver typically fails to see the smaller motorcycle or misjudges its speed.",
@@ -12604,7 +12604,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When sharing the road with a moped or motorized scooter that cannot reach highway speeds, what should a driver do?",
         "correct_count": 1,
         "explanation": "Treat slow-moving mopeds and scooters with the same courtesy as bicyclists: leave at least 3 feet of passing clearance, do not tailgate, and do not honk unnecessarily. They are legally entitled to use the road.",
@@ -12619,7 +12619,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A truck driver is making a wide right turn and swings left before turning. What should following drivers do?",
         "correct_count": 1,
         "explanation": "Wait for the truck to complete the turn. Never attempt to pass on the right when a truck swings left — the trailer will sweep across the right lane as it turns, potentially crushing a vehicle in that space.",
@@ -12634,7 +12634,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma requires bicycle riders under the age of 18 to wear a helmet. What is the consequence for the PARENT or guardian if the minor is found riding without one?",
         "correct_count": 1,
         "explanation": "Oklahoma's bicycle helmet law (47 O.S. § 11-1202) places responsibility on parents or guardians for minors riding without a helmet. The parent or guardian may be cited for allowing the violation.",
@@ -12649,7 +12649,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a horse-drawn vehicle or livestock on the road, a driver should:",
         "correct_count": 1,
         "explanation": "Slow down well in advance, avoid sudden horn use or loud acceleration, and pass only when there is ample room. Horses can spook suddenly, causing the rider or driver to lose control.",
@@ -12664,7 +12664,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Under Oklahoma's 'vulnerable road user' law, what additional duty does a driver owe a pedestrian who is visually impaired and accompanied by a guide dog?",
         "correct_count": 1,
         "explanation": "Oklahoma law (47 O.S. § 11-502) requires all drivers to yield completely to a blind pedestrian using a white cane or guide dog, even before the pedestrian enters the roadway. Failure to yield is a criminal offense.",
@@ -12679,7 +12679,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "It is illegal to follow an emergency vehicle at a distance closer than how many feet in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits following an emergency vehicle responding to a call at a distance of less than 500 feet. This keeps the area clear for the emergency response and prevents a collision if the emergency vehicle stops suddenly.",
@@ -12694,7 +12694,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A vehicle towing a trailer must have which lights working on the trailer?",
         "correct_count": 1,
         "explanation": "Any trailer being towed on a public road must have functioning brake lights (if the trailer has brakes), tail lights, and turn signals visible from the rear. This ensures following drivers can see the trailer's signals.",
@@ -12709,7 +12709,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing-road",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the primary reason large trucks need much greater stopping distances than passenger cars?",
         "correct_count": 1,
         "explanation": "Gross vehicle weight is the dominant factor. A fully-loaded 80,000-lb semi requires roughly 40% more distance to stop from 65 mph than a 4,000-lb car, even with properly functioning brakes. Heavier mass requires more braking force and time to decelerate.",
@@ -12725,7 +12725,7 @@ QUESTIONS = [
     # ── Chapter 11 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should you do if you encounter a dust storm or haboob while driving in Oklahoma?",
         "correct_count": 1,
         "explanation": "Pull completely off the road, turn off your lights (so approaching drivers don't follow your lights off-road thinking you're in a lane), set the parking brake, and wait for the storm to pass. This is sometimes remembered as 'pull aside, stay alive.'",
@@ -12740,7 +12740,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When driving in heavy rain at night, one major additional hazard compared to daytime rain is:",
         "correct_count": 1,
         "explanation": "At night, headlights reflect off wet pavement and water spray from other vehicles, significantly reducing visibility. Additionally, pedestrians and cyclists become very hard to see, and drivers often misjudge the depth of standing water.",
@@ -12755,7 +12755,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma's tornado-prone environment means drivers may encounter a tornado warning while on the road. What is the safest action when a tornado is approaching?",
         "correct_count": 1,
         "explanation": "Do NOT try to outrun a tornado in your car — they can change direction unpredictably and move faster than a vehicle. Leave the vehicle and take shelter in a sturdy building or low-lying ditch away from trees and the vehicle.",
@@ -12770,7 +12770,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When driving through a flooded roadway, after clearing the water you should:",
         "correct_count": 1,
         "explanation": "After driving through standing water, brakes may be wet and less effective. Gently tapping the brakes several times while moving slowly helps dry the rotors and restore brake performance.",
@@ -12785,7 +12785,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What does 'turn around, don't drown' refer to in Oklahoma road safety?",
         "correct_count": 1,
         "explanation": "'Turn around, don't drown' is an Oklahoma emergency management campaign warning drivers not to attempt crossing flooded roads. Even 6 inches of moving water can knock a person down; 2 feet can carry a vehicle away.",
@@ -12800,7 +12800,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "During an ice storm, which braking technique works best for a vehicle WITHOUT anti-lock brakes (ABS) to avoid wheel lockup on ice?",
         "correct_count": 1,
         "explanation": "On ice without ABS, threshold braking (applying firm but not maximum pressure, stopping just before wheel lockup) or manually pumping the brakes prevents the lockup that causes loss of steering control.",
@@ -12815,7 +12815,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the 'two-second rule' and when should it be extended to four or more seconds?",
         "correct_count": 1,
         "explanation": "The two-second rule is the minimum following distance in ideal conditions: pick a fixed point, count 2 seconds from when the car ahead passes it to when your car does. In rain, ice, fog, or at high speeds, extend to 4 seconds or more.",
@@ -12830,7 +12830,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If your vehicle starts to skid on a wet road, when should you apply the accelerator?",
         "correct_count": 1,
         "explanation": "Do not apply the accelerator during a skid. Ease off it (and the brakes) to allow tires to regain traction. Acceleration while skidding spins the wheels faster and worsens the skid.",
@@ -12845,7 +12845,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What road feature, sometimes painted in a heat-absorbing dark color, can create a 'heat mirage' that looks like water on the road ahead?",
         "correct_count": 1,
         "explanation": "Black asphalt absorbs heat, creating a boundary layer of superheated air near the road surface. Light passing through this hot air refracts (bends), creating the optical illusion of water or a wet surface. This is common on Oklahoma highways in summer.",
@@ -12860,7 +12860,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "adverse-conditions",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "In a whiteout condition (blowing snow making visibility near zero), what is the safest action beyond pulling off the road?",
         "correct_count": 1,
         "explanation": "In a whiteout, pull completely off the roadway onto the shoulder or into a parking area and turn off all lights except hazard flashers. Leaving headlights on can cause following drivers to think you are moving traffic and follow you off the road.",
@@ -12876,7 +12876,7 @@ QUESTIONS = [
     # ── Chapter 12 · Round 5 (55 → 65) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the first priority when your vehicle has a brake failure on a downhill grade?",
         "correct_count": 1,
         "explanation": "If brakes fail on a downhill, engine-brake by downshifting (manual or paddle shifters), use the parking brake gradually, and look for a runaway truck ramp, uphill escape road, or open space to steer into. Never use the emergency brake suddenly — it can cause a spin.",
@@ -12891,7 +12891,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What should you do if your vehicle's power steering fails while driving?",
         "correct_count": 1,
         "explanation": "Without power steering, the wheel becomes much harder to turn. Slow down immediately, both hands on the wheel, and steer with greater physical effort toward a safe stopping place. Do not attempt high-speed maneuvers.",
@@ -12906,7 +12906,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver witnesses a crash and stops to help. What is the most important thing to do before approaching the crash scene on a highway?",
         "correct_count": 1,
         "explanation": "Before approaching, make sure your own vehicle is safely off the road and you activate your hazard lights. Then assess the scene for hazards (fuel leaks, fire, traffic) before approaching the crash. A Good Samaritan who is struck while assisting helps no one.",
@@ -12921,7 +12921,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "If a person is trapped in a vehicle after a crash and there is no fire, should a bystander attempt to move the injured person?",
         "correct_count": 1,
         "explanation": "Generally, do NOT move a crash victim unless there is immediate life-threatening danger (fire, rising water). Improper movement can worsen spinal cord injuries. Call 911 and keep the person calm and still until professional help arrives.",
@@ -12936,7 +12936,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma's 'Good Samaritan Law' provides legal protection to someone who:",
         "correct_count": 1,
         "explanation": "Oklahoma's Good Samaritan Law (76 O.S. § 5) protects individuals who render emergency care in good faith at a crash scene from civil liability for unintentional injury — as long as they are not grossly negligent.",
@@ -12951,7 +12951,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When your vehicle's engine overheats and the temperature gauge reaches the red zone, what should you do?",
         "correct_count": 1,
         "explanation": "Pull over safely and turn off the engine. Do NOT open the radiator cap while hot — it is under pressure and can spray scalding coolant. Let it cool for at least 30 minutes before checking coolant levels.",
@@ -12966,7 +12966,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How should warning triangles or road flares be positioned after a breakdown on a highway?",
         "correct_count": 1,
         "explanation": "Place warning devices behind the vehicle at approximately 10 feet, 100 feet, and 300 feet to give approaching drivers adequate warning distance at highway speeds.",
@@ -12981,7 +12981,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A pedestrian has been struck by a vehicle and is unresponsive. What is the correct order of action for a bystander trained in CPR?",
         "correct_count": 1,
         "explanation": "Call 911 first (or have someone else call), then begin CPR if the person is unresponsive and not breathing. Calling 911 first ensures advanced help is en route while you provide care.",
@@ -12996,7 +12996,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After a minor crash with no injuries and vehicles are drivable, Oklahoma recommends drivers should:",
         "correct_count": 1,
         "explanation": "After a minor no-injury crash, Oklahoma recommends moving vehicles out of active traffic lanes (if drivable) to avoid secondary crashes, then exchanging information and filing a report if damage exceeds $500.",
@@ -13011,7 +13011,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "If your vehicle goes into water (submerging after driving off a bridge or road), what is the recommended survival technique?",
         "correct_count": 1,
         "explanation": "Stay calm; unbuckle the seatbelt; open the window immediately (electric windows work briefly underwater) or break it; exit through the window; if water has filled the cabin, opening the door is then possible due to equalized pressure.",
@@ -13027,7 +13027,7 @@ QUESTIONS = [
     # ── Chapter 7 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is a pedestrian hybrid beacon (HAWK signal) and when must an approaching driver stop for one?",
         "correct_count": 1,
         "explanation": "A HAWK (High-Intensity Activated crossWalK) beacon is a pedestrian-activated signal that is dark until a pedestrian presses the button. It then shows flashing yellow (warning), solid yellow, then solid red. Drivers MUST stop when it displays solid red, just as at a regular red light.",
@@ -13042,7 +13042,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "The right of way granted by a green traffic signal does NOT protect a driver from which of the following?",
         "correct_count": 1,
         "explanation": "A green light gives permission to proceed but does NOT guarantee safety. Drivers must still yield to pedestrians lawfully in the crosswalk, clear the intersection of vehicles that ran the previous red, and remain alert for emergency vehicles or other hazards. A green light is not a legal defense against a collision.",
@@ -13057,7 +13057,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A traffic signal has just turned green, but a pedestrian is still in the crosswalk completing their crossing. What must the driver do?",
         "correct_count": 1,
         "explanation": "Even when the signal is green, drivers must wait for pedestrians in the crosswalk to finish crossing before proceeding. Pedestrians in a crosswalk always have the right of way over vehicles, regardless of signal state.",
@@ -13072,7 +13072,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'dilemma zone' at a signalized intersection and why is it hazardous?",
         "correct_count": 1,
         "explanation": "The dilemma zone is the area close enough to the intersection that a driver cannot stop comfortably before the stop line when the signal turns yellow, but also not close enough to guarantee safely clearing the intersection before red. Drivers caught in this zone must make an immediate, split-second decision — which increases the risk of both running the light and hard-braking rear-end crashes.",
@@ -13087,7 +13087,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is a 'leading pedestrian interval' (LPI) at a traffic signal, and what safety benefit does it provide?",
         "correct_count": 1,
         "explanation": "A leading pedestrian interval (LPI) activates the WALK signal 3–7 seconds before vehicles in the adjacent lane receive a green light. This gives pedestrians a head start, allowing them to establish themselves in the crosswalk and be more visible to turning drivers before vehicle traffic begins to move.",
@@ -13102,7 +13102,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "railroad-crossings",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver approaches a railroad crossing with only a crossbuck sign (white X with 'RR') — no lights, gate, or warning signals. No train is visible. What does Oklahoma law require?",
         "correct_count": 1,
         "explanation": "A railroad crossbuck sign at a passive crossing (no active signals) functions similarly to a yield sign. The driver must slow down, look and listen in both directions for approaching trains, and cross only when safe. If a train is approaching or audible, the driver must stop.",
@@ -13117,7 +13117,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At a left-turn signal, the green arrow phase ends and the signal changes to a circular (ball) green. A driver in the left-turn lane who missed the green arrow now wants to turn left. What applies?",
         "correct_count": 1,
         "explanation": "When a protected green arrow ends and a circular green appears, the left-turn lane transitions from a protected to a permissive left turn. The driver MAY turn left but must first yield to oncoming traffic and pedestrians. The protected phase is over — the turn is still allowed but without a guaranteed gap in oncoming traffic.",
@@ -13132,7 +13132,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "pedestrians",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Oklahoma law requires drivers to yield to pedestrians who have the WALK signal. Does this apply even when the driver has a green traffic light?",
         "correct_count": 1,
         "explanation": "Yes — when pedestrians have the WALK signal, they have the legal right of way in the crosswalk regardless of the vehicle signal state. Drivers turning right or left on green must yield to pedestrians who are crossing legally under a WALK signal, even if the driver's light is also green.",
@@ -13147,7 +13147,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "traffic-signals",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Traffic engineers use an 'all-red clearance interval' — a brief phase where every direction shows red simultaneously. What is the purpose of this phase?",
         "correct_count": 1,
         "explanation": "An all-red interval (typically 1–3 seconds) is inserted after each signal phase to allow the intersection to clear of vehicles that entered on the last second of green or yellow before cross-traffic is released. It reduces angle (T-bone) crash risk caused by vehicles that just cleared but are still in the intersection.",
@@ -13162,7 +13162,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "pedestrians",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At an intersection, all pedestrian signals are dark (non-functional) while vehicle traffic signals are working normally. What pedestrian rights still apply?",
         "correct_count": 1,
         "explanation": "Even when pedestrian signals are out, pedestrians retain their legal right of way at crosswalks. Drivers turning on green must still yield to pedestrians who are crossing at the intersection in marked or unmarked crosswalks. Non-functional pedestrian signals do not eliminate pedestrian rights.",
@@ -13178,7 +13178,7 @@ QUESTIONS = [
     # ── Chapter 8 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 8, "category": "lane-discipline",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "On a multi-lane highway, Oklahoma law generally requires non-passing drivers to travel in which lane?",
         "correct_count": 1,
         "explanation": "Oklahoma law and good driving practice require vehicles that are not passing to travel in the right lane on multi-lane highways. The left lane is reserved for passing. Staying in the left lane unnecessarily when not passing (a practice sometimes called 'lane camping') impedes traffic flow and may be illegal.",
@@ -13193,7 +13193,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "After checking mirrors before a lane change, a driver should perform which additional check before steering into the new lane?",
         "correct_count": 1,
         "explanation": "After checking mirrors, a driver must perform a shoulder check — a quick glance over the shoulder in the direction of the lane change. Mirrors have blind spots, and a vehicle may be positioned in the blind spot where mirrors cannot see it. The shoulder check reveals vehicles mirrors miss.",
@@ -13208,7 +13208,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "highway-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a highway exit ramp, at what point should a driver begin to slow down?",
         "correct_count": 1,
         "explanation": "A driver should decelerate primarily after entering the deceleration lane (exit ramp), not while still in the main highway travel lanes. Slowing down on the main highway before the exit creates a speed differential that can cause rear-end crashes. Signal well in advance, move to the right lane, then slow after entering the ramp.",
@@ -13223,7 +13223,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "During a passing attempt on a two-lane road, a driver realizes an oncoming vehicle is approaching and they cannot safely complete the pass. What is the correct immediate action?",
         "correct_count": 1,
         "explanation": "The driver must return to the right lane as quickly as possible by either slowing down to fall back behind the vehicle being passed, or — if ahead of the vehicle — accelerating to complete the pass faster. Use the right shoulder if necessary to avoid the oncoming vehicle. Never continue into the path of oncoming traffic.",
@@ -13238,7 +13238,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "large-trucks",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'squeeze play' hazard when a large truck on an on-ramp is merging into a highway lane occupied by a car?",
         "correct_count": 1,
         "explanation": "During a merge, a truck's cab moves into the lane while the rear trailer swings wider than the cab — called off-tracking. A car positioned alongside the truck's trailer can be squeezed between the trailer and the lane edge as the trailer follows the cab's path. Smaller vehicles should slow down or speed up to get completely clear of the truck before the merge.",
@@ -13253,7 +13253,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Is it legal in Oklahoma to use the paved shoulder of a road to pass a slow-moving vehicle?",
         "correct_count": 1,
         "explanation": "No — passing on the shoulder is illegal in Oklahoma. The shoulder is designated for emergency use (breakdowns, emergency stops), not for passing. Using the shoulder to pass exposes the driver to liability and places the vehicle in a dangerous position where pedestrians, cyclists, and disabled vehicles may be present.",
@@ -13268,7 +13268,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "lane-changes",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "After completing a lane change on a multi-lane highway, when should the driver cancel the turn signal?",
         "correct_count": 1,
         "explanation": "The turn signal should be cancelled (turned off) as soon as the lane change is fully complete and the vehicle is positioned entirely within the new lane. Leaving the signal on after a lane change is confusing to following drivers and may be interpreted as another impending maneuver.",
@@ -13283,7 +13283,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Why should a driver avoid following too closely behind a vehicle they intend to pass on a two-lane road?",
         "correct_count": 1,
         "explanation": "A close following distance drastically reduces the driver's sight distance ahead — they cannot see past the vehicle in front to assess the passing lane. You need to see far enough to confirm no oncoming traffic, calculate a safe gap, and judge the distance needed to complete the pass. Drop back first, then assess and pass when clear.",
@@ -13298,7 +13298,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver behind a truck traveling 55 mph wants to pass. The driver's vehicle can only reach 58 mph. Why is this minimal 3 mph speed differential particularly dangerous on a two-lane road?",
         "correct_count": 1,
         "explanation": "A 3 mph speed differential means the passing vehicle gains only 4.4 feet per second on the truck. To travel the length of a large truck (75+ feet) plus safe clearance, the driver may need 15–20 seconds in the oncoming lane — covering 1,300+ feet. This greatly extends exposure to oncoming traffic and dramatically increases crash risk.",
@@ -13313,7 +13313,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "large-trucks",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a large commercial truck signals a lane change on the highway, smaller vehicles near the truck should:",
         "correct_count": 1,
         "explanation": "When a truck signals a lane change, smaller vehicles should immediately create space — either accelerating to move ahead of the truck or decelerating to fall behind it. Trucks have significant blind spots and limited ability to see small vehicles in adjacent lanes, and their size and momentum make a collision catastrophic for the smaller vehicle.",
@@ -13329,7 +13329,7 @@ QUESTIONS = [
     # ── Chapter 9 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Blood alcohol concentration (BAC) is expressed as grams of alcohol per 100 milliliters of blood. In plain terms, a BAC of 0.08% means:",
         "correct_count": 1,
         "explanation": "A BAC of 0.08% means there are 0.08 grams of alcohol in every 100 milliliters of blood. This is the legal per se impairment limit in Oklahoma for drivers 21 and older. Even below this level, impairment may be measurable and a DWI charge may still apply.",
@@ -13344,7 +13344,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "How does a person's body weight affect their blood alcohol concentration (BAC) after consuming the same number of drinks as someone lighter?",
         "correct_count": 1,
         "explanation": "Body weight directly affects BAC because alcohol distributes through body water. A heavier person generally has more total body water, so the same amount of alcohol is diluted more, resulting in a lower BAC. A lighter person's blood reaches a higher BAC from the same drinks. Gender and body fat ratio also play roles.",
@@ -13359,7 +13359,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "dui-law",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma law, a first-time DUI offender may qualify for a 'deferred sentence.' What is the primary benefit of this arrangement?",
         "correct_count": 1,
         "explanation": "A deferred sentence postpones formal sentencing. If the offender completes all court-ordered requirements (fines, DUI education, ignition interlock, probation) without re-offending during the deferral period, the court may dismiss the charge. This can avoid a permanent DUI conviction on the record.",
@@ -13374,7 +13374,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "drugs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "How does marijuana impair driving differently from alcohol, making it difficult to set an equivalent BAC-style per se legal limit?",
         "correct_count": 1,
         "explanation": "Marijuana primarily impairs divided attention, reaction time, and lane tracking. Unlike alcohol, there is no clear dose-response relationship between blood THC levels and impairment — tolerance, method of consumption, and individual variation mean high THC blood levels don't always correlate with driving impairment, and impairment may occur even at low levels in infrequent users.",
@@ -13389,7 +13389,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "dui-law",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Are DUI sobriety checkpoints (roadblocks) legally permitted in Oklahoma?",
         "correct_count": 1,
         "explanation": "Yes — Oklahoma courts have upheld DUI sobriety checkpoints as constitutional under both the U.S. and Oklahoma constitutions, provided they follow established guidelines (advance public notice, neutral vehicle selection criteria, brief detentions). They are a lawful tool for impaired driving enforcement.",
@@ -13404,7 +13404,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "dui-law",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "An Oklahoma driver tests at 0.06% BAC — below the 0.08% per se limit. Are they necessarily free from impaired driving charges?",
         "correct_count": 1,
         "explanation": "No. While 0.06% is below the per se DUI limit (0.08%), Oklahoma law also prohibits Driving While Impaired (DWI), which can be charged at any BAC if the driver's ability to safely operate a vehicle is visibly impaired. Observable impairment — even below 0.08% — can result in a DWI charge.",
@@ -13419,7 +13419,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "drugs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "THC (marijuana's active compound) can remain detectable in blood for days after use. Does a positive blood THC test at the time of a DUI arrest prove the driver was impaired while driving?",
         "correct_count": 1,
         "explanation": "Not necessarily. THC persists in blood for 1–7+ days after use (longer in chronic users), even when impairment has long passed. A positive test shows recent use but does not prove current impairment at the time of driving. Oklahoma prosecutors must also show other evidence of impairment (driving behavior, field sobriety, DRE evaluation).",
@@ -13434,7 +13434,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "dui-law",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma's dram shop civil liability principles, who may be held civilly responsible for damages caused in a drunk-driving crash?",
         "correct_count": 1,
         "explanation": "Oklahoma's dram shop laws create civil liability for alcohol vendors (bars, restaurants, liquor stores) that serve alcohol to a visibly intoxicated person or a minor who then causes a crash. The vendor may be sued for damages alongside the drunk driver.",
@@ -13449,7 +13449,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "dui-law",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Under Oklahoma law, can a minor's driver license be suspended for an alcohol-related offense that did NOT involve operating a vehicle?",
         "correct_count": 1,
         "explanation": "Yes — Oklahoma law allows DPS to suspend or revoke a minor's driver license for alcohol or drug offenses even if the offense did not involve a vehicle. For example, a conviction for minor in possession (MIP) of alcohol can result in a license suspension.",
@@ -13464,7 +13464,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "drugs",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver is prescribed a sedating antihistamine, takes the recommended dose, feels clearheaded, and drives. Why might they still face a DUI charge under Oklahoma law?",
         "correct_count": 1,
         "explanation": "Oklahoma law prohibits operating a vehicle while impaired by any substance — including legal prescription or over-the-counter drugs. Antihistamines cause sedation and cognitive slowing that impairs driving even when the user feels subjectively normal. The driver's perception of clearheadedness is not a legal defense if the drug actually impairs driving ability.",
@@ -13480,7 +13480,7 @@ QUESTIONS = [
     # ── Chapter 10 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Under Oklahoma law, must bicyclists obey the same traffic signals, stop signs, and road rules as motor vehicle drivers?",
         "correct_count": 1,
         "explanation": "Yes — bicyclists in Oklahoma are subject to the same traffic laws as motor vehicles. They must stop at red lights and stop signs, ride in the same direction as traffic, signal turns, and follow all other traffic rules. Failing to do so can result in a citation and creates serious safety risks.",
@@ -13495,7 +13495,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Before making a right turn at an intersection where there is a marked bicycle lane, what must a driver do?",
         "correct_count": 1,
         "explanation": "Before turning right across a bike lane, a driver must check for and yield to cyclists in the bike lane. The driver should signal the turn, check for cyclists, and only merge into or across the bike lane when it is safe to do so — ideally just before the intersection. Cutting across a bike lane without checking can trap or strike a cyclist.",
@@ -13510,7 +13510,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Are bicycle riders in Oklahoma required to signal turns and stops using hand signals?",
         "correct_count": 1,
         "explanation": "Yes — Oklahoma law requires bicyclists to signal turns and stops using hand signals, just as motor vehicles use turn signal lights. Proper signaling allows drivers behind to anticipate the cyclist's movements and prevents rear-end or side-swipe crashes.",
@@ -13525,7 +13525,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the 'Dutch reach' door-opening technique, and how does it protect cyclists sharing the road?",
         "correct_count": 1,
         "explanation": "The Dutch reach means opening a car door with the far (opposite) hand — the right hand if exiting the driver's side. This forces the driver to rotate their body and naturally look backward toward approaching cyclists before the door fully opens. It dramatically reduces 'dooring' crashes where an opening car door strikes an oncoming cyclist.",
@@ -13540,7 +13540,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "animals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When approaching a nervous horse and rider on the roadside, what is the safest action for a passing driver?",
         "correct_count": 1,
         "explanation": "Horses can be easily spooked by fast or loud vehicles. Drivers should slow down significantly, pass as wide as possible, and avoid honking, revving the engine, or making sudden movements. If the horse appears very agitated, stop and wait at a safe distance until the rider has control.",
@@ -13555,7 +13555,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "pedestrians",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under Oklahoma law, do pedestrians walking through a parking lot (private property open to the public) have the right of way over vehicles?",
         "correct_count": 1,
         "explanation": "Yes — pedestrian right-of-way laws generally apply in parking lots and driveways open to public traffic, not just on public roads. Drivers must yield to pedestrians walking through parking areas, as conflicts between vehicles and pedestrians in parking lots are a significant source of crashes and injuries.",
@@ -13570,7 +13570,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A delivery driver parks in a marked bicycle lane for five minutes to make a delivery, with hazard lights on. Under Oklahoma law, is this permitted?",
         "correct_count": 1,
         "explanation": "No — parking in a marked bicycle lane is prohibited in Oklahoma regardless of duration, the use of hazard lights, or the reason for the stop. Bicycle lanes are exclusively for cyclist travel. A vehicle stopped in the bike lane forces cyclists into motor vehicle traffic, creating a serious safety hazard.",
@@ -13585,7 +13585,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Oklahoma law requires a driver to give cyclists at least 3 feet of clearance when passing. Why is even greater clearance recommended at higher speeds?",
         "correct_count": 1,
         "explanation": "At higher speeds, a passing vehicle creates significant air turbulence and wind blast that can push a cyclist off balance or into debris. The 3-foot legal minimum was designed for lower speeds; at highway speeds, wind turbulence can affect a cyclist from 6+ feet away. Greater clearance significantly reduces this risk.",
@@ -13600,7 +13600,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "vulnerable-road-users",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Under Oklahoma's 'vulnerable road user' protections, which types of road users typically receive elevated legal protection?",
         "correct_count": 1,
         "explanation": "Oklahoma's vulnerable road user laws provide enhanced legal protection to pedestrians, cyclists (including e-bikes and mopeds), motorcyclists, persons with disabilities, skateboarders, people in wheelchairs, and road workers — essentially anyone exposed to traffic without the protection of an enclosed vehicle.",
@@ -13615,7 +13615,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "bicycles",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "A driver has a green light and is turning right at an intersection. Cyclists in the adjacent bike lane also have a green signal. Who has the right of way?",
         "correct_count": 1,
         "explanation": "The cyclist has the right of way. When a driver is turning right across a bike lane, they must yield to cyclists in the bike lane who are proceeding straight — even if both the vehicle and cyclist have green signals. The turning driver must yield to through traffic in the bike lane, just as they would yield to any through traffic when turning.",
@@ -13631,7 +13631,7 @@ QUESTIONS = [
     # ── Chapter 11 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 11, "category": "winter-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "Why must a driver clear snow from the ROOF of the vehicle — not just the windshield — before driving in winter?",
         "correct_count": 1,
         "explanation": "Snow on the roof can slide forward onto the windshield when braking, instantly blocking the driver's view. At highway speeds, it can blow off and become a flying projectile that strikes following vehicles or cyclists, causing serious injury or crashes. Many states cite or ticket drivers for uncleared roofs.",
@@ -13646,7 +13646,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "winter-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What makes freezing rain (glaze ice/clear ice) more dangerous to drive on than an equivalent depth of snow?",
         "correct_count": 1,
         "explanation": "Freezing rain creates a transparent, nearly invisible layer of clear ice (glaze ice) that coats all surfaces evenly — including the road, bridges, and vehicles. Its coefficient of friction is far lower than snow, and unlike snow which has some visible texture clues, glaze ice looks like a normal wet road. Drivers may not recognize the hazard until they lose control.",
@@ -13661,7 +13661,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "visibility",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When driving into sun glare that makes a traffic signal impossible to see clearly, what should a driver do?",
         "correct_count": 1,
         "explanation": "When sun glare blocks the driver's view of a traffic signal, the driver should slow down and treat the intersection with extreme caution — as if the signal may be red. The driver should watch for cross traffic and be prepared to stop, even if they believe the signal may be green.",
@@ -13676,7 +13676,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "visibility",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "When a driver moves from bright sunlight into a dark tunnel, what hazard occurs at the tunnel entrance and how should the driver prepare?",
         "correct_count": 1,
         "explanation": "At a tunnel entrance, the sudden shift from bright sunlight to deep shadow causes temporary blindness — the eyes need several seconds to adapt from high-brightness to low-brightness conditions. Drivers should reduce speed before entering the tunnel and avoid following closely in case leading vehicles slow or stop suddenly during the transition.",
@@ -13691,7 +13691,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "winter-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Cold temperatures cause a vehicle's tire pressure to decrease. Which of the following correctly describes the associated safety risk?",
         "correct_count": 1,
         "explanation": "Tire pressure drops approximately 1 PSI for every 10°F drop in temperature. Underinflated tires have a larger, deformed contact patch that reduces steering precision, increases heat buildup at highway speeds, and can cause sudden blowouts. In cold weather, tires that were properly inflated in summer may fall to unsafe levels overnight.",
@@ -13706,7 +13706,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "carbon-monoxide",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the most common cause of carbon monoxide (CO) poisoning inside a vehicle during winter, and how can it be prevented?",
         "correct_count": 1,
         "explanation": "The most common cause is running the engine while parked with a blocked exhaust pipe — typically when snow or ice covers the tailpipe. CO from the exhaust enters the vehicle cabin, causing poisoning within minutes. Prevention: never run the engine in a closed garage, and always clear snow from around the exhaust pipe before running the heater.",
@@ -13721,7 +13721,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "night-driving",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "At night, why should a driver dim high beams when approaching a curve ahead, even if no oncoming headlights are visible?",
         "correct_count": 1,
         "explanation": "On a curve, oncoming traffic is hidden around the bend — a driver may not see their headlights until just before the vehicles meet. If both drivers are using high beams, the sudden glare around a curve can temporarily blind both drivers at close range. Dimming to low beams before a curve is courteous and safe.",
@@ -13736,7 +13736,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "vehicle-control",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "On a long, steep downgrade, how should a driver avoid 'brake fade' rather than riding the service brakes continuously?",
         "correct_count": 1,
         "explanation": "The recommended technique is 'engine braking' — using a lower gear (manual) or selecting a lower gear range (automatic) to let the engine and drivetrain resist the vehicle's downhill acceleration, reducing the need for continuous brake application. This keeps brake temperature low and prevents the fluid boiling (fade) that causes brake failure on long grades.",
@@ -13751,7 +13751,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "night-driving",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is 'night myopia' (temporary reduction in distance vision at night) and how does it affect a driver's stopping situation?",
         "correct_count": 1,
         "explanation": "Night myopia is a temporary shift toward nearsightedness that occurs in low light because the eye's pupil dilates to collect more light, reducing depth of field. Objects at distance appear blurrier than in daylight. This means a driver may misjudge the distance to obstacles ahead, requiring increased following distance and reduced speed to maintain safe stopping margins.",
@@ -13766,7 +13766,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 11, "category": "rain",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Why are roads typically MORE slippery during the first 15–30 minutes of rainfall than during heavy, established rain?",
         "correct_count": 1,
         "explanation": "When rain first begins, it mixes with oil, rubber particles, and other deposits that have accumulated on the road surface, creating a slick emulsion. After heavier rain continues, this mixture washes away, improving traction. Heavy rain also creates a hydroplaning risk, but the early light-rain/oil mix phase is often the most dangerous for standard traction.",
@@ -13782,7 +13782,7 @@ QUESTIONS = [
     # ── Chapter 12 · Round 6 (65 → 75) ────────────────────────────────────────
     {
         "state_code": "ok", "chapter": 12, "category": "crash-procedures",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What must an Oklahoma driver do if they accidentally damage an unattended parked vehicle and the owner cannot be located?",
         "correct_count": 1,
         "explanation": "Oklahoma law requires a driver who damages an unattended vehicle to leave a written note in a conspicuous place on or in the struck vehicle containing the driver's name, address, and contact information, and report the crash to law enforcement as soon as reasonably possible.",
@@ -13797,7 +13797,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "The 'PASS' technique for operating a portable fire extinguisher stands for which four-step sequence?",
         "correct_count": 1,
         "explanation": "PASS stands for: Pull the safety pin, Aim the nozzle at the base of the fire (not the flames), Squeeze the trigger handle to discharge the agent, Sweep the nozzle side to side at the base of the fire until it is extinguished or the extinguisher is empty.",
@@ -13812,7 +13812,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Under what circumstances should a driver NOT attempt to fight a vehicle fire with a portable extinguisher?",
         "correct_count": 1,
         "explanation": "A driver should not attempt to fight a vehicle fire if: the fire is large or spreading rapidly, fuel is actively leaking, the fire is inside the passenger compartment (making approach impossible), there is no clear exit route away from the vehicle, or the extinguisher is too small for the size of the fire. In those cases, evacuate immediately and call 911.",
@@ -13827,7 +13827,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "breakdowns",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "If a vehicle runs out of fuel on a highway, what is the safest immediate action for the driver?",
         "correct_count": 1,
         "explanation": "The driver should immediately activate the hazard lights, safely coast to the right shoulder (taking advantage of any remaining momentum), bring the vehicle to a complete stop off the travel lanes, and call for roadside assistance. Do not attempt to push the vehicle in traffic.",
@@ -13842,7 +13842,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "crash-procedures",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "A driver's vehicle is rear-ended and pushed into an intersection. What should the driver prioritize immediately after?",
         "correct_count": 1,
         "explanation": "The immediate priority is preventing a secondary crash — if the vehicle is drivable, move it out of the intersection to a safe location. Then activate hazard lights, assess for injuries, and call 911. An intersection is a high-conflict zone where additional vehicles can strike the damaged vehicle.",
@@ -13857,7 +13857,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "What is the 'golden hour' concept in trauma medicine, and why does it influence decisions made at a crash scene?",
         "correct_count": 1,
         "explanation": "The 'golden hour' refers to the approximately first hour after a traumatic injury, during which rapid medical treatment dramatically improves survival rates — especially for internal bleeding, head trauma, and shock. This is why calling 911 immediately (not delaying to take photos or gather information first) and providing basic first aid without moving the victim unnecessarily are the highest priorities at any crash scene.",
@@ -13872,7 +13872,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "Oklahoma law provides legal protection for a person who breaks a vehicle window to rescue a child trapped in a dangerously hot car. Under what conditions does this protection generally apply?",
         "correct_count": 1,
         "explanation": "Oklahoma's 'rescue from vehicle' statute protects a person who uses reasonable force (e.g., breaks a window) to rescue a child (or in some provisions, an animal or vulnerable adult) from a hot vehicle, provided the person: (1) believes there is an imminent risk of harm from heat; (2) first contacts or attempts to contact 911; (3) uses only the minimum force necessary; and (4) stays at the scene to report to authorities.",
@@ -13887,7 +13887,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "After a crash in which the airbag has deployed, is it generally safe to attempt to drive the vehicle away from the scene?",
         "correct_count": 1,
         "explanation": "Not generally. Airbag deployment indicates a significant impact. Many vehicles have automatic fuel shutoff systems that disable the engine after an airbag deployment. Structural damage, deflated tires, damaged steering, or fluid leaks may also be present. The vehicle should be inspected before further operation unless emergency circumstances require it.",
@@ -13902,7 +13902,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "crash-procedures",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When involved in a minor crash with property damage only (no injuries), what is the first thing a driver should do at the scene?",
         "correct_count": 1,
         "explanation": "The first action is to move the vehicles out of active traffic lanes if they are drivable (to prevent secondary crashes), then turn on hazard lights, check all involved parties, exchange required information (name, address, license number, insurance), and document the scene. If anyone is injured, call 911 immediately regardless of injury severity.",
@@ -13917,7 +13917,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 12, "category": "emergencies",
-        "difficulty": "king",
+        "difficulty": "expert",
         "question_text": "After a significant crash, the airbag has deployed and the engine is still running. What should the driver do about the engine?",
         "correct_count": 1,
         "explanation": "The driver should turn off the ignition as soon as safely possible. A running engine after a crash with possible fuel line damage, overheated components, or electrical faults significantly increases fire risk. Shutting off the engine also reduces CO exposure if the exhaust system is damaged and stops fuel delivery if the fuel system is compromised.",

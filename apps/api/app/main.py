@@ -155,8 +155,6 @@ def create_app() -> FastAPI:
         "http://127.0.0.1:3000",
         "https://drivereadyapp.com",
         "https://www.drivereadyapp.com",
-        "https://driveready-ok.com",
-        "https://www.driveready-ok.com",
     ]
     extra = settings.extra_cors_origins
     if extra:

@@ -74,7 +74,7 @@ export interface QuizConfig {
   chapterNumbers?: number[]   // overrides chapterNumber when set (multi-chapter groups)
   chapterTitle?: string
   questionCount: number
-  difficulty: 'pawn' | 'rogue' | 'king'
+  difficulty: 'beginner' | 'pro' | 'expert'
   timerSeconds: number | null
 }
 
@@ -90,8 +90,8 @@ interface AnswerRecord {
 }
 
 function getHintSkipAllowance(difficulty: string, questionCount: number): number | null {
-  if (difficulty === 'pawn') return null
-  if (difficulty === 'king') return 0
+  if (difficulty === 'beginner') return null
+  if (difficulty === 'expert') return 0
   return Math.max(1, Math.floor(questionCount / 5))
 }
 
@@ -217,7 +217,7 @@ export function QuizSession({ config, onExit, onQuizComplete }: { config: QuizCo
 
   async function handleSkip() {
     if (!current) return
-    if (config.difficulty === 'king') return
+    if (config.difficulty === 'expert') return
     if (skipsLeft !== null && skipsLeft <= 0) return
 
     setSkipsUsed((s) => s + 1)
@@ -268,7 +268,7 @@ export function QuizSession({ config, onExit, onQuizComplete }: { config: QuizCo
   }
 
   function handleHint() {
-    if (config.difficulty === 'king') return
+    if (config.difficulty === 'expert') return
     if (hintsLeft !== null && hintsLeft <= 0) return
     setHintsUsed((h) => h + 1)
     setShowHint(true)

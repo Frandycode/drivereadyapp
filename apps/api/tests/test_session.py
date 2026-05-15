@@ -51,7 +51,7 @@ COMPLETE_SESSION = """
 def _start_input(chapters: list[int] | None = None) -> dict:
     return {
         "mode": "practice",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "questionCount": 5,
         "chapters": chapters or [4],
         "stateCode": "ok",

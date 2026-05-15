@@ -61,7 +61,7 @@ class Question(Base, UUIDMixin, TimestampMixin):
     category: Mapped[str] = mapped_column(String(50), nullable=False)
     difficulty: Mapped[str] = mapped_column(
         String(10), nullable=False, index=True
-    )  # pawn | rogue | king
+    )  # beginner | pro | expert
 
     question_text: Mapped[str] = mapped_column(Text, nullable=False)
     correct_count: Mapped[int] = mapped_column(Integer, nullable=False, default=1)

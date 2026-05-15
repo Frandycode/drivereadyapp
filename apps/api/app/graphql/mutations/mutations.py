@@ -344,7 +344,7 @@ async def _check_new_device(
 # ── XP helpers ────────────────────────────────────────────────────────────────
 
 XP_PER_CORRECT = 5
-XP_DIFFICULTY_MULTIPLIER = {"pawn": 1, "rogue": 2, "king": 3}
+XP_DIFFICULTY_MULTIPLIER = {"beginner": 1, "pro": 2, "expert": 3}
 LEVEL_THRESHOLDS = [0, 100, 300, 600, 1000, 1500, 2200]
 
 
@@ -1204,7 +1204,7 @@ class Mutation:
             select(Session).where(Session.id == uuid.UUID(str(input.session_id)))
         )
         session    = session_result.scalar_one_or_none()
-        multiplier = XP_DIFFICULTY_MULTIPLIER.get(session.difficulty if session else "pawn", 1)
+        multiplier = XP_DIFFICULTY_MULTIPLIER.get(session.difficulty if session else "beginner", 1)
         xp         = XP_PER_CORRECT * multiplier if is_correct else 0
 
         session_answer = SessionAnswer(
@@ -1766,7 +1766,7 @@ class Mutation:
             explanation=parsed.get("explanation", ""),
             hint=parsed.get("hint", ""),
             tags=[str(t) for t in parsed.get("tags", [])],
-            difficulty=parsed.get("difficulty", "pawn"),
+            difficulty=parsed.get("difficulty", "beginner"),
         )
 
     @strawberry.mutation

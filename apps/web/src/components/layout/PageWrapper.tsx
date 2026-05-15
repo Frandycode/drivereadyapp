@@ -36,7 +36,7 @@ export function PageWrapper({
   onNavigate,
 }: PageWrapperProps) {
   return (
-    <div className={clsx('min-h-dvh bg-bg flex flex-col', !fullScreen && 'pb-20')}>
+    <div className={clsx('min-h-dvh bg-bg flex flex-col', !fullScreen && 'pb-20 lg:pb-0')}>
       {header && (
         <div className="sticky top-0 z-40 glass border-b border-border">
           {header}

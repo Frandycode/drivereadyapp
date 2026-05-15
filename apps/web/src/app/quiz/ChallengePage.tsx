@@ -60,9 +60,9 @@ const IQ_MODES: { id: ChallengeMode; label: string; desc: string; Icon: React.El
 const DIFFICULTIES: {
   id: DifficultyCode
 }[] = [
-  { id: 'pawn' },
-  { id: 'rogue' },
-  { id: 'king' },
+  { id: 'beginner' },
+  { id: 'pro' },
+  { id: 'expert' },
 ]
 
 const QUESTION_COUNTS = [5, 10, 15, 20]
@@ -80,7 +80,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const [mode, setMode]                           = useState<ChallengeMode>('quiz')
-  const [difficulty, setDifficulty]               = useState<DifficultyCode>('pawn')
+  const [difficulty, setDifficulty]               = useState<DifficultyCode>('beginner')
   const [questionCount, setQuestionCount]         = useState(10)
   const [timer, setTimer]                         = useState<number | null>(null)
   const [selectedChapterId, setSelectedChapterId] = useState<string>('')
@@ -423,9 +423,9 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
               ? 'bg-orange text-white border-orange hover:bg-orange-deep'
               : mode === 'bot'
               ? 'bg-bronze-500 text-bg border-bronze-500 hover:bg-bronze-400'
-              : difficulty === 'rogue'
+              : difficulty === 'pro'
               ? 'bg-silver-500 text-bg border-silver-500 hover:bg-silver-400'
-              : difficulty === 'king'
+              : difficulty === 'expert'
               ? 'bg-yellow text-bg border-yellow hover:bg-yellow/90'
               : 'btn-primary border-orange'
           }`}

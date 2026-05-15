@@ -51,7 +51,7 @@ export interface PuzzleConfig {
   chapterNumbers?: number[]
   chapterTitle?: string
   questionCount: number
-  difficulty: 'pawn' | 'rogue' | 'king'
+  difficulty: 'beginner' | 'pro' | 'expert'
   timerSeconds: number | null
 }
 
@@ -67,8 +67,8 @@ interface AnswerRecord {
 }
 
 function getHintSkipAllowance(difficulty: string, count: number): number | null {
-  if (difficulty === 'pawn') return null
-  if (difficulty === 'king') return 0
+  if (difficulty === 'beginner') return null
+  if (difficulty === 'expert') return 0
   return Math.max(1, Math.floor(count / 5))
 }
 
@@ -163,7 +163,7 @@ export function PuzzleSession({ config, onExit }: { config: PuzzleConfig; onExit
   }
 
   async function handleSkip() {
-    if (!current || config.difficulty === 'king') return
+    if (!current || config.difficulty === 'expert') return
     if (skipsLeft !== null && skipsLeft <= 0) return
     setSkipsUsed((s) => s + 1)
     const alreadySkipped = skippedOnce.has(current.id)
@@ -242,7 +242,7 @@ export function PuzzleSession({ config, onExit }: { config: PuzzleConfig; onExit
         current={queueIndex + 1} total={queue.length}
         timerSeconds={config.timerSeconds} hintsLeft={hintsLeft} skipsLeft={skipsLeft}
         difficulty={config.difficulty} answerStates={answerStates} isRevealed={revealed}
-        onHint={() => { if (config.difficulty !== 'king' && (hintsLeft === null || hintsLeft > 0)) setHintsUsed((h) => h + 1) }}
+        onHint={() => { if (config.difficulty !== 'expert' && (hintsLeft === null || hintsLeft > 0)) setHintsUsed((h) => h + 1) }}
         onSkip={handleSkip} onExit={onExit}
         onTimerExpired={handleTimerExpired} resetKey={timerResetKey}
       />

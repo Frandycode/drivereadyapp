@@ -27,7 +27,7 @@ from app.models import Base, Question, Answer, Achievement
 QUESTIONS = [
     {
         "state_code": "ok", "chapter": 4, "category": "regulatory",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a red octagonal sign indicate?",
         "correct_count": 1,
         "explanation": "A red octagon is always a STOP sign. You must come to a complete stop.",
@@ -42,7 +42,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 4, "category": "warning",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "A yellow diamond-shaped sign warns of what?",
         "correct_count": 1,
         "explanation": "Yellow diamond signs warn drivers of upcoming hazards or changing road conditions.",
@@ -57,7 +57,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 5, "category": "right_of_way",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "At an uncontrolled intersection, who has the right of way?",
         "correct_count": 1,
         "explanation": "At an uncontrolled intersection, the vehicle that arrives first has right of way. If arriving simultaneously, yield to the vehicle on the right.",
@@ -72,7 +72,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the standard speed limit in a residential area in Oklahoma unless otherwise posted?",
         "correct_count": 1,
         "explanation": "Oklahoma's default residential speed limit is 25 mph unless signs indicate otherwise.",
@@ -87,7 +87,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 6, "category": "speed",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What is the speed limit in a school zone when children are present in Oklahoma?",
         "correct_count": 1,
         "explanation": "School zones in Oklahoma have a 25 mph limit when children are present or when the school zone flasher is active.",
@@ -102,7 +102,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What must you do when approaching a flashing red traffic light?",
         "correct_count": 1,
         "explanation": "A flashing red light is treated the same as a stop sign — come to a complete stop, then proceed when safe.",
@@ -117,7 +117,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 7, "category": "signals",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "What does a flashing yellow traffic light mean?",
         "correct_count": 1,
         "explanation": "A flashing yellow light means slow down and proceed with caution — you do not need to stop.",
@@ -132,7 +132,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 8, "category": "passing",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "Which of the following situations makes passing another vehicle illegal in Oklahoma?",
         "correct_count": 1,
         "explanation": "Passing is illegal on hills, curves, intersections, and railroad crossings where visibility is limited.",
@@ -147,7 +147,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 9, "category": "alcohol",
-        "difficulty": "rogue",
+        "difficulty": "pro",
         "question_text": "What is the legal blood alcohol concentration (BAC) limit for drivers 21 and older in Oklahoma?",
         "correct_count": 1,
         "explanation": "Oklahoma's legal BAC limit is 0.08% for drivers 21 and over. Any measurable BAC for drivers under 21.",
@@ -162,7 +162,7 @@ QUESTIONS = [
     },
     {
         "state_code": "ok", "chapter": 10, "category": "sharing_road",
-        "difficulty": "pawn",
+        "difficulty": "beginner",
         "question_text": "When must you yield to pedestrians in Oklahoma?",
         "correct_count": 1,
         "explanation": "You must always yield to pedestrians in marked or unmarked crosswalks.",

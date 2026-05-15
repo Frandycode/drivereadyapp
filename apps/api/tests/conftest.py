@@ -182,7 +182,7 @@ async def seeded_question(db: AsyncSession) -> AsyncGenerator[Question, None]:
         state_code="ok",
         chapter=4,
         category="regulatory",
-        difficulty="pawn",
+        difficulty="beginner",
         question_text="What does a red octagon sign mean?",
         correct_count=1,
         explanation="A red octagon is always a STOP sign.",

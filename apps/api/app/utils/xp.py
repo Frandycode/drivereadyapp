@@ -31,9 +31,9 @@ XP_STREAK_7_DAY = 50
 XP_STREAK_30_DAY = 200
 
 DIFFICULTY_MULTIPLIER = {
-    "pawn": 1,
-    "rogue": 2,
-    "king": 3,
+    "beginner": 1,
+    "pro": 2,
+    "expert": 3,
 }
 
 # XP required to reach each level (index = level number, level 1 starts at 0)
@@ -63,11 +63,11 @@ LEVEL_NAMES = [
 
 def get_hint_allowance(difficulty: str, question_count: int) -> int:
     """Returns the number of hints allowed for a session."""
-    if difficulty == "pawn":
+    if difficulty == "beginner":
         return 9999       # unlimited
-    if difficulty == "rogue":
+    if difficulty == "pro":
         return max(1, question_count // 5)
-    return 0              # king
+    return 0
 
 
 def get_skip_allowance(difficulty: str, question_count: int) -> int:
@@ -82,8 +82,8 @@ def xp_for_answer(is_correct: bool, difficulty: str, hint_used: bool = False) ->
     if not is_correct:
         return 0
     base = XP_PER_CORRECT_ANSWER * DIFFICULTY_MULTIPLIER.get(difficulty, 1)
-    # Hint reduces XP by half (rounded down) on Rogue
-    if hint_used and difficulty == "rogue":
+    # Hint reduces XP by half in Pro sessions.
+    if hint_used and difficulty == "pro":
         return base // 2
     return base
 

@@ -10,22 +10,27 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { FiArrowRight, FiZap, FiShield, FiCheck, FiX, FiAward, FiCpu } from 'react-icons/fi'
+import { FiArrowRight, FiZap, FiShield, FiCheck, FiX, FiAward, FiCpu, FiLayers } from 'react-icons/fi'
 import { BsDiamondFill } from 'react-icons/bs'
-import { GiSwordSpade } from 'react-icons/gi'
 import { Footer } from '@/components/layout/Footer'
 import type { IconType } from 'react-icons'
 
 interface LandingPageProps {
-  onSignIn: () => void
   onStartFree: () => void
 }
 
-export function LandingPage({ onSignIn, onStartFree }: LandingPageProps) {
+export function LandingPage({ onStartFree }: LandingPageProps) {
   return (
     <div className="min-h-dvh bg-navy-deep">
-      <TopBar onSignIn={onSignIn} onStartFree={onStartFree} />
-      <Hero onSignIn={onSignIn} onStartFree={onStartFree} />
+      <TopBar onStartFree={onStartFree} />
+      <button
+        onClick={onStartFree}
+        className="fixed right-4 top-20 z-40 hidden sm:inline-flex items-center gap-2 rounded-full border border-yellow-rim/30 bg-yellow-soft px-3.5 py-2 text-[12px] font-semibold text-yellow shadow-[0_14px_28px_rgba(0,0,0,0.28)] backdrop-blur-md hover:bg-yellow/15 hover:border-yellow-rim transition-all"
+      >
+        See how it works
+        <FiArrowRight size={13} />
+      </button>
+      <Hero onStartFree={onStartFree} />
       <TrustMarquee />
       <FeaturesStrip />
       <CtaBand onStartFree={onStartFree} />
@@ -65,9 +70,10 @@ function CtaBand({ onStartFree }: { onStartFree: () => void }) {
           </button>
           <button
             onClick={onStartFree}
-            className="inline-flex items-center px-7 py-3.5 text-[15px] rounded-md border-[1.5px] border-navy-deep/35 text-navy-deep hover:bg-navy-deep/5 transition-colors"
+            className="inline-flex items-center gap-1.5 px-7 py-3.5 text-[15px] rounded-md border-[1.5px] border-navy-deep/35 text-navy-deep hover:bg-navy-deep/5 transition-colors"
           >
-            How it works
+            See how it works
+            <FiArrowRight size={16} />
           </button>
         </div>
       </div>
@@ -95,7 +101,7 @@ const FEATURES: Feature[] = [
     meta: ['Adaptive', 'Realtime'],
   },
   {
-    Icon: GiSwordSpade,
+    Icon: FiLayers,
     iconTone: 'yellow',
     name: 'Six ways to study',
     desc:
@@ -144,10 +150,11 @@ function FeaturesStrip() {
           {FEATURES.map(({ Icon, iconTone, name, desc, meta }) => (
             <div
               key={name}
-              className="relative overflow-hidden bg-navy-card border border-border rounded-2xl p-6 transition-colors hover:border-orange/40"
+              className="group relative overflow-hidden bg-navy-card border border-border rounded-2xl p-6 transition-all duration-200 hover:-translate-y-1 hover:bg-surface-3 hover:border-orange/40 hover:shadow-[0_22px_46px_-26px_rgba(244,91,38,0.7)]"
             >
+              <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-yellow/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div
-                className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 ${TONE_CLASS[iconTone]}`}
+                className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105 ${TONE_CLASS[iconTone]}`}
               >
                 <Icon size={22} />
               </div>
@@ -169,19 +176,20 @@ function FeaturesStrip() {
 // ── Trust marquee ─────────────────────────────────────────────────────────────
 
 const TRUST_ITEMS: { strong: string; rest: string }[] = [
-  { strong: 'Aligned with',     rest: 'Oklahoma DPS' },
-  { strong: '900+',             rest: 'questions' },
-  { strong: '5',                rest: 'study modes' },
-  { strong: 'AI-curated',       rest: 'weak-spot review' },
-  { strong: 'Offline',          rest: 'ready' },
-  { strong: 'No ads,',          rest: 'ever' },
+  { strong: 'ALIGNED WITH',     rest: 'OKLAHOMA DPS' },
+  { strong: '900+',             rest: 'QUESTIONS' },
+  { strong: '5',                rest: 'STUDY MODES' },
+  { strong: 'AI-CURATED',       rest: 'WEAK-SPOT REVIEW' },
+  { strong: 'OFFLINE',          rest: 'READY' },
+  { strong: 'IN-APP',           rest: 'PURCHASES' },
+  { strong: 'NO ADS,',          rest: 'EVER' },
 ]
 
 function TrustMarquee() {
   // Render the row twice for a seamless loop
   const row = (key: string) =>
     TRUST_ITEMS.map((item, i) => (
-      <span key={`${key}-${i}`} className="inline-flex items-center gap-2 px-7 text-[12px] text-text-secondary whitespace-nowrap">
+      <span key={`${key}-${i}`} className="inline-flex items-center gap-2 px-7 text-[12px] tracking-[0.08em] text-text-secondary whitespace-nowrap uppercase">
         <BsDiamondFill size={9} className="text-orange shrink-0" />
         <strong className="text-white font-semibold">{item.strong}</strong>
         <span>{item.rest}</span>
@@ -210,7 +218,7 @@ function TrustMarquee() {
 
 // ── Top nav (landing only) ────────────────────────────────────────────────────
 
-function TopBar({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: () => void }) {
+function TopBar({ onStartFree }: { onStartFree: () => void }) {
   return (
     <nav className="sticky top-0 z-50 h-16 flex items-center justify-between px-4 sm:px-10 glass border-b border-border">
       <div className="flex items-center gap-2.5 min-w-0">
@@ -220,17 +228,17 @@ function TopBar({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: 
             Drive<em className="not-italic text-orange">Ready</em>
           </div>
           <div className="mono text-[9px] tracking-[0.12em] uppercase text-text-muted hidden sm:block">
-            Oklahoma · driveready-ok.com
+            Oklahoma · drivereadyapp.com
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <button
-          onClick={onSignIn}
+          onClick={onStartFree}
           className="hidden sm:inline-flex pill-btn border border-border text-text-secondary hover:text-white hover:border-strong"
         >
-          Sign in
+          See how it works
         </button>
         <button
           onClick={onStartFree}
@@ -267,7 +275,7 @@ function ShieldMark({ size = 30 }: { size?: number }) {
 
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
-function Hero({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: () => void }) {
+function Hero({ onStartFree }: { onStartFree: () => void }) {
   return (
     <section className="relative overflow-hidden bg-navy-deep blueprint-grid border-b border-yellow-rim/40">
       {/* Orange slab on the right (hidden on tiny screens) */}
@@ -303,7 +311,7 @@ function Hero({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: ()
       <div className="relative z-[2] max-w-[1200px] mx-auto px-4 sm:px-10 py-[clamp(72px,9vw,120px)] pb-[clamp(60px,7vw,96px)] grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
         {/* Left */}
         <div className="animate-fade-up">
-          <div className="inline-flex items-center gap-2 bg-yellow-soft border border-yellow-rim rounded-full px-3.5 py-1 mb-7 text-[11px] font-medium tracking-[0.12em] text-yellow uppercase">
+          <div className="inline-flex items-center gap-2 bg-yellow-soft border border-yellow-rim rounded-full px-3.5 py-1 mb-7 text-[15px] font-medium tracking-[0.12em] text-yellow uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-yellow animate-pulse-soft" />
             Oklahoma · AI-Powered Permit Prep
           </div>
@@ -338,10 +346,11 @@ function Hero({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: ()
               <FiArrowRight size={16} />
             </button>
             <button
-              onClick={onSignIn}
+              onClick={onStartFree}
               className="inline-flex items-center gap-1.5 px-7 py-3.5 text-[15px] rounded-md border border-border text-text-secondary hover:text-white hover:border-strong transition-colors"
             >
-              Sign in
+              See how it works
+              <FiArrowRight size={16} />
             </button>
           </div>
 

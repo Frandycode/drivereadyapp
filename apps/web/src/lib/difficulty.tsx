@@ -12,7 +12,7 @@
 
 import { clsx } from 'clsx'
 
-export type DifficultyCode = 'pawn' | 'rogue' | 'king'
+export type DifficultyCode = 'beginner' | 'pro' | 'expert'
 
 export const DIFFICULTY_COPY: Record<
   DifficultyCode,
@@ -25,7 +25,7 @@ export const DIFFICULTY_COPY: Record<
     bars: Array<'green' | 'yellow' | 'red'>
   }
 > = {
-  pawn: {
+  beginner: {
     label: 'Beginner',
     desc: 'Unlimited hints and skips. Best for building confidence.',
     xp: '1x XP',
@@ -33,7 +33,7 @@ export const DIFFICULTY_COPY: Record<
     activeClass: 'border-correct/55 bg-correct/10',
     bars: ['green'],
   },
-  rogue: {
+  pro: {
     label: 'Pro',
     desc: 'Limited hints and skips. A balanced permit-test pace.',
     xp: '2x XP',
@@ -41,7 +41,7 @@ export const DIFFICULTY_COPY: Record<
     activeClass: 'border-yellow-rim bg-yellow-soft',
     bars: ['green', 'yellow'],
   },
-  king: {
+  expert: {
     label: 'Expert',
     desc: 'No hints or skips. Closest to real test pressure.',
     xp: '3x XP',

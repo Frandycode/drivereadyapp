@@ -48,7 +48,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
   const setUser = useUserStore((s) => s.setUser)
 
   const [freezeModal, setFreezeModal] = useState(false)
-  const [report, setReport] = useState<{ summary: string; checklist: string[] } | null>(null)
+  const [report, setReport] = useState<{ summary: string; focusAreas: string[]; checklist: string[] } | null>(null)
   const [typedMission, setTypedMission] = useState('')
   const [generateReport] = useMutation(GENERATE_WEEKLY_REPORT)
 
@@ -57,7 +57,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
     generateReport({ variables: { stateCode: user.stateCode } })
       .then((r) => {
         const data = r.data?.generateWeeklyReport
-        if (data) setReport({ summary: data.summary, checklist: data.checklist ?? [] })
+        if (data) {
+          setReport({
+            summary: data.summary,
+            focusAreas: data.focusAreas ?? [],
+            checklist: data.checklist ?? [],
+          })
+        }
       })
       .catch(() => {})
   }, [user?.id])
@@ -92,6 +98,10 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
   // Placeholder readiness derived from XP (until backend exposes a real score)
   const readiness = Math.min(95, Math.round((xp % 5000) / 50))
+  const readinessTone = readiness >= 88 ? 'green' : readiness >= 72 ? 'blue' : readiness >= 50 ? 'gold' : 'orange'
+  const growthAreas = report?.focusAreas?.length
+    ? report.focusAreas
+    : ['Road signs and pavement markings', 'Right-of-way choices', 'Safe following distance']
 
   return (
     <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
@@ -104,9 +114,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
         }
         sub="Your next win is queued up. Knock out a quick challenge, sharpen the weak spots, and keep your permit momentum alive."
         stats={[
-          { label: 'Total XP',   value: `⚡ ${xp.toLocaleString()}`, tone: 'gold' },
-          { label: 'Day streak', value: `🔥 ${streak}`, tone: 'gold' },
-          { label: 'Readiness', value: `${readiness}%`,         tone: 'orange' },
+          { label: 'Total XP',   value: xp.toLocaleString(), tone: 'gold' },
+          { label: 'Day streak', value: streak, tone: 'gold' },
+          { label: 'Readiness', value: `${readiness}%`, tone: readinessTone },
         ]}
         slab="orange"
       />
@@ -236,18 +246,61 @@ export function HomePage({ onNavigate }: HomePageProps) {
               style={{ animationDelay: '0.28s' }}
             >
               <CardEyebrow color="orange">Bot Battle</CardEyebrow>
-              <div className="flex items-center gap-3">
+              <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center flex-shrink-0">
                   <GiRobotGolem className="text-orange" size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="display font-bold text-white">Pick an opponent</p>
-                  <p className="text-text-secondary text-xs">Rusty · Dash · Apex</p>
+                  <div className="mt-3 grid grid-cols-3 gap-1.5">
+                    {[
+                      ['Rusty', 'Beginner'],
+                      ['Dash', 'Pro'],
+                      ['Apex', 'Expert'],
+                    ].map(([name, level]) => (
+                      <span
+                        key={name}
+                        className="rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1.5 text-center"
+                      >
+                        <span className="block text-[11px] font-semibold text-white">{name}</span>
+                        <span className="block mono text-[8px] uppercase tracking-[0.08em] text-text-secondary">{level}</span>
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 <ArrowUpRight size={16} className="text-text-muted" />
               </div>
             </button>
 
+          </div>
+
+          {/* Growth areas */}
+          <div className="card mt-8 animate-fade-up" style={{ animationDelay: '0.30s' }}>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
+              <div>
+                <CardEyebrow color="orange">Growth Areas</CardEyebrow>
+                <h2 className="display font-bold text-lg text-white tracking-[-0.3px]">
+                  Focus on what moves your score.
+                </h2>
+              </div>
+              <button
+                onClick={() => onNavigate('/adaptive')}
+                className="inline-flex items-center gap-1.5 rounded-md border border-orange/30 bg-orange-soft px-3.5 py-2 text-sm font-semibold text-orange hover:bg-orange/15 transition-colors"
+              >
+                Drill these
+                <FiArrowRight size={14} />
+              </button>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {growthAreas.slice(0, 3).map((area, i) => (
+                <div key={area} className="rounded-lg border border-white/[0.08] bg-white/[0.035] p-4">
+                  <div className="mono text-[10px] text-yellow uppercase tracking-[0.1em] mb-2">
+                    Focus {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <p className="text-sm text-text-secondary leading-relaxed">{area}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Weekly study plan */}

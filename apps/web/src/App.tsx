@@ -15,6 +15,7 @@ import { useMutation, gql } from '@apollo/client'
 import { useUserStore, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
+import { AppTopNav } from '@/components/layout/AppTopNav'
 import { AuthPage } from '@/app/auth'
 import { LandingPage } from '@/app/landing/LandingPage'
 import { ResetPasswordPage } from '@/app/ResetPasswordPage'
@@ -44,6 +45,7 @@ import { DeleteAccountSheet } from '@/app/settings/DeleteAccountSheet'
 import { clearAuthToken } from '@driveready/api-client'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
 import { DifficultyBars, getDifficultyCopy, type DifficultyCode } from '@/lib/difficulty'
+import { FiPlayCircle } from 'react-icons/fi'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -61,14 +63,14 @@ function QuizSettingsModal({
   onCancel: () => void
 }) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
-  const [difficulty, setDifficulty]   = useState<DifficultyCode>('pawn')
+  const [difficulty, setDifficulty]   = useState<DifficultyCode>('beginner')
   const [timer, setTimer]             = useState<number | null>(null)
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn'  as const },
-    { id: 'rogue' as const },
-    { id: 'king'  as const },
+    { id: 'beginner'  as const },
+    { id: 'pro' as const },
+    { id: 'expert'  as const },
   ]
 
   const TIMERS = [
@@ -207,6 +209,7 @@ export default function App() {
   const [tutorialOpen, setTutorialOpen] = useState(false)
   const [deleteOpen, setDeleteOpen]     = useState(false)
   const [showAuth, setShowAuth]         = useState(false)
+  const [authMode, setAuthMode]         = useState<'login' | 'register'>('login')
   const scrollPositions = useRef(new Map<string, number>())
   const touchStart = useRef<{ x: number; y: number; target: EventTarget | null } | null>(null)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
@@ -316,11 +319,13 @@ export default function App() {
   }
 
   if (!user) {
-    if (showAuth) return <AuthPage />
+    if (showAuth) return <AuthPage key={authMode} initialMode={authMode} />
     return (
       <LandingPage
-        onSignIn={() => setShowAuth(true)}
-        onStartFree={() => setShowAuth(true)}
+        onStartFree={() => {
+          setAuthMode('register')
+          setShowAuth(true)
+        }}
       />
     )
   }
@@ -361,6 +366,13 @@ export default function App() {
   if (appScreen.screen === 'quiz-settings') {
     return (
       <div className="bg-bg min-h-dvh">
+        <AppTopNav
+          activePath="/learn"
+          displayName={user?.displayName}
+          xpTotal={user?.xpTotal}
+          onNavigate={navigate}
+          onTutorial={() => setTutorialOpen(true)}
+        />
         <ChapterPage
           chapterId={appScreen.chapterId}
           chapterNumber={appScreen.chapterNumber}
@@ -376,6 +388,7 @@ export default function App() {
           onStart={(cfg) => setAppScreen({ screen: 'quiz', chapterId: appScreen.chapterId, chapterNumber: appScreen.chapterNumber, chapterTitle: appScreen.chapterTitle, config: cfg })}
           onCancel={() => setAppScreen({ screen: 'chapter', id: appScreen.chapterId, number: appScreen.chapterNumber, title: appScreen.chapterTitle })}
         />
+        <OnboardingTutorialSheet open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
       </div>
     )
   }
@@ -384,6 +397,13 @@ export default function App() {
   if (appScreen.screen === 'chapter') {
     return (
       <div className="bg-bg min-h-dvh">
+        <AppTopNav
+          activePath="/learn"
+          displayName={user?.displayName}
+          xpTotal={user?.xpTotal}
+          onNavigate={navigate}
+          onTutorial={() => setTutorialOpen(true)}
+        />
         <ChapterPage
           chapterId={appScreen.id}
           chapterNumber={appScreen.number}
@@ -392,6 +412,7 @@ export default function App() {
           onQuizStart={() => setAppScreen({ screen: 'quiz-settings', chapterId: appScreen.id, chapterNumber: appScreen.number, chapterTitle: appScreen.title })}
         />
         <BottomNav activePath="/learn" onNavigate={navigate} />
+        <OnboardingTutorialSheet open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
       </div>
     )
   }
@@ -514,7 +535,23 @@ export default function App() {
 
   return (
     <div className="bg-bg min-h-dvh">
+      <AppTopNav
+        activePath={activeNavPath}
+        displayName={user?.displayName}
+        xpTotal={user?.xpTotal}
+        onNavigate={navigate}
+        onTutorial={() => setTutorialOpen(true)}
+      />
       {currentPage}
+      {showFloatingBBT && (
+        <button
+          onClick={() => setTutorialOpen(true)}
+          className="fixed right-4 top-4 z-40 inline-flex items-center gap-1.5 rounded-full border border-yellow-rim/30 bg-yellow-soft px-3 py-2 text-[11px] font-semibold text-yellow shadow-[0_12px_28px_rgba(0,0,0,0.28)] backdrop-blur-md transition-colors hover:bg-yellow/15 hover:border-yellow-rim lg:hidden"
+        >
+          <FiPlayCircle size={13} />
+          See how it works
+        </button>
+      )}
       {showFloatingBBT && (
         <FloatingBBT onClick={() => setAppScreen({ screen: 'bot-select' })} />
       )}
