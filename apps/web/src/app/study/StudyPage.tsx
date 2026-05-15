@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2 } from 'lucide-react'
+import { BookMarked, BookOpen, List, FolderOpen, Zap, Clock, Plus, Trash2, X } from 'lucide-react'
 import { useUserStore } from '@/stores'
 import { useMinLoadTime } from '@driveready/hooks'
 import { StudyPageSkeleton } from '@/components/ui/Skeleton'
@@ -144,8 +144,20 @@ function CreateGroupModal({
       <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
         <div className="bg-surface border border-border rounded-2xl p-5 w-full max-w-sm max-h-[80dvh] flex flex-col">
-          <h2 className="font-display text-lg font-bold text-text-primary mb-1">New Chapter Group</h2>
-          <p className="text-text-secondary text-xs mb-4">Name your group and pick chapters to include.</p>
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h2 className="font-display text-lg font-bold text-text-primary mb-1">New Chapter Group</h2>
+              <p className="text-text-secondary text-xs">Name your group and pick chapters to include.</p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="tier3-hover grid h-8 w-8 place-items-center rounded-md border border-border text-text-secondary hover:text-white"
+              aria-label="Close group creator"
+            >
+              <X size={16} />
+            </button>
+          </div>
 
           <input
             className="input mb-4"
