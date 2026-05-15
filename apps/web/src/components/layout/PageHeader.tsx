@@ -125,7 +125,7 @@ export function PageHeader({
             <div className="flex flex-wrap items-center gap-[clamp(18px,2.5vw,32px)] relative z-[2]">
               {stats.map((s, i) => (
                 <div key={i} className="flex flex-col items-start">
-                  <div className={clsx('mono font-bold leading-none tabular-nums text-[clamp(28px,3.4vw,36px)]', TONE_CLASS[s.tone ?? 'default'])}>
+                  <div className={clsx('stat-balloon mono font-bold leading-none tabular-nums text-[clamp(31px,3.9vw,42px)]', TONE_CLASS[s.tone ?? 'default'])}>
                     {s.value}
                   </div>
                   <div className="mono text-[14px] tracking-[0.1em] uppercase text-text-muted mt-1.5">

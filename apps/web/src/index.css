@@ -346,6 +346,30 @@
   .tier3-hover:hover { border-color: rgba(244,91,38,0.15); }
 
   .font-display em { @apply text-orange not-italic; }
+
+  .stat-balloon {
+    text-shadow:
+      0 1px 0 rgba(245,240,230,0.22),
+      0 10px 24px rgba(0,0,0,0.28),
+      0 0 18px rgba(244,91,38,0.18);
+    transform: translateZ(0);
+  }
+
+  .typing-caret {
+    display: inline-block;
+    width: 0.08em;
+    height: 0.78em;
+    margin-left: 0.08em;
+    border-radius: 999px;
+    background: currentColor;
+    animation: caretBlink 900ms steps(1) infinite;
+    vertical-align: -0.04em;
+  }
+}
+
+@keyframes caretBlink {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0.22; }
 }
 
 [id^="section-"] { scroll-margin-top: 132px; }

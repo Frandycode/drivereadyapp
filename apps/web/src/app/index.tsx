@@ -49,6 +49,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
   const [freezeModal, setFreezeModal] = useState(false)
   const [report, setReport] = useState<{ summary: string; checklist: string[] } | null>(null)
+  const [typedMission, setTypedMission] = useState('')
   const [generateReport] = useMutation(GENERATE_WEEKLY_REPORT)
 
   useEffect(() => {
@@ -59,6 +60,18 @@ export function HomePage({ onNavigate }: HomePageProps) {
         if (data) setReport({ summary: data.summary, checklist: data.checklist ?? [] })
       })
       .catch(() => {})
+  }, [user?.id])
+
+  useEffect(() => {
+    const word = 'mission.'
+    let index = 0
+    setTypedMission('')
+    const interval = window.setInterval(() => {
+      index += 1
+      setTypedMission(word.slice(0, index))
+      if (index >= word.length) window.clearInterval(interval)
+    }, 72)
+    return () => window.clearInterval(interval)
   }, [user?.id])
 
   const [useFreezeToken, { loading: freezing }] = useMutation(USE_FREEZE_TOKEN, {
@@ -72,6 +85,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
   const hour     = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const firstName = (user?.displayName ?? 'learner').split(' ')[0]
   const streak   = user?.streakDays ?? 0
   const xp       = user?.xpTotal ?? 0
   const freezeTokens = user?.freezeTokens ?? 0
@@ -82,16 +96,16 @@ export function HomePage({ onNavigate }: HomePageProps) {
   return (
     <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
       <PageHeader
-        eyebrow={`${greeting}, ${user?.displayName ?? 'learner'}`}
+        eyebrow={`${greeting}, ${firstName} - glad you're here`}
         title={
           <>
-            Today's <em className="not-italic text-orange">mission.</em>
+            Today's <em className="not-italic text-orange">{typedMission || 'mission'}<span className="typing-caret" /></em>
           </>
         }
-        sub="Knock out today's daily challenge and a quick drill in your weakest chapter to keep your streak alive."
+        sub="Your next win is queued up. Knock out a quick challenge, sharpen the weak spots, and keep your permit momentum alive."
         stats={[
-          { label: 'Total XP',   value: xp.toLocaleString(),     tone: 'gold' },
-          { label: 'Day streak', value: streak },
+          { label: 'Total XP',   value: `⚡ ${xp.toLocaleString()}`, tone: 'gold' },
+          { label: 'Day streak', value: `🔥 ${streak}`, tone: 'gold' },
           { label: 'Readiness', value: `${readiness}%`,         tone: 'orange' },
         ]}
         slab="orange"
