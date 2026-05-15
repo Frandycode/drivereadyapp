@@ -15,6 +15,7 @@ import { useQuery, useMutation, gql } from '@apollo/client'
 import { clsx } from 'clsx'
 import { X, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import { AppLogo } from '@/components/layout/AppLogo'
+import { FloatingTimer } from '@/components/ui/FloatingTimer'
 import { BotAvatar } from './BotAvatar'
 import { BotBattleResults } from './BotBattleResults'
 import { XPBreakdownScreen, buildBattleXPItems } from './XPBreakdownScreen'
@@ -293,11 +294,6 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
   const playerCorrect = bothRevealed && selectedIds.length === correctIds.size && selectedIds.every((id) => correctIds.has(id))
   const botCorrect    = bothRevealed && botAnswerIds.length === correctIds.size && botAnswerIds.every((id) => correctIds.has(id))
 
-  // Timer color
-  const timerPct   = config.timerSeconds ? (timeLeft ?? 0) / config.timerSeconds : 1
-  const timerColor = timerPct > 0.5 ? 'text-correct' : timerPct > 0.2 ? 'text-yellow' : 'text-orange'
-  const timerBar   = timerPct > 0.5 ? 'bg-correct' : timerPct > 0.2 ? 'bg-yellow' : 'bg-orange'
-
   return (
     <div className="min-h-dvh bg-navy-deep blueprint-grid flex flex-col">
       {/* Header */}
@@ -335,23 +331,11 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
           />
         </div>
 
-        {/* Per-question timer bar */}
-        {config.timerSeconds && !bothRevealed && (
-          <div className="px-4 pb-3 max-w-[760px] mx-auto">
-            <div className="flex items-center justify-end mb-1">
-              <span className={`mono text-[11px] font-bold tabular-nums ${timerColor} ${timerPct <= 0.1 ? 'animate-pulse' : ''}`}>
-                {timeLeft}s
-              </span>
-            </div>
-            <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-1000 ${timerBar}`}
-                style={{ width: `${timerPct * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
       </div>
+
+      {config.timerSeconds && !bothRevealed && timeLeft !== null && (
+        <FloatingTimer timeLeft={timeLeft} total={config.timerSeconds} />
+      )}
 
       {/* Question */}
       <div className="px-4 pt-6 max-w-[760px] mx-auto w-full">

@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react'
 import { X, Lightbulb, SkipForward, AlertTriangle } from 'lucide-react'
 import { clsx } from 'clsx'
 import { DifficultyBadge, type DifficultyCode } from '@/lib/difficulty'
+import { FloatingTimer } from '@/components/ui/FloatingTimer'
 
 type SegmentState = 'unanswered' | 'correct' | 'wrong' | 'skipped'
 
@@ -71,10 +72,6 @@ export function SessionHeader({
     return () => clearInterval(intervalRef.current!)
   }, [resetKey, timerSeconds])
 
-  const timerPct = timerSeconds ? timeLeft / timerSeconds : 1
-  const timerWarn = timerPct <= 0.25
-  const timerPulse = timerPct <= 0.1
-
   // Hint/skip disabled when: king mode, allowance exhausted, OR question already answered/revealed
   const canHint = !isRevealed && difficulty !== 'king' && (hintsLeft === null || hintsLeft > 0)
   const canSkip = !isRevealed && difficulty !== 'king' && (skipsLeft === null || skipsLeft > 0)
@@ -117,23 +114,6 @@ export function SessionHeader({
           })}
         </div>
 
-        {/* Timer */}
-        {timerSeconds && (
-          <div className={clsx(
-            'inline-flex items-center gap-2 mono font-bold text-[15px] tabular-nums px-3 py-1.5 rounded-md border flex-shrink-0',
-            timerWarn
-              ? 'text-orange bg-orange-soft border-orange/30'
-              : 'text-yellow bg-yellow-soft border-yellow-rim',
-            timerPulse && 'animate-pulse',
-          )}>
-            <span className={clsx(
-              'w-1.5 h-1.5 rounded-full',
-              timerWarn ? 'bg-orange' : 'bg-yellow',
-            )} />
-            {timeLeft}s
-          </div>
-        )}
-
         {/* Hint */}
         <button
           onClick={onHint}
@@ -166,6 +146,8 @@ export function SessionHeader({
           {skipsLeft !== null ? skipsLeft : '∞'}
         </button>
       </div>
+
+      {timerSeconds && <FloatingTimer timeLeft={timeLeft} total={timerSeconds} />}
 
       {/* Difficulty badge */}
       <div className="px-4 pb-3 max-w-[760px] mx-auto">

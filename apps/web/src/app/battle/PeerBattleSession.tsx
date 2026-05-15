@@ -13,12 +13,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { clsx } from 'clsx'
-import { X, CheckCircle, XCircle, WifiOff, Clock } from 'lucide-react'
+import { X, CheckCircle, XCircle, WifiOff } from 'lucide-react'
 import { GiLaurelsTrophy } from 'react-icons/gi'
 import { IoSad } from 'react-icons/io5'
 import { FaHandshake } from 'react-icons/fa'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
+import { FloatingTimer } from '@/components/ui/FloatingTimer'
 import { XPBreakdownScreen, buildBattleXPItems } from './XPBreakdownScreen'
 import type { PeerBattleSetup } from './PeerBattleLobby'
 
@@ -523,10 +524,6 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
 
   const current     = questions[qIndex]
   const correctIds  = current ? new Set(current.answers.filter((a) => a.isCorrect).map((a) => a.id)) : new Set<string>()
-  const timerPct    = timerSeconds ? (timeLeft ?? 0) / timerSeconds : 1
-  const timerColor  = timerPct > 0.5 ? 'text-correct' : timerPct > 0.2 ? 'text-yellow' : 'text-orange'
-  const timerBar    = timerPct > 0.5 ? 'bg-correct'   : timerPct > 0.2 ? 'bg-yellow'   : 'bg-orange'
-
   // ── Guest cinematic loading screen (UPDATE-05) ────────────────────────────
 
   if (!cinematicDone) {
@@ -780,23 +777,11 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
           )}
         </div>
 
-        {/* Per-question timer bar */}
-        {timerSeconds && (
-          <div className="px-4 pb-3 max-w-[760px] mx-auto">
-            <div className="flex items-center justify-end mb-1">
-              <span className={`mono text-[11px] font-bold tabular-nums ${timerColor} ${timerPct <= 0.1 ? 'animate-pulse' : ''}`}>
-                <Clock size={10} className="inline mr-0.5" />{timeLeft}s
-              </span>
-            </div>
-            <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-1000 ${timerBar}`}
-                style={{ width: `${timerPct * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
       </div>
+
+      {timerSeconds && timeLeft !== null && (
+        <FloatingTimer timeLeft={timeLeft} total={timerSeconds} />
+      )}
 
       {/* ── Question ────────────────────────────────────────────────────── */}
       <div className="px-4 pt-6 max-w-[760px] mx-auto w-full">
