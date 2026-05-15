@@ -43,7 +43,7 @@ import { OnboardingTutorialSheet } from '@/app/settings/OnboardingTutorialSheet'
 import { DeleteAccountSheet } from '@/app/settings/DeleteAccountSheet'
 import { clearAuthToken } from '@driveready/api-client'
 import { FloatingBBT } from '@/components/layout/FloatingBBT'
-import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
+import { DifficultyBars, getDifficultyCopy, type DifficultyCode } from '@/lib/difficulty'
 
 // ── Quiz Settings Modal ───────────────────────────────────────────────────────
 
@@ -61,14 +61,14 @@ function QuizSettingsModal({
   onCancel: () => void
 }) {
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
-  const [difficulty, setDifficulty]   = useState<'pawn' | 'rogue' | 'king'>('pawn')
+  const [difficulty, setDifficulty]   = useState<DifficultyCode>('pawn')
   const [timer, setTimer]             = useState<number | null>(null)
   const [questionCount, setQuestionCount] = useState(5)
 
   const DIFFICULTIES = [
-    { id: 'pawn'  as const, Icon: GiChessPawn,   label: 'Pawn',   desc: 'Unlimited hints & skips · 1× XP', activeClass: 'border-bronze-500 bg-bronze-500/5' },
-    { id: 'rogue' as const, Icon: GiChessKnight, label: 'Knight', desc: 'Limited hints & skips · 2× XP',   activeClass: 'border-silver-500 bg-silver-500/5' },
-    { id: 'king'  as const, Icon: GiChessKing,   label: 'King',   desc: 'No hints or skips · 3× XP',        activeClass: 'border-yellow/40 bg-yellow-soft'   },
+    { id: 'pawn'  as const },
+    { id: 'rogue' as const },
+    { id: 'king'  as const },
   ]
 
   const TIMERS = [
@@ -106,21 +106,24 @@ function QuizSettingsModal({
 
           <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Difficulty</p>
           <div className="space-y-2 mb-5">
-            {DIFFICULTIES.map(({ id, Icon, label, desc, activeClass }) => (
+            {DIFFICULTIES.map(({ id }) => {
+              const cfg = getDifficultyCopy(id)
+              return (
               <button
                 key={id}
                 onClick={() => setDifficulty(id)}
                 className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                  difficulty === id ? activeClass : 'border-border hover:border-orange/40'
+                  difficulty === id ? cfg.activeClass : 'border-border hover:border-orange/40'
                 }`}
               >
-                <p className="text-sm font-medium text-text-primary inline-flex items-center gap-1.5">
-                  <Icon size={14} />
-                  {label}
+                <p className="text-sm font-medium text-text-primary flex items-center justify-between gap-3">
+                  <span>{cfg.label}</span>
+                  <DifficultyBars difficulty={id} compact />
                 </p>
-                <p className="text-xs text-text-secondary">{desc}</p>
+                <p className="text-xs text-text-secondary">{cfg.desc} · {cfg.xp}</p>
               </button>
-            ))}
+              )
+            })}
           </div>
 
           <p className="text-xs text-text-secondary uppercase tracking-wider font-medium mb-2">Timer per question</p>

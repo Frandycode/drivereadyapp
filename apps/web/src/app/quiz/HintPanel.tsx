@@ -13,6 +13,7 @@
 import { useEffect, useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { X, Lightbulb, Sparkles } from 'lucide-react'
+import { getDifficultyCopy, type DifficultyCode } from '@/lib/difficulty'
 
 const GET_ADAPTIVE_HINT = gql`
   mutation GetAdaptiveHint($questionId: ID!, $attempt: Int!, $wrongAnswerIds: [ID!]!) {
@@ -22,7 +23,7 @@ const GET_ADAPTIVE_HINT = gql`
 
 interface HintPanelProps {
   hint: string | null
-  difficulty: 'pawn' | 'rogue' | 'king'
+  difficulty: DifficultyCode
   onClose: () => void
   questionId?: string
   attempt?: number
@@ -30,10 +31,8 @@ interface HintPanelProps {
 }
 
 export function HintPanel({ hint, difficulty, onClose, questionId, attempt = 1, wrongAnswerIds = [] }: HintPanelProps) {
-  const label =
-    difficulty === 'pawn'
-      ? 'Hint — Pawn Mode (unlimited hints)'
-      : 'Hint — Rogue Mode'
+  const diff = getDifficultyCopy(difficulty)
+  const label = `Hint - ${diff.label} mode`
 
   const [adaptiveHint, setAdaptiveHint] = useState<string | null>(null)
   const [getHint, { loading }] = useMutation(GET_ADAPTIVE_HINT)

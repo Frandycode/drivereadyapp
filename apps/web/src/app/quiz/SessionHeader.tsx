@@ -12,8 +12,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { X, Lightbulb, SkipForward, AlertTriangle } from 'lucide-react'
-import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
 import { clsx } from 'clsx'
+import { DifficultyBadge, type DifficultyCode } from '@/lib/difficulty'
 
 type SegmentState = 'unanswered' | 'correct' | 'wrong' | 'skipped'
 
@@ -23,7 +23,7 @@ interface SessionHeaderProps {
   timerSeconds: number | null
   hintsLeft: number | null
   skipsLeft: number | null
-  difficulty: 'pawn' | 'rogue' | 'king'
+  difficulty: DifficultyCode
   answerStates: SegmentState[]
   isRevealed: boolean           // disables hint + skip after submit
   onHint: () => void
@@ -169,16 +169,7 @@ export function SessionHeader({
 
       {/* Difficulty badge */}
       <div className="px-4 pb-3 max-w-[760px] mx-auto">
-        <span className={clsx(
-          'inline-flex items-center gap-1.5 mono text-[10px] font-medium tracking-[0.08em] uppercase px-2 py-1 rounded-md border',
-          difficulty === 'pawn'  && 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
-          difficulty === 'rogue' && 'text-silver-400 bg-silver-500/10 border-silver-600/40',
-          difficulty === 'king'  && 'text-yellow bg-yellow-soft border-yellow-rim',
-        )}>
-          {difficulty === 'pawn'  && <><GiChessPawn   size={11} /> Pawn</>}
-          {difficulty === 'rogue' && <><GiChessKnight size={11} /> Knight</>}
-          {difficulty === 'king'  && <><GiChessKing   size={11} /> King</>}
-        </span>
+        <DifficultyBadge difficulty={difficulty} />
       </div>
 
       {/* Exit confirmation modal */}

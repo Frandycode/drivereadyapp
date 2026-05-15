@@ -41,8 +41,8 @@ export const BOTS: Record<BotId, BotConfig> = {
     thinkMinMs: 3000,
     thinkMaxMs: 8000,
     avatar: GiVintageRobot,
-    avatarClass: 'text-bronze-500',
-    difficulty: 'Pawn',
+    avatarClass: 'text-correct',
+    difficulty: 'Beginner',
     xpReward: 20,
     color: 'border-bronze-500 bg-bronze-500/5',
   },
@@ -54,8 +54,8 @@ export const BOTS: Record<BotId, BotConfig> = {
     thinkMinMs: 1000,
     thinkMaxMs: 3000,
     avatar: GiMonoWheelRobot,
-    avatarClass: 'text-silver-400',
-    difficulty: 'Knight',
+    avatarClass: 'text-yellow',
+    difficulty: 'Pro',
     xpReward: 40,
     color: 'border-silver-500 bg-silver-500/5',
   },
@@ -67,8 +67,8 @@ export const BOTS: Record<BotId, BotConfig> = {
     thinkMinMs: 2000,
     thinkMaxMs: 4000,
     avatar: GiRobotGolem,
-    avatarClass: 'text-yellow',
-    difficulty: 'King',
+    avatarClass: 'text-orange',
+    difficulty: 'Expert',
     xpReward: 80,
     color: 'border-yellow-rim bg-yellow-soft',
   },
@@ -236,7 +236,7 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
             Battle rules
           </div>
           <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
-            <li>• No hints or skips — King-level rules for all bot battles</li>
+            <li>• No hints or skips — Expert rules for all bot battles</li>
             <li>• Questions randomly mixed from all modes</li>
             <li>• Bot and player answer simultaneously</li>
             <li>• XP awarded regardless of outcome</li>

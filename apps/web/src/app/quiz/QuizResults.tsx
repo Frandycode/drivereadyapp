@@ -11,7 +11,7 @@
  */
 
 import { CheckCircle, XCircle, SkipForward, Lightbulb, RotateCcw, Home, TrendingUp } from 'lucide-react'
-import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
+import { DifficultyBadge, type DifficultyCode } from '@/lib/difficulty'
 
 interface AnswerRecord {
   questionId: string
@@ -28,20 +28,11 @@ interface QuizResultsProps {
   skipped: number
   hintsUsed: number
   xpEarned: number
-  difficulty: 'pawn' | 'rogue' | 'king'
+  difficulty: DifficultyCode
   deckName: string
   answers: AnswerRecord[]
   onRetry: () => void
   onExit: () => void
-}
-
-const DIFFICULTY_META: Record<
-  QuizResultsProps['difficulty'],
-  { label: string; Icon: React.ElementType; classes: string }
-> = {
-  pawn:  { label: 'Pawn',   Icon: GiChessPawn,   classes: 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40' },
-  rogue: { label: 'Knight', Icon: GiChessKnight, classes: 'text-silver-400 bg-silver-500/10 border-silver-600/40' },
-  king:  { label: 'King',   Icon: GiChessKing,   classes: 'text-yellow bg-yellow-soft border-yellow-rim' },
 }
 
 export function QuizResults({
@@ -70,7 +61,6 @@ export function QuizResults({
 
   const wrongAnswers = answers.filter((a) => !a.isCorrect && !a.skipped)
   const growthChapters = [...new Set(wrongAnswers.map((a) => a.chapter))].sort((a, b) => a - b)
-  const diff = DIFFICULTY_META[difficulty]
 
   return (
     <div className="min-h-dvh bg-navy-deep blueprint-grid pb-10">
@@ -100,12 +90,7 @@ export function QuizResults({
           <span className="mono text-white font-bold">{answered}</span> answered
         </p>
 
-        <span
-          className={`inline-flex items-center gap-1.5 mono text-[10px] font-medium tracking-[0.08em] uppercase px-2 py-1 rounded-md border ${diff.classes}`}
-        >
-          <diff.Icon size={11} />
-          {diff.label}
-        </span>
+        <DifficultyBadge difficulty={difficulty} />
       </div>
 
       <div className="px-4 max-w-[760px] mx-auto space-y-3">

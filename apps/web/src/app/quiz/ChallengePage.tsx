@@ -15,9 +15,8 @@ import { useQuery, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Zap, HelpCircle, Puzzle, Layers, RotateCcw, Bot, Swords, ClipboardList, FolderOpen } from 'lucide-react'
-import { GiChessPawn, GiChessKnight, GiChessKing } from 'react-icons/gi'
-import type { IconType } from 'react-icons'
 import { useUserStore } from '@/stores'
+import { DifficultyBars, getDifficultyCopy, type DifficultyCode } from '@/lib/difficulty'
 import type { QuizConfig } from '../quiz/QuizSession'
 import type { PuzzleConfig } from '../quiz/PuzzleSession'
 import type { FlipperConfig } from '../quiz/FlipperSession'
@@ -59,41 +58,11 @@ const IQ_MODES: { id: ChallengeMode; label: string; desc: string; Icon: React.El
 // ── Color-coded difficulty levels ─────────────────────────────────────────────
 
 const DIFFICULTIES: {
-  id: 'pawn' | 'rogue' | 'king'
-  Icon: IconType
-  label: string
-  desc: string
-  activeClass: string
-  badgeClass: string
-  chevronClass: string
+  id: DifficultyCode
 }[] = [
-  {
-    id: 'pawn',
-    Icon: GiChessPawn,
-    label: 'Pawn',
-    desc: 'Unlimited hints & skips · 1× XP',
-    activeClass: 'border-bronze-500 bg-bronze-500/5',
-    badgeClass: 'text-bronze-500 bg-bronze-500/10 border-bronze-600/40',
-    chevronClass: 'text-bronze-500',
-  },
-  {
-    id: 'rogue',
-    Icon: GiChessKnight,
-    label: 'Knight',
-    desc: 'Limited hints & skips · 2× XP',
-    activeClass: 'border-silver-500 bg-silver-500/5',
-    badgeClass: 'text-silver-400 bg-silver-500/10 border-silver-600/40',
-    chevronClass: 'text-silver-400',
-  },
-  {
-    id: 'king',
-    Icon: GiChessKing,
-    label: 'King',
-    desc: 'No hints or skips · 3× XP',
-    activeClass: 'border-yellow/40 bg-yellow-soft',
-    badgeClass: 'text-yellow bg-yellow-soft border-yellow-rim',
-    chevronClass: 'text-yellow',
-  },
+  { id: 'pawn' },
+  { id: 'rogue' },
+  { id: 'king' },
 ]
 
 const QUESTION_COUNTS = [5, 10, 15, 20]
@@ -111,7 +80,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
   const stateCode = useUserStore((s) => s.user?.stateCode ?? 'ok')
 
   const [mode, setMode]                           = useState<ChallengeMode>('quiz')
-  const [difficulty, setDifficulty]               = useState<'pawn' | 'rogue' | 'king'>('pawn')
+  const [difficulty, setDifficulty]               = useState<DifficultyCode>('pawn')
   const [questionCount, setQuestionCount]         = useState(10)
   const [timer, setTimer]                         = useState<number | null>(null)
   const [selectedChapterId, setSelectedChapterId] = useState<string>('')
@@ -144,7 +113,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
     onStart({ type: mode, ...base } as ChallengeConfig)
   }
 
-  const activeDiff = DIFFICULTIES.find((d) => d.id === difficulty)
+  const activeDiff = getDifficultyCopy(difficulty)
 
   const pageHeader = (
     <PageHeader
@@ -342,20 +311,23 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
               Difficulty
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {DIFFICULTIES.map(({ id, Icon, label, badgeClass, activeClass }) => (
+              {DIFFICULTIES.map(({ id }) => {
+                const cfg = getDifficultyCopy(id)
+                return (
                 <button
                   key={id}
                   onClick={() => setDifficulty(id)}
                   className={`py-3 px-2 rounded-md border-2 transition-all duration-150 text-center flex flex-col items-center gap-1.5 ${
-                    difficulty === id ? activeClass : 'border-border bg-surface hover:border-orange/40'
+                    difficulty === id ? cfg.activeClass : 'border-border bg-surface hover:border-orange/40'
                   }`}
                 >
-                  <Icon size={20} className={difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'} />
-                  <span className={`mono text-[11px] tracking-[0.08em] uppercase font-semibold ${difficulty === id ? badgeClass.split(' ')[0] : 'text-text-secondary'}`}>
-                    {label}
+                  <DifficultyBars difficulty={id} />
+                  <span className={`mono text-[11px] tracking-[0.08em] uppercase font-semibold ${difficulty === id ? cfg.classes.split(' ')[0] : 'text-text-secondary'}`}>
+                    {cfg.label}
                   </span>
                 </button>
-              ))}
+                )
+              })}
             </div>
             {activeDiff && (
               <p className="text-[12px] text-text-secondary mt-2 px-0.5 leading-relaxed">{activeDiff.desc}</p>
@@ -420,7 +392,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
               Bot Battle rules
             </div>
             <ul className="text-[13px] text-text-secondary space-y-1.5 leading-relaxed">
-              <li>• King-level rules — no hints or skips</li>
+              <li>• Expert rules — no hints or skips</li>
               <li>• Bot and player answer simultaneously</li>
               <li>• XP awarded regardless of outcome</li>
               <li>• Timer & opponent chosen on next screen</li>

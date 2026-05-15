@@ -376,7 +376,7 @@ function Hero({ onSignIn, onStartFree }: { onSignIn: () => void; onStartFree: ()
               <FiShield size={16} />
             </span>
             <div className="leading-tight">
-              <div className="mono font-bold text-[14px] text-white">Rogue</div>
+              <div className="mono font-bold text-[14px] text-white">Pro</div>
               <div className="text-[9px] tracking-[0.08em] uppercase text-text-muted mt-0.5">
                 Difficulty
               </div>
