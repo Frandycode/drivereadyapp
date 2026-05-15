@@ -112,11 +112,11 @@ export function PageHeader({
                 {eyebrow}
               </div>
             )}
-            <h1 className="font-display font-extrabold leading-[0.98] tracking-[-1.4px] text-cream text-[clamp(45px,7vw,78px)] mb-3.5">
+            <h1 className="font-display font-extrabold leading-[0.98] tracking-[-1.4px] text-cream text-[clamp(32px,5vw,56px)] mb-3.5">
               {title}
             </h1>
             {sub && (
-              <p className="text-text-secondary font-light leading-relaxed text-[clamp(20px,2vw,22px)] max-w-[480px]">
+              <p className="text-text-secondary font-light leading-relaxed text-[clamp(14px,1.4vw,16px)] max-w-[480px]">
                 {sub}
               </p>
             )}
@@ -126,7 +126,7 @@ export function PageHeader({
             <div className="flex flex-wrap items-center gap-[clamp(18px,2.5vw,32px)] relative z-[2]">
               {stats.map((s, i) => (
                 <div key={i} className="flex flex-col items-start">
-                  <div className={clsx('stat-balloon mono font-bold leading-none tabular-nums text-[clamp(31px,3.9vw,42px)]', TONE_CLASS[s.tone ?? 'default'])}>
+                  <div className={clsx('stat-balloon mono font-bold leading-none tabular-nums text-[clamp(20px,2.4vw,26px)]', TONE_CLASS[s.tone ?? 'default'])}>
                     {s.value}
                   </div>
                   <div className="mono text-[14px] tracking-[0.1em] uppercase text-cream/70 mt-1.5">

@@ -8,6 +8,9 @@
 ═════════════════════════════════════════════════════════════════════════════ */
 
 :root {
+  --font-comfort: 1;
+  --display-brightness: 1;
+
   /* Core navy palette */
   --navy:        #021A54;
   --navy-deep:   #010E33;
@@ -113,7 +116,7 @@
     min-height: 100dvh;
     background-color: var(--navy-deep);
     color: var(--text-pri);
-    font-size: 15px;
+    font-size: calc(15px * var(--font-comfort));
     line-height: 1.5;
     overflow-x: hidden;
   }
@@ -148,6 +151,21 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/* Keep the designed default, then let Settings scale named text utilities only. */
+.text-xs   { font-size: calc(0.75rem * var(--font-comfort)); line-height: calc(1rem * var(--font-comfort)); }
+.text-sm   { font-size: calc(0.875rem * var(--font-comfort)); line-height: calc(1.25rem * var(--font-comfort)); }
+.text-base { font-size: calc(1rem * var(--font-comfort)); line-height: calc(1.5rem * var(--font-comfort)); }
+.text-lg   { font-size: calc(1.125rem * var(--font-comfort)); line-height: calc(1.75rem * var(--font-comfort)); }
+.text-xl   { font-size: calc(1.25rem * var(--font-comfort)); line-height: calc(1.75rem * var(--font-comfort)); }
+.text-2xl  { font-size: calc(1.5rem * var(--font-comfort)); line-height: calc(2rem * var(--font-comfort)); }
+.text-3xl  { font-size: calc(1.875rem * var(--font-comfort)); line-height: calc(2.25rem * var(--font-comfort)); }
+.text-4xl  { font-size: calc(2.25rem * var(--font-comfort)); line-height: calc(2.5rem * var(--font-comfort)); }
+
+#root {
+  filter: brightness(var(--display-brightness));
+  min-height: 100dvh;
 }
 
 /* ── Utilities ─────────────────────────────────────────────────────────────── */
@@ -364,6 +382,41 @@
     background: currentColor;
     animation: caretBlink 900ms steps(1) infinite;
     vertical-align: -0.04em;
+  }
+
+  .display-range {
+    accent-color: var(--orange);
+    min-height: 28px;
+  }
+  .display-range::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(244,91,38,0.35), rgba(248,222,34,0.45));
+    border: 1px solid rgba(245,240,230,0.10);
+  }
+  .display-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: -7px;
+    border-radius: 999px;
+    background: #F45B26;
+    border: 2px solid #F5F0E6;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.24);
+  }
+  .display-range::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(244,91,38,0.35), rgba(248,222,34,0.45));
+    border: 1px solid rgba(245,240,230,0.10);
+  }
+  .display-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #F45B26;
+    border: 2px solid #F5F0E6;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.24);
   }
 }
 

@@ -18,6 +18,8 @@ import {
   FiSmartphone,
   FiHelpCircle,
   FiSun,
+  FiSliders,
+  FiType,
   FiLogOut,
   FiTrash2,
   FiChevronRight,
@@ -39,6 +41,10 @@ export function SettingsPage({
   onDeleteAccount,
 }: SettingsPageProps) {
   const user = useUserStore((s) => s.user)
+  const displayFontScale = useUserStore((s) => s.displayFontScale)
+  const displayBrightness = useUserStore((s) => s.displayBrightness)
+  const setDisplayFontScale = useUserStore((s) => s.setDisplayFontScale)
+  const setDisplayBrightness = useUserStore((s) => s.setDisplayBrightness)
   const [signingOut, setSigningOut] = useState(false)
 
   async function handleSignOut() {
@@ -81,12 +87,40 @@ export function SettingsPage({
             sub="Walk through how DriveReady works"
             onClick={onOpenTutorial}
           />
-          <RowButton
+        </Section>
+
+        {/* ── Display ──────────────────────────────────────────────── */}
+        <Section label="Display">
+          <RangeRow
+            Icon={FiType}
+            label="Font size"
+            sub="Adjust body and UI text. Page titles keep the DriveReady design scale."
+            min={0.95}
+            max={1.15}
+            step={0.01}
+            value={displayFontScale}
+            valueText={`${Math.round(displayFontScale * 100)}%`}
+            onChange={setDisplayFontScale}
+          />
+          <RangeRow
             Icon={FiSun}
-            label="Appearance"
-            sub="Dark · Light · System (coming soon)"
-            onClick={() => {/* Phase I */}}
-            disabled
+            label="Brightness"
+            sub="Soften or brighten the full app for your screen and environment."
+            min={0.92}
+            max={1.08}
+            step={0.01}
+            value={displayBrightness}
+            valueText={`${Math.round(displayBrightness * 100)}%`}
+            onChange={setDisplayBrightness}
+          />
+          <RowButton
+            Icon={FiSliders}
+            label="Reset display"
+            sub="Return font size and brightness to the DriveReady default"
+            onClick={() => {
+              setDisplayFontScale(1)
+              setDisplayBrightness(1)
+            }}
           />
         </Section>
 
@@ -184,5 +218,52 @@ function RowButton({ Icon, label, sub, onClick, disabled, tone = 'default' }: Ro
       </div>
       <FiChevronRight size={16} className="text-text-muted flex-shrink-0" />
     </button>
+  )
+}
+
+interface RangeRowProps {
+  Icon: React.ComponentType<{ size?: number; className?: string }>
+  label: string
+  sub?: string
+  min: number
+  max: number
+  step: number
+  value: number
+  valueText: string
+  onChange: (value: number) => void
+}
+
+function RangeRow({
+  Icon,
+  label,
+  sub,
+  min,
+  max,
+  step,
+  value,
+  valueText,
+  onChange,
+}: RangeRowProps) {
+  return (
+    <div className="flex flex-col gap-3 px-4 py-4 border-b border-border last:border-b-0 sm:flex-row sm:items-center">
+      <Icon size={16} className="text-text-secondary flex-shrink-0 hidden sm:block" />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-sm font-medium text-white">{label}</div>
+          <div className="mono text-[11px] text-yellow tabular-nums">{valueText}</div>
+        </div>
+        {sub && <div className="text-xs text-text-secondary mt-0.5">{sub}</div>}
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="display-range w-full sm:w-[190px]"
+        aria-label={label}
+      />
+    </div>
   )
 }

@@ -12,7 +12,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useMutation, gql } from '@apollo/client'
-import { useUserStore, applyTheme } from '@/stores'
+import { useUserStore, applyDisplayPreferences, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { AppTopNav } from '@/components/layout/AppTopNav'
@@ -212,10 +212,24 @@ export default function App() {
   const [authMode, setAuthMode]         = useState<'login' | 'register'>('login')
   const scrollPositions = useRef(new Map<string, number>())
   const touchStart = useRef<{ x: number; y: number; target: EventTarget | null } | null>(null)
-  const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
+  const {
+    user,
+    theme,
+    displayFontScale,
+    displayBrightness,
+    isHydrated,
+    needsOnboarding,
+    clearUser,
+  } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
   useEffect(() => { applyTheme(theme) }, [theme])
+  useEffect(() => {
+    applyDisplayPreferences({
+      fontScale: displayFontScale,
+      brightness: displayBrightness,
+    })
+  }, [displayFontScale, displayBrightness])
 
   useEffect(() => {
     const handlePop = () => {

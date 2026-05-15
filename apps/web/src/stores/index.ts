@@ -70,11 +70,15 @@ interface UserStore {
   user: User | null
   needsOnboarding: boolean
   theme: 'dark' | 'light' | 'system'
+  displayFontScale: number
+  displayBrightness: number
   isHydrated: boolean
   setUser: (user: User) => void
   clearUser: () => void
   setNeedsOnboarding: (value: boolean) => void
   setTheme: (theme: 'dark' | 'light' | 'system') => void
+  setDisplayFontScale: (value: number) => void
+  setDisplayBrightness: (value: number) => void
   updateXP: (newXP: number, newLevel: number) => void
   addXP: (amount: number) => void
   updateStreak: (days: number) => void
@@ -87,12 +91,16 @@ export const useUserStore = create<UserStore>()(
       user: null,
       needsOnboarding: false,
       theme: 'dark',
+      displayFontScale: 1,
+      displayBrightness: 1,
       isHydrated: false,
 
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null, needsOnboarding: false }),
       setNeedsOnboarding: (value) => set({ needsOnboarding: value }),
       setTheme: (theme) => set({ theme }),
+      setDisplayFontScale: (value) => set({ displayFontScale: value }),
+      setDisplayBrightness: (value) => set({ displayBrightness: value }),
       updateXP: (newXP, newLevel) =>
         set((state) => ({
           user: state.user ? { ...state.user, xpTotal: newXP, level: newLevel } : null,
@@ -217,4 +225,16 @@ export function applyTheme(theme: 'dark' | 'light' | 'system') {
     root.classList.add('light')
     root.classList.remove('dark')
   }
+}
+
+export function applyDisplayPreferences({
+  fontScale,
+  brightness,
+}: {
+  fontScale: number
+  brightness: number
+}) {
+  const root = document.documentElement
+  root.style.setProperty('--font-comfort', fontScale.toFixed(2))
+  root.style.setProperty('--display-brightness', brightness.toFixed(2))
 }
