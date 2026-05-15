@@ -36,6 +36,7 @@ export interface User {
 
 export type Difficulty = 'beginner' | 'pro' | 'expert'
 export type AssessmentMode = 'quiz' | 'puzzle' | 'flipper' | 'trivia'
+export type ThemePreference = 'dark' | 'light' | 'system'
 
 export interface AnswerRecord {
   questionId: string
@@ -66,17 +67,31 @@ function xpToLevel(xp: number): number {
   return lvl
 }
 
+const THEME_STORAGE_KEY = 'dr.theme'
+
+function readStoredTheme(): ThemePreference {
+  if (typeof window === 'undefined') return 'dark'
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
+  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'dark'
+}
+
+export function resolveTheme(theme: ThemePreference): 'dark' | 'light' {
+  if (theme !== 'system') return theme
+  if (typeof window === 'undefined') return 'dark'
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
 interface UserStore {
   user: User | null
   needsOnboarding: boolean
-  theme: 'dark' | 'light' | 'system'
+  theme: ThemePreference
   displayFontScale: number
   displayBrightness: number
   isHydrated: boolean
   setUser: (user: User) => void
   clearUser: () => void
   setNeedsOnboarding: (value: boolean) => void
-  setTheme: (theme: 'dark' | 'light' | 'system') => void
+  setTheme: (theme: ThemePreference) => void
   setDisplayFontScale: (value: number) => void
   setDisplayBrightness: (value: number) => void
   updateXP: (newXP: number, newLevel: number) => void
@@ -90,7 +105,7 @@ export const useUserStore = create<UserStore>()(
     (set) => ({
       user: null,
       needsOnboarding: false,
-      theme: 'dark',
+      theme: readStoredTheme(),
       displayFontScale: 1,
       displayBrightness: 1,
       isHydrated: false,
@@ -98,7 +113,10 @@ export const useUserStore = create<UserStore>()(
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null, needsOnboarding: false }),
       setNeedsOnboarding: (value) => set({ needsOnboarding: value }),
-      setTheme: (theme) => set({ theme }),
+      setTheme: (theme) => {
+        if (typeof window !== 'undefined') window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+        set({ theme })
+      },
       setDisplayFontScale: (value) => set({ displayFontScale: value }),
       setDisplayBrightness: (value) => set({ displayBrightness: value }),
       updateXP: (newXP, newLevel) =>
@@ -121,6 +139,8 @@ export const useUserStore = create<UserStore>()(
       name: 'driveready-user',
       onRehydrateStorage: () => (state) => {
         state?.setHydrated()
+        const storedTheme = readStoredTheme()
+        if (state && state.theme !== storedTheme) state.setTheme(storedTheme)
       },
     }
   )
@@ -212,13 +232,17 @@ export const useSessionStore = create<SessionStore>()((set, get) => ({
     }),
 }))
 
-// ── Theme Store — applies dark/light class to <html> ─────────────────────────
+// ── Theme Store — applies dark/light theme to <html> ─────────────────────────
 
-export function applyTheme(theme: 'dark' | 'light' | 'system') {
+export function applyTheme(theme: ThemePreference) {
   const root = document.documentElement
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const resolved = resolveTheme(theme)
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
 
-  if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+  root.setAttribute('data-theme', resolved)
+  if (meta) meta.content = resolved === 'light' ? '#F5F0E6' : '#0E1130'
+
+  if (resolved === 'dark') {
     root.classList.add('dark')
     root.classList.remove('light')
   } else {

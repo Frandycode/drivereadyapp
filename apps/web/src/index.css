@@ -11,22 +11,45 @@
   --font-comfort: 1;
   --display-brightness: 1;
 
-  /* Core navy palette */
-  --navy:        #021A54;
-  --navy-deep:   #010E33;
-  --navy-card:   #071E5C;
-  --navy-lift:   #0C2470;
-  --navy-rim:    rgba(255, 255, 255, 0.08);
-  --navy-rim2:   rgba(255, 255, 255, 0.13);
+  /* Dark theme — warmed navy */
+  --bg:              #0E1130;
+  --bg-elevated:     #0A1740;
+  --bg-secondary:    #142555;
+  --surface-2:       rgba(10, 23, 64, 0.6);
+  --border:          rgba(245, 240, 230, 0.08);
+  --border-strong:   rgba(245, 240, 230, 0.13);
+
+  --text-primary:    rgba(245, 240, 230, 0.95);
+  --text-secondary:  rgba(245, 240, 230, 0.62);
+  --text-muted:      rgba(245, 240, 230, 0.42);
+  --text-faint:      rgba(245, 240, 230, 0.22);
+
+  --card-bg:         var(--bg-elevated);
+  --card-border:     var(--border);
+  --card-bg-hover:   rgba(20, 37, 85, 1);
+
+  --brand-orange:    #F45B26;
+  --brand-yellow:    #F8DE22;
+  --brand-navy:      #021A54;
+  --brand-navy-deep: #010E33;
+  --cream:           #F5F0E6;
+
+  /* Core palette aliases */
+  --navy:        var(--bg);
+  --navy-deep:   var(--brand-navy-deep);
+  --navy-card:   var(--bg-elevated);
+  --navy-lift:   var(--bg-secondary);
+  --navy-rim:    var(--border);
+  --navy-rim2:   var(--border-strong);
 
   /* Orange (primary action) */
-  --orange:      #F45B26;
+  --orange:      var(--brand-orange);
   --orange-deep: #e04d1c;
   --orange-soft: rgba(244, 91, 38, 0.15);
   --orange-glow: rgba(244, 91, 38, 0.08);
 
   /* Yellow (highlight) */
-  --yellow:      #F8DE22;
+  --yellow:      var(--brand-yellow);
   --yellow-soft: rgba(248, 222, 34, 0.12);
   --yellow-rim:  rgba(248, 222, 34, 0.22);
 
@@ -41,10 +64,8 @@
   --sky-soft:    rgba(56, 189, 248, 0.14);
 
   /* Text on navy */
-  --text-pri:    rgba(255, 255, 255, 0.95);
-  --text-sec:    rgba(255, 255, 255, 0.55);
-  --text-muted:  rgba(255, 255, 255, 0.32);
-  --text-faint:  rgba(255, 255, 255, 0.18);
+  --text-pri:    var(--text-primary);
+  --text-sec:    var(--text-secondary);
 
   /* Layout */
   --pad-x:       clamp(16px, 4vw, 40px);
@@ -55,44 +76,54 @@
   --grid-line:   rgba(248, 222, 34, 0.04);
 
   /* Token aliases used by older components */
-  --color-bg:        var(--navy-deep);
-  --color-surface:   var(--navy);
-  --color-surface-2: var(--navy-card);
-  --color-surface-3: var(--navy-lift);
-  --color-border:    var(--navy-rim);
-  --color-text:      var(--text-pri);
-  --color-text-2:    var(--text-sec);
-  --card-bg:         var(--navy-card);
-  --card-border:     var(--navy-rim);
-  --card-bg-hover:   var(--navy-lift);
+  --color-bg:        var(--bg);
+  --color-surface:   var(--bg-secondary);
+  --color-surface-2: var(--bg-elevated);
+  --color-surface-3: var(--bg-secondary);
+  --color-border:    var(--border);
+  --color-text:      var(--text-primary);
+  --color-text-2:    var(--text-secondary);
 }
 
-/* Light theme — Arctic Blaze (portdrop theme #7). Filled in Phase I. */
+/* Light theme — Vintage Cream */
 :root[data-theme='light'] {
-  --navy-deep: #f5f7fa;
-  --navy:      #ffffff;
-  --navy-card: #ffffff;
-  --navy-lift: #edf1fb;
-  --navy-rim:  #dde3ee;
-  --navy-rim2: #c8d1e3;
+  --bg:              #F5F0E6;
+  --bg-elevated:     #FFFFFF;
+  --bg-secondary:    #EFE9DC;
+  --surface-2:       rgba(2, 26, 84, 0.04);
+  --border:          #DDE3EE;
+  --border-strong:   rgba(2, 26, 84, 0.12);
 
-  --text-pri:   #021A54;
-  --text-sec:   #4a5b85;
-  --text-muted: #9aa8c4;
-  --text-faint: #c8d1e3;
+  --text-primary:    #021A54;
+  --text-secondary:  #4A5B87;
+  --text-muted:      rgba(2, 26, 84, 0.45);
+  --text-faint:      rgba(2, 26, 84, 0.22);
 
-  --grid-line:  rgba(2, 26, 84, 0.04);
+  --card-bg:         var(--bg-elevated);
+  --card-border:     var(--border);
+  --card-bg-hover:   #F8F4E9;
 
-  --color-bg:        var(--navy-deep);
-  --color-surface:   var(--navy);
-  --color-surface-2: var(--navy-card);
-  --color-surface-3: var(--navy-lift);
-  --color-border:    var(--navy-rim);
-  --color-text:      var(--text-pri);
-  --color-text-2:    var(--text-sec);
-  --card-bg:         var(--navy-card);
-  --card-border:     var(--navy-rim);
-  --card-bg-hover:   var(--navy-lift);
+  --navy:        var(--bg);
+  --navy-deep:   var(--brand-navy-deep);
+  --navy-card:   var(--bg-elevated);
+  --navy-lift:   var(--bg-secondary);
+  --navy-rim:    var(--border);
+  --navy-rim2:   var(--border-strong);
+
+  --text-pri:    var(--text-primary);
+  --text-sec:    var(--text-secondary);
+
+  --grid-line:  rgba(2, 26, 84, 0.06);
+  --yellow-rim: rgba(248, 222, 34, 0.40);
+  --orange-soft: rgba(244, 91, 38, 0.10);
+
+  --color-bg:        var(--bg);
+  --color-surface:   var(--bg-secondary);
+  --color-surface-2: var(--bg-elevated);
+  --color-surface-3: var(--bg-secondary);
+  --color-border:    var(--border);
+  --color-text:      var(--text-primary);
+  --color-text-2:    var(--text-secondary);
 }
 
 /* ── Base resets ───────────────────────────────────────────────────────────── */
@@ -114,7 +145,7 @@
     margin: 0;
     min-height: 100vh;
     min-height: 100dvh;
-    background-color: var(--navy-deep);
+    background-color: var(--bg);
     color: var(--text-pri);
     font-size: calc(15px * var(--font-comfort));
     line-height: 1.5;
@@ -331,7 +362,7 @@
     border-color: rgba(245,240,230,0.08);
     border-width: 1px;
   }
-  .seg-btn       { @apply px-4 py-[7px] rounded-[8px] text-[17px] font-medium text-text-secondary hover:text-cream transition-colors whitespace-nowrap; }
+  .seg-btn       { @apply inline-flex items-center gap-2 px-4 py-[7px] rounded-[8px] text-[17px] font-medium text-text-secondary hover:text-cream transition-colors whitespace-nowrap; }
   .seg-btn-active{ @apply bg-orange text-white; }
 
   /* Toggle */
@@ -426,6 +457,57 @@
 }
 
 [id^="section-"] { scroll-margin-top: 132px; }
+
+:root[data-theme='light'] .glass {
+  background: rgba(245, 240, 230, 0.86);
+}
+
+:root[data-theme='light'] .chip {
+  background: rgba(2, 26, 84, 0.04);
+  border-color: rgba(2, 26, 84, 0.10);
+  color: var(--text-secondary);
+}
+
+:root[data-theme='light'] .prog {
+  background: rgba(2, 26, 84, 0.08);
+}
+
+:root[data-theme='light'] .toggle {
+  background: rgba(2, 26, 84, 0.15);
+}
+
+:root[data-theme='light'] .toggle::after {
+  background: #FFFFFF;
+}
+
+:root[data-theme='light'] .segmented {
+  background: rgba(2, 26, 84, 0.04);
+  border-color: rgba(2, 26, 84, 0.12);
+}
+
+:root[data-theme='light'] .seg-btn:hover {
+  color: var(--brand-navy);
+}
+
+:root[data-theme='light'] .seg-btn-active,
+:root[data-theme='light'] .seg-btn-active:hover {
+  color: #FFFFFF;
+}
+
+:root[data-theme='light'] .page-tabs {
+  background: rgba(245, 240, 230, 0.92);
+  border-bottom-color: var(--border);
+}
+
+:root[data-theme='light'] .blueprint-grid {
+  background-image:
+    linear-gradient(rgba(2,26,84,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2,26,84,0.04) 1px, transparent 1px);
+}
+
+:root[data-theme='light'] .card-hover:hover {
+  background: #F8F4E9;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .btn-primary:hover { transform: none; }

@@ -6,16 +6,16 @@ export default {
     extend: {
       colors: {
         // ── Backgrounds (navy tricolor, dark theme) ────────────────────────
-        bg: '#010E33',          // navy-deep
+        bg: 'var(--bg)',
         surface: {
-          DEFAULT: '#021A54',   // navy
-          2: '#071E5C',         // navy-card
-          3: '#0C2470',         // navy-lift
+          DEFAULT: 'var(--bg-secondary)',
+          2: 'var(--bg-elevated)',
+          3: 'var(--bg-secondary)',
           bgDark:    '#0E1130',
           bgLight:   '#F5F0E6',
           cardDark:  '#0A1740',
           cardLight: '#FFFFFF',
-          borderDark:  'rgba(245,240,230,0.08)',
+          borderDark:  'var(--border)',
           borderLight: 'rgba(2,26,84,0.10)',
         },
         // ─ Vintage slab palette — used for large fills (Principle 7) ─
@@ -34,17 +34,17 @@ export default {
           stripeMid:'#021A54',
         },
         border: {
-          DEFAULT: 'rgba(255,255,255,0.08)',  // navy-rim
-          subtle: 'rgba(255,255,255,0.04)',
-          strong: 'rgba(255,255,255,0.13)',   // navy-rim2
+          DEFAULT: 'var(--border)',
+          subtle: 'var(--surface-2)',
+          strong: 'var(--border-strong)',
         },
 
         // ── Brand: Navy ─────────────────────────────────────────────────────
         navy: {
-          DEFAULT: '#021A54',
+          DEFAULT: 'var(--bg)',
           deep:    '#010E33',
-          card:    '#071E5C',
-          lift:    '#0C2470',
+          card:    'var(--bg-elevated)',
+          lift:    'var(--bg-secondary)',
         },
 
         // ── Brand: Orange (primary action) ─────────────────────────────────
@@ -54,7 +54,7 @@ export default {
           500:     '#F45B26',
           600:     '#e04d1c',
           deep:    '#e04d1c',
-          soft:    'rgba(244,91,38,0.15)',
+          soft:    'var(--orange-soft)',
           glow:    'rgba(244,91,38,0.08)',
         },
 
@@ -65,7 +65,7 @@ export default {
           500:     '#F8DE22',
           600:     '#D9C200',
           soft:    'rgba(248,222,34,0.12)',
-          rim:     'rgba(248,222,34,0.22)',
+          rim:     'var(--yellow-rim)',
         },
 
         // ── Semantic (kept distinct from brand) ────────────────────────────
@@ -96,15 +96,15 @@ export default {
         hint:    '#818CF8',
         info:    '#38BDF8',
         growth:  '#F45B26',
-        cream:   '#F5F0E6',
+        cream:   'var(--cream)',
         sepia:   '#2A2520',
 
         // ── Text (white-on-navy default) ───────────────────────────────────
         text: {
-          primary:   'rgba(255,255,255,0.95)',
-          secondary: 'rgba(255,255,255,0.55)',
-          muted:     'rgba(255,255,255,0.32)',
-          faint:     'rgba(255,255,255,0.18)',
+          primary:   'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          muted:     'var(--text-muted)',
+          faint:     'var(--text-faint)',
           inverse:   '#021A54',
         },
       },

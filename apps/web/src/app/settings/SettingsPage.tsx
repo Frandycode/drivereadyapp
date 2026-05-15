@@ -17,6 +17,8 @@ import {
   FiMail,
   FiSmartphone,
   FiHelpCircle,
+  FiMonitor,
+  FiMoon,
   FiSun,
   FiSliders,
   FiType,
@@ -41,6 +43,8 @@ export function SettingsPage({
   onDeleteAccount,
 }: SettingsPageProps) {
   const user = useUserStore((s) => s.user)
+  const theme = useUserStore((s) => s.theme)
+  const setTheme = useUserStore((s) => s.setTheme)
   const displayFontScale = useUserStore((s) => s.displayFontScale)
   const displayBrightness = useUserStore((s) => s.displayBrightness)
   const setDisplayFontScale = useUserStore((s) => s.setDisplayFontScale)
@@ -87,6 +91,37 @@ export function SettingsPage({
             sub="Walk through how DriveReady works"
             onClick={onOpenTutorial}
           />
+        </Section>
+
+        {/* ── Appearance ───────────────────────────────────────────── */}
+        <Section label="Appearance">
+          <div className="px-4 py-4 border-b border-border last:border-b-0">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-white">Theme</div>
+                <div className="text-xs text-text-secondary mt-0.5">
+                  Choose dark, light, or follow your device setting.
+                </div>
+              </div>
+              <div className="segmented">
+                {[
+                  { id: 'dark' as const, label: 'Dark', Icon: FiMoon },
+                  { id: 'light' as const, label: 'Light', Icon: FiSun },
+                  { id: 'system' as const, label: 'System', Icon: FiMonitor },
+                ].map(({ id, label, Icon }) => (
+                  <button
+                    key={id}
+                    onClick={() => setTheme(id)}
+                    className={theme === id ? 'seg-btn seg-btn-active' : 'seg-btn'}
+                    aria-pressed={theme === id}
+                  >
+                    <Icon size={14} />
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </Section>
 
         {/* ── Display ──────────────────────────────────────────────── */}

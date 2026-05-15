@@ -223,7 +223,14 @@ export default function App() {
   } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
-  useEffect(() => { applyTheme(theme) }, [theme])
+  useEffect(() => {
+    applyTheme(theme)
+    if (theme !== 'system') return
+    const media = window.matchMedia('(prefers-color-scheme: light)')
+    const handleChange = () => applyTheme('system')
+    media.addEventListener('change', handleChange)
+    return () => media.removeEventListener('change', handleChange)
+  }, [theme])
   useEffect(() => {
     applyDisplayPreferences({
       fontScale: displayFontScale,
