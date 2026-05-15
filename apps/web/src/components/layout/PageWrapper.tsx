@@ -42,7 +42,7 @@ export function PageWrapper({
           {header}
         </div>
       )}
-      <main className={clsx('flex-1 px-4 pt-4 max-w-content mx-auto w-full', className)}>
+      <main className={clsx('flex-1 w-full', className)}>
         {children}
       </main>
       {!hideFooter && !fullScreen && <Footer onNavigate={onNavigate} />}
