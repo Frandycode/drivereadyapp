@@ -18,6 +18,7 @@ import { BottomNav } from '@/components/layout/BottomNav'
 import { AuthPage } from '@/app/auth'
 import { LandingPage } from '@/app/landing/LandingPage'
 import { ResetPasswordPage } from '@/app/ResetPasswordPage'
+import { VariantPreviewPage } from '@/app/__variantPreview'
 import { OnboardingPage } from '@/app/onboarding/OnboardingPage'
 import { HomePage } from '@/app/index'
 import { LearnPage } from '@/app/learn/LearnPage'
@@ -246,6 +247,8 @@ export default function App() {
       />
     )
   }
+
+  if (path === '/__variantPreview') return <VariantPreviewPage />
 
   if (!isHydrated || !tokenReady) {
     return (
