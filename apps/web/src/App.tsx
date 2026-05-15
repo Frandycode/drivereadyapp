@@ -10,7 +10,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useMutation, gql } from '@apollo/client'
 import { useUserStore, applyTheme } from '@/stores'
 import { refreshAccessToken } from '@driveready/api-client'
@@ -181,6 +181,25 @@ const RECORD_CHAPTER_POP_QUIZ_COMPLETED = gql`
   }
 `
 
+function screenForPath(to: string): AppScreen {
+  if (to === '/')          return { screen: 'home' }
+  if (to === '/learn')     return { screen: 'learn' }
+  if (to === '/study')     return { screen: 'study' }
+  if (to === '/challenge') return { screen: 'challenge' }
+  if (to === '/profile')   return { screen: 'profile' }
+  if (to === '/tutor')     return { screen: 'tutor' }
+  if (to === '/adaptive')  return { screen: 'adaptive' }
+  if (to === '/settings')  return { screen: 'settings' }
+
+  const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
+  if (chapterMatch) return { screen: 'chapter', id: chapterMatch[1], number: 0, title: '' }
+
+  const quizMatch = to.match(/^\/learn\/([^/]+)\/quiz$/)
+  if (quizMatch) return { screen: 'quiz-settings', chapterId: quizMatch[1], chapterNumber: 0, chapterTitle: '' }
+
+  return { screen: 'home' }
+}
+
 export default function App() {
   const [path, setPath]           = useState(window.location.pathname)
   const [appScreen, setAppScreen] = useState<AppScreen>({ screen: 'home' })
@@ -188,16 +207,64 @@ export default function App() {
   const [tutorialOpen, setTutorialOpen] = useState(false)
   const [deleteOpen, setDeleteOpen]     = useState(false)
   const [showAuth, setShowAuth]         = useState(false)
+  const scrollPositions = useRef(new Map<string, number>())
+  const touchStart = useRef<{ x: number; y: number; target: EventTarget | null } | null>(null)
   const { user, theme, isHydrated, needsOnboarding, clearUser } = useUserStore()
   const [recordChapterPopQuizCompleted] = useMutation(RECORD_CHAPTER_POP_QUIZ_COMPLETED)
 
   useEffect(() => { applyTheme(theme) }, [theme])
 
   useEffect(() => {
-    const handlePop = () => setPath(window.location.pathname)
+    const handlePop = () => {
+      scrollPositions.current.set(path, window.scrollY)
+      const nextPath = window.location.pathname
+      setPath(nextPath)
+      setAppScreen(screenForPath(nextPath))
+    }
     window.addEventListener('popstate', handlePop)
     return () => window.removeEventListener('popstate', handlePop)
-  }, [])
+  }, [path])
+
+  useEffect(() => {
+    const saved = scrollPositions.current.get(path)
+    if (saved === undefined) return
+    window.setTimeout(() => window.scrollTo({ top: saved, behavior: 'auto' }), 0)
+  }, [path, appScreen.screen])
+
+  useEffect(() => {
+    function isInteractiveTarget(target: EventTarget | null) {
+      if (!(target instanceof Element)) return false
+      return Boolean(target.closest('input, textarea, select, button, a, [role="button"], [data-swipe-lock], .perspective-1200'))
+    }
+
+    function handleTouchStart(e: TouchEvent) {
+      const touch = e.touches[0]
+      if (!touch || isInteractiveTarget(e.target)) return
+      touchStart.current = { x: touch.clientX, y: touch.clientY, target: e.target }
+    }
+
+    function handleTouchEnd(e: TouchEvent) {
+      const start = touchStart.current
+      touchStart.current = null
+      const touch = e.changedTouches[0]
+      if (!start || !touch || isInteractiveTarget(start.target)) return
+
+      const dx = touch.clientX - start.x
+      const dy = touch.clientY - start.y
+      if (Math.abs(dx) < 90 || Math.abs(dx) < Math.abs(dy) * 1.4) return
+
+      scrollPositions.current.set(path, window.scrollY)
+      if (dx > 0) window.history.back()
+      else window.history.forward()
+    }
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [path])
 
   useEffect(() => {
     if (!isHydrated) return
@@ -218,23 +285,10 @@ export default function App() {
   }, [user, isHydrated])
 
   function navigate(to: string) {
+    scrollPositions.current.set(path, window.scrollY)
     window.history.pushState({}, '', to)
     setPath(to)
-    // Map path to screen
-    if (to === '/')          setAppScreen({ screen: 'home' })
-    if (to === '/learn')     setAppScreen({ screen: 'learn' })
-    if (to === '/study')     setAppScreen({ screen: 'study' })
-    if (to === '/challenge') setAppScreen({ screen: 'challenge' })
-    if (to === '/profile')   setAppScreen({ screen: 'profile' })
-    if (to === '/tutor')     setAppScreen({ screen: 'tutor' })
-    if (to === '/adaptive')  setAppScreen({ screen: 'adaptive' })
-    if (to === '/settings')  setAppScreen({ screen: 'settings' })
-
-    const chapterMatch = to.match(/^\/learn\/([^/]+)$/)
-    if (chapterMatch) setAppScreen({ screen: 'chapter', id: chapterMatch[1], number: 0, title: '' })
-
-    const quizMatch = to.match(/^\/learn\/([^/]+)\/quiz$/)
-    if (quizMatch) setAppScreen({ screen: 'quiz-settings', chapterId: quizMatch[1], chapterNumber: 0, chapterTitle: '' })
+    setAppScreen(screenForPath(to))
   }
 
   // Password reset deep link — handle before auth check
