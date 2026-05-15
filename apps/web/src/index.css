@@ -214,6 +214,21 @@
     background: #E04D1C;
     transform: translateY(-1px);
   }
+  .btn-primary-pop {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary-pop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+    background-size: 200% 100%;
+    background-position: 200% center;
+    transition: background-position 400ms ease;
+    pointer-events: none;
+  }
+  .btn-primary-pop:hover::after { background-position: -200% center; }
   .btn-yellow {
     @apply bg-yellow text-navy-deep font-body font-bold rounded-md px-5 py-2.5
            hover:bg-yellow-400 active:scale-95 transition-all duration-100
