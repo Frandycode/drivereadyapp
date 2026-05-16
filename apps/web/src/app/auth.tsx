@@ -494,7 +494,11 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
           </p>
         </div>
 
-        <div className="flex gap-2 justify-center mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+        <div
+          key={allFilled ? 'otp-filled' : 'otp-entry'}
+          className="flex justify-center gap-[clamp(5px,1.8vw,8px)] mb-6 animate-fade-up"
+          style={{ animationDelay: '0.1s' }}
+        >
           {otpDigits.map((digit, i) => (
             <input
               key={i}
@@ -506,7 +510,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
               onChange={(e) => handleOtpDigit(i, e.target.value)}
               onKeyDown={(e) => handleOtpKeyDown(i, e)}
               onFocus={(e) => e.target.select()}
-              className="w-11 h-14 text-center text-xl font-bold mono rounded-md border bg-white/[0.05] border-white/10 text-white outline-none focus:border-orange focus:bg-orange/[0.04] focus:ring-[3px] focus:ring-orange/20 transition-colors"
+              className="h-[clamp(44px,13vw,56px)] w-[clamp(44px,13vw,56px)] rounded-md border-[1.5px] border-strong bg-white/[0.05] text-center mono text-[clamp(24px,7vw,30px)] font-bold tabular-nums text-white outline-none transition-all duration-150 focus:border-orange focus:bg-orange/[0.04] focus:ring-[3px] focus:ring-orange/20"
             />
           ))}
         </div>
@@ -525,13 +529,22 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
           {verifying ? 'Verifying...' : (<>Verify Email <FiArrowRight size={16} /></>)}
         </button>
 
-        <button
-          onClick={handleResendOtp}
-          disabled={resending || resendCooldown > 0}
-          className="w-full text-sm text-text-secondary hover:text-white transition-colors py-2 disabled:opacity-50"
-        >
-          {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend code'}
-        </button>
+        <div className="flex justify-center py-2">
+          {resendCooldown > 0 ? (
+            <span className="chip chip-yellow mono">
+              <span className="chip-dot bg-yellow animate-pulse-soft" />
+              Resend in {resendCooldown}s
+            </span>
+          ) : (
+            <button
+              onClick={handleResendOtp}
+              disabled={resending}
+              className="btn-primary inline-flex min-h-9 items-center justify-center px-4 text-sm disabled:opacity-50"
+            >
+              {resending ? 'Sending...' : 'Send a new code'}
+            </button>
+          )}
+        </div>
       </AuthLayout>
     )
   }
@@ -542,10 +555,10 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
     return (
       <AuthLayout>
         <div className="mb-6 animate-fade-up">
-          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-1.5">
+          <h2 className="font-display text-[clamp(28px,4vw,36px)] font-extrabold leading-tight tracking-[-0.5px] text-white mb-1.5">
             Before you continue
           </h2>
-          <p className="text-sm text-text-secondary font-light">
+          <p className="text-sm text-text-secondary font-light leading-relaxed">
             Please review and accept our Terms of Service and Privacy Policy to use DriveReady.
           </p>
         </div>
@@ -568,31 +581,39 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
           <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@driveready.app.</p>
         </div>
 
-        <label className="flex items-start gap-3 mb-3 cursor-pointer animate-fade-up" style={{ animationDelay: '0.22s' }}>
-          <input
-            type="checkbox"
-            checked={tosAccepted}
-            onChange={(e) => setTosAccepted(e.target.checked)}
-            className="mt-0.5 w-4 h-4 accent-orange shrink-0"
-          />
-          <span className="text-sm text-text-secondary">
-            I have read and agree to the{' '}
-            <span className="text-orange font-medium">Terms of Service</span>
-          </span>
-        </label>
+        <div className="mb-5 rounded-md border border-border bg-white/[0.03] px-4 animate-fade-up" style={{ animationDelay: '0.22s' }}>
+          <label className="flex items-start gap-3 py-3 border-b border-border cursor-pointer">
+            <input
+              type="checkbox"
+              checked={tosAccepted}
+              onChange={(e) => setTosAccepted(e.target.checked)}
+              className="peer sr-only"
+            />
+            <span className="mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center rounded-md border-2 border-strong text-transparent transition-all peer-checked:border-orange peer-checked:bg-orange peer-checked:text-cream">
+              <Check size={14} strokeWidth={3} />
+            </span>
+            <span className="text-sm leading-relaxed text-text-secondary">
+              I have read and agree to the{' '}
+              <span className="text-orange font-medium">Terms of Service</span>
+            </span>
+          </label>
 
-        <label className="flex items-start gap-3 mb-5 cursor-pointer animate-fade-up" style={{ animationDelay: '0.28s' }}>
-          <input
-            type="checkbox"
-            checked={privacyAccepted}
-            onChange={(e) => setPrivacyAccepted(e.target.checked)}
-            className="mt-0.5 w-4 h-4 accent-orange shrink-0"
-          />
-          <span className="text-sm text-text-secondary">
-            I have read and agree to the{' '}
-            <span className="text-orange font-medium">Privacy Policy</span>
-          </span>
-        </label>
+          <label className="flex items-start gap-3 py-3 border-b border-border last:border-b-0 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={privacyAccepted}
+              onChange={(e) => setPrivacyAccepted(e.target.checked)}
+              className="peer sr-only"
+            />
+            <span className="mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center rounded-md border-2 border-strong text-transparent transition-all peer-checked:border-orange peer-checked:bg-orange peer-checked:text-cream">
+              <Check size={14} strokeWidth={3} />
+            </span>
+            <span className="text-sm leading-relaxed text-text-secondary">
+              I have read and agree to the{' '}
+              <span className="text-orange font-medium">Privacy Policy</span>
+            </span>
+          </label>
+        </div>
 
         {legalError && (
           <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2 mb-4">
@@ -603,7 +624,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
         <button
           onClick={handleAcceptLegal}
           disabled={acceptingLegal || !tosAccepted || !privacyAccepted}
-          className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed animate-fade-up"
+          className="btn-primary w-full py-3.5 display font-bold text-[15px] tracking-[-0.1px] inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed animate-fade-up"
           style={{ animationDelay: '0.34s' }}
         >
           {acceptingLegal ? 'Saving...' : (<>Accept &amp; Continue <FiArrowRight size={16} /></>)}
@@ -681,13 +702,13 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
         <button
           onClick={handleForgotPassword}
           disabled={!resetEmail || sendingReset}
-          className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
+          className="btn-primary w-full py-3.5 display font-bold text-[15px] tracking-[-0.1px] inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mb-3"
         >
           {sendingReset ? 'Sending...' : (<>Send Reset Link <FiArrowRight size={16} /></>)}
         </button>
         <button
           onClick={() => { setScreen('auth'); setResetError('') }}
-          className="w-full text-sm text-text-secondary hover:text-white transition-colors py-2"
+          className="w-full text-sm text-text-secondary hover:text-orange transition-colors py-2"
         >
           ← Back to sign in
         </button>
@@ -699,21 +720,27 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
     return (
       <AuthLayout>
         <div className="text-center animate-fade-up">
-          <div className="w-12 h-12 rounded-full bg-correct/10 border border-correct/40 flex items-center justify-center mx-auto mb-4">
-            <Check size={24} className="text-correct" />
+          <div className="w-24 h-24 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center mx-auto mb-5">
+            <FiMail size={48} className="text-orange" />
           </div>
-          <h2 className="display font-extrabold text-[26px] tracking-[-0.5px] text-white mb-2">
-            Check your inbox
+          <h2 className="font-display text-[clamp(28px,4vw,36px)] font-extrabold leading-tight tracking-[-0.5px] text-white mb-2">
+            Check your inbox.
           </h2>
-          <p className="text-sm text-text-secondary mb-6 font-light">
-            If <strong className="text-white font-medium">{resetEmail}</strong> is registered, a reset link is on its way. It expires in 1 hour.
+          <p className="text-sm text-text-secondary mb-6 font-light leading-relaxed">
+            We sent a reset link to <strong className="text-white font-medium">{resetEmail}</strong>. It expires in 1 hour.
           </p>
+          <a
+            href="mailto:"
+            className="btn-primary w-full py-3.5 display font-bold text-[15px] tracking-[-0.1px] inline-flex items-center justify-center gap-2 mb-3"
+          >
+            Open mail app
+            <FiArrowRight size={16} />
+          </a>
           <button
             onClick={() => { setScreen('auth'); setResetEmail('') }}
-            className="w-full py-3.5 rounded-md bg-orange text-white display font-bold text-[15px] tracking-[-0.1px] hover:bg-orange-deep hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(244,91,38,0.35)] active:translate-y-0 active:shadow-none transition-all duration-200 inline-flex items-center justify-center gap-2"
+            className="w-full text-sm text-text-secondary hover:text-orange transition-colors py-2"
           >
             Back to sign in
-            <FiArrowRight size={16} />
           </button>
         </div>
       </AuthLayout>
