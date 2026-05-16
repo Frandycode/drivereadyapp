@@ -10,7 +10,8 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { FiArrowRight, FiZap, FiShield, FiCheck, FiX, FiAward, FiCpu, FiLayers } from 'react-icons/fi'
+import { useState } from 'react'
+import { FiArrowRight, FiZap, FiShield, FiCheck, FiX, FiAward, FiCpu, FiLayers, FiMenu } from 'react-icons/fi'
 import { BsDiamondFill } from 'react-icons/bs'
 import { Footer } from '@/components/layout/Footer'
 import type { IconType } from 'react-icons'
@@ -19,10 +20,22 @@ interface LandingPageProps {
   onStartFree: () => void
 }
 
+const STATE_LANDING_CONFIG: Record<string, { stateName: string; agencyLabel: string }> = {
+  ok: { stateName: 'Oklahoma', agencyLabel: 'Oklahoma DPS' },
+  tx: { stateName: 'Texas',    agencyLabel: 'Texas DPS' },
+}
+
+function useStateLandingConfig() {
+  const stateCode = (import.meta.env.VITE_STATE_CODE ?? 'ok').toLowerCase()
+  return STATE_LANDING_CONFIG[stateCode] ?? STATE_LANDING_CONFIG.ok
+}
+
 export function LandingPage({ onStartFree }: LandingPageProps) {
+  const stateConfig = useStateLandingConfig()
+
   return (
     <div className="min-h-dvh bg-navy-deep">
-      <TopBar onStartFree={onStartFree} />
+      <TopBar onStartFree={onStartFree} stateName={stateConfig.stateName} />
       <button
         onClick={onStartFree}
         className="fixed right-4 top-20 z-40 hidden sm:inline-flex items-center gap-2 rounded-full border border-yellow-rim/30 bg-yellow-soft px-3.5 py-2 text-[12px] font-semibold text-yellow shadow-[0_14px_28px_rgba(0,0,0,0.28)] backdrop-blur-md hover:bg-yellow/15 hover:border-yellow-rim transition-all"
@@ -30,10 +43,10 @@ export function LandingPage({ onStartFree }: LandingPageProps) {
         See how it works
         <FiArrowRight size={13} />
       </button>
-      <Hero onStartFree={onStartFree} />
-      <TrustMarquee />
+      <Hero onStartFree={onStartFree} stateName={stateConfig.stateName} />
+      <TrustMarquee agencyLabel={stateConfig.agencyLabel} />
       <FeaturesStrip />
-      <CtaBand onStartFree={onStartFree} />
+      <CtaBand onStartFree={onStartFree} stateName={stateConfig.stateName} />
       <Footer />
     </div>
   )
@@ -41,7 +54,7 @@ export function LandingPage({ onStartFree }: LandingPageProps) {
 
 // ── CTA band (orange, blueprint texture) ──────────────────────────────────────
 
-function CtaBand({ onStartFree }: { onStartFree: () => void }) {
+function CtaBand({ onStartFree, stateName }: { onStartFree: () => void; stateName: string }) {
   return (
     <section className="relative overflow-hidden bg-orange text-center py-[clamp(60px,8vw,96px)] px-4 sm:px-10">
       <div
@@ -58,7 +71,7 @@ function CtaBand({ onStartFree }: { onStartFree: () => void }) {
           Ready to get your permit?
         </h2>
         <p className="text-navy-deep/70 text-base mb-7">
-          Free to start. No credit card. Oklahoma's smartest permit prep.
+          Free to start. No credit card. {stateName}'s smartest permit prep.
         </p>
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <button
@@ -147,11 +160,17 @@ function FeaturesStrip() {
 
         {/* Cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {FEATURES.map(({ Icon, iconTone, name, desc, meta }) => (
+          {FEATURES.map(({ Icon, iconTone, name, desc, meta }, index) => (
             <div
               key={name}
-              className="group relative overflow-hidden bg-navy-card border border-border rounded-2xl p-6 transition-all duration-200 hover:-translate-y-1 hover:bg-surface-3 hover:border-orange/40 hover:shadow-[0_22px_46px_-26px_rgba(244,91,38,0.7)]"
+              className="card card-hover group relative min-h-[260px] p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_22px_46px_-26px_rgba(244,91,38,0.7)]"
             >
+              <div
+                className={`pointer-events-none absolute -right-20 -top-24 h-[200px] w-[200px] rounded-full blur-[60px] opacity-10 ${
+                  index === 0 ? 'bg-orange' : index === 1 ? 'bg-yellow' : 'bg-green'
+                }`}
+                aria-hidden="true"
+              />
               <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-yellow/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div
                 className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105 ${TONE_CLASS[iconTone]}`}
@@ -176,8 +195,8 @@ function FeaturesStrip() {
 // ── Trust marquee ─────────────────────────────────────────────────────────────
 
 const TRUST_ITEMS: { strong: string; rest: string }[] = [
-  { strong: 'ALIGNED WITH',     rest: 'OKLAHOMA DPS' },
-  { strong: '900+',             rest: 'QUESTIONS' },
+  { strong: 'ALIGNED WITH',     rest: '' },
+  { strong: '1,400+',           rest: 'QUESTIONS' },
   { strong: '5',                rest: 'STUDY MODES' },
   { strong: 'AI-CURATED',       rest: 'WEAK-SPOT REVIEW' },
   { strong: 'OFFLINE',          rest: 'READY' },
@@ -185,14 +204,14 @@ const TRUST_ITEMS: { strong: string; rest: string }[] = [
   { strong: 'NO ADS,',          rest: 'EVER' },
 ]
 
-function TrustMarquee() {
+function TrustMarquee({ agencyLabel }: { agencyLabel: string }) {
   // Render the row twice for a seamless loop
   const row = (key: string) =>
     TRUST_ITEMS.map((item, i) => (
       <span key={`${key}-${i}`} className="inline-flex items-center gap-2 px-7 text-[12px] tracking-[0.08em] text-text-secondary whitespace-nowrap uppercase">
         <BsDiamondFill size={9} className="text-orange shrink-0" />
         <strong className="text-white font-semibold">{item.strong}</strong>
-        <span>{item.rest}</span>
+        <span>{i === 0 ? agencyLabel : item.rest}</span>
       </span>
     ))
 
@@ -218,36 +237,70 @@ function TrustMarquee() {
 
 // ── Top nav (landing only) ────────────────────────────────────────────────────
 
-function TopBar({ onStartFree }: { onStartFree: () => void }) {
+function TopBar({ onStartFree, stateName }: { onStartFree: () => void; stateName: string }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
-    <nav className="sticky top-0 z-50 h-16 flex items-center justify-between px-4 sm:px-10 glass border-b border-border">
-      <div className="flex items-center gap-2.5 min-w-0">
-        <ShieldMark />
-        <div className="leading-tight">
-          <div className="font-display font-extrabold text-[17px] text-white tracking-tight">
-            Drive<em className="not-italic text-orange">Ready</em>
-          </div>
-          <div className="mono text-[9px] tracking-[0.12em] uppercase text-text-muted hidden sm:block">
-            Oklahoma · drivereadyapp.com
+    <nav className="sticky top-0 z-50 glass border-b border-border">
+      <div className="h-16 flex items-center justify-between px-4 sm:px-10">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <ShieldMark />
+          <div className="leading-tight">
+            <div className="font-display font-extrabold text-[17px] text-white tracking-tight">
+              Drive<em className="not-italic text-orange">Ready</em>
+            </div>
+            <div className="mono text-[9px] tracking-[0.12em] uppercase text-text-muted hidden sm:block">
+              {stateName} · drivereadyapp.com
+            </div>
           </div>
         </div>
+
+        <div className="hidden min-[900px]:flex items-center gap-2">
+          <button
+            onClick={onStartFree}
+            className="pill-btn border border-border text-text-secondary hover:text-white hover:border-strong"
+          >
+            See how it works
+          </button>
+          <button
+            onClick={onStartFree}
+            className="pill-btn bg-orange text-white hover:bg-orange-deep inline-flex items-center gap-1.5"
+          >
+            Start Free
+            <FiArrowRight size={14} />
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          className="tier3-hover grid h-10 w-10 place-items-center rounded-md border border-border text-text-secondary min-[900px]:hidden"
+          aria-label="Open landing menu"
+          aria-expanded={menuOpen}
+        >
+          <FiMenu size={19} />
+        </button>
       </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onStartFree}
-          className="hidden sm:inline-flex pill-btn border border-border text-text-secondary hover:text-white hover:border-strong"
-        >
-          See how it works
-        </button>
-        <button
-          onClick={onStartFree}
-          className="pill-btn bg-orange text-white hover:bg-orange-deep inline-flex items-center gap-1.5"
-        >
-          Start Free
-          <FiArrowRight size={14} />
-        </button>
-      </div>
+      {menuOpen && (
+        <div className="border-t border-border px-4 py-3 min-[900px]:hidden">
+          <div className="grid gap-2">
+            <button
+              onClick={onStartFree}
+              className="pill-btn w-full justify-center border border-border text-text-secondary hover:text-white hover:border-strong"
+            >
+              See how it works
+            </button>
+            <button
+              onClick={onStartFree}
+              className="pill-btn w-full justify-center bg-orange text-white hover:bg-orange-deep"
+            >
+              Start Free
+              <FiArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
@@ -275,15 +328,16 @@ function ShieldMark({ size = 30 }: { size?: number }) {
 
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
-function Hero({ onStartFree }: { onStartFree: () => void }) {
+function Hero({ onStartFree, stateName }: { onStartFree: () => void; stateName: string }) {
   return (
     <section className="relative overflow-hidden bg-navy-deep blueprint-grid border-b border-yellow-rim/40">
       {/* Orange slab on the right (hidden on tiny screens) */}
       <div
-        className="absolute top-0 right-0 bottom-0 w-[42%] bg-orange z-0 hidden sm:block"
+        className="absolute top-0 right-0 bottom-0 w-[42%] z-0 hidden sm:block"
         style={{ clipPath: 'polygon(16% 0, 100% 0, 100% 100%, 0% 100%)' }}
         aria-hidden="true"
       >
+        <div className="absolute inset-0 bg-[#C75A3A]" />
         <div
           className="absolute inset-0"
           style={{
@@ -303,7 +357,7 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
         className="absolute bottom-0 left-0 right-0 h-[3px] z-10"
         style={{
           background:
-            'linear-gradient(90deg, #F8DE22 0 33.33%, #021A54 33.33% 66.66%, #F45B26 66.66% 100%)',
+            'linear-gradient(90deg, #C75A3A 0 33.33%, #021A54 33.33% 66.66%, #C75A3A 66.66% 100%)',
         }}
         aria-hidden="true"
       />
@@ -311,13 +365,13 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
       <div className="relative z-[2] max-w-[1200px] mx-auto px-4 sm:px-10 py-[clamp(72px,9vw,120px)] pb-[clamp(60px,7vw,96px)] grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
         {/* Left */}
         <div className="animate-fade-up">
-          <div className="inline-flex items-center gap-2 bg-yellow-soft border border-yellow-rim rounded-full px-3.5 py-1 mb-7 text-[15px] font-medium tracking-[0.12em] text-yellow uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-yellow animate-pulse-soft" />
-            Oklahoma · AI-Powered Permit Prep
+          <div className="inline-flex items-center gap-2 bg-orange-soft border border-orange/30 rounded-full px-3.5 py-1 mb-7 text-[15px] font-medium tracking-[0.12em] text-orange uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse-soft" />
+            {stateName} · AI-Powered Permit Prep
           </div>
 
           <h1 className="display font-extrabold text-[clamp(40px,6vw,84px)] leading-[0.96] tracking-[-2px] text-white mb-7">
-            Pass your
+            Your {stateName}
             <br />
             <span className="text-orange">
               <span
@@ -327,14 +381,14 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
                     'linear-gradient(transparent 78%, #F8DE22 78%, #F8DE22 92%, transparent 92%)',
                 }}
               >
-                permit test.
+                permit. First try.
               </span>
             </span>
           </h1>
 
           <p className="text-text-secondary font-light leading-relaxed text-[clamp(15px,1.5vw,17px)] max-w-[480px] mb-9">
             Five study modes, real-time bot battles, and an AI that learns your weak spots —
-            everything you need to walk out of the DMV with your permit on the first try.
+            everything you need to walk out with your {stateName} permit on the first try.
           </p>
 
           <div className="flex items-center gap-3 flex-wrap">
@@ -356,7 +410,7 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
 
           <div className="mt-7 mono text-[10px] tracking-[0.1em] uppercase text-text-muted flex items-center gap-2.5 flex-wrap">
             <span>
-              Live in <strong className="text-yellow font-semibold">Oklahoma</strong>
+              Live in <strong className="text-yellow font-semibold">{stateName}</strong>
             </span>
             <span className="w-1 h-1 rounded-full bg-text-faint" />
             <span>Texas &amp; California coming soon</span>
@@ -365,7 +419,7 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
 
         {/* Right — preview card */}
         <div className="relative animate-fade-up [animation-delay:0.3s]">
-          <PreviewCard />
+          <PreviewCard onStartFree={onStartFree} stateName={stateName} />
 
           {/* Floating pills */}
           <div className="absolute -left-4 top-[30%] hidden sm:flex items-center gap-2.5 bg-navy-card/95 border border-yellow-rim rounded-2xl px-3.5 py-2.5 backdrop-blur-md shadow-[0_14px_30px_-10px_rgba(0,0,0,0.4)] animate-float">
@@ -397,9 +451,9 @@ function Hero({ onStartFree }: { onStartFree: () => void }) {
   )
 }
 
-function PreviewCard() {
+function PreviewCard({ onStartFree, stateName }: { onStartFree: () => void; stateName: string }) {
   return (
-    <div className="relative rounded-xl overflow-hidden bg-[rgba(7,30,92,0.92)] border border-yellow-rim/40 backdrop-blur-xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.4)]">
+    <div className="card relative overflow-hidden border-yellow-rim/40 bg-[rgba(7,30,92,0.92)] p-0 backdrop-blur-xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.4)]">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-3.5 border-b border-yellow-rim/30 bg-navy/50">
         <div className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-yellow flex items-center">
@@ -412,7 +466,7 @@ function PreviewCard() {
       {/* Body */}
       <div className="px-5 py-6">
         <p className="display font-bold text-[18px] leading-snug tracking-[-0.3px] text-white mb-5">
-          When must you yield to a pedestrian in Oklahoma?
+          When must you yield to a pedestrian in {stateName}?
         </p>
 
         <div className="flex flex-col gap-2">
@@ -424,14 +478,15 @@ function PreviewCard() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between px-5 py-3.5 border-t border-yellow-rim/20 bg-navy/30">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 border-t border-yellow-rim/20 bg-navy/30">
         <div className="mono text-[12px] text-yellow font-semibold inline-flex items-center gap-1.5">
           <FiZap size={12} />
           14 day streak
         </div>
-        <div className="mono text-[11px] text-text-muted">
-          Readiness <strong className="text-orange font-semibold">72%</strong>
-        </div>
+        <button onClick={onStartFree} className="btn-primary btn-primary-pop px-4 py-2 text-sm">
+          Start Free
+        </button>
+        <div className="mono text-[11px] text-text-muted">Readiness <strong className="text-orange font-semibold">72%</strong></div>
       </div>
     </div>
   )
