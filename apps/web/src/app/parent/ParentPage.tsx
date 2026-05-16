@@ -11,7 +11,8 @@
  */
 
 import { useState } from 'react'
-import { Copy, QrCode, RefreshCw, Target, BookOpen, Award, type LucideIcon } from 'lucide-react'
+import type { IconType } from 'react-icons'
+import { FiCopy as Copy, FiGrid as QrCode, FiRefreshCw as RefreshCw, FiTarget as Target, FiBookOpen as BookOpen, FiAward as Award } from 'react-icons/fi'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'
@@ -158,7 +159,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone: stri
   )
 }
 
-function Topic({ Icon, eyebrow, title, body }: { Icon: LucideIcon; eyebrow: string; title: string; body: string }) {
+function Topic({ Icon, eyebrow, title, body }: { Icon: IconType; eyebrow: string; title: string; body: string }) {
   return (
     <div className="card card-hover p-5">
       <div className="mb-4 grid h-11 w-11 place-items-center rounded-md border border-orange/30 bg-orange-soft text-orange">

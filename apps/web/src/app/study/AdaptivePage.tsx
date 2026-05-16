@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from 'react'
 import { useLazyQuery, gql } from '@apollo/client'
-import { Target, RefreshCw } from 'lucide-react'
+import { FiTarget as Target, FiRefreshCw as RefreshCw } from 'react-icons/fi'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { QuestionCard, type Question } from '@/app/quiz/QuestionCard'
 

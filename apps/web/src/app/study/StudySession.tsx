@@ -16,7 +16,7 @@ import { type StudyConfig } from './StudyPage'
 import { FreeStudy } from './FreeStudy'
 import { DrillMode } from './DrillMode'
 import { TimerBlitz } from './TimerBlitz'
-import { CheckCircle, RotateCcw, Home, AlertTriangle } from 'lucide-react'
+import { FiCheckCircle as CheckCircle, FiRotateCcw as RotateCcw, FiHome as Home, FiAlertTriangle as AlertTriangle } from 'react-icons/fi'
 import { useUserStore } from '@/stores'
 
 // ── GraphQL ───────────────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ function ResultsScreen({
       />
 
       <div className="w-14 h-14 rounded-full bg-green-soft border border-correct/30 flex items-center justify-center mb-6 animate-fade-up">
-        <CheckCircle size={26} className="text-correct" strokeWidth={2.5} />
+        <CheckCircle size={26} className="text-correct" />
       </div>
 
       <div className="inline-flex items-center gap-2 mb-4 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">

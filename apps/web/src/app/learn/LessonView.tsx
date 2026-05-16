@@ -12,7 +12,8 @@
 
 import { useMutation, gql } from '@apollo/client'
 import { PageWrapper } from '@/components/layout/PageWrapper'
-import { ArrowLeft, ArrowRight, CheckCircle, Bookmark } from 'lucide-react'
+import { FaBookmark as Bookmark } from 'react-icons/fa'
+import { FiArrowLeft as ArrowLeft, FiArrowRight as ArrowRight, FiCheckCircle as CheckCircle } from 'react-icons/fi'
 import { FiArrowRight } from 'react-icons/fi'
 import { useEffect, useRef, useState } from 'react'
 

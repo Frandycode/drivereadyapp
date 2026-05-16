@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
-import { ChevronRight, ChevronLeft, Calendar, Loader2 } from 'lucide-react'
+import { FiChevronRight as ChevronRight, FiChevronLeft as ChevronLeft, FiCalendar as Calendar, FiLoader as Loader2 } from 'react-icons/fi'
 import { GiSteeringWheel } from 'react-icons/gi'
 import { MdSentimentVeryDissatisfied, MdSentimentNeutral, MdSentimentVerySatisfied } from 'react-icons/md'
 import { AppLogo } from '@/components/layout/AppLogo'

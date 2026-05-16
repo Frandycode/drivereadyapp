@@ -13,7 +13,7 @@
 import { useState } from 'react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { ArrowLeft, Zap, Clock, AlertTriangle } from 'lucide-react'
+import { FiArrowLeft as ArrowLeft, FiZap as Zap, FiClock as Clock, FiAlertTriangle as AlertTriangle } from 'react-icons/fi'
 import { GiVintageRobot, GiMonoWheelRobot, GiRobotGolem } from 'react-icons/gi'
 import { useUserStore } from '@/stores'
 

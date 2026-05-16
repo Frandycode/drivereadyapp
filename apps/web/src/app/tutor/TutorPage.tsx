@@ -12,7 +12,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
-import { Send, Sparkles } from 'lucide-react'
+import { FiSend as Send } from 'react-icons/fi'
+import { RiSparklingFill as Sparkles } from 'react-icons/ri'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 
 const START_THREAD = gql`

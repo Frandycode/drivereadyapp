@@ -12,7 +12,8 @@
 
 import { useState, useEffect } from 'react'
 import { useMutation, useSubscription, useQuery, gql } from '@apollo/client'
-import { X, Copy, Check, Loader2, Swords, Share2, BookOpen } from 'lucide-react'
+import { FiX as X, FiCopy as Copy, FiCheck as Check, FiLoader as Loader2, FiShare2 as Share2, FiBookOpen as BookOpen } from 'react-icons/fi'
+import { GiCrossedSwords as Swords } from 'react-icons/gi'
 import { useUserStore } from '@/stores'
 import { AppLogo } from '@/components/layout/AppLogo'
 

@@ -13,7 +13,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { clsx } from 'clsx'
-import { X, Clock, CheckCircle, XCircle, AlertTriangle, RotateCcw, Home } from 'lucide-react'
+import { FiX as X, FiClock as Clock, FiCheckCircle as CheckCircle, FiXCircle as XCircle, FiAlertTriangle as AlertTriangle, FiRotateCcw as RotateCcw, FiHome as Home } from 'react-icons/fi'
 import { useUserStore } from '@/stores'
 import { QuizQuestionSkeleton } from '@/components/ui/Skeleton'
 
@@ -172,8 +172,8 @@ function ExamResults({
             passed ? 'bg-green-soft border-correct/40' : 'bg-wrong/10 border-wrong/40'
           )}>
             {passed
-              ? <CheckCircle size={26} className="text-correct" strokeWidth={2.5} />
-              : <XCircle    size={26} className="text-wrong"   strokeWidth={2.5} />
+              ? <CheckCircle size={26} className="text-correct" />
+              : <XCircle    size={26} className="text-wrong" />
             }
           </div>
 

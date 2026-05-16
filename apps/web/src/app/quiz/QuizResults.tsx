@@ -10,7 +10,8 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { CheckCircle, XCircle, SkipForward, Lightbulb, RotateCcw, Home, TrendingUp } from 'lucide-react'
+import { FaRegLightbulb as Lightbulb } from 'react-icons/fa'
+import { FiCheckCircle as CheckCircle, FiXCircle as XCircle, FiSkipForward as SkipForward, FiRotateCcw as RotateCcw, FiHome as Home, FiTrendingUp as TrendingUp } from 'react-icons/fi'
 import { DifficultyBadge, type DifficultyCode } from '@/lib/difficulty'
 
 interface AnswerRecord {
@@ -74,7 +75,7 @@ export function QuizResults({
           }}
         />
         <div className="w-14 h-14 rounded-full bg-green-soft border border-correct/30 flex items-center justify-center mx-auto mb-5 animate-fade-up">
-          <CheckCircle size={26} className="text-correct" strokeWidth={2.5} />
+          <CheckCircle size={26} className="text-correct" />
         </div>
 
         <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">

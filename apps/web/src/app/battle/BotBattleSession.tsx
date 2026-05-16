@@ -13,7 +13,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { clsx } from 'clsx'
-import { X, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import { FiX as X, FiCheckCircle as CheckCircle, FiXCircle as XCircle, FiAlertTriangle as AlertTriangle } from 'react-icons/fi'
 import { AppLogo } from '@/components/layout/AppLogo'
 import { FloatingTimer } from '@/components/ui/FloatingTimer'
 import { BotAvatar } from './BotAvatar'
@@ -388,9 +388,9 @@ export function BotBattleSession({ config, onExit }: BotBattleSessionProps) {
                   bothRevealed && isCorrectAns && !isSelected  && 'bg-yellow text-bg border-yellow',
                   bothRevealed && !isCorrectAns && !isSelected && 'border-border text-text-muted',
                 )}>
-                  {bothRevealed && isCorrectAns && isSelected   ? <CheckCircle size={13} strokeWidth={3} /> :
-                   bothRevealed && !isCorrectAns && isSelected  ? <XCircle size={13} strokeWidth={3} /> :
-                   bothRevealed && isCorrectAns && !isSelected  ? <CheckCircle size={13} strokeWidth={3} /> :
+                  {bothRevealed && isCorrectAns && isSelected   ? <CheckCircle size={13} /> :
+                   bothRevealed && !isCorrectAns && isSelected  ? <XCircle size={13} /> :
+                   bothRevealed && isCorrectAns && !isSelected  ? <CheckCircle size={13} /> :
                    letter}
                 </span>
 

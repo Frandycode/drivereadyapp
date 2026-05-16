@@ -12,7 +12,8 @@
 
 import { useState } from 'react'
 import { useMutation, useQuery, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon, Award, Flame, Target, ShieldCheck, Zap } from 'lucide-react'
+import { FaFire as Flame } from 'react-icons/fa'
+import { FiLogOut as LogOut, FiUser as User, FiMail as Mail, FiPhone as Phone, FiCheckCircle as CheckCircle, FiX as X, FiLock as Lock, FiTrash2 as Trash2, FiUsers as Users, FiCopy as Copy, FiRefreshCw as RefreshCw, FiSettings as SettingsIcon, FiAward as Award, FiTarget as Target, FiShield as ShieldCheck, FiZap as Zap } from 'react-icons/fi'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'

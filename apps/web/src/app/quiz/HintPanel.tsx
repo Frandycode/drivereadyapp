@@ -12,7 +12,9 @@
 
 import { useEffect, useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
-import { X, Lightbulb, Sparkles } from 'lucide-react'
+import { FaRegLightbulb as Lightbulb } from 'react-icons/fa'
+import { FiX as X } from 'react-icons/fi'
+import { RiSparklingFill as Sparkles } from 'react-icons/ri'
 import { getDifficultyCopy, type DifficultyCode } from '@/lib/difficulty'
 
 const GET_ADAPTIVE_HINT = gql`

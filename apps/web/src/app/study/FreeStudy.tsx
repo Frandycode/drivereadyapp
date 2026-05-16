@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { FlashCard } from './FlashCard'
-import { ArrowLeft, ArrowRight, X } from 'lucide-react'
+import { FiArrowLeft as ArrowLeft, FiArrowRight as ArrowRight, FiX as X } from 'react-icons/fi'
 
 interface Question {
   id: string

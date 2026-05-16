@@ -10,7 +10,9 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { RotateCcw, Home, Trophy, Skull, Handshake } from 'lucide-react'
+import { FaTrophy as Trophy, FaHandshake as Handshake } from 'react-icons/fa'
+import { FiRotateCcw as RotateCcw, FiHome as Home } from 'react-icons/fi'
+import { GiSkullCrossedBones as Skull } from 'react-icons/gi'
 import type { BotConfig } from './BotSelectScreen'
 
 interface BotBattleResultsProps {
@@ -74,7 +76,7 @@ export function BotBattleResults({
 
       {/* Outcome icon */}
       <div className={`w-16 h-16 rounded-full border-2 ${ringClass} flex items-center justify-center mb-5 animate-fade-up`}>
-        <Icon size={28} className={iconTone} strokeWidth={2.5} />
+        <Icon size={28} className={iconTone} />
       </div>
 
       <div className="inline-flex items-center gap-2 mb-3 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">

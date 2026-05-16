@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
-import { CheckCircle, XCircle } from 'lucide-react'
+import { FiCheckCircle as CheckCircle, FiXCircle as XCircle } from 'react-icons/fi'
 
 export interface FlipperAnswer {
   id: string

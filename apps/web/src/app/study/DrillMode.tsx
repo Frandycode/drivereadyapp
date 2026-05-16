@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { FlashCard } from './FlashCard'
-import { X, ThumbsUp, ThumbsDown, RotateCcw, CornerDownLeft } from 'lucide-react'
+import { FiX as X, FiThumbsUp as ThumbsUp, FiThumbsDown as ThumbsDown, FiRotateCcw as RotateCcw, FiCornerDownLeft as CornerDownLeft } from 'react-icons/fi'
 
 interface Question {
   id: string

@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
-import { Sparkles } from 'lucide-react'
+import { RiSparklingFill as Sparkles } from 'react-icons/ri'
 
 const EXPLAIN_ANSWER = gql`
   mutation ExplainAnswer($questionId: ID!, $selectedAnswerId: ID!) {

@@ -10,7 +10,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { Clock } from 'lucide-react'
+import { FiClock as Clock } from 'react-icons/fi'
 import { clsx } from 'clsx'
 
 interface FloatingTimerProps {

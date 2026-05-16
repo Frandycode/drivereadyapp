@@ -11,7 +11,8 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { X, Lightbulb, SkipForward, AlertTriangle } from 'lucide-react'
+import { FaRegLightbulb as Lightbulb } from 'react-icons/fa'
+import { FiX as X, FiSkipForward as SkipForward, FiAlertTriangle as AlertTriangle } from 'react-icons/fi'
 import { clsx } from 'clsx'
 import { DifficultyBadge, type DifficultyCode } from '@/lib/difficulty'
 import { FloatingTimer } from '@/components/ui/FloatingTimer'

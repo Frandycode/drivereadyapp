@@ -12,7 +12,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { FlashCard } from './FlashCard'
-import { X, Zap } from 'lucide-react'
+import { FiX as X, FiZap as Zap } from 'react-icons/fi'
 
 interface Question {
   id: string
@@ -109,7 +109,7 @@ export function TimerBlitz({ questions, deckName, seconds, onExit, onComplete }:
         </button>
 
         <div className="w-14 h-14 rounded-full bg-orange-soft border border-orange/30 flex items-center justify-center mb-6 animate-fade-up">
-          <Zap size={26} className="text-orange" strokeWidth={2.5} />
+          <Zap size={26} className="text-orange" />
         </div>
 
         <div className="inline-flex items-center gap-2 mb-4 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">

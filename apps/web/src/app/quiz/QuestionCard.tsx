@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
-import { CheckCircle, XCircle } from 'lucide-react'
+import { FiCheckCircle as CheckCircle, FiXCircle as XCircle } from 'react-icons/fi'
 import { AIExplanationPanel } from './AIExplanationPanel'
 
 export interface Answer {
@@ -127,9 +127,9 @@ export function QuestionCard({ question, selectedIds, revealed, onSelect }: Ques
                 className={wrapClass}
               >
                 <span className={chipClass}>
-                  {revealed && state === 'correct' ? <CheckCircle size={13} strokeWidth={3} /> :
-                   revealed && state === 'wrong'   ? <XCircle size={13} strokeWidth={3} /> :
-                   revealed && state === 'missed'  ? <CheckCircle size={13} strokeWidth={3} /> :
+                  {revealed && state === 'correct' ? <CheckCircle size={13} /> :
+                   revealed && state === 'wrong'   ? <XCircle size={13} /> :
+                   revealed && state === 'missed'  ? <CheckCircle size={13} /> :
                    letter}
                 </span>
                 <span className="flex-1 leading-snug">{answer.text}</span>

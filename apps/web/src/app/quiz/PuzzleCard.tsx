@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { clsx } from 'clsx'
-import { CheckCircle, XCircle, Plus } from 'lucide-react'
+import { FiCheckCircle as CheckCircle, FiXCircle as XCircle, FiPlus as Plus } from 'react-icons/fi'
 
 export interface PuzzleAnswer {
   id: string

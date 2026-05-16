@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql, ApolloError } from '@apollo/client'
-import { Check, Eye, EyeOff } from 'lucide-react'
+import { FiCheck as Check, FiEye as Eye, FiEyeOff as EyeOff } from 'react-icons/fi'
 import { FiLock, FiArrowRight } from 'react-icons/fi'
 import { AuthLayout } from '@/app/auth/AuthLayout'
 import { AuthField } from '@/app/auth/AuthField'
@@ -149,7 +149,7 @@ export function ResetPasswordPage({ token, onDone }: Props) {
                       ok ? 'bg-correct/15 border-correct/40' : 'border-white/[0.08]'
                     }`}
                   >
-                    <Check size={10} strokeWidth={3} className={ok ? 'opacity-100' : 'opacity-20'} />
+                    <Check size={10} className={ok ? 'opacity-100' : 'opacity-20'} />
                   </span>
                   {rule.label}
                 </li>

@@ -13,7 +13,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { clsx } from 'clsx'
-import { X, CheckCircle, XCircle, WifiOff } from 'lucide-react'
+import { FiX as X, FiCheckCircle as CheckCircle, FiXCircle as XCircle, FiWifiOff as WifiOff } from 'react-icons/fi'
 import { GiLaurelsTrophy } from 'react-icons/gi'
 import { IoSad } from 'react-icons/io5'
 import { FaHandshake } from 'react-icons/fa'
@@ -833,9 +833,9 @@ export function PeerBattleSession({ setup, onExit }: PeerBattleSessionProps) {
                   revealed && isCorrectAns && !isSelected && 'bg-yellow text-bg border-yellow',
                   revealed && !isCorrectAns && !isSelected && 'border-border text-text-muted',
                 )}>
-                  {revealed && isCorrectAns && isSelected   ? <CheckCircle size={13} strokeWidth={3} /> :
-                   revealed && !isCorrectAns && isSelected  ? <XCircle size={13} strokeWidth={3} /> :
-                   revealed && isCorrectAns && !isSelected  ? <CheckCircle size={13} strokeWidth={3} /> :
+                  {revealed && isCorrectAns && isSelected   ? <CheckCircle size={13} /> :
+                   revealed && !isCorrectAns && isSelected  ? <XCircle size={13} /> :
+                   revealed && isCorrectAns && !isSelected  ? <CheckCircle size={13} /> :
                    letter}
                 </span>
                 <span className="text-[14px] leading-snug flex-1 text-white">{answer.text}</span>
