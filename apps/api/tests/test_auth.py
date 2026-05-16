@@ -8,17 +8,18 @@
 # Project  : DriveReady — AI-Powered Multi-State Driver Education Platform
 # ─────────────────────────────────────────────────────────────────────────────
 
-"""Auth smoke tests: register, OTP verify, login, refresh, logout, change password."""
+"""Auth smoke tests: register, signup completion, login, refresh, logout, change password."""
 
 import uuid
 
 import pytest
 from httpx import AsyncClient
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.redis import get_redis
 from app.models import User
+from app.services.pending_signup import delete_pending_signup
 
 from .conftest import TEST_PASSWORD, err_code, err_msg, gql, seeded_user, user_token
 
@@ -31,9 +32,19 @@ _AUTH_FIELDS = """
   user { id email displayName role }
 """
 
-REGISTER = f"""
-  mutation Register($input: RegisterInput!) {{
-    register(input: $input) {{ {_AUTH_FIELDS} }}
+REGISTER = """
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      pendingToken
+      email
+      expiresAt
+    }
+  }
+"""
+
+COMPLETE_SIGNUP = f"""
+  mutation CompleteSignup($input: CompleteSignupInput!) {{
+    completeSignup(input: $input) {{ {_AUTH_FIELDS} }}
   }}
 """
 
@@ -41,12 +52,6 @@ LOGIN = f"""
   mutation Login($input: LoginInput!) {{
     login(input: $input) {{ {_AUTH_FIELDS} }}
   }}
-"""
-
-VERIFY_EMAIL_OTP = """
-  mutation VerifyEmailOtp($input: VerifyOtpInput!) {
-    verifyEmailOtp(input: $input)
-  }
 """
 
 REFRESH = """
@@ -70,32 +75,54 @@ REQUEST_RESET = """
 """
 
 
+def _unique_phone() -> str:
+    return f"+1555{uuid.uuid4().int % 10_000_000:07d}"
+
+
+def _register_input(email: str, display_name: str = "Reg User") -> dict:
+    return {
+        "email": email,
+        "password": TEST_PASSWORD,
+        "displayName": display_name,
+        "phoneNumber": _unique_phone(),
+        "dateOfBirth": "2000-06-01",
+        "stateCode": "ok",
+        "captchaToken": None,
+    }
+
+
+async def _cleanup_pending_signup(pending_token: str, email: str) -> None:
+    await delete_pending_signup(pending_token, email)
+    r = await get_redis()
+    await r.delete(
+        f"otp:pending:{pending_token}:email:code",
+        f"otp:pending:{pending_token}:email:attempts",
+        f"otp:pending:{pending_token}:email:resends",
+    )
+
+
 # ── Register ──────────────────────────────────────────────────────────────────
 
 
-async def test_register_returns_token(client: AsyncClient, db: AsyncSession):
+async def test_register_returns_pending_signup(client: AsyncClient, db: AsyncSession):
     email = f"reg_{uuid.uuid4().hex[:8]}@driveready.test"
     payload = await gql(
         client,
         REGISTER,
-        {"input": {
-            "email": email,
-            "password": TEST_PASSWORD,
-            "displayName": "Reg User",
-            "dateOfBirth": "2000-06-01",
-            "stateCode": "ok",
-            "captchaToken": None,
-        }},
+        {"input": _register_input(email)},
     )
     data = payload.get("data", {}).get("register")
     assert data is not None, payload.get("errors")
-    assert data["accessToken"]
-    assert data["emailVerified"] is False
-    assert data["user"]["email"] == email
+    assert data["pendingToken"]
+    assert data["email"] == email
+    assert data["expiresAt"]
 
-    # cleanup
-    await db.execute(delete(User).where(User.email == email))
-    await db.commit()
+    user = (
+        await db.execute(select(User).where(User.email == email))
+    ).scalar_one_or_none()
+    assert user is None
+
+    await _cleanup_pending_signup(data["pendingToken"], email)
 
 
 async def test_register_duplicate_email_returns_email_taken(
@@ -108,6 +135,7 @@ async def test_register_duplicate_email_returns_email_taken(
             "email": seeded_user.email,
             "password": TEST_PASSWORD,
             "displayName": "Dup",
+            "phoneNumber": _unique_phone(),
             "dateOfBirth": "2000-06-01",
             "stateCode": "ok",
             "captchaToken": None,
@@ -120,33 +148,31 @@ async def test_register_duplicate_email_returns_email_taken(
 
 
 async def test_email_otp_verify_flow(client: AsyncClient, db: AsyncSession):
-    """Register → read OTP from Redis → verifyEmailOtp succeeds."""
+    """Register → read OTP from Redis → completeSignup succeeds."""
     email = f"otp_{uuid.uuid4().hex[:8]}@driveready.test"
 
     reg = await gql(
         client,
         REGISTER,
-        {"input": {
-            "email": email,
-            "password": TEST_PASSWORD,
-            "displayName": "OTP User",
-            "dateOfBirth": "2000-06-01",
-            "stateCode": "ok",
-            "captchaToken": None,
-        }},
+        {"input": _register_input(email, "OTP User")},
     )
-    token = reg["data"]["register"]["accessToken"]
-    user_id = reg["data"]["register"]["user"]["id"]
+    pending_token = reg["data"]["register"]["pendingToken"]
 
     # OTP is stored in Redis even though the email send was mocked
     r = await get_redis()
-    code = await r.get(f"otp:{user_id}:email:code")
+    code = await r.get(f"otp:pending:{pending_token}:email:code")
     assert code, "OTP not found in Redis"
 
     result = await gql(
-        client, VERIFY_EMAIL_OTP, {"input": {"code": code}}, token=token
+        client,
+        COMPLETE_SIGNUP,
+        {"input": {"pendingToken": pending_token, "code": code}},
     )
-    assert result.get("data", {}).get("verifyEmailOtp") is True
+    data = result.get("data", {}).get("completeSignup")
+    assert data is not None, result.get("errors")
+    assert data["accessToken"]
+    assert data["emailVerified"] is True
+    assert data["user"]["email"] == email
 
     await db.execute(delete(User).where(User.email == email))
     await db.commit()
@@ -157,23 +183,17 @@ async def test_email_otp_wrong_code_fails(client: AsyncClient, db: AsyncSession)
     reg = await gql(
         client,
         REGISTER,
-        {"input": {
-            "email": email,
-            "password": TEST_PASSWORD,
-            "displayName": "OTP2",
-            "dateOfBirth": "2000-06-01",
-            "stateCode": "ok",
-            "captchaToken": None,
-        }},
+        {"input": _register_input(email, "OTP2")},
     )
-    token = reg["data"]["register"]["accessToken"]
+    pending_token = reg["data"]["register"]["pendingToken"]
     result = await gql(
-        client, VERIFY_EMAIL_OTP, {"input": {"code": "000000"}}, token=token
+        client,
+        COMPLETE_SIGNUP,
+        {"input": {"pendingToken": pending_token, "code": "000000"}},
     )
     assert result.get("errors"), "Expected an error for wrong OTP"
 
-    await db.execute(delete(User).where(User.email == email))
-    await db.commit()
+    await _cleanup_pending_signup(pending_token, email)
 
 
 # ── Login ─────────────────────────────────────────────────────────────────────
