@@ -15,6 +15,7 @@ import { useUserStore } from '@/stores'
 import { GiLaurelsTrophy } from 'react-icons/gi'
 import { IoSad } from 'react-icons/io5'
 import { FaHandshake } from 'react-icons/fa'
+import { FiAward, FiCheckCircle, FiTarget, FiZap } from 'react-icons/fi'
 
 export interface XPBreakdownItem {
   label: string
@@ -119,27 +120,36 @@ export function XPBreakdownScreen({
       {/* XP breakdown card */}
       <div className="w-full max-w-sm card mb-5 space-y-2.5 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-yellow" />
-        {items.map((item, i) => (
+        {items.map((item, i) => {
+          const Icon = i === 0 ? FiAward : i === 1 ? FiTarget : FiCheckCircle
+          return (
           <div
             key={i}
-            className={`flex items-center justify-between transition-all duration-300 ${
+            className={`flex items-center justify-between gap-4 rounded-md border border-border bg-white/[0.03] px-3 py-2.5 transition-all duration-300 ${
               i < visibleCount ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
             }`}
             style={{ transitionDelay: `${i * 50}ms` }}
           >
-            <span className={`text-[13px] ${item.earned ? 'text-text-primary' : 'text-text-muted line-through'}`}>
-              {item.label}
+            <span className={`flex items-center gap-2 text-[13px] ${item.earned ? 'text-text-primary' : 'text-text-muted line-through'}`}>
+              <span className={`grid h-7 w-7 place-items-center rounded-md border ${item.earned ? 'border-yellow-rim bg-yellow-soft text-yellow' : 'border-border bg-white/[0.04] text-text-muted'}`}>
+                <Icon size={14} />
+              </span>
+              <span>{item.label}</span>
             </span>
-            <span className={`mono text-sm font-bold tabular-nums ${item.earned ? 'text-correct' : 'text-text-muted'}`}>
-              +{item.xp}
+            <span className={`mono text-sm font-bold tabular-nums ${item.earned ? 'text-yellow' : 'text-text-muted'}`}>
+              +{item.xp} XP
             </span>
           </div>
-        ))}
+          )
+        })}
 
         {showTotal && (
           <div className="pt-3 mt-1 border-t border-white/[0.06] flex items-center justify-between animate-fade-up">
-            <span className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-yellow">Total XP earned</span>
-            <span className="mono font-bold text-yellow text-xl tabular-nums">+{totalXP}</span>
+            <span className="mono text-[10px] font-semibold tracking-[0.12em] uppercase text-yellow inline-flex items-center gap-2">
+              <FiZap size={13} />
+              Total XP earned
+            </span>
+            <span className="font-display font-extrabold text-yellow text-2xl tabular-nums">+{totalXP}</span>
           </div>
         )}
       </div>

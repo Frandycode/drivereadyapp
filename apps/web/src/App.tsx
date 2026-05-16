@@ -37,6 +37,7 @@ import { BotBattleSession } from '@/app/battle/BotBattleSession'
 import { PeerBattleLobby, type PeerBattleSetup } from '@/app/battle/PeerBattleLobby'
 import { PeerBattleSession } from '@/app/battle/PeerBattleSession'
 import { ProfilePage } from '@/app/profile/ProfilePage'
+import { ParentPage } from '@/app/parent/ParentPage'
 import { TutorPage } from '@/app/tutor/TutorPage'
 import { AdaptivePage } from '@/app/study/AdaptivePage'
 import { SettingsPage } from '@/app/settings/SettingsPage'
@@ -173,6 +174,7 @@ type AppScreen =
   | { screen: 'peer-battle'; setup: PeerBattleSetup }
   | { screen: 'exam' }
   | { screen: 'profile' }
+  | { screen: 'parent' }
   | { screen: 'tutor' }
   | { screen: 'adaptive' }
   | { screen: 'settings' }
@@ -189,6 +191,7 @@ function screenForPath(to: string): AppScreen {
   if (to === '/study')     return { screen: 'study' }
   if (to === '/challenge') return { screen: 'challenge' }
   if (to === '/profile')   return { screen: 'profile' }
+  if (to === '/parent')    return { screen: 'parent' }
   if (to === '/tutor')     return { screen: 'tutor' }
   if (to === '/adaptive')  return { screen: 'adaptive' }
   if (to === '/settings')  return { screen: 'settings' }
@@ -533,6 +536,7 @@ export default function App() {
       />
     ),
     profile: <ProfilePage onNavigate={navigate} />,
+    parent: <ParentPage onNavigate={navigate} />,
     tutor: <TutorPage />,
     adaptive: <AdaptivePage stateCode={user?.stateCode ?? 'ok'} />,
     settings: (

@@ -108,10 +108,6 @@ export function OnboardingTutorialSheet({ open, onClose }: OnboardingTutorialShe
       setStepIdx((i) => i + 1)
     }
   }
-  function prev() {
-    setStepIdx((i) => Math.max(0, i - 1))
-  }
-
   return (
     <BottomSheet
       open={open}
@@ -124,12 +120,12 @@ export function OnboardingTutorialSheet({ open, onClose }: OnboardingTutorialShe
     >
       <div className="flex flex-col">
         {/* Progress dots */}
-        <div className="flex items-center gap-1.5 mb-5">
+        <div className="flex items-center justify-center gap-2 mb-5">
           {STEPS.map((_, i) => (
             <span
               key={i}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                i <= stepIdx ? 'bg-orange' : 'bg-surface-3'
+              className={`h-2 w-2 rounded-full transition-colors ${
+                i === stepIdx ? 'bg-orange' : i < stepIdx ? 'bg-orange/45' : 'bg-surface-3'
               }`}
             />
           ))}
@@ -155,11 +151,13 @@ export function OnboardingTutorialSheet({ open, onClose }: OnboardingTutorialShe
         {/* Footer actions */}
         <div className="flex items-center justify-between gap-3 mt-6 pb-2">
           <button
-            onClick={prev}
-            disabled={stepIdx === 0}
-            className="text-sm text-text-secondary hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            onClick={() => {
+              onClose()
+              setStepIdx(0)
+            }}
+            className="text-sm text-text-secondary hover:text-white transition-colors"
           >
-            Back
+            Skip
           </button>
 
           <div className="mono text-[10px] text-text-muted tracking-widest">

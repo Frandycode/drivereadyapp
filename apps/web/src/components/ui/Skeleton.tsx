@@ -18,7 +18,15 @@ interface SkeletonProps {
 
 export function Skeleton({ className }: SkeletonProps) {
   return (
-    <div className={clsx('animate-pulse bg-surface-3 rounded', className)} />
+    <div
+      className={clsx(
+        'relative overflow-hidden rounded bg-surface-2',
+        'after:absolute after:inset-0 after:opacity-15',
+        'after:bg-[linear-gradient(90deg,transparent,rgba(245,240,230,0.22),transparent)]',
+        'after:bg-[length:200%_100%] after:animate-shimmer',
+        className,
+      )}
+    />
   )
 }
 

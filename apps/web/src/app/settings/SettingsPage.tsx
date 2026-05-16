@@ -111,6 +111,12 @@ export function SettingsPage({
                   sub="Walk through how DriveReady works"
                   onClick={onOpenTutorial}
                 />
+                <RowButton
+                  Icon={FiUser}
+                  label="Parent dashboard"
+                  sub="View linked child progress and weekly activity"
+                  onClick={() => onNavigate('/parent')}
+                />
               </Section>
 
               <Section id="settings-appearance" label="Appearance" sub="Pick the theme that feels right for your screen.">

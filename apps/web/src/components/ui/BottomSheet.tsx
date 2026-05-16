@@ -60,7 +60,7 @@ export function BottomSheet({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm motion-safe:animate-fade-in"
         aria-hidden="true"
       />
 
@@ -73,14 +73,14 @@ export function BottomSheet({
           'fixed left-0 right-0 bottom-0 z-[61]',
           'bg-surface-2 border-t border-border rounded-t-2xl',
           'shadow-[0_-16px_40px_-12px_rgba(0,0,0,0.6)]',
-          'animate-slide-up flex flex-col',
+          'motion-safe:animate-slide-up flex flex-col',
           size === 'tall' ? 'max-h-[85dvh]' : 'max-h-[85dvh]',
         )}
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {/* Drag handle */}
         <div className="pt-3 pb-2 flex justify-center">
-          <div className="w-10 h-1 rounded-full bg-text-faint" />
+          <div className="w-9 h-[5px] rounded-full bg-text-muted" />
         </div>
 
         {/* Header */}

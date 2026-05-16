@@ -72,10 +72,10 @@ export function DeleteAccountSheet({ open, onClose, onDeleted }: DeleteAccountSh
     >
       <div className="flex flex-col gap-5 pb-2">
         {/* Warning */}
-        <div className="flex items-start gap-3 bg-wrong/10 border border-wrong/30 rounded-lg p-4">
-          <FiAlertTriangle size={18} className="text-wrong flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 rounded-lg border border-variant-red/30 bg-variant-red/10 p-4">
+          <FiAlertTriangle size={18} className="text-variant-red flex-shrink-0 mt-0.5" />
           <div className="text-sm text-white">
-            <p className="font-medium mb-1">This cannot be undone.</p>
+            <p className="font-display text-base font-extrabold text-variant-red mb-1">This cannot be undone.</p>
             <p className="text-text-secondary text-xs leading-relaxed">
               Your account, progress, streaks, bookmarks, decks, and saved sessions will be
               permanently removed. You'll be signed out immediately.
@@ -101,7 +101,7 @@ export function DeleteAccountSheet({ open, onClose, onDeleted }: DeleteAccountSh
         {/* Confirm phrase */}
         <div>
           <label className="block text-xs font-medium text-text-secondary uppercase tracking-wider mb-1.5">
-            Type <span className="mono text-wrong">{CONFIRM_PHRASE}</span> to confirm
+            Type <span className="mono text-variant-red">{CONFIRM_PHRASE}</span> to confirm
           </label>
           <input
             type="text"
@@ -116,7 +116,7 @@ export function DeleteAccountSheet({ open, onClose, onDeleted }: DeleteAccountSh
         </div>
 
         {error && (
-          <p className="text-wrong text-sm bg-wrong/10 border border-wrong/30 rounded-md px-3 py-2">
+          <p className="text-variant-red text-sm bg-variant-red/10 border border-variant-red/30 rounded-md px-3 py-2">
             {error}
           </p>
         )}
@@ -133,7 +133,7 @@ export function DeleteAccountSheet({ open, onClose, onDeleted }: DeleteAccountSh
           <button
             onClick={handleDelete}
             disabled={!canSubmit || loading}
-            className="flex-1 h-11 rounded-md bg-wrong text-white font-medium text-sm inline-flex items-center justify-center gap-1.5 hover:opacity-90 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 h-11 rounded-md bg-variant-red text-cream font-medium text-sm inline-flex items-center justify-center gap-1.5 hover:brightness-110 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {loading ? (
               'Deleting…'
