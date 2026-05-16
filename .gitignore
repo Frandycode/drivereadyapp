@@ -117,3 +117,7 @@ sign-metadata/signs_output/
 .cache/
 
 # ── Dummy files ──────────────────────────────────────────────────────────────────────
+error-im*/
+zoo*/
+private*
+aggressive*
