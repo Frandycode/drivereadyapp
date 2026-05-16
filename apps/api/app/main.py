@@ -284,7 +284,7 @@ def _consent_page(*, title: str, message: str, success: bool) -> str:
     <div class="icon">{icon}</div>
     <h1>{title}</h1>
     <p>{message}</p>
-    <p class="brand">DriveReady · driveready.app</p>
+    <p class="brand">DriveReady · drivereadyapp.com</p>
   </div>
 </body>
 </html>"""

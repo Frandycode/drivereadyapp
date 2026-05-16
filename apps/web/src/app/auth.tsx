@@ -578,7 +578,7 @@ export function AuthPage({ initialMode = 'login' }: { initialMode?: 'login' | 'r
           </p>
           <p>We collect your name, email, date of birth (month and year only), and study progress to operate the service. We do not sell your data to third parties.</p>
           <p>Study data (quiz scores, progress, streaks) is used to personalize your learning experience. We may use anonymized, aggregated data to improve the platform.</p>
-          <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@driveready.app.</p>
+          <p>For users under 18, a parent or guardian must provide consent before data is collected. You may request deletion of your data at any time by contacting support@drivereadyapp.com.</p>
         </div>
 
         <div className="mb-5 rounded-md border border-border bg-white/[0.03] px-4 animate-fade-up" style={{ animationDelay: '0.22s' }}>

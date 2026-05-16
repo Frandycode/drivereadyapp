@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     smtp_port: int = 587
     smtp_user: str = ""
     smtp_password: str = ""
-    smtp_from: str = "noreply@driveready.app"
+    smtp_from: str = "noreply@drivereadyapp.com"
     smtp_tls: bool = True
 
     # Legal document versions — bump either to require re-consent from all users
