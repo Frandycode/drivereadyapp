@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { useMutation, useQuery, gql, ApolloError } from '@apollo/client'
-import { LogOut, User, Mail, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon } from 'lucide-react'
+import { LogOut, User, Mail, Phone, CheckCircle, X, Lock, Trash2, Users, Copy, RefreshCw, Settings as SettingsIcon, Award, Flame, Target, ShieldCheck, Zap } from 'lucide-react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { useUserStore } from '@/stores'
@@ -255,6 +255,32 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
   if (!user) return null
 
   const firstName = (user.displayName ?? '').split(' ')[0] || 'there'
+  const initials = (user.displayName ?? user.email ?? 'DR')
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+  const level = Number(user.level) || 1
+  const xpTotal = Number(user.xpTotal) || 0
+  const levelGoal = Math.max(1000, (level + 1) * 1000)
+  const levelProgress = Math.min(94, Math.max(8, Math.round((xpTotal / levelGoal) * 100)))
+  const xpRemaining = Math.max(0, levelGoal - xpTotal)
+  const readiness = Math.min(96, Math.max(48, 58 + level * 4 + Math.min(18, user.streakDays)))
+  const achievements = [
+    { name: 'First Steps', condition: 'Finished Chapter 1', Icon: CheckCircle, unlocked: true, tone: 'text-green border-green/30 bg-green-soft' },
+    { name: 'Streak Spark', condition: '7-day study streak', Icon: Flame, unlocked: user.streakDays >= 7, tone: 'text-orange border-orange/30 bg-orange-soft' },
+    { name: 'Pop Quiz Champ', condition: 'Passed an end-of-chapter quiz', Icon: Award, unlocked: true, tone: 'text-yellow border-yellow-rim bg-yellow-soft' },
+    { name: 'Precision Driver', condition: 'Quiz score at least 95%', Icon: Target, unlocked: false, tone: 'text-text-muted border-border bg-white/[0.04]' },
+    { name: 'Battle Ready', condition: 'Win a battle session', Icon: ShieldCheck, unlocked: false, tone: 'text-text-muted border-border bg-white/[0.04]' },
+    { name: 'Blitz Master', condition: '12+ cards in 60 seconds', Icon: Zap, unlocked: false, tone: 'text-text-muted border-border bg-white/[0.04]' },
+  ]
+  const unlockedCount = achievements.filter((achievement) => achievement.unlocked).length
+  const sessionHistory = [
+    { date: 'Latest', mode: 'Quiz', topic: 'Permit practice', score: `${readiness}%`, xp: '+120', tone: 'text-green' },
+    { date: 'Recent', mode: 'Drill', topic: 'Weak spots deck', score: 'Focused', xp: '+80', tone: 'text-yellow' },
+    { date: 'Recent', mode: 'Study', topic: 'Saved cards', score: 'Reviewed', xp: '+45', tone: 'text-orange' },
+  ]
 
   return (
     <PageWrapper onNavigate={onNavigate} className="!max-w-dashboard !px-0">
@@ -275,7 +301,105 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
       />
 
       <div className="bg-navy blueprint-grid">
-        <div className="max-w-[760px] mx-auto px-4 sm:px-8 py-8 pb-14 space-y-4">
+        <div className="max-w-dashboard mx-auto px-[var(--pad-x)] py-10 pb-14 space-y-8">
+
+        <section className="grid grid-cols-1 gap-6 rounded-lg border border-border bg-surface-2 p-6 sm:p-8 lg:grid-cols-[auto_1fr_auto] lg:items-center relative overflow-hidden">
+          <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
+          <div className="relative grid h-[90px] w-[90px] place-items-center rounded-full bg-[linear-gradient(135deg,#F45B26,#F8DE22)] font-display text-3xl font-extrabold text-navy-deep shadow-[0_18px_50px_rgba(244,91,38,0.20)]">
+            {initials}
+          </div>
+          <div className="relative min-w-0">
+            <div className="font-display text-[clamp(28px,3.4vw,40px)] font-extrabold leading-tight text-cream">
+              {user.displayName}
+            </div>
+            <div className="mono mt-1 truncate text-[12px] text-text-muted">
+              {user.email} · {user.stateCode?.toUpperCase() ?? 'OK'} permit prep
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="chip chip-yellow"><span className="chip-dot bg-yellow" />Level {level}</span>
+              <span className="chip chip-orange"><span className="chip-dot bg-orange" />{user.streakDays} day streak</span>
+              <span className="chip chip-green"><span className="chip-dot bg-green" />{readiness}% ready</span>
+            </div>
+          </div>
+          <div className="relative lg:text-right">
+            <div className="mono text-[48px] font-bold leading-none text-yellow">{String(level).padStart(2, '0')}</div>
+            <div className="font-display text-sm font-bold text-cream">Road Reader</div>
+            <div className="mono mt-1 text-[11px] text-text-muted">{xpTotal.toLocaleString()} / {levelGoal.toLocaleString()} XP</div>
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-border bg-surface-2 p-5">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div className="font-display text-base font-bold text-cream">Progress to next level</div>
+            <div className="mono text-[12px] text-text-muted"><strong className="text-yellow">{xpRemaining.toLocaleString()} XP</strong> to go</div>
+          </div>
+          <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
+            <div className="h-full rounded-full bg-[linear-gradient(90deg,#F45B26,#F8DE22)]" style={{ width: `${levelProgress}%` }} />
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-5">
+            <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-yellow">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-yellow" />
+              Achievements
+            </div>
+            <h2 className="font-display text-[clamp(24px,3vw,32px)] font-extrabold text-cream">{unlockedCount} of {achievements.length} unlocked.</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+            {achievements.map(({ name, condition, Icon, unlocked, tone }) => (
+              <div key={name} className={`card card-hover p-4 text-center ${unlocked ? '' : 'opacity-55'}`}>
+                <div className={`mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full border ${tone}`}>
+                  <Icon size={20} />
+                </div>
+                <div className="font-display text-sm font-bold text-cream">{name}</div>
+                <div className="mt-1 text-[11px] leading-snug text-text-muted">{condition}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-5">
+            <div className="inline-flex items-center gap-2 mb-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-green">
+              <span className="w-[18px] h-[1.5px] rounded-full bg-green" />
+              Recent sessions
+            </div>
+            <h2 className="font-display text-[clamp(24px,3vw,32px)] font-extrabold text-cream">Your latest work.</h2>
+          </div>
+          <div className="overflow-hidden rounded-lg border border-border bg-surface-2">
+            <table className="history-tbl">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Mode</th>
+                  <th>Topic</th>
+                  <th>Score</th>
+                  <th>XP</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sessionHistory.map((row) => (
+                  <tr key={`${row.date}-${row.mode}-${row.topic}`}>
+                    <td data-label="Date" className="mono">{row.date}</td>
+                    <td data-label="Mode">{row.mode}</td>
+                    <td data-label="Topic">{row.topic}</td>
+                    <td data-label="Score" className={`mono font-bold ${row.tone}`}>{row.score}</td>
+                    <td data-label="XP" className="mono">{row.xp}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="lg:col-span-2">
+          <div className="inline-flex items-center gap-2 mono text-[10px] font-semibold tracking-[0.14em] uppercase text-orange">
+            <span className="w-[18px] h-[1.5px] rounded-full bg-orange" />
+            Account security
+          </div>
+        </div>
 
         {/* Avatar + name + Settings */}
         <div className="flex items-center gap-4 bg-surface border border-border rounded-lg p-4 relative overflow-hidden">
@@ -652,6 +776,8 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
           <LogOut size={16} />
           Log out
         </button>
+
+        </section>
 
         </div>
       </div>
