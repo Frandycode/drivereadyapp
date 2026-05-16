@@ -994,6 +994,9 @@ class Mutation:
                 learner_name=learner.display_name,
                 parent_name=user.display_name,
                 revoke_url=f"{settings.frontend_url}/profile",
+                xp_total=learner.xp_total,
+                streak_days=learner.streak_days,
+                readiness_percent=min(96, max(54, 58 + learner.level * 4 + min(18, learner.streak_days))),
             )
         except Exception:
             pass
