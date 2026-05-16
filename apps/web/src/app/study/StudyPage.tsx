@@ -290,7 +290,7 @@ export function StudyPage({ onNavigate, onStart }: StudyPageProps) {
         { label: 'Bookmarks',  value: bookmarks.length || '—' },
         { label: 'Groups',     value: groups.length || '—', tone: 'orange' },
       ]}
-      slab="orange"
+      variant="cobalt"
     />
   )
 

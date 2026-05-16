@@ -131,7 +131,7 @@ export function BotSelectScreen({ onStart, onBack }: BotSelectScreenProps) {
           { label: 'Top XP', value: '+80', tone: 'orange' },
           { label: 'Rules', value: 'Expert' },
         ]}
-        slab="orange"
+        variant="ember"
       />
       <div className="bg-navy blueprint-grid">
        <div className="max-w-dashboard mx-auto px-[var(--pad-x)] py-10 pb-12 space-y-8">

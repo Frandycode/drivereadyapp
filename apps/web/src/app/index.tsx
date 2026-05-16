@@ -118,7 +118,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
           { label: 'Day streak', value: streak, tone: 'gold' },
           { label: 'Readiness', value: `${readiness}%`, tone: readinessTone },
         ]}
-        slab="orange"
+        variant="ember"
       />
 
       <div className="bg-navy blueprint-grid">

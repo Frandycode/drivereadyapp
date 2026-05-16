@@ -166,7 +166,7 @@ export function ChapterPage({ chapterId, chapterNumber, chapterTitle, onNavigate
           { label: 'Read',     value: readCount,             tone: 'orange' },
           { label: 'Quiz done',value: quizDoneCount,         tone: 'green' },
         ]}
-        slab="yellow"
+        variant="brown"
       />
 
       <div className="bg-navy blueprint-grid">

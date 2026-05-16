@@ -65,7 +65,7 @@ export function ParentPage({ onNavigate }: ParentPageProps) {
           { label: 'Streak', value: user?.streakDays ?? 14, tone: 'orange' },
           { label: 'Ready', value: `${readiness}%`, tone: 'green' },
         ]}
-        slab="orange"
+        variant="brown"
       />
 
       <div className="bg-navy blueprint-grid">

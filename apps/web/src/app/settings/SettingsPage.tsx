@@ -71,7 +71,7 @@ export function SettingsPage({
           { label: 'Font', value: `${Math.round(displayFontScale * 100)}%` },
           { label: 'Bright', value: `${Math.round(displayBrightness * 100)}%`, tone: 'orange' },
         ]}
-        slab="navy"
+        variant="chalk"
       />
 
       <div className="bg-navy blueprint-grid">

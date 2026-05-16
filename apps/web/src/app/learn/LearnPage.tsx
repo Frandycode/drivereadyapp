@@ -103,7 +103,7 @@ export function LearnPage({ onNavigate, onChapterSelect }: LearnPageProps) {
         { label: 'Lessons',   value: totalLessons || '—',          tone: 'gold' },
         { label: 'Completed', value: completedChapters,            tone: 'orange' },
       ]}
-      slab="yellow"
+      variant="solar"
     />
   )
 

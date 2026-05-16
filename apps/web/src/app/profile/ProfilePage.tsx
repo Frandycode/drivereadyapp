@@ -297,7 +297,7 @@ export function ProfilePage({ onNavigate }: ProfilePageProps = {}) {
           { label: 'Streak', value: user.streakDays,               tone: 'orange' },
           { label: 'Level',  value: user.level,                    tone: 'green' },
         ]}
-        slab="orange"
+        variant="onyx"
       />
 
       <div className="bg-navy blueprint-grid">

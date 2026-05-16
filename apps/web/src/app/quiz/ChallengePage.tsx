@@ -129,7 +129,7 @@ export function ChallengePage({ onStart, onBotBattle, onPeerBattle, onExam }: Ch
         { label: 'Battle modes', value: 2,            tone: 'orange' },
         { label: 'Difficulties', value: DIFFICULTIES.length, tone: 'gold' },
       ]}
-      slab="orange"
+      variant="sunrise"
     />
   )
 
